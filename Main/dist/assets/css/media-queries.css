@@ -1,0 +1,109 @@
+
+/*데스크탑*/
+@media only screen and (min-width: 769px) {
+    .main-container {
+        width: 648px; 
+    }
+
+    .main-top-logo {
+        top: 35px;
+        width: 90px;
+    }
+
+    #topFixedBar {
+        height: 140px;
+    }
+
+
+    .bottom-navigator, #topFixedBar {
+        width: 700px; 
+    }
+    .table-cell {
+        width: 162px; 
+        height: 280px;
+    }
+
+    .table-landscape-cell {
+        height: 430px;
+    }
+}
+
+/*태블릿*/
+@media only screen and (min-width: 580px) and (max-width: 769px) {
+    .main-container {
+        width: 500px;
+    }
+
+    .main-top-logo {
+        top: 38px;
+        width: 80px;
+    }
+
+    #topFixedBar {
+        height: 135px;
+    }
+
+
+    .bottom-navigator, #topFixedBar {
+        width: 550px; 
+    }
+
+    .bottom-navigator {
+        transform: translateX(-50% + 300px);
+    }
+
+    .table-cell {
+        width: 125px; 
+        height: 216px;
+    }
+
+    .table-landscape-cell {
+        height: 350px;
+    }
+}
+
+/*스마트폰*/
+@media only screen and (max-width: 580px) {
+    .main-container {
+        width: calc(100% - 40px);
+    }
+
+    .main-top-logo {
+        top: 35px;
+        width: 70px;
+    }
+
+    #topFixedBar {
+        height: 120px;
+    }
+
+    .bottom-navigator, 
+    #topFixedBar {
+        width: 100%
+    }
+
+    .table-cell {
+        padding: 0.5vw;
+        width: 33.33%; 
+        height: calc(57.2vw - 40px);
+    }
+
+    /* 3*2 뷰일 때 7, 8번째 이미지 감춤 */
+    .table-cell:nth-child(n+8) {
+        display: none; 
+    }
+
+    .table-landscape-cell {
+        height: calc(70vw)
+    }
+
+    .cell-landscape-img {
+        border-radius: 3vw;
+    }
+
+    .cell-img {
+        width: calc(100% - 1.1vw);
+        height: calc(100% - 1.1vw);
+        border-radius: 2vw;
+    }
+}
