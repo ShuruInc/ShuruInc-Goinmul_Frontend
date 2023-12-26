@@ -1,0 +1,64 @@
+/* Reset some default styles for better consistency across browsers */
+body, h1, h2, p, img {
+    margin: 0;
+    padding: 0;
+}
+
+.main-container {
+    /*모든 콘텐츠가 담김*/
+    position: relative;
+    top: 145px;
+    background-color:white; 
+    margin: 0 auto; /* Center the container horizontally */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 180px;
+}
+
+/* 3*2 와 4*2 갤러리 테이블 */
+/* 세로형 Cell 이미지 비율은 1:0.572 */
+.flex-table {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center; 
+    width: 100%; 
+}
+
+.table-landscape-cell {
+    padding: 2px 2px 2px 2px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    overflow:hidden;
+    /*width, height은 미디어 쿼리에서 지정*/
+    box-sizing: border-box;
+}
+
+.cell-landscape-img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius: 16px;
+}
+
+.table-cell {
+    padding: 2px 2px 2px 2px;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    overflow:hidden;
+    /*width, height은 미디어 쿼리에서 지정*/
+    box-sizing: border-box;
+}
+
+.cell-img {
+    position: absolute;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    object-fit:cover;
+    border-radius: 8px;
+}
+
