@@ -61,8 +61,8 @@ body, h1, h2, p, img {
     border-radius: 8px;
 }
 
-/* top-buttons 버튼 스타일링 */
-nav.top-buttons {
+/* top-category-buttons 버튼 스타일링 */
+nav.top-category-buttons {
     /* 사이즈 */
     --button-gap: 10px;
     --button-width: 200px;
@@ -93,7 +93,7 @@ nav.top-buttons {
     transform: translateX(-50%)
 }
 
-nav.top-buttons > button {
+nav.top-category-buttons > button {
     border: 0px;
     border-radius: 14px;
     padding: 3% 6%;
@@ -108,6 +108,6 @@ nav.top-buttons > button {
     min-width: var(--button-width);
 }
 
-nav.top-buttons > button.active {
+nav.top-category-buttons > button.active {
     background: linear-gradient(30deg, #43c3ff,#94ddff,#7bd5ff);
 }
