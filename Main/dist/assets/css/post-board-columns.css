@@ -1,0 +1,21 @@
+.post-board-columns {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    overflow-x: scroll;
+    
+    /* 스크롤바를 숨긴다 */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+.post-board-columns > .column {
+    scroll-snap-align: center;
+}
+/* 스크롤바를 숨긴다 (WebKit) */
+.post-board-columns::-webkit-scrollbar {
+    display: none;
+}
+.post-board-columns .column {
+    width: 100%;
+    min-width: 100%;
+}
