@@ -6,15 +6,12 @@ body, h1, h2, p, img {
 
 .main-container {
     /*모든 콘텐츠가 담김*/
-    position: relative;
-    top: 145px;
     background-color:white; 
     margin: 0 auto; /* Center the container horizontally */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    margin-bottom: 180px;
 }
 
 /* 3*2 와 4*2 갤러리 테이블 */
