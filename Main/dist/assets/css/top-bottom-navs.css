@@ -13,7 +13,6 @@
     background: linear-gradient(180deg, rgba(255,255,255,1) 63%, rgba(255,255,255,0) 100%);
     color: rgba(255, 255, 255, 1);
     
-    opacity: 1;
     transition: transform 0.3s ease, 
                 background-color 0.3s ease-in-out, 
                 color 0.3s ease-in-out,
@@ -22,7 +21,6 @@
 
 .top-fixed-bar.is-hidden {
     color: rgba(255, 255, 255, 0);
-    opacity: 0.8;
 }
 
 .main-top-logo {

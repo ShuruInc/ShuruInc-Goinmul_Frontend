@@ -6,6 +6,8 @@ body, h1, h2, p, img {
 
 .main-container {
     /*모든 콘텐츠가 담김*/
+    position: relative;
+    top: 145px;
     background-color:white; 
     margin: 0 auto; /* Center the container horizontally */
     display: flex;
@@ -69,24 +71,42 @@ nav.top-buttons {
     /* flexbox랑*/
     display: flex;
     gap: var(--button-gap);
-    /* top nav 고려하여 margin-top: 145px */
-    margin: 145px 0px 50px 0px;
+    margin: 0px 0px 50px 0px;
 
     /* 너비 */
-    box-sizing: border-box; /* border-box일시 width = content + padding으로 계산됨 */
     width: 100%;
     overflow: hidden;
+
+    /* 포지셔닝 */
+    position: fixed;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99;
+
+    /* 애니메이션 */
+    transition: top 0.3s ease;
+}
+
+/* 상단 로고 애니메이션시 버튼 네브도 애니메이션 */
+.top-fixed-bar.is-hidden ~ nav {
+    top: 10px;
+    transform: translateX(-50%)
 }
 
 nav.top-buttons > button {
     border: 0px;
     border-radius: 14px;
-    padding: 20px 40px;
+    padding: 3% 6%;
     font-size: 18px;
     white-space: nowrap;
+    word-break: keep-all;
     cursor: pointer;
     background-color: #F0F0F0;
     scroll-snap-align: center;
+    text-align: center;
+    width: var(--button-width);
+    min-width: var(--button-width);
 }
 
 nav.top-buttons > button.active {
