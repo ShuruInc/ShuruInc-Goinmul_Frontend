@@ -62,3 +62,34 @@ body, h1, h2, p, img {
     border-radius: 8px;
 }
 
+/* top-buttons 버튼 스타일링 */
+nav.top-buttons {
+    /* 사이즈 */
+    --button-gap: 10px;
+    --button-width: 200px;
+
+    /* flexbox랑*/
+    display: flex;
+    gap: var(--button-gap);
+    margin: 0px 0px 50px 0px;
+
+    /* 너비 */
+    box-sizing: border-box; /* border-box일시 width = content + padding으로 계산됨 */
+    width: 100%;
+    overflow: hidden;
+}
+
+nav.top-buttons > button {
+    border: 0px;
+    border-radius: 14px;
+    padding: 20px 40px;
+    font-size: 18px;
+    white-space: nowrap;
+    cursor: pointer;
+    background-color: #F0F0F0;
+    scroll-snap-align: center;
+}
+
+nav.top-buttons > button.active {
+    background: linear-gradient(30deg, #43c3ff,#94ddff,#7bd5ff);
+}
