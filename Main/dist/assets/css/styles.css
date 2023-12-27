@@ -6,8 +6,6 @@ body, h1, h2, p, img {
 
 .main-container {
     /*모든 콘텐츠가 담김*/
-    position: relative;
-    top: 145px;
     background-color:white; 
     margin: 0 auto; /* Center the container horizontally */
     display: flex;
@@ -71,7 +69,8 @@ nav.top-buttons {
     /* flexbox랑*/
     display: flex;
     gap: var(--button-gap);
-    margin: 0px 0px 50px 0px;
+    /* top nav 고려하여 margin-top: 145px */
+    margin: 145px 0px 50px 0px;
 
     /* 너비 */
     box-sizing: border-box; /* border-box일시 width = content + padding으로 계산됨 */
