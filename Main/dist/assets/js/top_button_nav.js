@@ -1,5 +1,5 @@
 // 스크롤링 함수
-function scrollToCenter(element, smooth = true) {
+function scrollCategoryButtonToCenter(element, smooth = true) {
     const parentRect = element.parentNode.getBoundingClientRect();
     const elementRect = element.getBoundingClientRect();
 
@@ -15,13 +15,13 @@ function scrollToCenter(element, smooth = true) {
 }
 
 // active된 버튼을 중앙에 정렬 (창 크기가 바뀌었을 때도!)
-scrollToCenter(getActiveCategoryButton(), false);
+scrollCategoryButtonToCenter(getActiveCategoryButton(), false);
 window.addEventListener("resize", (evt) => {
-    scrollToCenter(getActiveCategoryButton(), false);
+    scrollCategoryButtonToCenter(getActiveCategoryButton(), false);
 });
 
 // 네브 데이터
-const buttonData = [
+const categoryButtonData = [
     {
         label: "K-POP",
         key: "kpop",
@@ -36,20 +36,20 @@ const buttonData = [
     },
 ];
 
-function createButtonByKey(key) {
-    const data = buttonData.filter((i) => i.key === key)[0];
+function createCategoryButtonByKey(key) {
+    const data = categoryButtonData.filter((i) => i.key === key)[0];
     const button = document.createElement("button");
     button.dataset.key = data.key;
     button.innerHTML = data.label;
-    button.addEventListener("click", handleTopButtonNavClick);
+    button.addEventListener("click", handleCategoryButtonNavClick);
 
     return button;
 }
-function getIndexOfButtonKey(key) {
-    return buttonData.findIndex((i) => i.key === key);
+function getIndexOfCategoryButtonKey(key) {
+    return categoryButtonData.findIndex((i) => i.key === key);
 }
-function keyIndexToKey(keyIdx) {
-    return buttonData[keyIdx].key;
+function categoryKeyIndexToKey(keyIdx) {
+    return categoryButtonData[keyIdx].key;
 }
 
 // x를 [0, max) 내의 정수로 정규화한다.
@@ -65,9 +65,9 @@ function getActiveCategoryButton() {
 
 // 이벤트 핸들러 추가
 [...document.querySelectorAll("nav.top-category-buttons > button")].forEach(
-    (i) => i.addEventListener("click", handleTopButtonNavClick)
+    (i) => i.addEventListener("click", handleCategoryButtonNavClick)
 );
-function handleTopButtonNavClick(evt) {
+function handleCategoryButtonNavClick(evt) {
     const activeNow = getActiveCategoryButton();
 
     // nav 너비 계산
@@ -102,19 +102,19 @@ function handleTopButtonNavClick(evt) {
         for (let i = 0; i < leftButtonCountDiff; i++) {
             // TIP: 첫번째 요소로 자식 추가하는 방법: elem.insertBefore(something, elem.firstNode)
             topButtons.insertBefore(
-                createButtonByKey(
-                    keyIndexToKey(
+                createCategoryButtonByKey(
+                    categoryKeyIndexToKey(
                         normalizeIntoRange(
-                            getIndexOfButtonKey(
+                            getIndexOfCategoryButtonKey(
                                 topButtons.firstElementChild.dataset.key
                             ) - 1,
-                            buttonData.length
+                            categoryButtonData.length
                         )
                     )
                 ),
                 topButtons.firstElementChild
             );
-            scrollToCenter(activeNow, false); // 버그 방지
+            scrollCategoryButtonToCenter(activeNow, false); // 버그 방지
         }
     }
 
@@ -127,13 +127,13 @@ function handleTopButtonNavClick(evt) {
     } else if (rightButtonCountDiff > 0) {
         for (let i = 0; i < rightButtonCountDiff; i++)
             topButtons.appendChild(
-                createButtonByKey(
-                    keyIndexToKey(
+                createCategoryButtonByKey(
+                    categoryKeyIndexToKey(
                         normalizeIntoRange(
-                            getIndexOfButtonKey(
+                            getIndexOfCategoryButtonKey(
                                 topButtons.lastElementChild.dataset.key
                             ) + 1,
-                            buttonData.length
+                            categoryButtonData.length
                         )
                     )
                 )
@@ -141,7 +141,7 @@ function handleTopButtonNavClick(evt) {
     }
 
     // 스크롤링
-    scrollToCenter(evt.target);
+    scrollCategoryButtonToCenter(evt.target);
     getActiveCategoryButton().classList.remove("active");
     evt.target.classList.add("active");
 }
