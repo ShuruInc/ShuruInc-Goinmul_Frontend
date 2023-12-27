@@ -6,7 +6,7 @@
     height: var(--columns-height);
 
     scroll-snap-type: x mandatory;
-    overflow-y: scroll;
+    overflow-x: scroll;
 
     /* 스크롤바를 숨긴다 */
     -ms-overflow-style: none; /* IE and Edge */
