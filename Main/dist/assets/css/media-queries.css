@@ -111,4 +111,16 @@
         height: calc(100% - 1.1vw);
         border-radius: 2vw;
     }
+
+    nav.top-buttons {
+        top: 60px;
+        --button-width: 30vw;
+        --button-gap: 5px;
+    }
+    
+    nav.top-buttons > button {
+        font-size: 14px;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
 }
