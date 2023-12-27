@@ -32,13 +32,13 @@ function setupScrollEventHandlerForcolumn(column) {
             // 하향 스크롤로 전환 시에만 감춤
             if (!isHidden) {
                 changeMainTopLogo();
-                topFixedBar.style.transform = "translateY(-45%)";
+                topFixedBar.style.transform = "translateX(-50%) translateY(-45%)";
                 isHidden = true;
             }
         } else if (scrollTop < lastScrollTop - 15) {
             // 상향 스크롤로 전환 시에만 드러냄
             if (isHidden) {
-                topFixedBar.style.transform = "translateY(0%)";
+                topFixedBar.style.transform = "translateX(-50%) translateY(0%)";
                 isHidden = false;
             }
         }
