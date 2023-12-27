@@ -15,15 +15,9 @@ function scrollToCenter(element, smooth = true) {
 }
 
 // active된 버튼을 중앙에 정렬 (창 크기가 바뀌었을 때도!)
-scrollToCenter(
-    document.querySelector("nav.top-category-buttons > button.active"),
-    false
-);
+scrollToCenter(getActiveCategoryButton(), false);
 window.addEventListener("resize", (evt) => {
-    scrollToCenter(
-        document.querySelector("nav.top-category-buttons > button.active"),
-        false
-    );
+    scrollToCenter(getActiveCategoryButton(), false);
 });
 
 // 네브 데이터
@@ -64,14 +58,17 @@ function normalizeIntoRange(x, maxExcluding) {
     return x % maxExcluding;
 }
 
+// 활성화된 버튼을 가져온다.
+function getActiveCategoryButton() {
+    return document.querySelector("nav.top-category-buttons > button.active");
+}
+
 // 이벤트 핸들러 추가
 [...document.querySelectorAll("nav.top-category-buttons > button")].forEach(
     (i) => i.addEventListener("click", handleTopButtonNavClick)
 );
 function handleTopButtonNavClick(evt) {
-    const activeNow = document.querySelector(
-        "nav.top-category-buttons > button.active"
-    );
+    const activeNow = getActiveCategoryButton();
 
     // nav 너비 계산
     const topButtons = document.querySelector("nav.top-category-buttons");
@@ -145,8 +142,6 @@ function handleTopButtonNavClick(evt) {
 
     // 스크롤링
     scrollToCenter(evt.target);
-    document
-        .querySelector("nav.top-category-buttons > button.active")
-        .classList.remove("active");
+    getActiveCategoryButton().classList.remove("active");
     evt.target.classList.add("active");
 }
