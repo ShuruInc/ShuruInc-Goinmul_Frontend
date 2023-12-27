@@ -4,8 +4,10 @@
     flex-direction: row;
     width: 100%;
     height: var(--columns-height);
-    overflow-x: scroll;
-    
+
+    scroll-snap-type: x mandatory;
+    overflow-y: scroll;
+
     /* 스크롤바를 숨긴다 */
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
@@ -14,6 +16,7 @@
 .post-board-columns::-webkit-scrollbar {
     display: none;
 }
+
 .post-board-columns > .column {
     padding: 145px 0px 180px 0px;
     width: 100%;
