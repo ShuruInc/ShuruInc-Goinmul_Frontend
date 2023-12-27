@@ -31,7 +31,6 @@ const buttonData = [0, 1, 2, 3, 4, 5, 6].map((i) => ({
     label: `Lorem ipsum ${i}`,
     key: `btn${i}`, // key는 string으로만 쓰는 게 편하다. (html data-* 속성은 문자열이니까!)
 }));
-let activeButtonKey = "3";
 
 function createButtonByKey(key) {
     const data = buttonData.filter((i) => i.key === key)[0];
