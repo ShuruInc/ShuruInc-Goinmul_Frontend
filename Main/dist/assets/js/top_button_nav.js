@@ -16,12 +16,12 @@ function scrollToCenter(element, smooth = true) {
 
 // active된 버튼을 중앙에 정렬 (창 크기가 바뀌었을 때도!)
 scrollToCenter(
-    document.querySelector("nav.top-buttons > button.active"),
+    document.querySelector("nav.top-category-buttons > button.active"),
     false
 );
 window.addEventListener("resize", (evt) => {
     scrollToCenter(
-        document.querySelector("nav.top-buttons > button.active"),
+        document.querySelector("nav.top-category-buttons > button.active"),
         false
     );
 });
@@ -56,26 +56,30 @@ function normalizeIntoRange(x, maxExcluding) {
 }
 
 // 이벤트 핸들러 추가
-[...document.querySelectorAll("nav.top-buttons > button")].forEach((i) =>
-    i.addEventListener("click", handleTopButtonNavClick)
+[...document.querySelectorAll("nav.top-category-buttons > button")].forEach(
+    (i) => i.addEventListener("click", handleTopButtonNavClick)
 );
 function handleTopButtonNavClick(evt) {
-    const activeNow = document.querySelector("nav.top-buttons > button.active");
+    const activeNow = document.querySelector(
+        "nav.top-category-buttons > button.active"
+    );
 
     // nav 너비 계산
-    const topButtons = document.querySelector("nav.top-buttons");
+    const topButtons = document.querySelector("nav.top-category-buttons");
     const navWidth = topButtons.getBoundingClientRect().width;
 
     // 위에서 구한 vw를 이용해 좌우에 필요한 버튼 개수 계산
     const buttonWidth = parseInt(
-        getComputedStyle(document.querySelector("nav.top-buttons"))
+        getComputedStyle(document.querySelector("nav.top-category-buttons"))
             .getPropertyValue("--button-width")
             .replace("px", "")
     );
     const neededButtonOnOneSide = Math.ceil((navWidth / buttonWidth - 1) / 2);
 
     // 좌우에 실제로 있는 버튼 개수 (좀 무식한 방법으로...)
-    const buttons = [...document.querySelectorAll("nav.top-buttons > button")];
+    const buttons = [
+        ...document.querySelectorAll("nav.top-category-buttons > button"),
+    ];
     const leftButtonCount = buttons.indexOf(evt.target);
     const rightButtonCount = buttons.length - leftButtonCount - 1;
 
@@ -133,7 +137,7 @@ function handleTopButtonNavClick(evt) {
     // 스크롤링
     scrollToCenter(evt.target);
     document
-        .querySelector("nav.top-buttons > button.active")
+        .querySelector("nav.top-category-buttons > button.active")
         .classList.remove("active");
     evt.target.classList.add("active");
 }
