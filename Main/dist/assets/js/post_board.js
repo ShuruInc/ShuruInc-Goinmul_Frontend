@@ -29,13 +29,20 @@ function setupPostBoard(column) {
             });
         }
         return {
+            title: "Lorem ipsum 가나다라마바사",
             landscape: {
                 bgColor: images[0].color,
                 imgUrl: images[0].url,
+                title: `테스트${Math.floor(Math.random() * 100)}`,
+                likes: 100,
+                views: 100,
             },
             portraits: images.slice(1).map((img) => ({
                 bgColor: img.color,
                 imgUrl: img.url,
+                title: `테스트${Math.floor(Math.random() * 100)}`,
+                likes: 100,
+                views: 100,
             })),
         };
     }
@@ -52,6 +59,9 @@ function setupPostBoard(column) {
             // 포스트를 담을 테이블 생성
             var flexTable = document.createElement("section");
             flexTable.className = "flex-table";
+
+            // 제목 생성
+            flexTable.appendChild(document.createElement("h2"));
 
             const landscapeModes = [
                 true, // 가로형 하나
@@ -75,15 +85,22 @@ function setupPostBoard(column) {
 
                 // 클래스 설정
                 if (isLandscape) {
-                    image.className = "cell-landscape-img";
+                    image.className = "cell-landscape-img ";
                     cell.className = "table-landscape-cell";
                 } else {
                     image.className = "cell-img";
                     cell.className = "table-cell";
                 }
 
+                // 정보 추가
+                const info = document.createElement("div");
+                info.className = "cell-info";
+                info.innerHTML =
+                    '<div class="title"></div><div class="popularity"><div class="likes"><span class="like-count" /></div><div class="views"><span class="view-count" /></div></div>';
+
                 flexTable.appendChild(cell);
                 cell.appendChild(image);
+                cell.appendChild(info);
             }
 
             flexTable.classList.add("placeholder");
@@ -114,14 +131,33 @@ function setupPostBoard(column) {
         // 포스트를 담을 테이블 생성
         const section = getPlaceholderSection();
 
+        // 제목 설정
+        section.querySelector("h2").textContent = posts.title;
+
         // 가로형 이미지 설정
         section.querySelector(".cell-landscape-img").src =
             posts.landscape.imgUrl;
+        section.querySelector(
+            ".table-landscape-cell .cell-info .title"
+        ).innerHTML = posts.landscape.title;
+        section.querySelector(
+            ".table-landscape-cell .cell-info .like-count"
+        ).innerHTML = posts.landscape.likes;
+        section.querySelector(
+            ".table-landscape-cell .cell-info .view-count"
+        ).innerHTML = posts.landscape.views;
 
         // 세로형 이미지 설정
-        const portraitImgs = [...section.querySelectorAll(".cell-img")];
-        for (const portraitImg of portraitImgs) {
-            portraitImg.src = posts.portraits.pop().imgUrl;
+        const portraitCells = [...section.querySelectorAll(".table-cell")];
+        for (const portraitCell of portraitCells) {
+            const post = posts.portraits.pop();
+            portraitCell.querySelector(".cell-img").src = post.imgUrl;
+            portraitCell.querySelector(".cell-info .title").innerHTML =
+                post.title;
+            portraitCell.querySelector(".cell-info .like-count").innerHTML =
+                post.likes;
+            portraitCell.querySelector(".cell-info .view-count").innerHTML =
+                post.views;
         }
 
         return;
