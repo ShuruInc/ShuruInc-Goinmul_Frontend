@@ -1,4 +1,5 @@
 let isCategoryButtonColumnSynchronizationEnabled = true;
+
 function scrollPostBoardColumnIntoView(target, smooth = true) {
     const parent = document.querySelector(".post-board-columns");
     const parentRect = parent.getBoundingClientRect();
@@ -8,6 +9,11 @@ function scrollPostBoardColumnIntoView(target, smooth = true) {
         targetRect.left +
         targetRect.width / 2 -
         (parentRect.left + parentRect.right) / 2;
+
+    // Safari 버그
+    if (/^((?!chrome|android).)*safari/i.test(navigator.userAgent))
+        smooth = false;
+
     parent.scrollBy({
         left: scrollDelta,
         behavior: smooth ? "smooth" : "instant",
