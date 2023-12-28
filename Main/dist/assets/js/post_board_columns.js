@@ -137,38 +137,7 @@ function getMostShownPostBoardColumn() {
     document
         .querySelector(".post-board-columns")
         .addEventListener("scroll", () => {
-            const width = document
-                    .querySelector("article.column")
-                    .getBoundingClientRect().width,
-                left =
-                    document.querySelector(".post-board-columns").scrollWidth /
-                        2 -
-                    width * 1.5 -
-                    2,
-                right = left + width * 2 + 2;
-
-            console.log(
-                `${left} ${
-                    document.querySelector(".post-board-columns").scrollLeft
-                } ${right}`
-            );
-
-            let reached = true;
-            if (document.querySelector(".post-board-columns").scrollLeft < left)
-                document
-                    .querySelector(".post-board-columns")
-                    .scrollTo({ left, behavior: "instant" });
-            else if (
-                document.querySelector(".post-board-columns").scrollLeft > right
-            )
-                document
-                    .querySelector(".post-board-columns")
-                    .scrollTo({ left: right, behavior: "instant" });
-            else reached = false;
-
-            if (reached) {
-                infinitePostColumnLoop();
-            }
+            infinitePostColumnLoop();
         });
 
     /**
