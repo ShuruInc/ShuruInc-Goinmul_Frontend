@@ -34,6 +34,14 @@ const categoryButtonData = [
         label: "C-POP",
         key: "cpop",
     },
+    {
+        label: "V-POP",
+        key: "vpop",
+    },
+    {
+        label: "P-PAP",
+        key: "ppap",
+    },
 ];
 
 function createCategoryButtonByKey(key) {
@@ -176,6 +184,11 @@ function handleCategoryButtonNavClick(evt) {
     // 필요한 버튼 생성
     prepareChangeActiveButton(evt.target);
 
+    // scrollTop 저장
+    [...document.querySelectorAll("article.column")].forEach(
+        (i) => (i.dataset.scrollTop = i.scrollTop)
+    );
+
     // Column 이동
     const targetColumn = [
         ...document.querySelectorAll("article.column"),
@@ -205,6 +218,11 @@ function handleCategoryButtonNavClick(evt) {
 
     // Column 전환
     scrollPostBoardColumnIntoView(targetColumn);
+
+    // scrollTop 복원
+    [...document.querySelectorAll("article.column")].forEach(
+        (i) => (i.scrollTop = Number(i.dataset.scrollTop))
+    );
 
     // 스크롤링
     changeActiveButton(evt.target);
