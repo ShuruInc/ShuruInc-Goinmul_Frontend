@@ -1,4 +1,4 @@
-function listenHorizontalDragEnd(handler) {
+function HorizontalTouchInterpreter(handler) {
     let isDragReady = false;
     let isDragging = false;
     let isVerticalDrag = false;
