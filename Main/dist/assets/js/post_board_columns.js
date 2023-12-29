@@ -1,7 +1,7 @@
 {
     let timeoutIdx = null;
 
-    listenHorizontalDragEnd(() => {
+    HorizontalTouchInterpreter(() => {
         if (timeoutIdx !== null) clearTimeout(timeoutIdx);
 
         timeoutIdx = setTimeout(fixChromeSnapBug, 1000);

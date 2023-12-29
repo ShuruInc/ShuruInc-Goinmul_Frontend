@@ -1,5 +1,6 @@
 .post-board-columns {
     --columns-height: calc(100vh - 48px);
+    position: relative;
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -18,13 +19,15 @@
 }
 
 .post-board-columns > .column {
+    position: absolute;
+    left: 0px;
+    top: 0px;
     padding: 145px 0px 180px 0px;
     width: 100%;
     min-width: 100%;
     height: var(--columns-height);
     max-height: var(--columns-height);
     box-sizing: border-box;
-    scroll-snap-align: center;
     overflow-y: scroll;
 
     /* 스크롤바를 숨긴다 */
