@@ -177,10 +177,10 @@ class TopCategoryButtonNav {
             for (let i = 0; i < leftButtonCountDiff; i++) {
                 // TIP: 첫번째 요소로 자식 추가하는 방법: elem.insertBefore(something, elem.firstNode)
                 this._root.insertBefore(
-                    createButtonByKey(
-                        keyIndexToKey(
+                    this._createButtonByKey(
+                        this._keyIndexToKey(
                             normalizeIntoRange(
-                                getIndexOfButtonKey(
+                                this._getIndexOfButtonKey(
                                     this._root.firstElementChild.dataset.key
                                 ) - 1,
                                 buttonData.length
@@ -202,10 +202,10 @@ class TopCategoryButtonNav {
         } else if (rightButtonCountDiff > 0) {
             for (let i = 0; i < rightButtonCountDiff; i++)
                 this._root.appendChild(
-                    createButtonByKey(
-                        keyIndexToKey(
+                    this._createButtonByKey(
+                        this._keyIndexToKey(
                             normalizeIntoRange(
-                                getIndexOfButtonKey(
+                                this._getIndexOfButtonKey(
                                     this._root.lastElementChild.dataset.key
                                 ) + 1,
                                 buttonData.length
