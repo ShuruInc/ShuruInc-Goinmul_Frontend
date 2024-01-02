@@ -118,10 +118,32 @@ class TopCategoryButtonNav {
     }
 
     /**
-     * 상단 카테고리 버튼의 click 이벤트를 처리합니다.
-     * @param {MouseEvent} evt 이벤트 매개변수
+     * 해당 key를 가진 카테고리 버튼들 중 현재 활성화된 버튼과 가장 가까운 버튼을 반환한다.
+     * @param {string} key 카테고리 버튼 키
+     * @returns 카테고리 버튼 Element object
      */
-    _handleTopButtonNavClick(evt) {
+    getCategoryButtonByKey(key) {
+        const buttonsWithDistance = this._getButtonElements()
+            .filter((i) => i.dataset.key === key)
+            .map((i) => ({
+                button: i,
+                distance: Math.abs(
+                    this._getButtonElements().indexOf(i) -
+                        this._getButtonElements().indexOf(
+                            this._getActiveButton()
+                        )
+                ),
+            }))
+            .sort((a, b) => a.distance - b.distance);
+
+        return buttonsWithDistance[0].button;
+    }
+
+    /**
+     * 주어진 카테고리 버튼 주변에 버튼 생성이 필요한 경우 생성한다.
+     * @param {HTMLElement} target 카테고리 버튼
+     */
+    _createRequiredButtonAround(target) {
         const activeNow = this._getActiveButton();
 
         // nav 너비 계산
@@ -139,7 +161,7 @@ class TopCategoryButtonNav {
 
         // 좌우에 실제로 있는 버튼 개수 (좀 무식한 방법으로...)
         const buttons = this._getButtonElements();
-        const leftButtonCount = buttons.indexOf(evt.target);
+        const leftButtonCount = buttons.indexOf(target);
         const rightButtonCount = buttons.length - leftButtonCount - 1;
 
         // 추가하거나 제거할 버튼 개수 계산
@@ -192,11 +214,31 @@ class TopCategoryButtonNav {
                     )
                 );
         }
+    }
+
+    /**
+     * 카테고리 버튼을 활성화한다.
+     * @param {HTMLElement} element 활성화할 카테고리 버튼
+     * @param {boolean} smooth smooth하게 스크로리할 지의 여부
+     */
+    activateButton(element, smooth = true) {
+        // target 좌우에 버튼 생성
+        this._createRequiredButtonAround(element);
 
         // 스크롤링
-        this.scrollToCenter(evt.target);
+        this.scrollToCenter(element, smooth);
+
+        // 버튼 활성화
         this._getActiveButton().classList.remove("active");
-        evt.target.classList.add("active");
+        element.classList.add("active");
+    }
+
+    /**
+     * 상단 카테고리 버튼의 click 이벤트를 처리합니다.
+     * @param {MouseEvent} evt 이벤트 매개변수
+     */
+    _handleTopButtonNavClick(evt) {
+        this.activateButton(evt.target);
     }
 }
 
