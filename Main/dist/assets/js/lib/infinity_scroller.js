@@ -281,6 +281,18 @@ class HorizontalInfinityScroller {
         }
     }
 
+    getCurrentlyMostVisibleChild() {
+        const translates = this._translateValues();
+        return translates
+            .map((i, idx) => ({
+                translate: i,
+                child: this._children()[idx],
+            }))
+            .filter((i) => i.translate !== null)
+            .sort((a, b) => Math.abs(a.translate) - Math.abs(b.translate))[0]
+            .child;
+    }
+
     _easingFunction(from, to, progress) {
         return progress === 1 ? to : from + (to - from) * progress;
     }
