@@ -95,11 +95,10 @@ class HorizontalInfinityScroller {
         if (timestamp - this._easingStartTime > this._easingDuration) {
             this._easing = false;
             this._easingStartOffset = null;
-            return;
+            return (this._scrollOffsetOfChildOnCenter = this._easingEndOffset);
         }
-        return;
 
-        this._scrollOffsetOfChildOnCenter += this._easingFunction(
+        this._scrollOffsetOfChildOnCenter = this._easingFunction(
             this._easingStartOffset,
             this._easingEndOffset,
             (timestamp - this._easingStartTime) / this._easingDuration
@@ -107,6 +106,8 @@ class HorizontalInfinityScroller {
     }
 
     _render(timestamp) {
+        this._scrollOffsetOfChildOnCenter %= this._childWidthSum();
+
         const translates = this._translateValues();
         const children = this._children();
 
@@ -168,6 +169,7 @@ class HorizontalInfinityScroller {
      */
     _translateValues(noNormalize = false) {
         //if (!noNormalize) this._normalize();
+        // console.log(`offset=${this._scrollOffsetOfChildOnCenter}`);
 
         const rootWidth = this._rootWidth();
         let translates = [];
@@ -187,8 +189,6 @@ class HorizontalInfinityScroller {
         translates[this._childOnCenterIdx] =
             rootWidth / 2 + this._scrollOffsetOfChildOnCenter;
 
-        console.log(remaningRootWidth);
-
         for (let i = 1; remaningRootWidth.left > 0; i++) {
             const childIdx = this._childOnCenterIdx - i,
                 childWidth = this._childWidth(this._children()[childIdx]);
@@ -198,7 +198,6 @@ class HorizontalInfinityScroller {
             }
             translates[childIdx] = remaningRootWidth.left - childWidth / 2;
             remaningRootWidth.left -= childWidth;
-            console.log(`change ${childIdx}`);
         }
 
         for (let i = 1; remaningRootWidth.right > 0; i++) {
@@ -213,17 +212,54 @@ class HorizontalInfinityScroller {
             remaningRootWidth.right -= childWidth;
         }
 
-        console.log("b");
-        console.log(remaningRootWidth);
-        console.log(translates);
         return translates;
     }
 
-    calculateOffsetToCenterOf(target) {
-        const translate =
-            this._translateValues()[this._children().indexOf(target)];
-        let center = this._rootWidth() / 2 - this._childWidth(target);
-        return center - translate;
+    _childWidthSum() {
+        let sum = 0;
+        for (const i of this._children()) {
+            sum += this._childWidth(i);
+        }
+
+        return sum;
+    }
+
+    calculateOffsetDeltaToCenterOf(target) {
+        let indexOfCenter = this._childOnCenterIdx;
+        let indexOfTarget = this._children().indexOf(target);
+
+        let tmp,
+            offsetOnRightDirection = -this._scrollOffsetOfChildOnCenter,
+            offsetOnLeftDirection = -this._scrollOffsetOfChildOnCenter;
+
+        tmp = indexOfCenter;
+        while (tmp != indexOfTarget) {
+            offsetOnRightDirection += this._childWidth(this._children()[tmp]);
+            tmp--;
+            while (tmp < 0) tmp += this._children().length;
+            tmp = tmp % this._children().length;
+        }
+
+        tmp = indexOfCenter;
+        while (tmp != indexOfTarget) {
+            offsetOnLeftDirection -= this._childWidth(this._children()[tmp]);
+            tmp = (tmp + 1) % this._children().length;
+        }
+
+        offsetOnLeftDirection %= this._childWidthSum();
+        offsetOnRightDirection %= this._childWidthSum();
+
+        while (offsetOnLeftDirection > 0) {
+            offsetOnLeftDirection -= this._childWidthSum();
+        }
+        while (offsetOnRightDirection < 0) {
+            offsetOnRightDirection += this._childWidthSum();
+        }
+
+        return Math.abs(offsetOnRightDirection) >
+            Math.abs(offsetOnLeftDirection)
+            ? offsetOnLeftDirection
+            : offsetOnRightDirection;
     }
 
     /**
@@ -233,9 +269,11 @@ class HorizontalInfinityScroller {
      */
     scrollIntoCenterView(target, smooth = true) {
         if (smooth) {
-            this._easingStartTime = Date.now();
-            this._easingEndOffset = this.calculateOffsetToCenterOf(target);
-            this._easingDuration = 200;
+            this._easingStartTime = null;
+            this._easingEndOffset =
+                this._scrollOffsetOfChildOnCenter +
+                this.calculateOffsetDeltaToCenterOf(target);
+            this._easingDuration = 300;
             this._easing = true;
         } else {
             this._childOnCenterIdx = this._children().indexOf(target);
@@ -267,13 +305,3 @@ class HorizontalInfinityScroller {
 const scroller = new HorizontalInfinityScroller(
     document.querySelector(".post-board-columns")
 );
-
-let idx = 0;
-setInterval(() => {
-    scroller._addScrollOffset(10);
-    return;
-
-    scroller.scrollIntoCenterView(
-        scroller._children()[idx++ % scroller._children().length]
-    );
-}, 10);
