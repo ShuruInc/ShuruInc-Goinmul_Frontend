@@ -19,11 +19,17 @@ class HorizontalInfinityScroller {
     /** @type {HorizontalTouchInterpreter} */
     _touchListener;
 
-    // 스크롤 구현
-    /** @type {number} */
-    _childOnCenterIdx = 2;
-    /** @type {number} */
-    _scrollOffsetOfChildOnCenter = 0;
+    /**
+     * 기준이 되는 요소
+     * @type {number}
+     * */
+    _basisChildIdx = 2;
+    /**
+     * 기준이 되는 요소의 중앙와 부모의 중앙간의 거리
+     * 예시: 값이 2면 기준 요소의 중앙은 부모의 중앙으로부터 오른쪽으로 2만큼 떨어진다.
+     * @type {number}
+     */
+    _basisChildOffsetFromCenter = 0; // basisChild중앙과 부모의 중앙간의 거리
 
     // 옵션 및 캐싱
     /** @type {HorizontalInfinityScrollerOptions} */
@@ -51,8 +57,9 @@ class HorizontalInfinityScroller {
      * @param {HorizontalInfinityScrollerOptions} options
      */
     constructor(root, options = {}) {
+        // 함수 bind (setInterval이나 setTimeout으로 인한 버그 해결)
         this._addScrollOffset = this.addScrollOffset.bind(this);
-        this._childOnCenter = this._childOnCenter.bind(this);
+        this._childOnCenter = this._basisChild.bind(this);
         this._childWidth = this._childWidth.bind(this);
         this._children = this._children.bind(this);
         this._interpolate = this._interpolate.bind(this);
@@ -60,59 +67,79 @@ class HorizontalInfinityScroller {
         this._rootWidth = this._rootWidth.bind(this);
         this._doEasing = this._doEasing.bind(this);
 
+        // 생성자의 매개변수로 받은 options 저장
+        // 매개변수에서 지정되지 않은 경우 기본값을 저장한다.
         this._options = {
             everyChildrenWidthAreEqualAndNeverChange: true,
             childrenNeverChange: true,
             ...options,
         };
 
+        // 루트 저장
         this._rootElement = root;
+
+        // 캐싱
         this._childWidthCache =
             root.firstElementChild.getBoundingClientRect().width;
-        //this.#touchListener = new HorizontalTouchInterpreter(root, false);
-        //this.#touchListener.addEventListener("start", this.#touchStart);
-        //this.#touchListener.addEventListener("progress", this.#touchMove);
-        //this.#touchListener.addEventListener("end", this.#touchEnd);
-
         if (this._options.childrenNeverChange)
             this._childrenCache = this._children(true);
         if (this._options.everyChildrenWidthAreEqualAndNeverChange)
             this._childWidthCache = this._childWidth(this._children()[0], true);
 
+        // 렌더링 시작
         window.requestAnimationFrame(this._render);
     }
 
+    /**
+     * easing하도록 되어있다면(this._easing === true라면)
+     * _basisOffsetFromCenter를 _easingEndOffset으로
+     * _easingDuration(millisecond)동안 easing하며 설정한다.
+     * @param {number} timestamp requestAnimationFrame에 의해 전달받은 timestamp
+     * @returns Easing한다
+     */
     _doEasing(timestamp) {
+        // easing중이 아니라면 return
         if (!this._easing) return;
 
+        // 첫 easing 호출이라면 시작시간과 시작 offset를 설정
         if (
             this._easingStartTime === null ||
             this._easingStartOffset === null
         ) {
-            this._easingStartOffset = this._scrollOffsetOfChildOnCenter;
+            this._easingStartOffset = this._basisChildOffsetFromCenter;
             this._easingStartTime = timestamp;
         }
+
+        // easing 시간이 다 지났다면 easing 변수를 초기화하고
+        // _basisOffsetFromCenter를 목표값으로 설정한 뒤 return
         if (timestamp - this._easingStartTime > this._easingDuration) {
             this._easing = false;
             this._easingStartOffset = null;
-            return (this._scrollOffsetOfChildOnCenter = this._easingEndOffset);
+            return (this._basisChildOffsetFromCenter = this._easingEndOffset);
         }
 
-        this._scrollOffsetOfChildOnCenter = this._easingFunction(
+        // easing한다
+        this._basisChildOffsetFromCenter = this._easingFunction(
             this._easingStartOffset,
             this._easingEndOffset,
             (timestamp - this._easingStartTime) / this._easingDuration
         );
     }
 
+    /**
+     * 렌더링한다.
+     * @param {number} timestamp requestAnimationFrame에 의해 전달되는 timestamp
+     */
     _render(timestamp) {
-        this._scrollOffsetOfChildOnCenter %= this._childWidthSum();
+        // offset 정규화
+        this._basisChildOffsetFromCenter %= this._childWidthSum();
 
-        const translates = this._translateValues();
-        const children = this._children();
-
+        // easing해야 한다면 easing한다.
         this._doEasing(timestamp);
 
+        // translate 값 설정
+        const translates = this._translateValues();
+        const children = this._children();
         for (let i = 0; i < children.length; i++) {
             let child = children[i];
             let translate = translates[i];
@@ -124,23 +151,43 @@ class HorizontalInfinityScroller {
             }
         }
 
+        // 무한루프
         window.requestAnimationFrame(this._render);
     }
 
+    /**
+     * 루트 요소의 너비를 반환한다.
+     * @returns {number} 루트 요소의 너비
+     */
     _rootWidth() {
         return this._rootElement.getBoundingClientRect().width;
     }
 
+    /**
+     * 자식 요소들을 가져온다.
+     * @param {boolean} ignoreCache 캐시 무시 여부 (기본값: false)
+     * @returns {HTMLElement[]} 자식 요소들
+     */
     _children(ignoreCache = false) {
         return this._options.childrenNeverChange && !ignoreCache
             ? this._childrenCache
             : [...this._rootElement.children];
     }
 
-    _childOnCenter() {
-        return this._children()[this._childOnCenterIdx];
+    /**
+     * 기준이 되는 요소를 가져온다.
+     * @returns {HTMLElement} 기준 요소
+     */
+    _basisChild() {
+        return this._children()[this._basisChildIdx];
     }
 
+    /**
+     * 자식 요소의 너비를 가져온다.
+     * @param {HTMLElement} element 너비를 가져올 요소
+     * @param {boolean} ignoreCache 캐시를 무지할 지의 여부
+     * @returns {boolean} 요소의 너비
+     */
     _childWidth(
         element /* 일단 각 자식 요소의 너비가 다른 경우도 대비할 수 있도록 매개변수 추가 */,
         ignoreCache
@@ -156,55 +203,56 @@ class HorizontalInfinityScroller {
      * @param {number} offset 변화값
      */
     addScrollOffset(offset) {
-        this._scrollOffsetOfChildOnCenter += offset;
+        this._basisChildOffsetFromCenter += offset;
         return;
     }
 
     /**
-     * 각 자식 요소의 translateX(calc(a - 50%))에서 a의 값을 반환합니다.
+     * 각 자식 요소의 translateX(calc(a - 50%))에서 a의 값을 반환한다.
      * (참고: 모든 자식 요소는 display: absolute; left: 0;임)
-     * 예시를 들어, a = 0인 자식 요소는 정중앙에 위치합니다.
+     * 예시를 들어, a = 0인 자식 요소는 정중앙에 위치한다.
      *
-     * null은 display: none을 의미합니다.
+     * null은 display: none을 의미한다.
      */
-    _translateValues(noNormalize = false) {
-        //if (!noNormalize) this._normalize();
-        // console.log(`offset=${this._scrollOffsetOfChildOnCenter}`);
-
+    _translateValues() {
+        // 배열 초기화
         const rootWidth = this._rootWidth();
         let translates = [];
         for (let i = 0; i < this._children().length; i++) translates.push(null);
 
-        const childOnCenterWidth = this._childWidth(this._childOnCenter());
+        // 기준 요소를 배치하고 기준 요소의 좌우에 남은 여백
+        const childOnCenterWidth = this._childWidth(this._basisChild());
         let remaningRootWidth = {
             left:
                 rootWidth / 2 -
                 childOnCenterWidth / 2 +
-                this._scrollOffsetOfChildOnCenter,
+                this._basisChildOffsetFromCenter,
             right:
                 rootWidth / 2 -
                 childOnCenterWidth / 2 -
-                this._scrollOffsetOfChildOnCenter,
+                this._basisChildOffsetFromCenter,
         };
-        translates[this._childOnCenterIdx] =
-            rootWidth / 2 + this._scrollOffsetOfChildOnCenter;
+        translates[this._basisChildIdx] =
+            rootWidth / 2 + this._basisChildOffsetFromCenter;
 
+        // 왼쪽 여백을 채운다.
         for (let i = 1; remaningRootWidth.left > 0; i++) {
-            const childIdx = this._childOnCenterIdx - i,
+            const childIdx = this._basisChildIdx - i,
                 childWidth = this._childWidth(this._children()[childIdx]);
             if (childIdx < 0) {
-                i = this._childOnCenterIdx - this._children().length; // 다음 loop에서 마지막 요소의 index가 됨.
+                i = this._basisChildIdx - this._children().length; // 다음 loop에서 마지막 요소의 index가 됨.
                 continue;
             }
             translates[childIdx] = remaningRootWidth.left - childWidth / 2;
             remaningRootWidth.left -= childWidth;
         }
 
+        // 오른족 여백을 채운다.
         for (let i = 1; remaningRootWidth.right > 0; i++) {
-            const childIdx = this._childOnCenterIdx + i,
+            const childIdx = this._basisChildIdx + i,
                 childWidth = this._childWidth(this._children()[childIdx]);
             if (childIdx >= this._children().length) {
-                i = -this._childOnCenterIdx - 1; // 다음 loop에서 i = 0이 됨.
+                i = -this._basisChildIdx - 1; // 다음 loop에서 i = 0이 됨.
                 continue;
             }
             translates[childIdx] =
@@ -215,6 +263,10 @@ class HorizontalInfinityScroller {
         return translates;
     }
 
+    /**
+     * 자식 요소들의 너비의 총합을 구한다.
+     * @returns {number} 자식 요소들의 너비의 총합
+     */
     _childWidthSum() {
         let sum = 0;
         for (const i of this._children()) {
@@ -224,14 +276,20 @@ class HorizontalInfinityScroller {
         return sum;
     }
 
+    /**
+     * 대상 요소 target이 중앙에 오려면 offset이 현재값으로부터 얼마나 변해야 하는 지를 계산한다.
+     * @param {HTMLElement} target 대상 요소
+     * @returns {number} offset의 변화값
+     */
     calculateOffsetDeltaToCenterOf(target) {
-        let indexOfCenter = this._childOnCenterIdx;
+        let indexOfCenter = this._basisChildIdx;
         let indexOfTarget = this._children().indexOf(target);
 
         let tmp,
-            offsetOnRightDirection = -this._scrollOffsetOfChildOnCenter,
-            offsetOnLeftDirection = -this._scrollOffsetOfChildOnCenter;
+            offsetOnRightDirection = -this._basisChildOffsetFromCenter,
+            offsetOnLeftDirection = -this._basisChildOffsetFromCenter;
 
+        // 오른쪽 방향으로 이동할 때의 변화값을 계산
         tmp = indexOfCenter;
         while (tmp != indexOfTarget) {
             offsetOnRightDirection += this._childWidth(this._children()[tmp]);
@@ -240,15 +298,18 @@ class HorizontalInfinityScroller {
             tmp = tmp % this._children().length;
         }
 
+        // 왼쪽 방향으로 이동할 때의 변화값을 계산
         tmp = indexOfCenter;
         while (tmp != indexOfTarget) {
             offsetOnLeftDirection -= this._childWidth(this._children()[tmp]);
             tmp = (tmp + 1) % this._children().length;
         }
 
+        // 정규화
         offsetOnLeftDirection %= this._childWidthSum();
         offsetOnRightDirection %= this._childWidthSum();
 
+        // 방향 강제
         while (offsetOnLeftDirection > 0) {
             offsetOnLeftDirection -= this._childWidthSum();
         }
@@ -256,6 +317,7 @@ class HorizontalInfinityScroller {
             offsetOnRightDirection += this._childWidthSum();
         }
 
+        // 가장 거리가 짧은 방향의 변화값을 반환
         return Math.abs(offsetOnRightDirection) >
             Math.abs(offsetOnLeftDirection)
             ? offsetOnLeftDirection
@@ -271,16 +333,20 @@ class HorizontalInfinityScroller {
         if (smooth) {
             this._easingStartTime = null;
             this._easingEndOffset =
-                this._scrollOffsetOfChildOnCenter +
+                this._basisChildOffsetFromCenter +
                 this.calculateOffsetDeltaToCenterOf(target);
             this._easingDuration = 300;
             this._easing = true;
         } else {
-            this._childOnCenterIdx = this._children().indexOf(target);
-            this._scrollOffsetOfChildOnCenter = 0;
+            this._basisChildIdx = this._children().indexOf(target);
+            this._basisChildOffsetFromCenter = 0;
         }
     }
 
+    /**
+     * 가장 잘(많이) 보이는 요소를 반환합니다.
+     * @returns {HTMLElement} 가장 잘 보이는 요소
+     */
     getCurrentlyMostVisibleChild() {
         const translates = this._translateValues();
         return translates
@@ -292,6 +358,8 @@ class HorizontalInfinityScroller {
             .sort((a, b) => Math.abs(a.translate) - Math.abs(b.translate))[0]
             .child;
     }
+
+    // TO-DO: easing 함수 제대로 구현하고 touch 관련 로직 구현
 
     _easingFunction(from, to, progress) {
         return progress === 1 ? to : from + (to - from) * progress;
