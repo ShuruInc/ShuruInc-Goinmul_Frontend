@@ -243,10 +243,20 @@ class TopCategoryButtonNav {
 }
 
 // 네브 데이터
-const buttonData = [0, 1, 2, 3, 4, 5, 6].map((i) => ({
-    label: `Lorem ipsum ${i}`,
-    key: `btn${i}`, // key는 string으로만 쓰는 게 편하다. (html data-* 속성은 문자열이니까!)
-}));
+const buttonData = [
+    {
+        label: "K-POP",
+        key: "article-board-0",
+    },
+    {
+        label: "J-POP",
+        key: "article-board-1",
+    },
+    {
+        label: "C-POP",
+        key: "article-board-2",
+    },
+];
 
 const topCategoryNav = new TopCategoryButtonNav(
     buttonData,
