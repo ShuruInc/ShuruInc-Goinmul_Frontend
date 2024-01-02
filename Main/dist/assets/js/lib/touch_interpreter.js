@@ -10,33 +10,33 @@
  * 가로 터치만을 감지하는 핸들러입니다.
  */
 class HorizontalTouchInterpreter {
-    #preventDefault = true;
-    #isDragReady = false;
-    #isDragging = false;
-    #isVerticalDrag = false;
-    #isHorizontalDrag = false;
-    #isInitialDrag = true;
+    _preventDefault = true;
+    _isDragReady = false;
+    _isDragging = false;
+    _isVerticalDrag = false;
+    _isHorizontalDrag = false;
+    _isInitialDrag = true;
     /**
      * @type {number}
      */
-    #startX;
+    _startX;
     /**
      * @type {number}
      */
-    #startY;
+    _startY;
 
     /**
      * @type {((args: HorizontalTouchEventArgs) => void)[]}
      */
-    #startListeners = [];
+    _startListeners = [];
     /**
      * @type {((args: HorizontalTouchEventArgs) => void)[]}
      */
-    #progreessListeners = [];
+    _progreessListeners = [];
     /**
      * @type {(() => void)[]}
      */
-    #endListeners = [];
+    _endListeners = [];
 
     /**
      * 새로운 인스턴스를 생성하고 가로 터치 감지를 시작합니다.
@@ -44,15 +44,15 @@ class HorizontalTouchInterpreter {
      * @param {boolean} preventDefault 가로 터치 감지시 preventDefault할 지의 여부
      */
     constructor(element, preventDefault = true) {
-        this.#cancelDrag = this.#cancelDrag.bind(this);
-        this.#startDrag = this.#startDrag.bind(this);
-        this.#processDrag = this.#processDrag.bind(this);
+        this._cancelDrag = this._cancelDrag.bind(this);
+        this._startDrag = this._startDrag.bind(this);
+        this._processDrag = this._processDrag.bind(this);
 
-        element.addEventListener("touchend", this.#cancelDrag);
-        element.addEventListener("touchcancel", this.#cancelDrag);
-        element.addEventListener("touchstart", this.#startDrag);
-        element.addEventListener("touchmove", this.#processDrag);
-        this.#preventDefault = preventDefault;
+        element.addEventListener("touchend", this._cancelDrag);
+        element.addEventListener("touchcancel", this._cancelDrag);
+        element.addEventListener("touchstart", this._startDrag);
+        element.addEventListener("touchmove", this._processDrag);
+        this._preventDefault = preventDefault;
     }
 
     /**
@@ -63,81 +63,81 @@ class HorizontalTouchInterpreter {
     addEventListener(eventType, handler) {
         switch (eventType) {
             case "start":
-                this.#startListeners.push(handler);
+                this._startListeners.push(handler);
                 break;
             case "progress":
-                this.#progreessListeners.push(handler);
+                this._progreessListeners.push(handler);
                 break;
             case "end":
-                this.#endListeners.push(handler);
+                this._endListeners.push(handler);
                 break;
         }
     }
 
-    #cancelDrag = () => {
-        if (this.#isDragging && this.#isHorizontalDrag)
-            this.#endListeners.forEach((i) => setTimeout(i, 0));
+    _cancelDrag = () => {
+        if (this._isDragging && this._isHorizontalDrag)
+            this._endListeners.forEach((i) => setTimeout(i, 0));
 
-        this.#isDragReady = false;
-        this.#isDragging = false;
-        this.#isVerticalDrag = false;
-        this.#isHorizontalDrag = false;
-        this.#isInitialDrag = true;
+        this._isDragReady = false;
+        this._isDragging = false;
+        this._isVerticalDrag = false;
+        this._isHorizontalDrag = false;
+        this._isInitialDrag = true;
     };
 
-    #startDrag = (e) => {
-        this.#isDragReady = true;
-        this.#startX = e.clientX ?? e.touches[0].clientX;
-        this.#startY = e.clientY ?? e.touches[0].clientY;
+    _startDrag = (e) => {
+        this._isDragReady = true;
+        this._startX = e.clientX ?? e.touches[0].clientX;
+        this._startY = e.clientY ?? e.touches[0].clientY;
     };
 
-    #processDrag = (e) => {
+    _processDrag = (e) => {
         const currentX = e.clientX ?? e.touches[0].clientX;
         const currentY = e.clientY ?? e.touches[0].clientY;
 
-        const deltaX = currentX - this.#startX;
-        const deltaY = currentY - this.#startY;
+        const deltaX = currentX - this._startX;
+        const deltaY = currentY - this._startY;
 
         const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI) + 180;
         let isMovementHorizontal =
             (angle >= 240 && angle <= 300) || (angle >= 60 && angle <= 120);
-        let dragCondition = this.#isInitialDrag && this.#isDragReady;
+        let dragCondition = this._isInitialDrag && this._isDragReady;
 
-        let firstDrag = this.#isInitialDrag;
+        let firstDrag = this._isInitialDrag;
 
         if (isMovementHorizontal && dragCondition) {
-            this.#isDragging = true;
-            this.#isVerticalDrag = true;
-            this.#isHorizontalDrag = false;
-            this.#isInitialDrag = false;
+            this._isDragging = true;
+            this._isVerticalDrag = true;
+            this._isHorizontalDrag = false;
+            this._isInitialDrag = false;
         } else if (dragCondition) {
-            this.#isDragging = true;
-            this.#isHorizontalDrag = true;
-            this.#isVerticalDrag = false;
-            this.#isInitialDrag = false;
+            this._isDragging = true;
+            this._isHorizontalDrag = true;
+            this._isVerticalDrag = false;
+            this._isInitialDrag = false;
         }
 
-        if (this.#isDragging && this.#isHorizontalDrag) {
-            if (this.#preventDefault) e.preventDefault();
+        if (this._isDragging && this._isHorizontalDrag) {
+            if (this._preventDefault) e.preventDefault();
             if (firstDrag) {
-                this.#startListeners.forEach((i) =>
+                this._startListeners.forEach((i) =>
                     setTimeout(
                         () =>
                             i({
                                 delta: deltaX,
-                                start: this.#startX,
+                                start: this._startX,
                                 current: currentX,
                             }),
                         0
                     )
                 );
             } else {
-                this.#progreessListeners.forEach((i) =>
+                this._progreessListeners.forEach((i) =>
                     setTimeout(
                         () =>
                             i({
                                 delta: deltaX,
-                                start: this.#startX,
+                                start: this._startX,
                                 current: currentX,
                             }),
                         0
