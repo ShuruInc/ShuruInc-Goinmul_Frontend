@@ -21,7 +21,7 @@ class HorizontalInfinityScroller {
      * 기준이 되는 요소
      * @type {number}
      * */
-    _basisChildIdx = 2;
+    _basisChildIdx = 0;
     /**
      * 기준이 되는 요소의 중앙와 부모의 중앙간의 거리
      * 예시: 값이 2면 기준 요소의 중앙은 부모의 중앙으로부터 오른쪽으로 2만큼 떨어진다.
