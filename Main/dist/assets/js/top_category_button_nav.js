@@ -239,6 +239,11 @@ class TopCategoryButtonNav {
      */
     _handleTopButtonNavClick(evt) {
         this.activateButton(evt.target);
+        scroller.scrollIntoCenterView(
+            scroller
+                ._children()
+                .filter((i) => i.dataset.key === evt.target.dataset.key)[0]
+        );
     }
 }
 
