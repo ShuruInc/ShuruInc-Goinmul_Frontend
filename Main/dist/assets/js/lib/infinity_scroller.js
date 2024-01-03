@@ -16,8 +16,6 @@
 class HorizontalInfinityScroller {
     /** @type {HTMLElement} */
     _rootElement;
-    /** @type {HorizontalTouchInterpreter} */
-    _touchListener;
 
     /**
      * 기준이 되는 요소
@@ -39,11 +37,6 @@ class HorizontalInfinityScroller {
     /** @type {HTMLElement[]} */
     _childrenCache;
 
-    // 터치 핸들링에 쓰인다.
-    _touchStartPos = 0;
-    _touchCurrentPos = 0;
-    _touchStartTime = 0;
-
     // easing용
     _easing = false;
     _easingStartTime = null;
@@ -62,7 +55,6 @@ class HorizontalInfinityScroller {
         this._childOnCenter = this._basisChild.bind(this);
         this._childWidth = this._childWidth.bind(this);
         this._children = this._children.bind(this);
-        this._interpolate = this._interpolate.bind(this);
         this._render = this._render.bind(this);
         this._rootWidth = this._rootWidth.bind(this);
         this._doEasing = this._doEasing.bind(this);
@@ -359,26 +351,8 @@ class HorizontalInfinityScroller {
             .child;
     }
 
-    // TO-DO: easing 함수 제대로 구현하고 touch 관련 로직 구현
-
     _easingFunction(from, to, progress) {
         return progress === 1 ? to : from + (to - from) * progress;
-    }
-
-    _interpolate() {}
-
-    _touchStart(evt) {
-        this._rootElement.classList.add("horizontal-scrolling");
-        this._touchStartPos = evt.start;
-        this._touchStartTime = Date.now();
-    }
-
-    _touchMove(evt) {
-        this._touchCurrentPos = evt.current;
-    }
-
-    _touchEnd() {
-        this._rootElement.classList.remove("horizontal-scrolling");
     }
 }
 
