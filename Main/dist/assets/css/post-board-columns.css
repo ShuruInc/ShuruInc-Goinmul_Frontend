@@ -20,7 +20,7 @@
 
 .post-board-columns > .column {
     position: absolute;
-    left: 0px;
+    left: 50%;
     top: 0px;
     padding: 145px 0px 180px 0px;
     width: 100%;
