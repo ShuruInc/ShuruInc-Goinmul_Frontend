@@ -93,11 +93,6 @@
         height: calc(57.2vw - 40px);
     }
 
-    /* 3*2 뷰일 때 7, 8번째 이미지 감춤 */
-    .table-cell:nth-child(n+8) {
-        display: none; 
-    }
-
     .table-landscape-cell {
         height: calc(70vw)
     }
