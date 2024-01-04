@@ -112,6 +112,16 @@
         border-radius: 2vw;
     }
 
+    .table-cell .cell-info .popularity {
+        padding: 4px 8px;
+        font-size: 9px;
+        gap: 10px;
+    }
+
+    .table-cell .cell-info .title {
+        font-size: 16px;
+    }
+
     nav.top-category-buttons {
         top: 60px;
         --button-width: 30vw;
