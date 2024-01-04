@@ -159,6 +159,7 @@ nav.top-category-buttons > button {
     text-align: center;
     width: var(--button-width);
     min-width: var(--button-width);
+    touch-action: manipulation;
 }
 
 nav.top-category-buttons > button.active {

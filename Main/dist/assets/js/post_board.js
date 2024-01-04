@@ -1,7 +1,7 @@
 // 메인 페이지에 '포스트 보드'를 생성함
 // '포스트 보드'는 다수의 포스트로 이루어짐
 
-function setupPostBoard(column) {
+function setupPostBoard(column, getNextSection) {
     document.addEventListener("DOMContentLoaded", function () {
         // 첫 2개의 포스트만 가져온다.
         for (let i = 0; i < 2; i++) fillPlaceholderSection(getNextSection());
@@ -9,43 +9,6 @@ function setupPostBoard(column) {
         // 나머지는 동적으로 가져올 수 있도록 IntersectionObserver를 설정한다.
         setupIntersectionObserver();
     });
-
-    // 랜덤 색을 생성한다.
-    function randomColor() {
-        return `rgb(${Math.floor(Math.random() * 255)},${Math.floor(
-            Math.random() * 255
-        )},${Math.floor(Math.random() * 255)})`;
-    }
-
-    // 다음 섹션을 가져온다. (현재는 더미 데이터)
-    function getNextSection() {
-        const images = [];
-        for (let i = 0; i < 9; i++) {
-            images.push({
-                url: `https://picsum.photos/200/300?${Date.now()}0${i}1${Math.floor(
-                    Math.random() * 1000
-                )}`,
-                color: randomColor(),
-            });
-        }
-        return {
-            title: "Lorem ipsum 가나다라마바사",
-            landscape: {
-                bgColor: images[0].color,
-                imgUrl: images[0].url,
-                title: `테스트${Math.floor(Math.random() * 100)}`,
-                likes: 100,
-                views: 100,
-            },
-            portraits: images.slice(1).map((img) => ({
-                bgColor: img.color,
-                imgUrl: img.url,
-                title: `테스트${Math.floor(Math.random() * 100)}`,
-                likes: 100,
-                views: 100,
-            })),
-        };
-    }
 
     // 빈 섹션이 2개 미만으로 있을 시 빈 섹션을 새로 생성한다.
     function createPlaceholderSectionsIfNeeded() {
@@ -202,4 +165,40 @@ function setupPostBoard(column) {
 }
 
 for (let i of [...document.querySelectorAll("article.column")])
-    setupPostBoard(i);
+    setupPostBoard(i, () => {
+        // 랜덤 색을 생성한다.
+        const randomColor = () => {
+            return `rgb(${Math.floor(Math.random() * 255)},${Math.floor(
+                Math.random() * 255
+            )},${Math.floor(Math.random() * 255)})`;
+        };
+
+        const images = [];
+        for (let i = 0; i < 9; i++) {
+            images.push({
+                url: `https://picsum.photos/200/300?${Date.now()}0${i}1${Math.floor(
+                    Math.random() * 1000
+                )}`,
+                color: randomColor(),
+            });
+        }
+        return {
+            title: `Lorem ipsum 가나다라마바사 ${[
+                ...i.parentNode.children,
+            ].indexOf(i)}`,
+            landscape: {
+                bgColor: images[0].color,
+                imgUrl: images[0].url,
+                title: `테스트${Math.floor(Math.random() * 100)}`,
+                likes: 100,
+                views: 100,
+            },
+            portraits: images.slice(1).map((img) => ({
+                bgColor: img.color,
+                imgUrl: img.url,
+                title: `테스트${Math.floor(Math.random() * 100)}`,
+                likes: 100,
+                views: 100,
+            })),
+        };
+    });
