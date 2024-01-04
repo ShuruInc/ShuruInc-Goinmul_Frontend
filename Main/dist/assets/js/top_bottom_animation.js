@@ -26,13 +26,12 @@ function setupScrollEventHandlerForcolumn(column) {
             return;
         }
 
-        console.log("abc");
-
         if (scrollTop > lastScrollTop + 15) {
             // 하향 스크롤로 전환 시에만 감춤
             if (!isHidden) {
                 changeMainTopLogo();
-                topFixedBar.style.transform = "translateX(-50%) translateY(-45%)";
+                topFixedBar.style.transform =
+                    "translateX(-50%) translateY(-45%)";
                 isHidden = true;
             }
         } else if (scrollTop < lastScrollTop - 15) {

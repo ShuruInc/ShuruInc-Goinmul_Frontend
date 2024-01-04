@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="../dist/assets/css/styles.css">
     <link rel="stylesheet" href="../dist/assets/css/top-bottom-navs.css">
     
@@ -15,31 +15,19 @@
         <img id="mainTopLogo" class="main-top-logo" src= "../dist/assets/images/logo/MainLogo_1_alpha.png" alt="err.png">        
     </div>
     <nav class="top-category-buttons">
-        <button data-key="btn0">Lorem ipsum 0</button>
-        <button data-key="btn1">Lorem ipsum 1</button>
-        <button data-key="btn2">Lorem ipsum 2</button>
-        <button data-key="btn3">Lorem ipsum 3</button>
-        <button data-key="btn4">Lorem ipsum 4</button>
-        <button data-key="btn5">Lorem ipsum 5</button>
-        <button data-key="btn6">Lorem ipsum 6</button>
-        <button data-key="btn0">Lorem ipsum 0</button>
-        <button data-key="btn1">Lorem ipsum 1</button>
-        <button data-key="btn2">Lorem ipsum 2</button>
-        <button class="active" data-key="btn3">Lorem ipsum 3</button>
-        <button data-key="btn4">Lorem ipsum 4</button>
-        <button data-key="btn5">Lorem ipsum 5</button>
-        <button data-key="btn6">Lorem ipsum 6</button>
-        <button data-key="btn0">Lorem ipsum 0</button>
-        <button data-key="btn1">Lorem ipsum 1</button>
-        <button data-key="btn2">Lorem ipsum 2</button>
-        <button data-key="btn3">Lorem ipsum 3</button>
-        <button data-key="btn4">Lorem ipsum 4</button>
-        <button data-key="btn5">Lorem ipsum 5</button>
-        <button data-key="btn6">Lorem ipsum 6</button>
+        <button data-key="article-board-0">K-POP</button>
+        <button data-key="article-board-1">J-POP</button>
+        <button data-key="article-board-2">C-POP</button>
+        <button data-key="article-board-0" class="active">K-POP</button>
+        <button data-key="article-board-1">J-POP</button>
+        <button data-key="article-board-2">C-POP</button>
+        <button data-key="article-board-0">K-POP</button>
+        <button data-key="article-board-1">J-POP</button>
+        <button data-key="article-board-2">C-POP</button>
     </nav>
     <div id="mainContainer" class="main-container">
         <div class="post-board-columns">
-            <article class="column">
+            <article class="column" data-key="article-board-0">
                 <!-- 여기에 flex-table 생성 -->
                 <section class="flex-table placeholder">
                     <h2></h2>
@@ -212,7 +200,7 @@
                     </div>
                 </section>
             </article>
-            <article class="column">
+            <article class="column" data-key="article-board-1">
                 <!-- 여기에 flex-table 생성 -->
                 <section class="flex-table placeholder">
                     <h2></h2>
@@ -385,7 +373,7 @@
                     </div>
                 </section>
             </article>
-            <article class="column">
+            <article class="column" data-key="article-board-2">
                 <!-- 여기에 flex-table 생성 -->
                 <section class="flex-table placeholder">
                     <h2></h2>
@@ -562,10 +550,9 @@
     </div>
     
     <div class="bottom-navigator"></div>
-    <script src="../dist/assets/js/lib/DragEvent.js"></script>
     <script src="../dist/assets/js/post_board.js"></script>
-    <script src="../dist/assets/js/post_board_columns.js"></script>
     <script src="../dist/assets/js/top_bottom_animation.js"></script>
-    <script src="../dist/assets/js/top_button_nav.js"></script>
+    <script src="../dist/assets/js/top_category_button_nav.js"></script>
+    <script src="../dist/assets//js/lib/infinity_scroller.js"></script>
 </body>
 </html>
