@@ -124,7 +124,8 @@ class HorizontalInfinityScroller {
      */
     _render(timestamp) {
         // offset 정규화
-        this._basisChildOffsetFromCenter %= this._childWidthSum();
+        if (!this._easing)
+            this._basisChildOffsetFromCenter %= this._childWidthSum();
 
         // easing해야 한다면 easing한다.
         this._doEasing(timestamp);
@@ -341,10 +342,6 @@ class HorizontalInfinityScroller {
             tmp = (tmp + 1) % this._children().length;
         }
 
-        // 정규화
-        offsetOnLeftDirection %= this._childWidthSum();
-        offsetOnRightDirection %= this._childWidthSum();
-
         // 방향 강제
         while (offsetOnLeftDirection > 0) {
             offsetOnLeftDirection -= this._childWidthSum();
@@ -352,6 +349,10 @@ class HorizontalInfinityScroller {
         while (offsetOnRightDirection < 0) {
             offsetOnRightDirection += this._childWidthSum();
         }
+
+        // 정규화
+        offsetOnLeftDirection %= this._childWidthSum();
+        offsetOnRightDirection %= this._childWidthSum();
 
         // 가장 거리가 짧은 방향의 변화값을 반환
         return Math.abs(offsetOnRightDirection) >
@@ -406,6 +407,11 @@ class HorizontalInfinityScroller {
      * @returns {number} easing 함수가 적용된 [Math.min(from, to), Math.max(from, to)] 이내의 값
      */
     _easingFunction(from, to, progress) {
+        console.log(
+            `easing ${from} to ${to} (progress: ${progress
+                .toString()
+                .substring(0, 5)})`
+        );
         const easing = 1 - Math.pow(1 - progress, 3); // easeOutCubic
         return progress === 1 ? to : from + (to - from) * easing;
     }
