@@ -207,6 +207,47 @@ class HorizontalInfinityScroller {
      * null은 display: none을 의미한다.
      */
     _translateValues() {
+        /**
+         * 2개의 예시로 알아보는 translate값 계산 알고리즘
+         * 참고: 모든 예시에서 root의 너비=child를 가정함.
+         *
+         * 첫번째 예시
+         *           ________________
+         * 1. 위와 같이 너비 16px의 root가 있다고 가정한다.
+         *
+         *           __AAAAAAAAAAAAAA(AA) ※ 괄호안은 root 영역의 바깥에 있으므로 보이지 않는다.
+         * 2. basisChildOffset=2, basisChildIndex=(A의 index)라고 가정하고
+         *    basisChild의 translate값을 2로 설정한다.
+         *
+         * 3. root 영역을 보자. root 영역의 왼쪽에는 2px의 여백이 있으며 오른쪽에는 여백이 없다.
+         *
+         *           (BBBBBBBBBBBBBB)BBAAAAAAAAAAAAAA(AA) ※ 괄호안은 root 영역의 바깥에 있으므로 보이지 않는다.
+         * 4. 왼쪽 여백을 채우기 위해 A의 왼쪽에 B가 나타나도록 B의 translate값을 설정한다.
+         *
+         *           BBAAAAAAAAAAAAAA
+         * 5, 끝!
+         *
+         * 두번째 예시
+         *          ________
+         * `1. 위와 같이 너비 8px의 root가 있고, 3개의 child A, B, C가 있다고 가정한다.
+         *
+         *          ________                                (AAAAAAAA) ※ 괄호안은 root 영역의 바깥에 있으므로 보이지 않는다.
+         *  2. basisChildOffset=36, basisChildIndex=(A의 offset)라고 가정하고
+         *     basisChild의 translate값을 40으로 설정한다.
+         *
+         *  3. root 영역이 비어있다.
+         *
+         *          ________                        (CCCCCCCCAAAAAAAA) ※ 괄호안은 root 영역의 바깥에 있으므로 보이지 않는다.
+         *          ________                (BBBBBBBBCCCCCCCCAAAAAAAA)
+         *          ________        (AAAAAAAABBBBBBBBCCCCCCCC)
+         *          ________(CCCCCCCCAAAAAAAABBBBBBBB)
+         *          BBBBBBBB(CCCCCCCCAAAAAAAA)
+         *  4. 위와 같이 루프를 돌면서 root영역을 채운다.
+         *
+         *          BBBBBBBB
+         * 5. 끝!
+         */
+
         // 배열 초기화
         const rootWidth = this._rootWidth();
         let translates = [];
