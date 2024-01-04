@@ -2,7 +2,8 @@
 /*데스크탑*/
 @media only screen and (min-width: 769px) {
     .main-container, nav.top-category-buttons {
-        width: 648px; 
+        --main-container-width: 648px;
+        width: var(--main-container-width); 
     }
 
     nav.top-category-buttons {
@@ -36,7 +37,8 @@
 /*태블릿*/
 @media only screen and (min-width: 580px) and (max-width: 769px) {
     .main-container {
-        width: 500px;
+        --main-container-width: 500px;
+        width: var(--main-container-width);
     }
 
     .main-top-logo {
@@ -58,8 +60,8 @@
     }
 
     .table-cell {
-        width: 125px; 
-        height: 216px;
+        width: calc(var(--main-container-width) * (1 / 4.5)); /* 4.5 posts visible in a row */
+        height: calc(var(--main-container-width) * (1 / 4.5) * 1.728);
     }
 
     .table-landscape-cell {
@@ -70,7 +72,8 @@
 /*스마트폰*/
 @media only screen and (max-width: 580px) {
     .main-container {
-        width: calc(100% - 40px);
+        --main-container-width: calc(100% - 40px);
+        width: var(--main-container-width);
     }
 
     .main-top-logo {
@@ -89,8 +92,8 @@
 
     .table-cell {
         padding: 0.5vw;
-        width: 33.33%; 
-        height: calc(57.2vw - 40px);
+        width: 28.57%; /* 3.5 posts visible in a row */
+        height: calc(49.02vw - 40px);
     }
 
     .table-landscape-cell {
