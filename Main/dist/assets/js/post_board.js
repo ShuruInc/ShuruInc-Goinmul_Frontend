@@ -46,7 +46,9 @@ function setupPostBoard(column, getNextSection) {
 
                 for (let i = 0; i < rowInfo.count; i++) {
                     // 요소 생성 후 이미지 소스 설정
-                    const cell = document.createElement("div");
+                    const cell = document.createElement("a");
+                    cell.href = "quiz.html";
+
                     const image = new Image();
                     image.loading = "lazy";
                     image.style.backgroundColor = "gray";

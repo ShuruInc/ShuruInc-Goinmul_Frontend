@@ -42,6 +42,7 @@ body, h1, h2, p, img {
 }
 
 .table-landscape-cell {
+    display: block;
     position: relative;
     padding: 2px 2px 2px 2px;
     width: 100%;
@@ -62,6 +63,7 @@ body, h1, h2, p, img {
 }
 
 .table-cell {
+    display: block;
     padding: 2px 2px 2px 2px;
     position: relative;
     align-items: center;
