@@ -238,6 +238,9 @@ class TopCategoryButtonNav {
      * @param {MouseEvent} evt 이벤트 매개변수
      */
     _handleTopButtonNavClick(evt) {
+        //
+        if (scroller.getCurrentlyMostVisibleChild(true) === null) return;
+
         this.activateButton(evt.target);
         scroller.scrollIntoCenterView(
             scroller

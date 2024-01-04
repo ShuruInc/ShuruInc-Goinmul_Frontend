@@ -201,7 +201,7 @@ class HorizontalInfinityScroller {
 
     /**
      * 각 자식 요소의 translateX(calc(a - 50%))에서 a의 값을 반환한다.
-     * (참고: 모든 자식 요소는 display: absolute; left: 0;임)
+     * (참고: 모든 자식 요소는 display: absolute; left: 50%;임)
      * 예시를 들어, a = 0인 자식 요소는 정중앙에 위치한다.
      *
      * null은 display: none을 의미한다.
@@ -265,8 +265,7 @@ class HorizontalInfinityScroller {
                 childOnCenterWidth / 2 -
                 this._basisChildOffsetFromCenter,
         };
-        translates[this._basisChildIdx] =
-            rootWidth / 2 + this._basisChildOffsetFromCenter;
+        translates[this._basisChildIdx] = this._basisChildOffsetFromCenter;
 
         // 왼쪽 여백을 채운다.
         for (let i = 1; remaningRootWidth.left > 0; i++) {
@@ -276,7 +275,8 @@ class HorizontalInfinityScroller {
                 i = this._basisChildIdx - this._children().length; // 다음 loop에서 마지막 요소의 index가 됨.
                 continue;
             }
-            translates[childIdx] = remaningRootWidth.left - childWidth / 2;
+            translates[childIdx] =
+                remaningRootWidth.left - childWidth / 2 - rootWidth / 2;
             remaningRootWidth.left -= childWidth;
         }
 
@@ -289,7 +289,10 @@ class HorizontalInfinityScroller {
                 continue;
             }
             translates[childIdx] =
-                rootWidth - remaningRootWidth.right + childWidth / 2;
+                rootWidth -
+                remaningRootWidth.right +
+                childWidth / 2 -
+                rootWidth / 2;
             remaningRootWidth.right -= childWidth;
         }
 
@@ -378,18 +381,21 @@ class HorizontalInfinityScroller {
 
     /**
      * 가장 잘(많이) 보이는 요소를 반환합니다.
-     * @returns {HTMLElement} 가장 잘 보이는 요소
+     * @param {boolean} fullyVisible 완전히 보이는 경우에만 요소를 반환합니다. 완전히 보이지 않는다면 null을 반환합니다.
+     * @returns {HTMLElement | null} 가장 잘 보이는 요소
      */
-    getCurrentlyMostVisibleChild() {
+    getCurrentlyMostVisibleChild(fullyVisible = false) {
         const translates = this._translateValues();
-        return translates
+        const result = translates
             .map((i, idx) => ({
                 translate: i,
                 child: this._children()[idx],
             }))
             .filter((i) => i.translate !== null)
-            .sort((a, b) => Math.abs(a.translate) - Math.abs(b.translate))[0]
-            .child;
+            .sort((a, b) => Math.abs(a.translate) - Math.abs(b.translate))[0];
+        return (result.translate === 0.0 && !this._easing) || !fullyVisible
+            ? result.child
+            : null;
     }
 
     /**
