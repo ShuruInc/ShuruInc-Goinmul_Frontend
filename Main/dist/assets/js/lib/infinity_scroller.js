@@ -351,8 +351,16 @@ class HorizontalInfinityScroller {
             .child;
     }
 
+    /**
+     * easing 함수를 적용한다.
+     * @param {number} from 시작값
+     * @param {number} to 끝값
+     * @param {number} progress 0이상 1이하의 진행도
+     * @returns {number} easing 함수가 적용된 [Math.min(from, to), Math.max(from, to)] 이내의 값
+     */
     _easingFunction(from, to, progress) {
-        return progress === 1 ? to : from + (to - from) * progress;
+        const easing = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+        return progress === 1 ? to : from + (to - from) * easing;
     }
 }
 
