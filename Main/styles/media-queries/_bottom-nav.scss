@@ -1,0 +1,13 @@
+@import "../mixins";
+
+.bottom-navigator {
+    @include desktop {
+        width: 700px !important;
+    }
+    @include tablet {
+        width: 550px !important;
+    }
+    @include mobile {
+        width: 100% !important;
+    }
+}

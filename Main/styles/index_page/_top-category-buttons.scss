@@ -1,3 +1,5 @@
+@use "../media-queries/top-category-buttons";
+
 /* 상단 로고 애니메이션시 버튼 네브도 애니메이션 */
 .top-fixed-bar.is-hidden ~ nav {
     top: 10px;

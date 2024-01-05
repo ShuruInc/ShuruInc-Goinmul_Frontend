@@ -1,0 +1,25 @@
+@import "../mixins";
+
+/*데스크탑*/
+@include desktop {
+    nav.top-category-buttons {
+        --main-container-width: 648px !important;
+        width: var(--main-container-width) !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+}
+
+/*스마트폰*/
+@include mobile {
+    nav.top-category-buttons {
+        top: 60px !important;
+        --button-width: 30vw !important;
+        --button-gap: 5px !important;
+        & > button {
+            font-size: 14px !important;
+            padding-left: 5px !important;
+            padding-right: 5px !important;
+        }
+    }
+}
