@@ -1,0 +1,30 @@
+/*데스크탑*/
+@mixin desktop {
+    @media only screen and (min-width: 769px) {
+        @content;
+    }
+}
+
+/*태블릿*/
+@mixin tablet {
+    @media only screen and (min-width: 580px) and (max-width: 769px) {
+        @content;
+    }
+}
+
+/*스마트폰*/
+@mixin mobile {
+    @media only screen and (max-width: 580px) {
+        @content;
+    }
+}
+
+@mixin hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+
+    /* 스크롤바를 숨긴다 (WebKit) */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
