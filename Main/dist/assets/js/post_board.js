@@ -21,52 +21,62 @@ function setupPostBoard(column, getNextSection) {
         for (let i = 0; i < placeholderCountToCreate; i++) {
             // 포스트를 담을 테이블 생성
             var flexTable = document.createElement("section");
-            flexTable.className = "flex-table";
+            flexTable.className = "post-section";
 
             // 제목 생성
             flexTable.appendChild(document.createElement("h2"));
 
-            const landscapeModes = [
-                true, // 가로형 하나
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false, // 세로형 8개
+            const rowInfos = [
+                {
+                    landscape: true,
+                    count: 1,
+                },
+                {
+                    landscape: false,
+                    count: 8,
+                },
             ];
-            // 가로형 포스트 생성
-            for (let isLandscape of landscapeModes) {
-                // 요소 생성 후 이미지 소스 설정
-                const cell = document.createElement("div");
-                const image = new Image();
-                image.loading = "lazy";
-                image.style.backgroundColor = "gray";
-                image.alt = "빈 이미지";
 
-                // 클래스 설정
-                if (isLandscape) {
-                    image.className = "cell-landscape-img ";
-                    cell.className = "table-landscape-cell";
-                } else {
-                    image.className = "cell-img";
-                    cell.className = "table-cell";
+            // 가로형 포스트 생성
+            for (let rowInfo of rowInfos) {
+                const postTable = document.createElement("div");
+                postTable.className =
+                    "post-table" +
+                    (rowInfo.landscape ? " landscape" : " portfrait");
+
+                for (let i = 0; i < rowInfo.count; i++) {
+                    // 요소 생성 후 이미지 소스 설정
+                    const cell = document.createElement("div");
+                    const image = new Image();
+                    image.loading = "lazy";
+                    image.style.backgroundColor = "gray";
+                    image.alt = "빈 이미지";
+
+                    // 클래스 설정
+                    if (rowInfo.landscape) {
+                        image.className = "cell-landscape-img ";
+                        cell.className = "table-landscape-cell";
+                    } else {
+                        image.className = "cell-img";
+                        cell.className = "table-cell";
+                    }
+
+                    // 정보 추가
+                    const info = document.createElement("div");
+                    info.className = "cell-info";
+                    info.innerHTML =
+                        '<div class="title"></div><div class="popularity"><div class="likes"><span class="like-count" /></div><div class="views"><span class="view-count" /></div></div>';
+
+                    postTable.appendChild(cell);
+                    cell.appendChild(image);
+                    cell.appendChild(info);
                 }
 
-                // 정보 추가
-                const info = document.createElement("div");
-                info.className = "cell-info";
-                info.innerHTML =
-                    '<div class="title"></div><div class="popularity"><div class="likes"><span class="like-count" /></div><div class="views"><span class="view-count" /></div></div>';
-
-                flexTable.appendChild(cell);
-                cell.appendChild(image);
-                cell.appendChild(info);
+                flexTable.appendChild(postTable);
             }
 
             flexTable.classList.add("placeholder");
+            flexTable.dataset.rowInfos = JSON.stringify(rowInfos);
             column.appendChild(flexTable);
 
             return;

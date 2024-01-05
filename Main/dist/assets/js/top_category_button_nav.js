@@ -54,17 +54,9 @@ class TopCategoryButtonNav {
      * @param {boolean} smooth smooth하게 스크롤할 지의 여부
      */
     scrollToCenter(element, smooth = true) {
-        const parentRect = this._root.getBoundingClientRect();
-        const elementRect = element.getBoundingClientRect();
-
-        const parentCenter = (parentRect.left + parentRect.right) / 2;
-        const elemCenter = elementRect.left + elementRect.width / 2;
-        const xScrollDiff = elemCenter - parentCenter;
-
-        this._root.scrollBy({
-            top: 0,
-            left: xScrollDiff,
+        element.scrollIntoView({
             behavior: smooth ? "smooth" : "instant",
+            inline: "center",
         });
     }
 
