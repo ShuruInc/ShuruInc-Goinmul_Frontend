@@ -1,0 +1,32 @@
+@import "../mixins";
+
+/*데스크탑*/
+.main-top-logo {
+    @include desktop {
+        top: 35px !important;
+        width: 90px !important;
+    }
+    @include tablet {
+        top: 38px !important;
+        width: 80px !important;
+    }
+    @include mobile {
+        top: 35px !important;
+        width: 70px !important;
+    }
+}
+
+#topFixedBar {
+    @include desktop {
+        height: 140px !important;
+        width: 700px !important;
+    }
+    @include tablet {
+        height: 135px !important;
+        width: 550px !important;
+    }
+    @include mobile {
+        height: 120px !important;
+        width: 100% !important;
+    }
+}

@@ -1,0 +1,15 @@
+@import "../mixins";
+
+/*데스크탑*/
+.main-container {
+    @include desktop {
+        --main-container-width: 648px;
+    }
+    @include tablet {
+        --main-container-width: 500px;
+    }
+    @include mobile {
+        --main-container-width: calc(100% - 40px);
+    }
+    width: var(--main-container-width);
+}
