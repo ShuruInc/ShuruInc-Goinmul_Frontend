@@ -1,0 +1,115 @@
+/* 3*2 와 4*2 갤러리 테이블 */
+/* 세로형 Cell 이미지 비율은 1:0.572 */
+.post-section {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+
+    h2 {
+        width: 100%;
+        padding: 0px;
+        margin: 72px 0px 42px 0px;
+        font-size: 24px;
+    }
+
+    .post-table {
+        width: 100%;
+
+        &.portfrait {
+            display: flex;
+            flex-direction: row;
+            overflow-x: scroll;
+        }
+
+        .table-cell {
+            display: block;
+            padding: 2px 2px 2px 2px;
+            position: relative;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            /*width, height은 미디어 쿼리에서 지정*/
+            box-sizing: border-box;
+            flex-shrink: 0;
+
+            .title {
+                font-size: 24px !important;
+            }
+
+            .popularity {
+                font-size: 12px !important;
+            }
+
+            .cell-img {
+                position: absolute;
+                width: calc(100% - 4px);
+                height: calc(100% - 4px);
+                object-fit: cover;
+                border-radius: 8px;
+            }
+        }
+
+        .table-landscape-cell {
+            display: block;
+            position: relative;
+            padding: 2px 2px 2px 2px;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            /*width, height은 미디어 쿼리에서 지정*/
+            box-sizing: border-box;
+
+            .cell-landscape-img {
+                width: 100%;
+                height: 100%;
+                min-width: 100%;
+                min-height: 100%;
+                object-fit: cover;
+                border-radius: 16px;
+            }
+        }
+
+        .cell-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            .title {
+                font-size: 48px;
+                color: #d1d1d1;
+            }
+
+            .popularity {
+                display: flex;
+                gap: 20px;
+                background: #000000c4;
+                color: white;
+                margin: 5px 0px 20px 0px;
+                padding: 5px 10px;
+                border-radius: 6px;
+                font-size: 16px;
+
+                .likes::before {
+                    content: "❤";
+                    color: #e04343;
+                    margin-right: 0.15em;
+                }
+
+                .views::before {
+                    content: "👁️";
+                    margin-right: 0.15em;
+                }
+            }
+        }
+    }
+}

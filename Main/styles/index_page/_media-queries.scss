@@ -1,0 +1,136 @@
+@import "../mixins";
+
+/*데스크탑*/
+@include desktop {
+    .main-container,
+    nav.top-category-buttons {
+        --main-container-width: 648px !important;
+        width: var(--main-container-width) !important;
+    }
+
+    nav.top-category-buttons {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    .main-top-logo {
+        top: 35px !important;
+        width: 90px !important;
+    }
+
+    #topFixedBar {
+        height: 140px !important;
+    }
+
+    .bottom-navigator,
+    #topFixedBar {
+        width: 700px !important;
+    }
+    .table-cell {
+        width: 162px !important;
+        height: 280px !important;
+    }
+
+    .table-landscape-cell {
+        height: 430px !important;
+    }
+}
+
+/*태블릿*/
+@include tablet {
+    .main-container {
+        --main-container-width: 500px !important;
+        width: var(--main-container-width) !important;
+    }
+
+    .main-top-logo {
+        top: 38px !important;
+        width: 80px !important;
+    }
+
+    #topFixedBar {
+        height: 135px !important;
+    }
+
+    .bottom-navigator,
+    #topFixedBar {
+        width: 550px !important;
+    }
+
+    .table-cell {
+        width: calc(
+            var(--main-container-width) * (1 / 4.5)
+        ) !important; /* 4.5 posts visible in a row */
+        height: calc(
+            var(--main-container-width) * (1 / 4.5) * 1.728
+        ) !important;
+    }
+
+    .table-landscape-cell {
+        height: 350px !important;
+    }
+}
+
+/*스마트폰*/
+@include mobile {
+    .main-container {
+        --main-container-width: calc(100% - 40px) !important;
+        width: var(--main-container-width) !important;
+    }
+
+    .main-top-logo {
+        top: 35px !important;
+        width: 70px !important;
+    }
+
+    #topFixedBar {
+        height: 120px !important;
+    }
+
+    .bottom-navigator,
+    #topFixedBar {
+        width: 100% !important;
+    }
+
+    .table-cell {
+        padding: 0.5vw !important;
+        width: 28.57% !important; /* 3.5 posts visible in a row */
+        height: calc(49.02vw - 40px) !important;
+    }
+
+    .table-landscape-cell {
+        height: calc(70vw) !important;
+    }
+
+    .cell-landscape-img {
+        border-radius: 3vw !important;
+    }
+
+    .cell-img {
+        width: calc(100% - 1.1vw) !important;
+        height: calc(100% - 1.1vw) !important;
+        border-radius: 2vw !important;
+    }
+
+    .table-cell .cell-info .popularity {
+        padding: 4px 8px !important;
+        font-size: 9px !important;
+        gap: 10px !important;
+    }
+
+    .table-cell .cell-info .title {
+        font-size: 16px !important;
+    }
+
+    nav.top-category-buttons {
+        top: 60px !important;
+        --button-width: 30vw !important;
+        --button-gap: 5px !important;
+    }
+
+    nav.top-category-buttons > button {
+        font-size: 14px !important;
+        padding-left: 5px !important;
+        padding-right: 5px !important;
+    }
+}
