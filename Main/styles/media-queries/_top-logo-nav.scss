@@ -3,30 +3,30 @@
 /*데스크탑*/
 .main-top-logo {
     @include desktop {
-        top: 35px !important;
+        margin: 35px 0px 6px !important;
         width: 90px !important;
     }
     @include tablet {
-        top: 38px !important;
+        margin: 38px 0px 8px !important;
         width: 80px !important;
     }
     @include mobile {
-        top: 35px !important;
+        margin: 35px 0px 6px !important;
         width: 70px !important;
     }
 }
 
 #topFixedBar {
     @include desktop {
-        height: 140px !important;
-        width: 700px !important;
+        --top-fixed-bar-height: 140px;
+        --top-fixed-bar-width: 700px;
     }
     @include tablet {
-        height: 135px !important;
-        width: 550px !important;
+        --top-fixed-bar-height: 135px;
+        --top-fixed-bar-width: 550px;
     }
     @include mobile {
-        height: 120px !important;
-        width: 100% !important;
+        --top-fixed-bar-height: 120px;
+        --top-fixed-bar-width: 100%;
     }
 }
