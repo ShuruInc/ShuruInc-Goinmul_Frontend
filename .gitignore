@@ -1,5 +1,5 @@
 Main/dist/assets/css/*.css*
 node_modules/
-Main/dist/*.html
 Main/dist/**/*.html
-Main/dist/assets/js/*.js
+Main/dist/**/*.js
+Main/dist/**/*.css

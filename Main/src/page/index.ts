@@ -1,3 +1,5 @@
+import "../../styles/index.scss";
+
 import { displayMainPostBoard } from "../home_post_board";
 import { HorizontalInfinityScroller } from "../lib/infinity_scroller";
 import { setupPostBoard } from "../post_board";

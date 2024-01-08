@@ -1,3 +1,4 @@
+import "../../../styles/quiz";
 import {
     QuizProblem,
     displayProblem,
