@@ -201,40 +201,60 @@ function setupPostBoard(column, getNextSection) {
 }
 
 for (let i of [...document.querySelectorAll("article.column")])
-    setupPostBoard(i, () => {
-        // 랜덤 색을 생성한다.
-        const randomColor = () => {
-            return `rgb(${Math.floor(Math.random() * 255)},${Math.floor(
-                Math.random() * 255
-            )},${Math.floor(Math.random() * 255)})`;
-        };
-
-        const images = [];
-        for (let i = 0; i < 9; i++) {
-            images.push({
-                url: `https://picsum.photos/200/300?${Date.now()}0${i}1${Math.floor(
-                    Math.random() * 1000
-                )}`,
-                color: randomColor(),
-            });
-        }
-        return {
-            title: `Lorem ipsum 가나다라마바사 ${[
-                ...i.parentNode.children,
-            ].indexOf(i)}`,
-            landscape: {
-                bgColor: images[0].color,
-                imgUrl: images[0].url,
-                title: `테스트${Math.floor(Math.random() * 100)}`,
-                likes: 100,
-                views: 100,
+    if (i.dataset.key === "home-board")
+        displayMainPostBoard(i, {
+            popularTests: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+                .map((i) => `https://picsum.photos/200/300?${Date.now()}0${i}`)
+                .map((i) => ({
+                    imgUrl: i,
+                    title: `테스트${Math.floor(Math.random() * 100)}`,
+                    likes: 100,
+                    views: 100,
+                })),
+            rankings: {
+                "K-POP": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => `사람${i}`),
+                "J-POP": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => `사람${i}`),
+                "C-POP": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => `사람${i}`),
+                "COL-POP": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(
+                    (i) => `사람${i}`
+                ),
             },
-            portraits: images.slice(1).map((img) => ({
-                bgColor: img.color,
-                imgUrl: img.url,
-                title: `테스트${Math.floor(Math.random() * 100)}`,
-                likes: 100,
-                views: 100,
-            })),
-        };
-    });
+        });
+    else
+        setupPostBoard(i, () => {
+            // 랜덤 색을 생성한다.
+            const randomColor = () => {
+                return `rgb(${Math.floor(Math.random() * 255)},${Math.floor(
+                    Math.random() * 255
+                )},${Math.floor(Math.random() * 255)})`;
+            };
+
+            const images = [];
+            for (let i = 0; i < 9; i++) {
+                images.push({
+                    url: `https://picsum.photos/200/300?${Date.now()}0${i}1${Math.floor(
+                        Math.random() * 1000
+                    )}`,
+                    color: randomColor(),
+                });
+            }
+            return {
+                title: `Lorem ipsum 가나다라마바사 ${[
+                    ...i.parentNode.children,
+                ].indexOf(i)}`,
+                landscape: {
+                    bgColor: images[0].color,
+                    imgUrl: images[0].url,
+                    title: `테스트${Math.floor(Math.random() * 100)}`,
+                    likes: 100,
+                    views: 100,
+                },
+                portraits: images.slice(1).map((img) => ({
+                    bgColor: img.color,
+                    imgUrl: img.url,
+                    title: `테스트${Math.floor(Math.random() * 100)}`,
+                    likes: 100,
+                    views: 100,
+                })),
+            };
+        });
