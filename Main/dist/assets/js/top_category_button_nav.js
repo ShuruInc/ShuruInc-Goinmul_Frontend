@@ -12,7 +12,7 @@ class TopCategoryButtonNav {
      * @property {string} key 고유 식별자
      */
 
-    /** @type {TopCategoryButtonData} */
+    /** @type {TopCategoryButtonData[]} */
     _data = [];
     /** @type {HTMLElement} */
     _root = null;
@@ -25,6 +25,14 @@ class TopCategoryButtonNav {
     constructor(data, root) {
         this._data = data;
         this._root = root;
+
+        // 초기화
+        for (const isCenter of [false, true, false])
+            for (let i = 0; i < this._data.length; i++) {
+                const button = this._createButtonByKey(data[i].key);
+                if (isCenter && i === 0) button.classList.add("active");
+                this._root.appendChild(button);
+            }
 
         // 함수 bind (setInterval이나 setTimeout으로 호출할 때의 버그 해결)
         this.scrollToCenter = this.scrollToCenter.bind(this);
