@@ -1,6 +1,7 @@
 const { createHash } = require("crypto");
 const { readdirSync } = require("fs");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 const md5 = (text) => createHash("md5").update(text).digest("hex");
 
@@ -26,13 +27,21 @@ module.exports = {
                 use: "ts-loader",
                 exclude: /node_modules/,
             },
+            {
+                test: /\.s[ac]ss$/,
+                use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+                exclude: /node_modules/,
+            },
         ],
     },
+    watchOptions: {
+        ignored: /node_modules/,
+    },
     resolve: {
-        extensions: [".ts", ".js"],
+        extensions: [".ts", ".js", ".sass", ".scss"],
     },
     output: {
-        path: path.resolve(__dirname, "Main/dist/assets/js"),
+        path: path.resolve(__dirname, "Main/dist/assets"),
         filename: "[name].js",
     },
     plugins: [
@@ -44,5 +53,6 @@ module.exports = {
                     template: path.join("Main/html", i),
                 })
         ),
+        new MiniCssExtractPlugin(),
     ],
 };
