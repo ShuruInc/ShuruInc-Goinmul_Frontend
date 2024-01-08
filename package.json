@@ -1,0 +1,19 @@
+{
+  "name": "singsongsangsong",
+  "version": "1.0.0",
+  "description": "frontend of singsongsangsong",
+  "scripts": {
+    "dev": "NODE_ENV=development webpack",
+    "build": "NODE_ENV=production webpack"
+  },
+  "author": "ShuruInc",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "html-webpack-plugin": "^5.6.0",
+    "sass": "^1.69.7",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.3.3",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  }
+}

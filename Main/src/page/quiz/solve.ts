@@ -1,11 +1,20 @@
+import {
+    QuizProblem,
+    displayProblem,
+    initQuizSolveUI,
+    updateProgress,
+    updateShareProblem,
+} from "../../quiz-solve-ui";
+
 let tmp = 0;
 let progress = 30;
 let stopLoop = false;
+initQuizSolveUI();
 setInterval(() => {
     if (stopLoop) return;
 
     updateProgress(progress);
-    let problem;
+    let problem: QuizProblem;
     switch (tmp) {
         case 0:
             problem = {
@@ -33,11 +42,14 @@ setInterval(() => {
                 points: 10,
                 choices: null,
             };
+            break;
+        default:
+            throw new Error();
     }
 
-    displayProblem(document.querySelector("article"), problem);
+    displayProblem(document.querySelector("article")!, problem);
     updateShareProblem(
-        document.querySelector(".help-me .problem-box"),
+        document.querySelector(".help-me .problem-box")!,
         problem
     );
     tmp = (tmp + 1) % 3;
