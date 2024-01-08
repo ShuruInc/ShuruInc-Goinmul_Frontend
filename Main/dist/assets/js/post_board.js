@@ -1,14 +1,124 @@
+// 빈 섹션을 준비한다.
+function preparePlaceholderSection(
+    placeholderSection,
+    rowInfos = [
+        {
+            landscape: true,
+            count: 1,
+        },
+        {
+            landscape: false,
+            count: 8,
+        },
+    ]
+) {
+    placeholderSection.innerHTML = "";
+    placeholderSection.className = "post-section";
+
+    // 제목 생성
+    placeholderSection.appendChild(document.createElement("h2"));
+
+    // 가로형 포스트 생성
+    for (let rowInfo of rowInfos) {
+        const postTable = document.createElement("div");
+        postTable.className =
+            "post-table" + (rowInfo.landscape ? " landscape" : " portfrait");
+
+        for (let i = 0; i < rowInfo.count; i++) {
+            // 요소 생성 후 이미지 소스 설정
+            const cell = document.createElement("a");
+            cell.href = "quiz.html";
+
+            const image = new Image();
+            image.loading = "lazy";
+            image.style.backgroundColor = "gray";
+            image.alt = "빈 이미지";
+
+            // 클래스 설정
+            if (rowInfo.landscape) {
+                image.className = "cell-landscape-img ";
+                cell.className = "table-landscape-cell";
+            } else {
+                image.className = "cell-img";
+                cell.className = "table-cell";
+            }
+
+            // 정보 추가
+            const info = document.createElement("div");
+            info.className = "cell-info";
+            info.innerHTML =
+                '<div class="title"></div><div class="popularity"><div class="likes"><span class="like-count" /></div><div class="views"><span class="view-count" /></div></div>';
+
+            postTable.appendChild(cell);
+            cell.appendChild(image);
+            cell.appendChild(info);
+        }
+
+        placeholderSection.appendChild(postTable);
+    }
+
+    placeholderSection.classList.add("placeholder");
+    placeholderSection.dataset.rowInfos = JSON.stringify(rowInfos);
+}
+
+// section을 posts로 채운다.
+function fillPlaceholderSectionInto(posts, section) {
+    // 제목 설정
+    if (posts.title === null || typeof posts.title === "undefined")
+        section.querySelector("h2").classList.add("display-none");
+    else section.querySelector("h2").textContent = posts.title;
+
+    // 가로형 이미지 설정
+    if (posts.landscape === null || typeof posts.landscape === "undefined")
+        section
+            .querySelector(".post-table.landscape")
+            .classList.add("display-none");
+    else {
+        section.querySelector(".cell-landscape-img").src =
+            posts.landscape.imgUrl;
+        section.querySelector(
+            ".table-landscape-cell .cell-info .title"
+        ).innerHTML = posts.landscape.title;
+        section.querySelector(
+            ".table-landscape-cell .cell-info .like-count"
+        ).innerHTML = posts.landscape.likes;
+        section.querySelector(
+            ".table-landscape-cell .cell-info .view-count"
+        ).innerHTML = posts.landscape.views;
+    }
+
+    // 세로형 이미지 설정
+    if (posts.portraits === null || typeof posts.portraits === "undefined")
+        document
+            .querySelector(".post-table.portfrait")
+            .classList.add("display-none");
+    else {
+        const portraitCells = [...section.querySelectorAll(".table-cell")];
+        for (const portraitCell of portraitCells) {
+            const post = posts.portraits.pop();
+            portraitCell.querySelector(".cell-img").src = post.imgUrl;
+            portraitCell.querySelector(".cell-info .title").innerHTML =
+                post.title;
+            portraitCell.querySelector(".cell-info .like-count").innerHTML =
+                post.likes;
+            portraitCell.querySelector(".cell-info .view-count").innerHTML =
+                post.views;
+        }
+    }
+
+    return;
+}
+
 // 메인 페이지에 '포스트 보드'를 생성함
 // '포스트 보드'는 다수의 포스트로 이루어짐
 
 function setupPostBoard(column, getNextSection) {
-    document.addEventListener("DOMContentLoaded", function () {
-        // 첫 2개의 포스트만 가져온다.
-        for (let i = 0; i < 2; i++) fillPlaceholderSection(getNextSection());
+    function fillPlaceholderSection(posts) {
+        // 포스트를 담을 테이블 생성
+        const section = getPlaceholderSection();
 
-        // 나머지는 동적으로 가져올 수 있도록 IntersectionObserver를 설정한다.
-        setupIntersectionObserver();
-    });
+        fillPlaceholderSectionInto(posts, section);
+    }
 
     // 빈 섹션이 2개 미만으로 있을 시 빈 섹션을 새로 생성한다.
     function createPlaceholderSectionsIfNeeded() {
@@ -21,66 +131,9 @@ function setupPostBoard(column, getNextSection) {
         for (let i = 0; i < placeholderCountToCreate; i++) {
             // 포스트를 담을 테이블 생성
             var flexTable = document.createElement("section");
-            flexTable.className = "post-section";
+            preparePlaceholderSection(flexTable);
 
-            // 제목 생성
-            flexTable.appendChild(document.createElement("h2"));
-
-            const rowInfos = [
-                {
-                    landscape: true,
-                    count: 1,
-                },
-                {
-                    landscape: false,
-                    count: 8,
-                },
-            ];
-
-            // 가로형 포스트 생성
-            for (let rowInfo of rowInfos) {
-                const postTable = document.createElement("div");
-                postTable.className =
-                    "post-table" +
-                    (rowInfo.landscape ? " landscape" : " portfrait");
-
-                for (let i = 0; i < rowInfo.count; i++) {
-                    // 요소 생성 후 이미지 소스 설정
-                    const cell = document.createElement("a");
-                    cell.href = "quiz.html";
-
-                    const image = new Image();
-                    image.loading = "lazy";
-                    image.style.backgroundColor = "gray";
-                    image.alt = "빈 이미지";
-
-                    // 클래스 설정
-                    if (rowInfo.landscape) {
-                        image.className = "cell-landscape-img ";
-                        cell.className = "table-landscape-cell";
-                    } else {
-                        image.className = "cell-img";
-                        cell.className = "table-cell";
-                    }
-
-                    // 정보 추가
-                    const info = document.createElement("div");
-                    info.className = "cell-info";
-                    info.innerHTML =
-                        '<div class="title"></div><div class="popularity"><div class="likes"><span class="like-count" /></div><div class="views"><span class="view-count" /></div></div>';
-
-                    postTable.appendChild(cell);
-                    cell.appendChild(image);
-                    cell.appendChild(info);
-                }
-
-                flexTable.appendChild(postTable);
-            }
-
-            flexTable.classList.add("placeholder");
-            flexTable.dataset.rowInfos = JSON.stringify(rowInfos);
             column.appendChild(flexTable);
-
             return;
         }
     }
@@ -101,42 +154,13 @@ function setupPostBoard(column, getNextSection) {
         return placeholder;
     }
 
-    // 빈 섹션을 posts로 채운다.
-    function fillPlaceholderSection(posts) {
-        // 포스트를 담을 테이블 생성
-        const section = getPlaceholderSection();
+    document.addEventListener("DOMContentLoaded", function () {
+        // 첫 2개의 포스트만 가져온다.
+        for (let i = 0; i < 2; i++) fillPlaceholderSection(getNextSection());
 
-        // 제목 설정
-        section.querySelector("h2").textContent = posts.title;
-
-        // 가로형 이미지 설정
-        section.querySelector(".cell-landscape-img").src =
-            posts.landscape.imgUrl;
-        section.querySelector(
-            ".table-landscape-cell .cell-info .title"
-        ).innerHTML = posts.landscape.title;
-        section.querySelector(
-            ".table-landscape-cell .cell-info .like-count"
-        ).innerHTML = posts.landscape.likes;
-        section.querySelector(
-            ".table-landscape-cell .cell-info .view-count"
-        ).innerHTML = posts.landscape.views;
-
-        // 세로형 이미지 설정
-        const portraitCells = [...section.querySelectorAll(".table-cell")];
-        for (const portraitCell of portraitCells) {
-            const post = posts.portraits.pop();
-            portraitCell.querySelector(".cell-img").src = post.imgUrl;
-            portraitCell.querySelector(".cell-info .title").innerHTML =
-                post.title;
-            portraitCell.querySelector(".cell-info .like-count").innerHTML =
-                post.likes;
-            portraitCell.querySelector(".cell-info .view-count").innerHTML =
-                post.views;
-        }
-
-        return;
-    }
+        // 나머지는 동적으로 가져올 수 있도록 IntersectionObserver를 설정한다.
+        setupIntersectionObserver();
+    });
 
     // 무한 스크롤을 구현한다.
 
