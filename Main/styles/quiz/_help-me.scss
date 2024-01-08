@@ -1,0 +1,47 @@
+@import "../common/styled-inputs";
+
+.help-me {
+    display: none;
+    &.active {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .problem-box {
+        width: 400px;
+        padding: 2em;
+        background-color: #ffe2c5;
+        text-align: center;
+        .answer {
+            display: flex;
+        }
+        .answer-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            .fill-in {
+                width: 10em;
+                height: 1em;
+                border-bottom: 1px dashed black;
+            }
+            .choices {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 0.5em 3em;
+                justify-content: center;
+                li {
+                    max-width: fit-content;
+                }
+            }
+        }
+    }
+    .buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        @include styled-inputs;
+    }
+}

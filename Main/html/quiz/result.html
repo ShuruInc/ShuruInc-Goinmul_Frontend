@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="../../dist/assets/css/quiz.css">
+    <title>싱숑샹숑</title>
+</head>
+<body>
+    <div id="topFixedBar" class="top-fixed-bar">
+        <img id="mainTopLogo" class="main-top-logo" src= "../../dist/assets/images/logo/MainLogo_1_alpha.png" alt="err.png">        
+        <div class="progress-container">
+            <div class="progress" style="width: 30%;"></div>
+        </div>
+    </div>
+    <div id="mainContainer" class="main-container">
+        <article class="with-result">
+            <div class="result">
+                <div class="title">어쩌구 저쩌구 고사
+                    <div class="subtitle">성적결과표</div>
+                </div>
+
+                <div class="score">
+                    nn점
+                </div>
+
+                맞히셨습니다!<br>
+                당신은 현재 랭킹 n위
+            </div>
+            <button>트친한테 자랑하기</button>
+            <button>실친한테 자랑하기</button>
+            <div class="row">
+                <button>재응시</button>
+                <button class="active">다른 모의고사 풀기</button>
+            </div>
+            <div class="post-section">
+                
+            </div>
+            <script src="../../dist/assets/js/post_board.js"></script>
+            <script defer>
+                preparePlaceholderSection(document.querySelector('.post-section'));
+                fillPlaceholderSectionInto({portraits: [0,1,2,3,4,5,6,7].map(_i => (`https://picsum.photos/200/300?${Date.now()}${Math.floor(
+                    Math.random() * 1000
+                )}`
+                )).map(imgUrl => (
+                    {
+                        imgUrl,
+                        title: `테스트${Math.floor(Math.random() * 100)}`,
+                        likes: 100,
+                        views: 100,
+                    }
+                ))}, document.querySelector('.post-section'))
+            </script>
+        </article>
+    </div>
+</body>
+</html>

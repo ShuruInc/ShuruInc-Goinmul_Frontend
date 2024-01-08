@@ -1,86 +1,16 @@
 @use "common/reset";
 @use "common/container";
 @use "common/top-logo-nav";
+@use "common/utils";
+@import "common/styled-inputs";
 
 .main-container {
     padding-top: 145px;
 }
+
 article {
     width: 80%;
 }
-.question {
-    .text {
-        font-size: 1.25em;
-        .id-number {
-            font-size: 1.5em;
-        }
-        margin-bottom: 0.25em;
-    }
 
-    .points {
-        font-size: 0.8em;
-        text-align: right;
-    }
-
-    .figure {
-        margin: 3em 0px;
-        text-align: center;
-
-        img {
-            max-width: 100%;
-        }
-
-        .initials {
-            display: inline-flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            gap: 5px;
-            .initial {
-                font-size: 1.5em;
-                padding: 10px 10px;
-                background: #e1e1e1;
-                border-radius: 10px;
-
-                &.whitespace {
-                    background-color: #a7a7a7;
-                    width: 1em;
-                }
-            }
-        }
-    }
-}
-
-.answer {
-    width: 100%;
-    font-size: 1.15em;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
-    text-align: center;
-    .row {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        gap: 0.5em;
-    }
-
-    button {
-        background-color: #efefef;
-    }
-
-    input,
-    button {
-        font-size: inherit;
-        max-width: 100%;
-
-        padding: 7.5px 15px;
-        border: 0px;
-        border-radius: 10px;
-
-        &[type="text"] {
-            border: 1px solid #dddddd;
-        }
-    }
-}
+@import "quiz/result";
+@import "quiz/solve";

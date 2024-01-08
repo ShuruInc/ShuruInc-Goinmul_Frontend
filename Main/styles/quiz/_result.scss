@@ -1,0 +1,27 @@
+@use "../common/styled-inputs";
+
+article.with-result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    .result {
+        padding: 2em;
+        background-color: #ffe2c5;
+        text-align: center;
+
+        .subtitle {
+            text-indent: 1em;
+            letter-spacing: 1em;
+        }
+
+        .score {
+            margin: 1em 0em;
+            font-size: 2em;
+        }
+    }
+
+    @include styled-inputs;
+    @import "../index_page/post-board";
+}
