@@ -36,6 +36,7 @@
             rgba(255, 255, 255, 0) 100%
         );
         color: rgba(255, 255, 255, 1);
+        height: var(--top-fixed-bar-height);
 
         transition: transform 0.3s ease, background-color 0.3s ease-in-out,
             color 0.3s ease-in-out, opacity 0.3s ease-in-out;
