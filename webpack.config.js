@@ -32,13 +32,35 @@ module.exports = {
                 use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
                 exclude: /node_modules/,
             },
+            {
+                test: /\.(png|jpe?g|gif|svg|webp)$/i,
+                use: [
+                    {
+                        loader: "file-loader",
+                        options: {
+                            publicPath: "./assets/",
+                        },
+                    },
+                ],
+            },
         ],
     },
     watchOptions: {
         ignored: /node_modules/,
     },
     resolve: {
-        extensions: [".ts", ".js", ".sass", ".scss"],
+        extensions: [
+            ".ts",
+            ".js",
+            ".sass",
+            ".scss",
+            ".png",
+            ".jpeg",
+            ".jpg",
+            ".gif",
+            ".svg",
+            ".webp",
+        ],
     },
     output: {
         path: path.resolve(__dirname, "Main/dist/assets"),

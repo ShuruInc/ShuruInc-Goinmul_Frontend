@@ -1,3 +1,9 @@
+import logoImage1 from "../assets/logo/MainLogo_1_alpha.png";
+import logoImage2 from "../assets/logo/MainLogo_1_alpha.png";
+import logoImage3 from "../assets/logo/MainLogo_1_alpha.png";
+import logoImage4 from "../assets/logo/MainLogo_1_alpha.png";
+const images = [logoImage1, logoImage2, logoImage3, logoImage4];
+
 // 애니메이션이 있는 모바일형 상단바
 // 하향 스크롤 시 감추고 반대의 경우 드러냄
 export function InitTopBottomAnimation() {
@@ -6,8 +12,7 @@ export function InitTopBottomAnimation() {
         "mainTopLogo"
     )! as HTMLImageElement;
 
-    mainTopLogo.src =
-        "../dist/assets/images/logo/MainLogo_" + getRandomInt(4) + "_alpha.png";
+    mainTopLogo.src = images[getRandomInt(4)];
 
     var isHidden = false;
     var mainLogoNum = 1;
@@ -66,17 +71,14 @@ export function InitTopBottomAnimation() {
                 } else {
                     mainLogoNum = 1;
                 }
-                mainTopLogo.src =
-                    "../dist/assets/images/logo/MainLogo_" +
-                    mainLogoNum +
-                    "_alpha.png";
+                mainTopLogo.src = images[getRandomInt(4)];
                 logoChangeAllowed = true;
             }, 100);
         }
     }
 
     function getRandomInt(max: number) {
-        return Math.ceil(Math.random() * max);
+        return Math.floor(Math.random() * max);
     }
 
     [...document.querySelectorAll(".column")].forEach(
