@@ -253,6 +253,10 @@ class TopCategoryButtonNav {
 // 네브 데이터
 const buttonData = [
     {
+        label: "Home",
+        key: "home-board",
+    },
+    {
         label: "K-POP",
         key: "article-board-0",
     },
