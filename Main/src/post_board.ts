@@ -1,7 +1,15 @@
-// 빈 섹션을 준비한다.
-function preparePlaceholderSection(
-    placeholderSection,
-    rowInfos = [
+type RowInfo = { landscape: boolean; count: number };
+type Post = { imgUrl: string; title: string; likes: number; views: number };
+type PostBoardSectionData = {
+    title: string;
+    landscape: Post;
+    portraits: Post[];
+};
+
+/** placeholderSection 요소를 빈 섹션으로 바꾼다. */
+export function preparePlaceholderSection(
+    placeholderSection: HTMLElement,
+    rowInfos: RowInfo[] = [
         {
             landscape: true,
             count: 1,
@@ -62,47 +70,53 @@ function preparePlaceholderSection(
 }
 
 // section을 posts로 채운다.
-function fillPlaceholderSectionInto(posts, section) {
+export function fillPlaceholderSectionInto(
+    posts: Partial<PostBoardSectionData>,
+    section: HTMLElement
+) {
     // 제목 설정
     if (posts.title === null || typeof posts.title === "undefined")
-        section.querySelector("h2").classList.add("display-none");
-    else section.querySelector("h2").textContent = posts.title;
+        section.querySelector("h2")!.classList.add("display-none");
+    else section.querySelector("h2")!.textContent = posts.title;
 
     // 가로형 이미지 설정
     if (posts.landscape === null || typeof posts.landscape === "undefined")
         section
-            .querySelector(".post-table.landscape")
+            .querySelector(".post-table.landscape")!
             .classList.add("display-none");
     else {
-        section.querySelector(".cell-landscape-img").src =
+        (section.querySelector(".cell-landscape-img") as HTMLImageElement).src =
             posts.landscape.imgUrl;
         section.querySelector(
             ".table-landscape-cell .cell-info .title"
-        ).innerHTML = posts.landscape.title;
+        )!.innerHTML = posts.landscape.title;
         section.querySelector(
             ".table-landscape-cell .cell-info .like-count"
-        ).innerHTML = posts.landscape.likes;
+        )!.innerHTML = posts.landscape.likes.toString();
         section.querySelector(
             ".table-landscape-cell .cell-info .view-count"
-        ).innerHTML = posts.landscape.views;
+        )!.innerHTML = posts.landscape.views.toString();
     }
 
     // 세로형 이미지 설정
     if (posts.portraits === null || typeof posts.portraits === "undefined")
         document
-            .querySelector(".post-table.portfrait")
+            .querySelector(".post-table.portfrait")!
             .classList.add("display-none");
     else {
         const portraitCells = [...section.querySelectorAll(".table-cell")];
         for (const portraitCell of portraitCells) {
             const post = posts.portraits.pop();
-            portraitCell.querySelector(".cell-img").src = post.imgUrl;
-            portraitCell.querySelector(".cell-info .title").innerHTML =
+            if (typeof post === "undefined") break;
+
+            (portraitCell.querySelector(".cell-img") as HTMLImageElement).src =
+                post.imgUrl;
+            portraitCell.querySelector(".cell-info .title")!.innerHTML =
                 post.title;
-            portraitCell.querySelector(".cell-info .like-count").innerHTML =
-                post.likes;
-            portraitCell.querySelector(".cell-info .view-count").innerHTML =
-                post.views;
+            portraitCell.querySelector(".cell-info .like-count")!.innerHTML =
+                post.likes.toString();
+            portraitCell.querySelector(".cell-info .view-count")!.innerHTML =
+                post.views.toString();
         }
     }
 
@@ -112,8 +126,11 @@ function fillPlaceholderSectionInto(posts, section) {
 // 메인 페이지에 '포스트 보드'를 생성함
 // '포스트 보드'는 다수의 포스트로 이루어짐
 
-function setupPostBoard(column, getNextSection) {
-    function fillPlaceholderSection(posts) {
+export function setupPostBoard(
+    column: HTMLElement,
+    getNextSection: () => PostBoardSectionData
+) {
+    function fillPlaceholderSection(posts: PostBoardSectionData) {
         // 포스트를 담을 테이블 생성
         const section = getPlaceholderSection();
 
@@ -144,14 +161,14 @@ function setupPostBoard(column, getNextSection) {
         createPlaceholderSectionsIfNeeded();
 
         // 쓰이지 않은 빈 섹션을 가져오고 placeholder 클래스를 제거한다. (중복 반환 방지!)
-        const placeholder = column.querySelector("section.placeholder");
+        const placeholder = column.querySelector("section.placeholder")!;
         if (markUsed)
             // IntersectionObserver에서 쓰이는 경우에는 placeholder를 제거하면 안 된다.
             placeholder.classList.remove("placeholder");
 
         // 항상 빈 섹션이 하단에 있도록 다시 호출한다.
         createPlaceholderSectionsIfNeeded();
-        return placeholder;
+        return placeholder as HTMLElement;
     }
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -184,7 +201,7 @@ function setupPostBoard(column, getNextSection) {
 
     // intersectionObserver의 이벤드 핸들러
     // 무한 스크롤이 구현된다.
-    function onPlaceholderVisible(entries) {
+    function onPlaceholderVisible(entries: IntersectionObserverEntry[]) {
         if (
             entries.every(
                 (i) =>
@@ -199,62 +216,3 @@ function setupPostBoard(column, getNextSection) {
         setupIntersectionObserver();
     }
 }
-
-for (let i of [...document.querySelectorAll("article.column")])
-    if (i.dataset.key === "home-board")
-        displayMainPostBoard(i, {
-            popularTests: [0, 1, 2, 3, 4, 5, 6, 7, 8]
-                .map((i) => `https://picsum.photos/200/300?${Date.now()}0${i}`)
-                .map((i) => ({
-                    imgUrl: i,
-                    title: `테스트${Math.floor(Math.random() * 100)}`,
-                    likes: 100,
-                    views: 100,
-                })),
-            rankings: {
-                "K-POP": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => `사람${i}`),
-                "J-POP": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => `사람${i}`),
-                "C-POP": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => `사람${i}`),
-                "COL-POP": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(
-                    (i) => `사람${i}`
-                ),
-            },
-        });
-    else
-        setupPostBoard(i, () => {
-            // 랜덤 색을 생성한다.
-            const randomColor = () => {
-                return `rgb(${Math.floor(Math.random() * 255)},${Math.floor(
-                    Math.random() * 255
-                )},${Math.floor(Math.random() * 255)})`;
-            };
-
-            const images = [];
-            for (let i = 0; i < 9; i++) {
-                images.push({
-                    url: `https://picsum.photos/200/300?${Date.now()}0${i}1${Math.floor(
-                        Math.random() * 1000
-                    )}`,
-                    color: randomColor(),
-                });
-            }
-            return {
-                title: `Lorem ipsum 가나다라마바사 ${[
-                    ...i.parentNode.children,
-                ].indexOf(i)}`,
-                landscape: {
-                    bgColor: images[0].color,
-                    imgUrl: images[0].url,
-                    title: `테스트${Math.floor(Math.random() * 100)}`,
-                    likes: 100,
-                    views: 100,
-                },
-                portraits: images.slice(1).map((img) => ({
-                    bgColor: img.color,
-                    imgUrl: img.url,
-                    title: `테스트${Math.floor(Math.random() * 100)}`,
-                    likes: 100,
-                    views: 100,
-                })),
-            };
-        });

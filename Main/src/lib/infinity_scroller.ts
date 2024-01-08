@@ -1,9 +1,12 @@
 /**
  * HorizontalInfinityScroller 옵션
- * @typedef {Object} HorizontalInfinityScrollerOptions 옵션
- * @property {boolean} everyChildrenWidthAreEqualAndNeverChange 모든 자식 요소는 너비가 항상 동일하고 변하지 않는다.
- * @property {boolean} childrenNeverChange 자식이 추가되거나 삭제되지 않음
  */
+type HorizontalInfinityScrollerOptions = {
+    /** 모든 자식 요소는 너비가 항상 동일하고 변하지 않는다. */
+    everyChildrenWidthAreEqualAndNeverChange: boolean;
+    /** 자식이 추가되거나 삭제되지 않음 */
+    childrenNeverChange: boolean;
+};
 
 /**
  * 무한반복되는 스크롤을 구현한다.
@@ -13,46 +16,39 @@
  *  2) 각 요소의 중앙에서 scroll에서 snap된다.
  *  3) 각 요소의 너비는 동일하다.
  */
-class HorizontalInfinityScroller {
-    /** @type {HTMLElement} */
-    _rootElement;
+export class HorizontalInfinityScroller {
+    _rootElement: HTMLElement;
 
     /**
      * 기준이 되는 요소
-     * @type {number}
      * */
     _basisChildIdx = 0;
     /**
      * 기준이 되는 요소의 중앙와 부모의 중앙간의 거리
      * 예시: 값이 2면 기준 요소의 중앙은 부모의 중앙으로부터 오른쪽으로 2만큼 떨어진다.
-     * @type {number}
      */
     _basisChildOffsetFromCenter = 0; // basisChild중앙과 부모의 중앙간의 거리
 
     // 옵션 및 캐싱
-    /** @type {HorizontalInfinityScrollerOptions} */
-    _options;
-    /** @type {number} */
-    _childWidthCache;
-    /** @type {HTMLElement[]} */
-    _childrenCache;
+    _options: HorizontalInfinityScrollerOptions;
+    _childWidthCache: number;
+    _childrenCache: HTMLElement[];
 
     // easing용
     _easing = false;
-    _easingStartTime = null;
-    _easingStartOffset = null;
+    _easingStartTime: number | null = null;
+    _easingStartOffset: number | null = null;
     _easingDuration = 0;
     _easingTarget = 0;
     _easingEndOffset = 0;
 
-    /**
-     * @param {HTMLElement} root
-     * @param {HorizontalInfinityScrollerOptions} options
-     */
-    constructor(root, options = {}) {
+    constructor(
+        root: HTMLElement,
+        options: Partial<HorizontalInfinityScroller> = {}
+    ) {
         // 함수 bind (setInterval이나 setTimeout으로 인한 버그 해결)
-        this._addScrollOffset = this.addScrollOffset.bind(this);
-        this._childOnCenter = this._basisChild.bind(this);
+        this.addScrollOffset = this.addScrollOffset.bind(this);
+        this._basisChild = this._basisChild.bind(this);
         this._childWidth = this._childWidth.bind(this);
         this._children = this._children.bind(this);
         this._render = this._render.bind(this);
@@ -72,11 +68,9 @@ class HorizontalInfinityScroller {
 
         // 캐싱
         this._childWidthCache =
-            root.firstElementChild.getBoundingClientRect().width;
-        if (this._options.childrenNeverChange)
-            this._childrenCache = this._children(true);
-        if (this._options.everyChildrenWidthAreEqualAndNeverChange)
-            this._childWidthCache = this._childWidth(this._children()[0], true);
+            root.firstElementChild!.getBoundingClientRect().width;
+        this._childrenCache = this._children(true);
+        this._childWidthCache = this._childWidth(this._children()[0], true);
 
         // 렌더링 시작
         window.requestAnimationFrame(this._render);
@@ -86,10 +80,10 @@ class HorizontalInfinityScroller {
      * easing하도록 되어있다면(this._easing === true라면)
      * _basisOffsetFromCenter를 _easingEndOffset으로
      * _easingDuration(millisecond)동안 easing하며 설정한다.
-     * @param {number} timestamp requestAnimationFrame에 의해 전달받은 timestamp
+     * @param timestamp requestAnimationFrame에 의해 전달받은 timestamp
      * @returns Easing한다
      */
-    _doEasing(timestamp) {
+    _doEasing(timestamp: number) {
         // easing중이 아니라면 return
         if (!this._easing) return;
 
@@ -120,9 +114,9 @@ class HorizontalInfinityScroller {
 
     /**
      * 렌더링한다.
-     * @param {number} timestamp requestAnimationFrame에 의해 전달되는 timestamp
+     * @param timestamp requestAnimationFrame에 의해 전달되는 timestamp
      */
-    _render(timestamp) {
+    _render(timestamp: number) {
         // offset 정규화
         if (!this._easing)
             this._basisChildOffsetFromCenter %= this._childWidthSum();
@@ -134,7 +128,7 @@ class HorizontalInfinityScroller {
         const translates = this._translateValues();
         const children = this._children();
         for (let i = 0; i < children.length; i++) {
-            let child = children[i];
+            let child = children[i] as HTMLElement;
             let translate = translates[i];
             if (translate === null) {
                 child.style.display = "none";
@@ -150,7 +144,7 @@ class HorizontalInfinityScroller {
 
     /**
      * 루트 요소의 너비를 반환한다.
-     * @returns {number} 루트 요소의 너비
+     * @returns 루트 요소의 너비
      */
     _rootWidth() {
         return this._rootElement.getBoundingClientRect().width;
@@ -158,18 +152,17 @@ class HorizontalInfinityScroller {
 
     /**
      * 자식 요소들을 가져온다.
-     * @param {boolean} ignoreCache 캐시 무시 여부 (기본값: false)
-     * @returns {HTMLElement[]} 자식 요소들
+     * @param ignoreCache 캐시 무시 여부 (기본값: false)
      */
     _children(ignoreCache = false) {
         return this._options.childrenNeverChange && !ignoreCache
             ? this._childrenCache
-            : [...this._rootElement.children];
+            : ([...this._rootElement.children] as HTMLElement[]);
     }
 
     /**
      * 기준이 되는 요소를 가져온다.
-     * @returns {HTMLElement} 기준 요소
+     * @returns 기준 요소
      */
     _basisChild() {
         return this._children()[this._basisChildIdx];
@@ -177,13 +170,13 @@ class HorizontalInfinityScroller {
 
     /**
      * 자식 요소의 너비를 가져온다.
-     * @param {HTMLElement} element 너비를 가져올 요소
-     * @param {boolean} ignoreCache 캐시를 무지할 지의 여부
-     * @returns {boolean} 요소의 너비
+     * @param element 너비를 가져올 요소
+     * @param ignoreCache 캐시를 무지할 지의 여부
+     * @returns 요소의 너비
      */
     _childWidth(
-        element /* 일단 각 자식 요소의 너비가 다른 경우도 대비할 수 있도록 매개변수 추가 */,
-        ignoreCache
+        element: HTMLElement /* 일단 각 자식 요소의 너비가 다른 경우도 대비할 수 있도록 매개변수 추가 */,
+        ignoreCache: boolean = false
     ) {
         return this._options.everyChildrenWidthAreEqualAndNeverChange &&
             !ignoreCache
@@ -193,9 +186,9 @@ class HorizontalInfinityScroller {
 
     /**
      * offset만큼 스크롤한다.
-     * @param {number} offset 변화값
+     * @param offset 변화값
      */
-    addScrollOffset(offset) {
+    addScrollOffset(offset: number) {
         this._basisChildOffsetFromCenter += offset;
         return;
     }
@@ -302,7 +295,7 @@ class HorizontalInfinityScroller {
 
     /**
      * 자식 요소들의 너비의 총합을 구한다.
-     * @returns {number} 자식 요소들의 너비의 총합
+     * @returns 자식 요소들의 너비의 총합
      */
     _childWidthSum() {
         let sum = 0;
@@ -315,10 +308,10 @@ class HorizontalInfinityScroller {
 
     /**
      * 대상 요소 target이 중앙에 오려면 offset이 현재값으로부터 얼마나 변해야 하는 지를 계산한다.
-     * @param {HTMLElement} target 대상 요소
-     * @returns {number} offset의 변화값
+     * @param target 대상 요소
+     * @returns offset의 변화값
      */
-    calculateOffsetDeltaToCenterOf(target) {
+    calculateOffsetDeltaToCenterOf(target: HTMLElement) {
         let indexOfCenter = this._basisChildIdx;
         let indexOfTarget = this._children().indexOf(target);
 
@@ -363,10 +356,10 @@ class HorizontalInfinityScroller {
 
     /**
      * 중앙에 해당 요소를 표시합니다.
-     * @param {HTMLElement} target 중앙에 보일 요소
-     * @param {boolean} smooth 부드럽게 스크롤할 지의 여부
+     * @param target 중앙에 보일 요소
+     * @param smooth 부드럽게 스크롤할 지의 여부
      */
-    scrollIntoCenterView(target, smooth = true) {
+    scrollIntoCenterView(target: HTMLElement, smooth = true) {
         if (smooth) {
             this._easingStartTime = null;
             this._easingEndOffset =
@@ -382,8 +375,8 @@ class HorizontalInfinityScroller {
 
     /**
      * 가장 잘(많이) 보이는 요소를 반환합니다.
-     * @param {boolean} fullyVisible 완전히 보이는 경우에만 요소를 반환합니다. 완전히 보이지 않는다면 null을 반환합니다.
-     * @returns {HTMLElement | null} 가장 잘 보이는 요소
+     * @param fullyVisible 완전히 보이는 경우에만 요소를 반환합니다. 완전히 보이지 않는다면 null을 반환합니다.
+     * @returns 가장 잘 보이는 요소
      */
     getCurrentlyMostVisibleChild(fullyVisible = false) {
         const translates = this._translateValues();
@@ -393,7 +386,7 @@ class HorizontalInfinityScroller {
                 child: this._children()[idx],
             }))
             .filter((i) => i.translate !== null)
-            .sort((a, b) => Math.abs(a.translate) - Math.abs(b.translate))[0];
+            .sort((a, b) => Math.abs(a.translate!) - Math.abs(b.translate!))[0];
         return (result.translate === 0.0 && !this._easing) || !fullyVisible
             ? result.child
             : null;
@@ -401,12 +394,12 @@ class HorizontalInfinityScroller {
 
     /**
      * easing 함수를 적용한다.
-     * @param {number} from 시작값
-     * @param {number} to 끝값
-     * @param {number} progress 0이상 1이하의 진행도
-     * @returns {number} easing 함수가 적용된 [Math.min(from, to), Math.max(from, to)] 이내의 값
+     * @param from 시작값
+     * @param to 끝값
+     * @param progress 0이상 1이하의 진행도
+     * @returns easing 함수가 적용된 [Math.min(from, to), Math.max(from, to)] 이내의 값
      */
-    _easingFunction(from, to, progress) {
+    _easingFunction(from: number, to: number, progress: number) {
         console.log(
             `easing ${from} to ${to} (progress: ${progress
                 .toString()
@@ -416,7 +409,3 @@ class HorizontalInfinityScroller {
         return progress === 1 ? to : from + (to - from) * easing;
     }
 }
-
-const scroller = new HorizontalInfinityScroller(
-    document.querySelector(".post-board-columns")
-);

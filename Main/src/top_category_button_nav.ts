@@ -1,30 +1,44 @@
+import { HorizontalInfinityScroller } from "./lib/infinity_scroller";
+
 // x를 [0, max) 내의 정수로 정규화한다.
-function normalizeIntoRange(x, maxExcluding) {
+function normalizeIntoRange(x: number, maxExcluding: number) {
     while (x < 0) x += maxExcluding;
     return x % maxExcluding;
 }
 
-class TopCategoryButtonNav {
+/**
+ * 상단 카테고리 버튼의 데이터
+ */
+export type TopCategoryButtonData = {
     /**
-     * 상단 카테고리 버튼의 데이터
-     * @typedef {Object} TopCategoryButtonData
-     * @property {string} label 표시되는 텍스트
-     * @property {string} key 고유 식별자
+     * 표시되는 텍스트
      */
+    label: string;
+    /**
+     * 고유 식별자
+     */
+    key: string;
+};
 
-    /** @type {TopCategoryButtonData[]} */
-    _data = [];
-    /** @type {HTMLElement} */
-    _root = null;
+export class TopCategoryButtonNav {
+    _data: TopCategoryButtonData[] = [];
+    _root: HTMLElement;
+    _scroller: HorizontalInfinityScroller;
 
     /**
      * 상단 카테고리 버튼 네비게이션 클래스를 생성합니다.
-     * @param {TopCategoryButtonData[]} data 상단 카테고리 버튼 데이터
-     * @param {HTMLElement} root 상단 카테고리 버튼들이 있는 HTML 루트
+     * @param data 상단 카테고리 버튼 데이터
+     * @param root 상단 카테고리 버튼들이 있는 HTML 루트
+     * @param scroller 컨텐츠가 있는 영역의 무한 스크롤러
      */
-    constructor(data, root) {
+    constructor(
+        data: TopCategoryButtonData[],
+        root: HTMLElement,
+        scroller: HorizontalInfinityScroller
+    ) {
         this._data = data;
         this._root = root;
+        this._scroller = scroller;
 
         // 초기화
         for (const isCenter of [false, true, false])
@@ -46,7 +60,7 @@ class TopCategoryButtonNav {
 
         // active된 버튼을 중앙에 정렬 (창 크기가 바뀌었을 때도!)
         this.scrollToCenter(this._getActiveButton(), false);
-        window.addEventListener("resize", (evt) => {
+        window.addEventListener("resize", () => {
             this.scrollToCenter(this._getActiveButton(), false);
         });
 
@@ -58,10 +72,10 @@ class TopCategoryButtonNav {
 
     /**
      * 주어진 카테고리 버튼이 정중앙에 위치합니다.
-     * @param {HTMLElement} element 정중앙으로 스크롤할 상단 카테고리 버튼
-     * @param {boolean} smooth smooth하게 스크롤할 지의 여부
+     * @param element 정중앙으로 스크롤할 상단 카테고리 버튼
+     * @param smooth smooth하게 스크롤할 지의 여부
      */
-    scrollToCenter(element, smooth = true) {
+    scrollToCenter(element: HTMLElement, smooth = true) {
         element.scrollIntoView({
             behavior: smooth ? "smooth" : "instant",
             inline: "center",
@@ -70,10 +84,10 @@ class TopCategoryButtonNav {
 
     /**
      * 새로운 상단 카테고리 버튼을 생성합니다.
-     * @param {string} key 버튼 데이터의 고유 식별자
-     * @returns {HTMLElement} 셍상된 상단 카테고리 버튼
+     * @param key 버튼 데이터의 고유 식별자
+     * @returns 셍상된 상단 카테고리 버튼
      */
-    _createButtonByKey(key) {
+    _createButtonByKey(key: string) {
         const data = this._data.filter((i) => i.key === key)[0];
         const button = document.createElement("button");
         button.dataset.key = data.key;
@@ -85,25 +99,25 @@ class TopCategoryButtonNav {
 
     /**
      * 해당 고유 식별자를 가진 버튼 데이터가 버튼 데이터 배열 내에서 몇번째에 있는지 반환합니다.
-     * @param {string} key 고유식별자
-     * @returns {number} 해당 고유 식별자의 버튼 데이터 배열 내에서의 index
+     * @param key 고유식별자
+     * @returns 해당 고유 식별자의 버튼 데이터 배열 내에서의 index
      */
-    _getIndexOfButtonKey(key) {
+    _getIndexOfButtonKey(key: string) {
         return this._data.findIndex((i) => i.key === key);
     }
 
     /**
      * 주어진 index에 있는 버튼 데이터의 고유 식별자를 반환합니다.
-     * @param {number} keyIdx 버튼 데이터의 index
-     * @returns {string} 고유 식별자
+     * @param keyIdx 버튼 데이터의 index
+     * @returns 고유 식별자
      */
-    _keyIndexToKey(keyIdx) {
+    _keyIndexToKey(keyIdx: number) {
         return this._data[keyIdx].key;
     }
 
     /**
      * 현재 존재하는 상단 카테고리 버튼의 DOM 객체들을 반환합니다.
-     * @returns {HTMLButtonElement[]} 상단 카테고리 버튼
+     * @returns 상단 카테고리 버튼
      */
     _getButtonElements() {
         return [...this._root.querySelectorAll("button")];
@@ -111,18 +125,18 @@ class TopCategoryButtonNav {
 
     /**
      * 현재 활성화된 상단 카테고리 버튼을 반환합니다.
-     * @returns {HTMLButtonElement} 현재 활성화된 상단 카테고리 버튼
+     * @returns 현재 활성화된 상단 카테고리 버튼
      */
     _getActiveButton() {
-        return this._root.querySelector("button.active");
+        return this._root.querySelector("button.active") as HTMLButtonElement;
     }
 
     /**
      * 해당 key를 가진 카테고리 버튼들 중 현재 활성화된 버튼과 가장 가까운 버튼을 반환한다.
-     * @param {string} key 카테고리 버튼 키
+     * @param key 카테고리 버튼 키
      * @returns 카테고리 버튼 Element object
      */
-    getCategoryButtonByKey(key) {
+    getCategoryButtonByKey(key: string) {
         const buttonsWithDistance = this._getButtonElements()
             .filter((i) => i.dataset.key === key)
             .map((i) => ({
@@ -141,9 +155,9 @@ class TopCategoryButtonNav {
 
     /**
      * 주어진 카테고리 버튼 주변에 버튼 생성이 필요한 경우 생성한다.
-     * @param {HTMLElement} target 카테고리 버튼
+     * @param target 카테고리 버튼
      */
-    _createRequiredButtonAround(target) {
+    _createRequiredButtonAround(target: HTMLButtonElement) {
         const activeNow = this._getActiveButton();
 
         // nav 너비 계산
@@ -151,7 +165,7 @@ class TopCategoryButtonNav {
 
         // 위에서 구한 vw를 이용해 좌우에 필요한 버튼 개수 계산
         const buttonWidth = parseInt(
-            getComputedStyle(document.querySelector("nav.top-category-buttons"))
+            getComputedStyle(this._root)
                 .getPropertyValue("--button-width")
                 .replace("px", "")
         );
@@ -181,9 +195,12 @@ class TopCategoryButtonNav {
                         this._keyIndexToKey(
                             normalizeIntoRange(
                                 this._getIndexOfButtonKey(
-                                    this._root.firstElementChild.dataset.key
+                                    (
+                                        this._root
+                                            .firstElementChild as HTMLElement
+                                    ).dataset.key!
                                 ) - 1,
-                                buttonData.length
+                                this._data.length
                             )
                         )
                     ),
@@ -206,9 +223,10 @@ class TopCategoryButtonNav {
                         this._keyIndexToKey(
                             normalizeIntoRange(
                                 this._getIndexOfButtonKey(
-                                    this._root.lastElementChild.dataset.key
+                                    (this._root.lastElementChild as HTMLElement)
+                                        .dataset.key!
                                 ) + 1,
-                                buttonData.length
+                                this._data.length
                             )
                         )
                     )
@@ -218,10 +236,10 @@ class TopCategoryButtonNav {
 
     /**
      * 카테고리 버튼을 활성화한다.
-     * @param {HTMLElement} element 활성화할 카테고리 버튼
-     * @param {boolean} smooth smooth하게 스크로리할 지의 여부
+     * @param element 활성화할 카테고리 버튼
+     * @param smooth smooth하게 스크로리할 지의 여부
      */
-    activateButton(element, smooth = true) {
+    activateButton(element: HTMLButtonElement, smooth = true) {
         // target 좌우에 버튼 생성
         this._createRequiredButtonAround(element);
 
@@ -235,42 +253,21 @@ class TopCategoryButtonNav {
 
     /**
      * 상단 카테고리 버튼의 click 이벤트를 처리합니다.
-     * @param {MouseEvent} evt 이벤트 매개변수
+     * @param evt 이벤트 매개변수
      */
-    _handleTopButtonNavClick(evt) {
-        //
-        if (scroller.getCurrentlyMostVisibleChild(true) === null) return;
+    _handleTopButtonNavClick(evt: MouseEvent) {
+        if (
+            typeof this._scroller === "undefined" ||
+            this._scroller.getCurrentlyMostVisibleChild(true) === null
+        )
+            return;
 
-        this.activateButton(evt.target);
-        scroller.scrollIntoCenterView(
-            scroller
+        const target = evt.target as HTMLButtonElement;
+        this.activateButton(target);
+        this._scroller.scrollIntoCenterView(
+            this._scroller
                 ._children()
-                .filter((i) => i.dataset.key === evt.target.dataset.key)[0]
+                .filter((i) => i.dataset.key === target.dataset.key)[0]
         );
     }
 }
-
-// 네브 데이터
-const buttonData = [
-    {
-        label: "Home",
-        key: "home-board",
-    },
-    {
-        label: "K-POP",
-        key: "article-board-0",
-    },
-    {
-        label: "J-POP",
-        key: "article-board-1",
-    },
-    {
-        label: "C-POP",
-        key: "article-board-2",
-    },
-];
-
-const topCategoryNav = new TopCategoryButtonNav(
-    buttonData,
-    document.querySelector("nav.top-category-buttons")
-);

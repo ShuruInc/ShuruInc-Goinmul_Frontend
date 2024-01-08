@@ -1,5 +1,5 @@
-const createPodium = (first, second, third) =>
-    URL.createObjectURL(
+export function createPodium(first?: string, second?: string, third?: string) {
+    return URL.createObjectURL(
         new Blob(
             [
                 `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -89,3 +89,4 @@ const createPodium = (first, second, third) =>
             { type: "image/svg+xml" }
         )
     );
+}
