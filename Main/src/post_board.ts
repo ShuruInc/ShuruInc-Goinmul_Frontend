@@ -1,10 +1,16 @@
 type RowInfo = { landscape: boolean; count: number };
-type Post = { imgUrl: string; title: string; likes: number; views: number };
-type PostBoardSectionData = {
+export type Post = {
+    imgUrl: string;
+    title: string;
+    likes: number;
+    views: number;
+    href: string;
+};
+export type PostBoardSectionData = Partial<{
     title: string;
     landscape: Post;
     portraits: Post[];
-};
+}>;
 
 /** placeholderSection 요소를 빈 섹션으로 바꾼다. */
 export function preparePlaceholderSection(
@@ -18,7 +24,8 @@ export function preparePlaceholderSection(
             landscape: false,
             count: 8,
         },
-    ]
+    ],
+    placeholder = true
 ) {
     placeholderSection.innerHTML = "";
     placeholderSection.className = "post-section";
@@ -65,7 +72,7 @@ export function preparePlaceholderSection(
         placeholderSection.appendChild(postTable);
     }
 
-    placeholderSection.classList.add("placeholder");
+    if (placeholder) placeholderSection.classList.add("placeholder");
     placeholderSection.dataset.rowInfos = JSON.stringify(rowInfos);
 }
 
@@ -74,41 +81,57 @@ export function fillPlaceholderSectionInto(
     posts: Partial<PostBoardSectionData>,
     section: HTMLElement
 ) {
+    // placeholder 재생성 (필요한 경우)
+    const hasLandscape =
+        posts.landscape !== null && typeof posts.landscape !== "undefined";
+    const hasPortraits =
+        posts.portraits !== null &&
+        typeof posts.portraits !== "undefined" &&
+        posts.portraits.length > 0;
+    const rowInfos: RowInfo[] = [];
+    if (hasLandscape)
+        rowInfos.push({
+            landscape: true,
+            count: 1,
+        });
+    if (hasPortraits)
+        rowInfos.push({
+            landscape: false,
+            count: posts.portraits!.length,
+        });
+    preparePlaceholderSection(section, rowInfos, false);
+
     // 제목 설정
     if (posts.title === null || typeof posts.title === "undefined")
         section.querySelector("h2")!.classList.add("display-none");
     else section.querySelector("h2")!.textContent = posts.title;
 
     // 가로형 이미지 설정
-    if (posts.landscape === null || typeof posts.landscape === "undefined")
-        section
-            .querySelector(".post-table.landscape")!
-            .classList.add("display-none");
-    else {
+    if (hasLandscape) {
         (section.querySelector(".cell-landscape-img") as HTMLImageElement).src =
-            posts.landscape.imgUrl;
+            posts.landscape!.imgUrl;
+        (
+            section.querySelector(".table-landscape-cell") as HTMLAnchorElement
+        ).href = posts.landscape!.href;
         section.querySelector(
             ".table-landscape-cell .cell-info .title"
-        )!.innerHTML = posts.landscape.title;
+        )!.innerHTML = posts.landscape!.title;
         section.querySelector(
             ".table-landscape-cell .cell-info .like-count"
-        )!.innerHTML = posts.landscape.likes.toString();
+        )!.innerHTML = posts.landscape!.likes.toString();
         section.querySelector(
             ".table-landscape-cell .cell-info .view-count"
-        )!.innerHTML = posts.landscape.views.toString();
+        )!.innerHTML = posts.landscape!.views.toString();
     }
 
     // 세로형 이미지 설정
-    if (posts.portraits === null || typeof posts.portraits === "undefined")
-        document
-            .querySelector(".post-table.portfrait")!
-            .classList.add("display-none");
-    else {
+    if (hasPortraits) {
         const portraitCells = [...section.querySelectorAll(".table-cell")];
         for (const portraitCell of portraitCells) {
-            const post = posts.portraits.pop();
+            const post = posts.portraits!.pop();
             if (typeof post === "undefined") break;
 
+            (portraitCell as HTMLAnchorElement).href = post.href;
             (portraitCell.querySelector(".cell-img") as HTMLImageElement).src =
                 post.imgUrl;
             portraitCell.querySelector(".cell-info .title")!.innerHTML =
@@ -128,9 +151,17 @@ export function fillPlaceholderSectionInto(
 
 export function setupPostBoard(
     column: HTMLElement,
-    getNextSection: () => PostBoardSectionData
+    getNextSection: () => Promise<PostBoardSectionData | null>
 ) {
-    function fillPlaceholderSection(posts: PostBoardSectionData) {
+    let completed = false;
+    function fillPlaceholderSection(posts: PostBoardSectionData | null) {
+        if (posts === null || completed) {
+            completed = true;
+            return [...column.querySelectorAll("section.placeholder")].forEach(
+                (i) => i.parentNode?.removeChild(i)
+            );
+        }
+
         // 포스트를 담을 테이블 생성
         const section = getPlaceholderSection();
 
@@ -142,7 +173,7 @@ export function setupPostBoard(
         let placeholderCount = [
             ...column.querySelectorAll("section.placeholder"),
         ].length;
-        if (placeholderCount >= 2) return;
+        if (placeholderCount >= 2 || completed) return;
 
         const placeholderCountToCreate = 2 - placeholderCount;
         for (let i = 0; i < placeholderCountToCreate; i++) {
@@ -173,10 +204,12 @@ export function setupPostBoard(
 
     document.addEventListener("DOMContentLoaded", function () {
         // 첫 2개의 포스트만 가져온다.
-        for (let i = 0; i < 2; i++) fillPlaceholderSection(getNextSection());
-
-        // 나머지는 동적으로 가져올 수 있도록 IntersectionObserver를 설정한다.
-        setupIntersectionObserver();
+        getNextSection()
+            .then(fillPlaceholderSection)
+            .then(getNextSection)
+            .then(fillPlaceholderSection)
+            // 나머지는 동적으로 가져올 수 있도록 IntersectionObserver를 설정한다.
+            .then(setupIntersectionObserver);
     });
 
     // 무한 스크롤을 구현한다.
@@ -192,8 +225,9 @@ export function setupPostBoard(
         // 기존에 관찰되고 있던 요소는 더이상 빈 섹션이 아닐 수 있으므로 모두 끊는다.
         intersectionObserver.disconnect();
         // 빈 섹션들을 모두 관찰한다.
-        for (const i of [...column.querySelectorAll("section.placeholder")])
+        for (const i of [...column.querySelectorAll("section.placeholder")]) {
             intersectionObserver.observe(i);
+        }
 
         // 이벤트 핸들러를 호출한다. (버그 방지)
         onPlaceholderVisible(intersectionObserver.takeRecords());
@@ -211,7 +245,7 @@ export function setupPostBoard(
         )
             // 모든 빈 섹션이 보이지 않고 있다면 무시한다.
             return;
-        fillPlaceholderSection(getNextSection());
+        getNextSection().then(fillPlaceholderSection);
 
         setupIntersectionObserver();
     }
