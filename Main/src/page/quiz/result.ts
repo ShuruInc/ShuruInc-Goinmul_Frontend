@@ -1,5 +1,8 @@
 import "../../../styles/quiz";
 import { QuizSession } from "../../api/quiz";
+import createFloatingButton, {
+    addFloatingButonListener,
+} from "../../floatingButton";
 import {
     fillPlaceholderSectionInto,
     preparePlaceholderSection,
@@ -12,6 +15,8 @@ const session = new QuizSession(sessionId);
 
 InitTopNavImg();
 preparePlaceholderSection(document.querySelector(".post-section")!);
+createFloatingButton("home");
+addFloatingButonListener(() => (location.href = "/dist"));
 fillPlaceholderSectionInto(
     {
         portraits: [0, 1, 2, 3, 4, 5, 6, 7]
