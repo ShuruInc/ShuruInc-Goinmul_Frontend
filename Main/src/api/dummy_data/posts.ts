@@ -47,7 +47,8 @@ export const dummyPosts: { [key: string]: PostBoardSectionData[] } =
                     {
                         landscape: generateDummyPost(
                             `${topCategoryName} 고인물 테스트 도전!`,
-                            "quiz/entry.html"
+                            "quiz/entry.html?id=" +
+                                encodeURIComponent(`nerd-${topCategoryName}`)
                         ),
                     },
                     ...middleCategoryNames.map((i) => ({
@@ -55,7 +56,10 @@ export const dummyPosts: { [key: string]: PostBoardSectionData[] } =
                         portraits: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((j) =>
                             generateDummyPost(
                                 `${i} 모의고사 ${j}탄`,
-                                "quiz/solve.html"
+                                `quiz/entry.html?id=` +
+                                    encodeURIComponent(
+                                        `quiz-${topCategoryName}-${i}-${j}`
+                                    )
                             )
                         ),
                     })),
