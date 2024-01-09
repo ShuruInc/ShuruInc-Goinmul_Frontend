@@ -296,12 +296,20 @@ export class TopCategoryButtonNav {
         )
             return;
 
+        const buttons = this._getButtonElements();
+        const currentActive = this._getActiveButton();
         const target = evt.target as HTMLButtonElement;
+        if (currentActive === target) return;
+
         this.activateButton(target);
         this._scroller.scrollIntoCenterView(
             this._scroller
                 ._children()
-                .filter((i) => i.dataset.key === target.dataset.key)[0]
+                .filter((i) => i.dataset.key === target.dataset.key)[0],
+            true,
+            Math.sign(
+                buttons.indexOf(currentActive) - buttons.indexOf(target)
+            ) as 1 | -1
         );
     }
 }
