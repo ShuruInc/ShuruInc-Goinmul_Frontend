@@ -38,7 +38,7 @@ module.exports = {
                     {
                         loader: "file-loader",
                         options: {
-                            publicPath: "./assets/",
+                            publicPath: "/dist/assets/",
                         },
                     },
                 ],
