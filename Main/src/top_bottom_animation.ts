@@ -4,6 +4,18 @@ import logoImage3 from "../assets/logo/MainLogo_1_alpha.png";
 import logoImage4 from "../assets/logo/MainLogo_1_alpha.png";
 const images = [logoImage1, logoImage2, logoImage3, logoImage4];
 
+function getRandomInt(max: number) {
+    return Math.floor(Math.random() * max);
+}
+
+export function InitTopNavImg() {
+    var mainTopLogo = document.getElementById(
+        "mainTopLogo"
+    )! as HTMLImageElement;
+
+    mainTopLogo.src = images[getRandomInt(4)];
+}
+
 // 애니메이션이 있는 모바일형 상단바
 // 하향 스크롤 시 감추고 반대의 경우 드러냄
 export function InitTopBottomAnimation() {
@@ -75,10 +87,6 @@ export function InitTopBottomAnimation() {
                 logoChangeAllowed = true;
             }, 100);
         }
-    }
-
-    function getRandomInt(max: number) {
-        return Math.floor(Math.random() * max);
     }
 
     [...document.querySelectorAll(".column")].forEach(
