@@ -5,15 +5,16 @@ import {
 } from "./post_board";
 
 /**
- * 홈 post board에서 표시될 데이터
+ * 메인 post board에서 표시될 데이터
  */
-type HomePostBoardData = {
+export type MainPostBoardData = {
     /** 인기 BEST 테스트 데이터 */
     popularTests: {
         imgUrl: string;
         title: string;
         likes: number;
         views: number;
+        href: string;
     }[];
     /** 명예의 전당 데이터 */
     rankings: { [key: string]: string[] };
@@ -34,10 +35,11 @@ export function createRankingSection(title: string, data: string[]) {
     `;
 
     const podium = createPodium(data[0], data[1], data[2]);
+    data.splice(0, 3);
     (section.querySelector("img.podium") as HTMLImageElement).src = podium;
     section.querySelector("h2")!.textContent = title;
 
-    let start = 1;
+    let start = 4;
     while (data.length > 0) {
         const three = data.splice(0, 3);
         const column = document.createElement("div");
@@ -68,7 +70,7 @@ export function createRankingSection(title: string, data: string[]) {
  */
 export function displayMainPostBoard(
     element: HTMLElement,
-    data: HomePostBoardData
+    data: MainPostBoardData
 ) {
     element.innerHTML = `<section class="post-section"></section>`;
     preparePlaceholderSection(element.querySelector(".post-section")!, [
