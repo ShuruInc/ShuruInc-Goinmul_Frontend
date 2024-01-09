@@ -1,6 +1,6 @@
 @import "../mixins";
 
-nav {
+.top-fixed-bar nav {
     @include desktop {
         margin: 35px 0px 6px !important;
     }
