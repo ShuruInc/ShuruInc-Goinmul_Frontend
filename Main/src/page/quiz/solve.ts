@@ -19,15 +19,16 @@ const session = new QuizSession(sessionId);
 
 (async () => {
     updateProgress(0);
+    const goResult = () =>
+        (location.href =
+            "./result.html?session=" + encodeURIComponent(sessionId));
     const sessionInfo = await session.sessionInfo();
 
     const renewProblem = async () => {
         const problem = await session.currentProblem();
         console.log(problem);
         if (problem === null) {
-            location.href =
-                "./result.html?session=" + encodeURIComponent(sessionId);
-            return;
+            return goResult();
         }
 
         displayProblem(
@@ -62,9 +63,7 @@ const session = new QuizSession(sessionId);
                 ((Date.now() - sessionInfo.startedAt!.getTime()) /
                     (1000 * 60 * 10)) *
                 100;
-            if (percentage >= 100)
-                return (location.href =
-                    "./result.html?session=" + encodeURIComponent(sessionId));
+            if (percentage >= 100) return goResult();
 
             updateProgress(percentage);
         }, 500);
