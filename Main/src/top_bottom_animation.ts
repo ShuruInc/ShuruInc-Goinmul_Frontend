@@ -1,16 +1,24 @@
+import { dom, library } from "@fortawesome/fontawesome-svg-core";
 import logoImage1 from "../assets/logo/MainLogo_1_alpha.png";
 import logoImage2 from "../assets/logo/MainLogo_1_alpha.png";
 import logoImage3 from "../assets/logo/MainLogo_1_alpha.png";
 import logoImage4 from "../assets/logo/MainLogo_1_alpha.png";
+import {
+    faMagnifyingGlass,
+    faRankingStar,
+} from "@fortawesome/free-solid-svg-icons";
 const images = [logoImage1, logoImage2, logoImage3, logoImage4];
 
 function getRandomInt(max: number) {
     return Math.floor(Math.random() * max);
 }
 
-export function InitTopNavImg() {
-    var mainTopLogo = document.getElementById(
-        "mainTopLogo"
+export function InitTopNav() {
+    library.add(faMagnifyingGlass, faRankingStar);
+    dom.i2svg();
+
+    var mainTopLogo = document.querySelector(
+        ".main-top-logo-image"
     )! as HTMLImageElement;
 
     mainTopLogo.src = images[getRandomInt(4)];
@@ -20,11 +28,11 @@ export function InitTopNavImg() {
 // 하향 스크롤 시 감추고 반대의 경우 드러냄
 export function InitTopBottomAnimation() {
     var topFixedBar = document.getElementById("topFixedBar")!;
-    var mainTopLogo = document.getElementById(
-        "mainTopLogo"
+    var mainTopLogo = document.querySelector(
+        ".main-top-logo-image"
     )! as HTMLImageElement;
 
-    mainTopLogo.src = images[getRandomInt(4)];
+    InitTopNav();
 
     var isHidden = false;
     var mainLogoNum = 1;

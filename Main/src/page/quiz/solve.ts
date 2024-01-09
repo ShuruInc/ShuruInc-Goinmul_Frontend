@@ -8,10 +8,10 @@ import {
     updateProgress,
     updateShareProblem,
 } from "../../quiz-solve-ui";
-import { InitTopNavImg } from "../../top_bottom_animation";
+import { InitTopNav } from "../../top_bottom_animation";
 
 initQuizSolveUI();
-InitTopNavImg();
+InitTopNav();
 
 const sessionId =
     new URLSearchParams(location.search.substring(1)).get("session") ?? "";
