@@ -4,7 +4,7 @@ import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 // FontAwesome 렌더링
 library.add(faXmark);
 library.add(faCheck);
-dom.i2svg();
+dom.i2svg({ node: document.querySelector(".correctness-effect")! });
 
 /** 퀴즈 문제 데이터 */
 export type QuizProblem = {

@@ -14,8 +14,9 @@ function getRandomInt(max: number) {
 }
 
 export function InitTopNav() {
+    var topFixedBar = document.getElementById("topFixedBar")!;
     library.add(faMagnifyingGlass, faRankingStar);
-    dom.i2svg();
+    dom.i2svg({ node: topFixedBar });
 
     var mainTopLogo = document.querySelector(
         ".main-top-logo-image"

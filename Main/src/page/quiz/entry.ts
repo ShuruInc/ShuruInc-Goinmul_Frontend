@@ -8,7 +8,7 @@ InitTopNav();
 
 // FontAwesome 아이콘 렌더링
 library.add(faSpinner);
-dom.i2svg();
+dom.i2svg({ node: document.querySelector("article.loading")! });
 
 const params = new URLSearchParams(location.search.substring(1));
 const quizId = params.get("id");
