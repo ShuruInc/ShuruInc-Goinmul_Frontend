@@ -235,6 +235,40 @@ export class TopCategoryButtonNav {
     }
 
     /**
+     * 주어진 고유 식별자의 버튼을 활성화한다.
+     * @param key 고유 식별자
+     * @param smooth smooth하게 이동할 지의 여부
+     * @param direction 스크롤의 방향 (-: 왼쪽, +: 오른쪽)
+     */
+    activateButtonByKey(key: string, smooth = true, direction: number) {
+        const activeButton = this._getActiveButton();
+        if (activeButton.dataset.key === key) return;
+
+        let targetButton = null;
+        while (targetButton === null || typeof targetButton === "undefined") {
+            const buttons = this._getButtonElements();
+            if (direction > 0) {
+                targetButton = buttons
+                    .slice(0, buttons.indexOf(activeButton))
+                    .filter((a) => a.dataset.key === key)
+                    .reverse()[0];
+            } else {
+                targetButton = buttons
+                    .slice(buttons.indexOf(activeButton) + 1)
+                    .filter((a) => a.dataset.key === key)[0];
+            }
+
+            if (targetButton === null || typeof targetButton === "undefined") {
+                this._createRequiredButtonAround(
+                    direction < 0 ? buttons[buttons.length - 1] : buttons[0]
+                );
+            }
+        }
+
+        this.activateButton(targetButton, smooth);
+    }
+
+    /**
      * 카테고리 버튼을 활성화한다.
      * @param element 활성화할 카테고리 버튼
      * @param smooth smooth하게 스크로리할 지의 여부

@@ -29,6 +29,9 @@ export class HorizontalInfinityScroller {
      */
     _basisChildOffsetFromCenter = 0; // basisChild중앙과 부모의 중앙간의 거리
 
+    // 이벤트 리스너용
+    _scrollListeners: (() => void)[] = [];
+
     // 옵션 및 캐싱
     _options: HorizontalInfinityScrollerOptions;
     _childWidthCache: number;
@@ -96,20 +99,23 @@ export class HorizontalInfinityScroller {
             this._easingStartTime = timestamp;
         }
 
-        // easing 시간이 다 지났다면 easing 변수를 초기화하고
-        // _basisOffsetFromCenter를 목표값으로 설정한 뒤 return
         if (timestamp - this._easingStartTime > this._easingDuration) {
+            // easing 시간이 다 지났다면 easing 변수를 초기화하고
+            // _basisOffsetFromCenter를 목표값으로 설정한 뒤 return
             this._easing = false;
             this._easingStartOffset = null;
-            return (this._basisChildOffsetFromCenter = this._easingEndOffset);
+            this._basisChildOffsetFromCenter = this._easingEndOffset;
+        } else {
+            // easing한다
+            this._basisChildOffsetFromCenter = this._easingFunction(
+                this._easingStartOffset,
+                this._easingEndOffset,
+                (timestamp - this._easingStartTime) / this._easingDuration
+            );
         }
 
-        // easing한다
-        this._basisChildOffsetFromCenter = this._easingFunction(
-            this._easingStartOffset,
-            this._easingEndOffset,
-            (timestamp - this._easingStartTime) / this._easingDuration
-        );
+        // 스크롤 이벤트 핸들러 호출
+        this._scrollListeners.forEach((i) => i());
     }
 
     /**
@@ -190,6 +196,7 @@ export class HorizontalInfinityScroller {
      */
     addScrollOffset(offset: number) {
         this._basisChildOffsetFromCenter += offset;
+        this._scrollListeners.forEach((i) => i());
         return;
     }
 
@@ -309,9 +316,13 @@ export class HorizontalInfinityScroller {
     /**
      * 대상 요소 target이 중앙에 오려면 offset이 현재값으로부터 얼마나 변해야 하는 지를 계산한다.
      * @param target 대상 요소
+     * @param direction 방향 (아무 방향이나 상관 없으면 null)
      * @returns offset의 변화값
      */
-    calculateOffsetDeltaToCenterOf(target: HTMLElement) {
+    calculateOffsetDeltaToCenterOf(
+        target: HTMLElement,
+        direction: -1 | 1 | null
+    ) {
         let indexOfCenter = this._basisChildIdx;
         let indexOfTarget = this._children().indexOf(target);
 
@@ -347,29 +358,46 @@ export class HorizontalInfinityScroller {
         offsetOnLeftDirection %= this._childWidthSum();
         offsetOnRightDirection %= this._childWidthSum();
 
-        // 가장 거리가 짧은 방향의 변화값을 반환
-        return Math.abs(offsetOnRightDirection) >
-            Math.abs(offsetOnLeftDirection)
-            ? offsetOnLeftDirection
-            : offsetOnRightDirection;
+        switch (direction) {
+            case null:
+                // 가장 거리가 짧은 방향의 변화값을 반환
+                return Math.abs(offsetOnRightDirection) >
+                    Math.abs(offsetOnLeftDirection)
+                    ? offsetOnLeftDirection
+                    : offsetOnRightDirection;
+            case 1:
+                return offsetOnRightDirection;
+            case -1:
+                return offsetOnLeftDirection;
+        }
     }
 
     /**
      * 중앙에 해당 요소를 표시합니다.
      * @param target 중앙에 보일 요소
      * @param smooth 부드럽게 스크롤할 지의 여부
+     * @param direction 방향 (아무 방향이나 상관없으면 null)
+     * @returns 이동한 방향 (+1(오른쪽), -1(왼쪽), 혹은 0)
      */
-    scrollIntoCenterView(target: HTMLElement, smooth = true) {
+    scrollIntoCenterView(
+        target: HTMLElement,
+        smooth = true,
+        direction: -1 | 1 | null = null
+    ) {
         if (smooth) {
+            let delta = this.calculateOffsetDeltaToCenterOf(target, direction);
+            if (delta === 0) return 0;
+
             this._easingStartTime = null;
-            this._easingEndOffset =
-                this._basisChildOffsetFromCenter +
-                this.calculateOffsetDeltaToCenterOf(target);
+            this._easingEndOffset = this._basisChildOffsetFromCenter + delta;
             this._easingDuration = 300;
             this._easing = true;
+            return Math.sign(delta);
         } else {
             this._basisChildIdx = this._children().indexOf(target);
             this._basisChildOffsetFromCenter = 0;
+            this._scrollListeners.forEach((i) => i());
+            return 0;
         }
     }
 
@@ -407,5 +435,20 @@ export class HorizontalInfinityScroller {
         );
         const easing = 1 - Math.pow(1 - progress, 3); // easeOutCubic
         return progress === 1 ? to : from + (to - from) * easing;
+    }
+
+    // cccv from lib.dom.ts
+    addEventListenerToChildren<K extends keyof HTMLElementEventMap>(
+        type: K,
+        listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+        options?: boolean | AddEventListenerOptions
+    ) {
+        this._children().forEach((i) =>
+            i.addEventListener(type, listener, options)
+        );
+    }
+
+    addScrollEventListener(listener: () => void) {
+        this._scrollListeners.push(listener);
     }
 }
