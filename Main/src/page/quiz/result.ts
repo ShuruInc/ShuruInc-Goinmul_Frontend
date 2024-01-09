@@ -4,11 +4,13 @@ import {
     fillPlaceholderSectionInto,
     preparePlaceholderSection,
 } from "../../post_board";
+import { InitTopNavImg } from "../../top_bottom_animation";
 
 const sessionId =
     new URLSearchParams(location.search.substring(1)).get("session") ?? "";
 const session = new QuizSession(sessionId);
 
+InitTopNavImg();
 preparePlaceholderSection(document.querySelector(".post-section")!);
 fillPlaceholderSectionInto(
     {
