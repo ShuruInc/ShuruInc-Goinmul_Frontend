@@ -15,7 +15,9 @@
         border: 0px;
         border-radius: 10px;
 
-        &[type="text"] {
+        &[type="text"],
+        &[type="input"],
+        &[type="email"] {
             border: 1px solid #dddddd;
         }
     }
