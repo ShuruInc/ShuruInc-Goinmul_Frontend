@@ -1,58 +1,73 @@
 import "../../../styles/quiz";
+import { QuizSession } from "../../api/quiz";
 import {
-    QuizProblem,
+    addAnswerSubmitListener,
+    displayCorrectnessAnimation,
     displayProblem,
     initQuizSolveUI,
     updateProgress,
     updateShareProblem,
 } from "../../quiz-solve-ui";
+import { InitTopNavImg } from "../../top_bottom_animation";
 
-let tmp = 0;
-let progress = 30;
-let stopLoop = false;
 initQuizSolveUI();
-setInterval(() => {
-    if (stopLoop) return;
+InitTopNavImg();
 
-    updateProgress(progress);
-    let problem: QuizProblem;
-    switch (tmp) {
-        case 0:
-            problem = {
-                question: "문제 텍스트입니다",
-                figure: "https://picsum.photos/200/200",
-                figureType: "image",
-                points: 10,
-                choices: ["ㅁㄴㅇㄹ1", "ㅁㄴㅇㄹ2", "ㅁㄴㅇㄹ3", "ㅁㄴㅇㄹ4"],
-            };
-            break;
-        case 1:
-            problem = {
-                question: "문제 텍스트입니다",
-                figure: "ㅉㅉㄴ ㅁㅁㄹ",
-                figureType: "initials",
-                points: 10,
-                choices: null,
-            };
-            break;
-        case 2:
-            problem = {
-                question: "문제 텍스트입니다",
-                figure: "https://picsum.photos/200/200",
-                figureType: "image",
-                points: 10,
-                choices: null,
-            };
-            break;
-        default:
-            throw new Error();
+const sessionId =
+    new URLSearchParams(location.search.substring(1)).get("session") ?? "";
+const session = new QuizSession(sessionId);
+
+(async () => {
+    updateProgress(0);
+    const sessionInfo = await session.sessionInfo();
+
+    const renewProblem = async () => {
+        const problem = await session.currentProblem();
+        console.log(problem);
+        if (problem === null) {
+            location.href =
+                "./result.html?session=" + encodeURIComponent(sessionId);
+            return;
+        }
+
+        displayProblem(
+            document.querySelector("article")!,
+            problem,
+            problem.index
+        );
+        updateShareProblem(
+            document.querySelector(".help-me .problem-box")!,
+            problem,
+            problem.index
+        );
+
+        if (!sessionInfo.isNerdTest) {
+            updateProgress(
+                ((problem.index - 1) / sessionInfo.totalProblemCount!) * 100
+            );
+        }
+    };
+
+    addAnswerSubmitListener(async (answer) => {
+        const correct = await session.submit(answer);
+        displayCorrectnessAnimation(correct);
+
+        renewProblem();
+        console.log(answer);
+    });
+
+    if (sessionInfo.isNerdTest) {
+        setInterval(() => {
+            const percentage =
+                ((Date.now() - sessionInfo.startedAt!.getTime()) /
+                    (1000 * 60 * 10)) *
+                100;
+            if (percentage >= 100)
+                return (location.href =
+                    "./result.html?session=" + encodeURIComponent(sessionId));
+
+            updateProgress(percentage);
+        }, 500);
     }
-
-    displayProblem(document.querySelector("article")!, problem);
-    updateShareProblem(
-        document.querySelector(".help-me .problem-box")!,
-        problem
-    );
-    tmp = (tmp + 1) % 3;
-    progress = (progress + 5) % 100;
-}, 1000);
+    renewProblem();
+})();

@@ -1,8 +1,13 @@
 import "../../../styles/quiz";
+import { QuizSession } from "../../api/quiz";
 import {
     fillPlaceholderSectionInto,
     preparePlaceholderSection,
 } from "../../post_board";
+
+const sessionId =
+    new URLSearchParams(location.search.substring(1)).get("session") ?? "";
+const session = new QuizSession(sessionId);
 
 preparePlaceholderSection(document.querySelector(".post-section")!);
 fillPlaceholderSectionInto(
@@ -19,7 +24,19 @@ fillPlaceholderSectionInto(
                 title: `테스트${Math.floor(Math.random() * 100)}`,
                 likes: 100,
                 views: 100,
+                href: "#",
             })),
     },
     document.querySelector(".post-section")!
 );
+
+(async () => {
+    const result = await session.result();
+    if (result === null)
+        return (location.href =
+            "./solve.html?session=" + encodeURIComponent(sessionId));
+
+    document.querySelector(".quiz-title")!.textContent = result.title;
+    document.querySelector(".score")!.textContent = result.points + "점";
+    document.querySelector(".ranking")!.textContent = result.ranking.toString();
+})();

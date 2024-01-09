@@ -1,3 +1,11 @@
+import { dom, library } from "@fortawesome/fontawesome-svg-core";
+import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
+
+// FontAwesome 렌더링
+library.add(faXmark);
+library.add(faCheck);
+dom.i2svg();
+
 /** 퀴즈 문제 데이터 */
 export type QuizProblem = {
     /** 질문 텍스트 */
@@ -11,6 +19,12 @@ export type QuizProblem = {
     /** 선택지 (null이면 주관식) */
     choices: null | string[];
 };
+
+let answerSubmitListeners: ((answer: string) => void)[] = [];
+
+export function addAnswerSubmitListener(listener: (answer: string) => void) {
+    answerSubmitListeners.push(listener);
+}
 
 /**
  * 선택지를 표시하는 HTML 요소를 만듭니다.
@@ -73,12 +87,13 @@ const createAnswerElement = (question: QuizProblem) => {
 
     const rowWithInput = answerEl.querySelector(".row.with-input")!;
     if (question.choices === null) {
-        rowWithInput.innerHTML = `<input type="text" placeholder="답을 입력하세요">`;
+        rowWithInput.innerHTML = `<input type="input" placeholder="답을 입력하세요">`;
     } else {
         for (const choice of question.choices) {
             const label = document.createElement("label");
             label.textContent = choice;
             label.innerHTML = `<input type="radio">` + label.innerHTML;
+            label.querySelector("input")!.value = choice;
             rowWithInput.appendChild(label);
         }
     }
@@ -90,6 +105,30 @@ const createAnswerElement = (question: QuizProblem) => {
         evt.preventDefault();
         toggleHelpMe(true);
     });
+    answerEl
+        .querySelector("button.submit")!
+        .addEventListener("click", (evt) => {
+            evt.preventDefault();
+            let answer = "";
+            if (question.choices === null) {
+                answer = (
+                    answerEl.querySelector(
+                        'input[type="input"]'
+                    ) as HTMLInputElement
+                ).value;
+            } else {
+                answer =
+                    (
+                        [
+                            ...document.querySelectorAll('input[type="radio"]'),
+                        ] as HTMLInputElement[]
+                    )
+                        .filter((i) => i.checked)
+                        .map((i) => i.value)[0] ?? "";
+            }
+
+            if (answer !== "") answerSubmitListeners.forEach((i) => i(answer));
+        });
 
     return answerEl;
 };
@@ -97,13 +136,14 @@ const createAnswerElement = (question: QuizProblem) => {
 /**
  * 문제를 나타내는 요소를 생성합니다.
  * @param question 퀴즈 문제 데이터
+ * @param index 문제 번호
  */
-const createQuestionElement = (question: QuizProblem) => {
+const createQuestionElement = (question: QuizProblem, index: number) => {
     const questionEl = document.createElement("div");
     questionEl.className = "question";
     questionEl.innerHTML = `
         <div class="text">
-            <span class="id-number">3.</span>&nbsp;
+            <span class="id-number">${index}.</span>&nbsp;
         </div>
         <div class="points"></div>
         <div class="figure">
@@ -141,22 +181,32 @@ const createQuestionElement = (question: QuizProblem) => {
 /**
  * 문제를 표시합니다.
  * @param root 문제가 표시될 요소 (초기화되므로 주의!)
+ * @param index 문제 번호
  */
-export function displayProblem(root: HTMLElement, question: QuizProblem) {
+export function displayProblem(
+    root: HTMLElement,
+    question: QuizProblem,
+    index: number
+) {
     root.innerHTML = ``;
 
-    root.appendChild(createQuestionElement(question));
+    root.appendChild(createQuestionElement(question, index));
     root.appendChild(createAnswerElement(question));
 }
 
 /**
  * 문제를 SNS 공유에 알맞게 표시합니다.
  * @param root 문제가 표시될 요소 (초기화되므로 주의!)
+ * @param index 문제 번호
  * @param question
  */
-export function updateShareProblem(root: HTMLElement, question: QuizProblem) {
+export function updateShareProblem(
+    root: HTMLElement,
+    question: QuizProblem,
+    index: number
+) {
     root.innerHTML = "";
-    root.appendChild(createQuestionElement(question));
+    root.appendChild(createQuestionElement(question, index));
     root.appendChild(createAnswerElementForShare(question));
 }
 
@@ -178,4 +228,25 @@ export function initQuizSolveUI() {
             evt.preventDefault();
             toggleHelpMe(false);
         });
+}
+
+/**
+ * 틀림/맞음 애니메이션을 표시합니다.
+ * @param correct 정답 여부
+ */
+export function displayCorrectnessAnimation(correct: boolean) {
+    const element = document.querySelector(".correctness-effect");
+    if (element === null) return;
+
+    if (correct) {
+        element.classList.remove("fail");
+        element.classList.add("ok");
+    } else {
+        element.classList.remove("ok");
+        element.classList.add("fail");
+    }
+    element.classList.remove("display-none");
+    setTimeout(() => {
+        element.classList.add("display-none");
+    }, 400);
 }
