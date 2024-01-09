@@ -1,17 +1,25 @@
 @import "../mixins";
 
-/*데스크탑*/
-.main-top-logo {
+nav {
     @include desktop {
         margin: 35px 0px 6px !important;
-        width: 90px !important;
     }
     @include tablet {
         margin: 38px 0px 8px !important;
-        width: 80px !important;
     }
     @include mobile {
         margin: 35px 0px 6px !important;
+    }
+}
+
+.main-top-logo {
+    @include desktop {
+        width: 90px !important;
+    }
+    @include tablet {
+        width: 80px !important;
+    }
+    @include mobile {
         width: 70px !important;
     }
 }

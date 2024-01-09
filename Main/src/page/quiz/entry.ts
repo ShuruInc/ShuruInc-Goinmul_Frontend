@@ -1,10 +1,10 @@
 import { dom, library } from "@fortawesome/fontawesome-svg-core";
 import "../../../styles/quiz";
 import { QuizApiClient } from "../../api/quiz";
-import { InitTopNavImg } from "../../top_bottom_animation";
+import { InitTopNav } from "../../top_bottom_animation";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
-InitTopNavImg();
+InitTopNav();
 
 // FontAwesome 아이콘 렌더링
 library.add(faSpinner);
