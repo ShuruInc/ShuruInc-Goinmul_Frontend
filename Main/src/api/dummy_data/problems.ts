@@ -39,7 +39,13 @@ const chosung = (str: string) => {
 const randomHangul = (length: number, whitespace = false) => {
     let result = "";
     for (let i = 0; i < length; i++) {
-        if (Math.random() < 0.3 && whitespace && i != 0 && i != length - 1)
+        if (
+            Math.random() < 0.3 &&
+            whitespace &&
+            i != 0 &&
+            i != length - 1 &&
+            result[result.length - 1] != " "
+        )
             result += " ";
         else
             result += String.fromCharCode(
