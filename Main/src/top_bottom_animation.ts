@@ -13,16 +13,40 @@ function getRandomInt(max: number) {
     return Math.floor(Math.random() * max);
 }
 
+let customRankingHandler: (() => void) | null = null;
+export function SetCustomRankingHandler(handler: () => void) {
+    customRankingHandler = handler;
+}
+
 export function InitTopNav() {
-    var topFixedBar = document.getElementById("topFixedBar")!;
+    const topFixedBar = document.getElementById("topFixedBar")!;
+    // 아이콘 렌더링
     library.add(faMagnifyingGlass, faRankingStar);
     dom.i2svg({ node: topFixedBar });
 
-    var mainTopLogo = document.querySelector(
+    // 로고 이미지 랜덤 설정
+    const mainTopLogo = document.querySelector(
         ".main-top-logo-image"
     )! as HTMLImageElement;
-
     mainTopLogo.src = images[getRandomInt(4)];
+
+    // 이벤트 핸들러 추가
+    topFixedBar
+        .querySelector(".ranking-icon")
+        ?.addEventListener("click", (evt) => {
+            evt.preventDefault();
+
+            if (customRankingHandler !== null) {
+                return customRankingHandler();
+            }
+
+            location.href = "/#ranking";
+        });
+    topFixedBar
+        .querySelector(".search-icon")
+        ?.addEventListener("clcik", (evt) => {
+            evt.preventDefault();
+        });
 }
 
 // 애니메이션이 있는 모바일형 상단바
