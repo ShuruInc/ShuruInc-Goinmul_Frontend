@@ -7,10 +7,19 @@ import {
 type QuizSessionId = string;
 
 type QuizResult = {
+    quizId: string;
     points: number;
     title: string;
-    ranking: number;
-};
+    ranking?: number;
+    percentage?: number;
+} & (
+    | {
+          ranking: number;
+      }
+    | {
+          percentage: number;
+      }
+);
 
 type QuizSessionInfo = {
     isNerdTest: boolean;
@@ -100,7 +109,12 @@ export class QuizSession {
             ? {
                   points: this.getDummyInteralSession().points,
                   title: "어 쩌 구 저 쩌 구 고사",
-                  ranking: Math.floor(Math.random() * 5),
+                  quizId: this.getDummyInteralSession().quizId,
+                  ...(this.getDummyInteralSession().nerdTest
+                      ? { ranking: Math.ceil(Math.random() * 10) }
+                      : {
+                            percentage: Math.round(Math.random() * 100),
+                        }),
               }
             : null;
     }

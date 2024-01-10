@@ -34,5 +34,18 @@ SearchApiClient.recommend(8).then((posts) => {
 
     document.querySelector(".quiz-title")!.textContent = result.title;
     document.querySelector(".score")!.textContent = result.points + "점";
-    document.querySelector(".ranking")!.textContent = result.ranking.toString();
+    if (typeof result.percentage !== "undefined")
+        document.querySelector(
+            ".ranking"
+        )!.innerHTML = `(점수대에 따라 다른 멘트)<br>당신은 상위 ${result.percentage}%`;
+    else
+        document.querySelector(
+            ".ranking"
+        )!.innerHTML = `맞히셨습니다!<br>당신은 현재 랭킹 ${result.ranking}위!`;
+
+    document.querySelector(".retry")?.addEventListener("click", (evt) => {
+        evt.preventDefault();
+        location.href =
+            "/quiz/entry.html?id=" + encodeURIComponent(result.quizId);
+    });
 })();
