@@ -92,7 +92,8 @@ const createAnswerElement = (question: QuizProblem) => {
         for (const choice of question.choices) {
             const label = document.createElement("label");
             label.textContent = choice;
-            label.innerHTML = `<input type="radio">` + label.innerHTML;
+            label.innerHTML =
+                `<input type="radio" name="answer">` + label.innerHTML;
             label.querySelector("input")!.value = choice;
             rowWithInput.appendChild(label);
         }
