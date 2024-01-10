@@ -21,7 +21,7 @@ const session = new QuizSession(sessionId);
     updateProgress(0);
     const goResult = () =>
         (location.href =
-            "./result.html?session=" + encodeURIComponent(sessionId));
+            "/quiz/result.html?session=" + encodeURIComponent(sessionId));
     const sessionInfo = await session.sessionInfo();
 
     const renewProblem = async () => {
