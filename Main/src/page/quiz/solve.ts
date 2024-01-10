@@ -60,9 +60,7 @@ const session = new QuizSession(sessionId);
     if (sessionInfo.isNerdTest) {
         setInterval(() => {
             const percentage =
-                ((Date.now() - sessionInfo.startedAt!.getTime()) /
-                    (1000 * 60 * 5)) *
-                100;
+                (session.getStopWatch().elapsed() / (1000 * 60 * 5)) * 100;
             if (percentage >= 100) return goResult();
 
             updateProgress(percentage);

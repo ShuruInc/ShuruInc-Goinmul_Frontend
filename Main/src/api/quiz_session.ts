@@ -1,5 +1,6 @@
 import { QuizProblem } from "../quiz-solve-ui";
 import { getDummyProblemData } from "./dummy_data/problems";
+import StopWatch from "./stopwatch";
 
 type QuizSessionId = string;
 
@@ -21,7 +22,6 @@ type QuizResult = {
 type QuizSessionInfo = {
     isNerdTest: boolean;
     totalProblemCount?: number;
-    startedAt?: Date;
 };
 
 type QuizSessionInternalDummyData = {
@@ -36,8 +36,14 @@ type QuizSessionInternalDummyData = {
 
 export class QuizSession {
     private sessionId: string = "";
+    private stopwatch: StopWatch;
     constructor(sessionId: QuizSessionId) {
         this.sessionId = sessionId;
+        this.stopwatch = new StopWatch(sessionId);
+        this.stopwatch.start();
+    }
+    getStopWatch() {
+        return this.stopwatch;
     }
     private getDummyInteralSession(): QuizSessionInternalDummyData {
         return JSON.parse(
@@ -56,16 +62,12 @@ export class QuizSession {
     private ended() {
         return (
             this.getDummyInteralSession().problemIndex >=
-                this.dummyProblems().length ||
-            (this.getDummyInteralSession().nerdTest &&
-                Date.now() - this.getDummyInteralSession().startedAt >
-                    1000 * 60 * 5)
+            this.dummyProblems().length
         );
     }
     async sessionInfo(): Promise<QuizSessionInfo> {
         return {
             isNerdTest: this.getDummyInteralSession().nerdTest,
-            startedAt: new Date(this.getDummyInteralSession().startedAt),
             totalProblemCount: this.getDummyInteralSession().nerdTest
                 ? undefined
                 : this.dummyProblems().length,
@@ -102,7 +104,7 @@ export class QuizSession {
         return correct;
     }
     async result(): Promise<QuizResult | null> {
-        return this.ended()
+        return this.ended() || this.getDummyInteralSession().nerdTest
             ? {
                   points: this.getDummyInteralSession().points,
                   title: "어 쩌 구 저 쩌 구 고사",
