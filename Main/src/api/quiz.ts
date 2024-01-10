@@ -62,7 +62,7 @@ export class QuizSession {
                 this.dummyProblems().length ||
             (this.getDummyInteralSession().nerdTest &&
                 Date.now() - this.getDummyInteralSession().startedAt >
-                    1000 * 60 * 10)
+                    1000 * 60 * 5)
         );
     }
     async sessionInfo(): Promise<QuizSessionInfo> {

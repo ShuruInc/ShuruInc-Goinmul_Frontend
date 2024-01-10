@@ -61,7 +61,7 @@ const session = new QuizSession(sessionId);
         setInterval(() => {
             const percentage =
                 ((Date.now() - sessionInfo.startedAt!.getTime()) /
-                    (1000 * 60 * 10)) *
+                    (1000 * 60 * 5)) *
                 100;
             if (percentage >= 100) return goResult();
 
