@@ -7,7 +7,10 @@ import createFloatingButton, {
 import { displayMainPostBoard } from "../home_post_board";
 import { HorizontalInfinityScroller } from "../lib/infinity_scroller";
 import { setupPostBoard } from "../post_board";
-import { InitTopBottomAnimation } from "../top_bottom_animation";
+import {
+    InitTopBottomAnimation,
+    SetCustomRankingHandler,
+} from "../top_bottom_animation";
 import { TopCategoryButtonNav } from "../top_category_button_nav";
 
 createFloatingButton("home");
@@ -93,6 +96,32 @@ PostBoardApiClient.getMainBoard()
                 });
             }
         });
+
+        const goToRankings = () => {
+            if (
+                scroller.getCurrentlyMostVisibleChild(true)?.dataset?.key !==
+                "home"
+            ) {
+                let sign = scroller.scrollIntoCenterView(
+                    document.querySelector(".column.main")!,
+                    true
+                );
+                categoryNav.activateButtonByKey("home", true, sign);
+            }
+            let scrollDelta =
+                (document
+                    .querySelector(".column.main section.ranking-section h2")
+                    ?.getBoundingClientRect().top ?? 0) - 150;
+
+            console.log(scrollDelta);
+            document.querySelector(".column.main")?.scrollBy({
+                top: scrollDelta,
+                behavior: "smooth",
+            });
+        };
+        SetCustomRankingHandler(goToRankings);
+
+        if (location.hash.includes("ranking")) goToRankings();
 
         InitTopBottomAnimation();
     });
