@@ -34,11 +34,12 @@ SearchApiClient.recommend(8).then((posts) => {
 
     document.querySelector(".quiz-title")!.textContent = result.title;
     document.querySelector(".score")!.textContent = result.points + "점";
-    if (typeof result.percentage !== "undefined")
+    if (typeof result.percentage !== "undefined") {
+        document.querySelector(".rankings-ad")?.classList.add("display-none");
         document.querySelector(
             ".ranking"
         )!.innerHTML = `(점수대에 따라 다른 멘트)<br>당신은 상위 ${result.percentage}%`;
-    else
+    } else
         document.querySelector(
             ".ranking"
         )!.innerHTML = `맞히셨습니다!<br>당신은 현재 랭킹 ${result.ranking}위!`;
