@@ -1,5 +1,6 @@
 import "../../../styles/quiz";
 import { QuizSession } from "../../api/quiz_session";
+import initShareButton from "../../initShare";
 import {
     addAnswerSubmitListener,
     displayCorrectnessAnimation,
@@ -16,6 +17,7 @@ InitTopNav();
 const sessionId =
     new URLSearchParams(location.search.substring(1)).get("session") ?? "";
 const session = new QuizSession(sessionId);
+const setShareData = initShareButton();
 
 (async () => {
     updateProgress(0);
@@ -41,6 +43,9 @@ const session = new QuizSession(sessionId);
             problem,
             problem.index
         );
+        setShareData({
+            text: "친구들야, 도와줘!",
+        });
 
         if (!sessionInfo.isNerdTest) {
             updateProgress(
