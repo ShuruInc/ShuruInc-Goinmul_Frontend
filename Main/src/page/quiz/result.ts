@@ -1,5 +1,5 @@
 import "../../../styles/quiz";
-import { QuizSession } from "../../api/quiz";
+import { QuizSession } from "../../api/quiz_session";
 import SearchApiClient from "../../api/search";
 import createFloatingButton, {
     addFloatingButonListener,
