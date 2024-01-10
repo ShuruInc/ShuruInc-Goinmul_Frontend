@@ -17,7 +17,7 @@ const session = new QuizSession(sessionId);
 InitTopNav();
 preparePlaceholderSection(document.querySelector(".post-section")!);
 createFloatingButton("home");
-addFloatingButonListener(() => (location.href = "/dist"));
+addFloatingButonListener(() => (location.href = "/"));
 SearchApiClient.recommend(8).then((posts) => {
     fillPlaceholderSectionInto(
         {
@@ -30,7 +30,7 @@ SearchApiClient.recommend(8).then((posts) => {
     const result = await session.result();
     if (result === null)
         return (location.href =
-            "./solve.html?session=" + encodeURIComponent(sessionId));
+            "/quiz/solve.html?session=" + encodeURIComponent(sessionId));
 
     document.querySelector(".quiz-title")!.textContent = result.title;
     document.querySelector(".score")!.textContent = result.points + "점";

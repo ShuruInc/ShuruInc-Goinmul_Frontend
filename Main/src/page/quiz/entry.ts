@@ -38,15 +38,15 @@ if (quizId === null || quizId === " ") {
                         ).value,
                     }).then((session) => {
                         location.href =
-                            "./solve.html?session=" +
+                            "/quiz/solve.html?session=" +
                             encodeURIComponent(session.getSessionId());
                     });
-                    location.href = "./solve.html?id=nerd";
+                    location.href = "/quiz/solve.html?id=nerd";
                 });
         } else {
             QuizApiClient.startQuiz(quizId).then((session) => {
                 location.href =
-                    "./solve.html?session=" +
+                    "/quiz/solve.html?session=" +
                     encodeURIComponent(session.getSessionId());
             });
         }
