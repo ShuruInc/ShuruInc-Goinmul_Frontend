@@ -34,7 +34,9 @@ export default class PostBoardApiClient {
             rankings: Object.fromEntries(
                 dummyTopCategories.map((i, idx) => [
                     i,
-                    dummyNicknames.slice(14 * idx, 14 * (idx + 1)),
+                    dummyNicknames
+                        .slice(14 * idx, 14 * (idx + 1))
+                        .map((i) => [i, Math.round(Math.random() * 100)]),
                 ])
             ),
         };

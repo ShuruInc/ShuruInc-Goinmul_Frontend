@@ -17,7 +17,7 @@ export type MainPostBoardData = {
         href: string;
     }[];
     /** 명예의 전당 데이터 */
-    rankings: { [key: string]: string[] };
+    rankings: { [key: string]: [string, number][] };
 };
 
 /**
@@ -25,7 +25,7 @@ export type MainPostBoardData = {
  * @param title 제목
  * @param data 랭킹
  */
-export function createRankingSection(title: string, data: string[]) {
+export function createRankingSection(title: string, data: [string, number][]) {
     const section = document.createElement("section");
     section.className = "ranking-section";
     section.innerHTML = `<h2></h2>
@@ -34,7 +34,7 @@ export function createRankingSection(title: string, data: string[]) {
     </div>
     `;
 
-    const podium = createPodium(data[0], data[1], data[2]);
+    const podium = createPodium(data[0][0], data[1][0], data[2][0]);
     data.splice(0, 3);
     (section.querySelector("img.podium") as HTMLImageElement).src = podium;
     section.querySelector("h2")!.textContent = title;
@@ -50,7 +50,7 @@ export function createRankingSection(title: string, data: string[]) {
         three
             .map((i) => {
                 const li = document.createElement("li");
-                li.textContent = i;
+                li.textContent = `${i[0]} (${i[1]}점)`;
                 return li;
             })
             .forEach((i) => ol.appendChild(i));
