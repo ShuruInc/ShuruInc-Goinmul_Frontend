@@ -4,6 +4,7 @@ import SearchApiClient from "../../api/search";
 import createFloatingButton, {
     addFloatingButonListener,
 } from "../../floatingButton";
+import initShareButton from "../../initShare";
 import {
     fillPlaceholderSectionInto,
     preparePlaceholderSection,
@@ -49,4 +50,6 @@ SearchApiClient.recommend(8).then((posts) => {
         location.href =
             "/quiz/entry.html?id=" + encodeURIComponent(result.quizId);
     });
+
+    initShareButton()({ text: "test" });
 })();
