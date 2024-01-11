@@ -1,3 +1,5 @@
+import footer from "./footer";
+
 type RowInfo = { landscape: boolean; count: number };
 export type Post = {
     imgUrl: string;
@@ -154,12 +156,14 @@ export function setupPostBoard(
     getNextSection: () => Promise<PostBoardSectionData | null>
 ) {
     let completed = false;
+
     function fillPlaceholderSection(posts: PostBoardSectionData | null) {
         if (posts === null || completed) {
             completed = true;
-            return [...column.querySelectorAll("section.placeholder")].forEach(
-                (i) => i.parentNode?.removeChild(i)
+            [...column.querySelectorAll("section.placeholder")].forEach((i) =>
+                i.parentNode?.removeChild(i)
             );
+            return column.appendChild(footer());
         }
 
         // 포스트를 담을 테이블 생성

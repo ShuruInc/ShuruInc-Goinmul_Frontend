@@ -1,3 +1,4 @@
+import footer from "./footer";
 import { createPodium } from "./podium";
 import {
     fillPlaceholderSectionInto,
@@ -89,4 +90,5 @@ export function displayMainPostBoard(
         const rankingSection = createRankingSection(i, data.rankings[i]);
         element.appendChild(rankingSection);
     }
+    element.appendChild(footer());
 }
