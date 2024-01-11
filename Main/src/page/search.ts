@@ -38,7 +38,8 @@ const params = new URLSearchParams(
     location.search.length > 0 ? location.search.substring(1) : ""
 );
 let query = params.get("query") ?? "";
-(document.querySelector("input.search") as HTMLInputElement).value = query;
+const searchInput = document.querySelector("input.search") as HTMLInputElement;
+searchInput.value = query;
 
 const renderPopularQueries = (queries: string[]) => {
     const columns = document.querySelector(".popularNow .columns")!;
@@ -59,7 +60,7 @@ const renderPopularQueries = (queries: string[]) => {
             a.href = "?query=" + encodeURIComponent(query);
             a.addEventListener("click", (evt) => {
                 evt.preventDefault();
-                setQuery(query);
+                setQuery(query, true);
             });
             a.textContent = query;
 
@@ -83,7 +84,7 @@ const renderKeywords = (keywords: string[]) => {
         bubble.href = "?query=" + encodeURIComponent(keyword);
         bubble.addEventListener("click", (evt) => {
             evt.preventDefault();
-            setQuery(keyword);
+            setQuery(keyword, true);
         });
         bubble.textContent = keyword;
 
@@ -188,7 +189,7 @@ const render = async () => {
 };
 
 let timeoutIdx: NodeJS.Timeout | undefined = undefined;
-const setQuery = (newQuery: string) => {
+const setQuery = (newQuery: string, setInputValue = false) => {
     query = newQuery;
     history.replaceState(
         history.state,
@@ -199,8 +200,9 @@ const setQuery = (newQuery: string) => {
     timeoutIdx = setTimeout(() => {
         render();
     }, 100);
+    if (setInputValue) searchInput.value = newQuery;
 };
-document.querySelector("input.search")?.addEventListener("input", (evt) => {
+searchInput.addEventListener("input", (evt) => {
     setQuery((evt.target as HTMLInputElement).value);
 });
 
