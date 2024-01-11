@@ -34,10 +34,10 @@ createFloatingButton("home");
 
 // query 매개변수 가져오기
 const params = new URLSearchParams(
-    location.search.length > 0
-        ? location.search.substring(1)
-        : location.hash.length > 0
+    location.hash.length > 0
         ? location.hash.substring(1)
+        : location.search.length > 0
+        ? location.search.substring(1)
         : ""
 );
 let query = params.get("query") ?? "";
