@@ -1,9 +1,19 @@
+import { encode } from "html-entities";
 import footer from "./footer";
 import { createPodium } from "./podium";
 import {
     fillPlaceholderSectionInto,
     preparePlaceholderSection,
 } from "./post_board";
+
+/**
+ * 랭킹 아이템
+ */
+export type RankingItem = {
+    nickname: string;
+    hashtag: string;
+    score: number;
+};
 
 /**
  * 메인 post board에서 표시될 데이터
@@ -18,7 +28,7 @@ export type MainPostBoardData = {
         href: string;
     }[];
     /** 명예의 전당 데이터 */
-    rankings: { [key: string]: [string, number][] };
+    rankings: { [key: string]: RankingItem[] };
 };
 
 /**
@@ -26,7 +36,9 @@ export type MainPostBoardData = {
  * @param title 제목
  * @param data 랭킹
  */
-export function createRankingSection(title: string, data: [string, number][]) {
+export function createRankingSection(title: string, data: RankingItem[]) {
+    const nicknameAndHashtag = (data: RankingItem) =>
+        `${data.nickname}#${data.hashtag}`;
     const section = document.createElement("section");
     section.className = "ranking-section";
     section.innerHTML = `<h2></h2>
@@ -35,7 +47,11 @@ export function createRankingSection(title: string, data: [string, number][]) {
     </div>
     `;
 
-    const podium = createPodium(data[0][0], data[1][0], data[2][0]);
+    const podium = createPodium(
+        nicknameAndHashtag(data[0]),
+        nicknameAndHashtag(data[1]),
+        nicknameAndHashtag(data[2])
+    );
     data.splice(0, 3);
     (section.querySelector("img.podium") as HTMLImageElement).src = podium;
     section.querySelector("h2")!.textContent = title;
@@ -51,7 +67,11 @@ export function createRankingSection(title: string, data: [string, number][]) {
         three
             .map((i) => {
                 const li = document.createElement("li");
-                li.textContent = `${i[0]} (${i[1]}점)`;
+                li.innerHTML = `${encode(
+                    i.nickname
+                )}<span class="hashtag">#${encode(i.hashtag)}</span> (${
+                    i.score
+                }점)`;
                 return li;
             })
             .forEach((i) => ol.appendChild(i));
