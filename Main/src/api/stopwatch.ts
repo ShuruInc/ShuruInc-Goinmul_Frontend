@@ -50,7 +50,7 @@ export default class StopWatch {
         const state = this.getInternalState(),
             now = Date.now();
         return (
-            (state.stoppedAt ?? now) -
+            (state.stoppedAt ?? state.pausedAt ?? now) -
             (state.startedAt ?? now) -
             (state.negativeDelta ?? 0)
         );
