@@ -37,17 +37,16 @@ if (quizId === null || quizId === " ") {
                             document.querySelector("#email") as HTMLInputElement
                         ).value,
                     }).then((session) => {
-                        location.href =
-                            "/quiz/solve.html?session=" +
-                            encodeURIComponent(session.getSessionId());
+                        location.href = `/quiz/solve.html?session=${encodeURIComponent(
+                            session.getSessionId()
+                        )}&quizId=${quizId}`;
                     });
-                    location.href = "/quiz/solve.html?id=nerd";
                 });
         } else {
             QuizApiClient.startQuiz(quizId).then((session) => {
-                location.href =
-                    "/quiz/solve.html?session=" +
-                    encodeURIComponent(session.getSessionId());
+                location.href = `/quiz/solve.html?session=${encodeURIComponent(
+                    session.getSessionId()
+                )}&quizId=${quizId}`;
             });
         }
     });
