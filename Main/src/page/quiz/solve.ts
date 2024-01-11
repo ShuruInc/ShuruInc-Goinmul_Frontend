@@ -51,7 +51,8 @@ const setShareData = initShareButton(() => (shared = true));
 
         if (!sessionInfo.isNerdTest) {
             updateProgress(
-                ((problem.index - 1) / sessionInfo.totalProblemCount!) * 100
+                ((problem.index - 1) / sessionInfo.totalProblemCount!) * 100,
+                `${problem.index}/${sessionInfo.totalProblemCount!}`
             );
             setHelpMeFriendsEventHandler({
                 onEnabled: () => {
@@ -84,11 +85,20 @@ const setShareData = initShareButton(() => (shared = true));
 
     if (sessionInfo.isNerdTest) {
         setInterval(() => {
-            const percentage =
-                (session.getStopWatch().elapsed() / (1000 * 60 * 5)) * 100;
+            const elapsed = session.getStopWatch().elapsed();
+            const totalTime = 1000 * 60 * 5;
+            const percentage = (elapsed / totalTime) * 100;
             if (percentage >= 100) return goResult();
 
-            updateProgress(percentage);
+            const leftTime = totalTime - elapsed;
+            updateProgress(
+                percentage,
+                `${Math.floor(leftTime / 1000 / 60)}:${(
+                    Math.floor(leftTime / 1000) % 60
+                )
+                    .toString()
+                    .padStart(2, "0")}`
+            );
         }, 500);
     }
     renewProblem();
