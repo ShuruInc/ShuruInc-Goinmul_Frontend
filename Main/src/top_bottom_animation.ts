@@ -44,8 +44,9 @@ export function InitTopNav() {
         });
     topFixedBar
         .querySelector(".search-icon")
-        ?.addEventListener("clcik", (evt) => {
+        ?.addEventListener("click", (evt) => {
             evt.preventDefault();
+            location.href = "/search.html";
         });
 }
 
