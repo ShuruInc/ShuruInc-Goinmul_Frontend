@@ -67,6 +67,16 @@ article {
         justify-content: center;
         align-items: center;
         gap: 0.5em;
+
+        &.with-input.radios {
+            display: grid;
+            align-items: baseline;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            * {
+                text-align: left;
+            }
+        }
     }
 
     @include styled-inputs;
