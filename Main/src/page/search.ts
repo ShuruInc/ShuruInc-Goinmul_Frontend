@@ -41,6 +41,7 @@ const params = new URLSearchParams(
         : ""
 );
 let query = params.get("query") ?? "";
+(document.querySelector("input.search") as HTMLInputElement).value = query;
 
 const renderPopularQueries = (queries: string[]) => {
     const columns = document.querySelector(".popularNow .columns")!;
