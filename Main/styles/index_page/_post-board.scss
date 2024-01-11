@@ -36,12 +36,14 @@
             box-sizing: border-box;
             flex-shrink: 0;
 
-            .title {
-                font-size: 24px !important;
-            }
+            .cell-info {
+                .title {
+                    font-size: 24px;
+                }
 
-            .popularity {
-                font-size: 12px !important;
+                .popularity {
+                    font-size: 12px;
+                }
             }
 
             .cell-img {
