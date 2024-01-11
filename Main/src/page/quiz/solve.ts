@@ -18,7 +18,8 @@ InitTopNav();
 const sessionId =
     new URLSearchParams(location.search.substring(1)).get("session") ?? "";
 const session = new QuizSession(sessionId);
-const setShareData = initShareButton();
+let shared = false;
+const setShareData = initShareButton(() => (shared = true));
 
 (async () => {
     updateProgress(0);
@@ -52,10 +53,20 @@ const setShareData = initShareButton();
             updateProgress(
                 ((problem.index - 1) / sessionInfo.totalProblemCount!) * 100
             );
+            setHelpMeFriendsEventHandler({
+                onEnabled: () => {
+                    shared = false;
+                },
+                beforeDisable: () => shared,
+            });
         } else {
             setHelpMeFriendsEventHandler({
                 onDisabled: () => session.getStopWatch().resume(),
-                onEnabled: () => session.getStopWatch().pause(),
+                onEnabled: () => {
+                    session.getStopWatch().pause();
+                    shared = false;
+                },
+                beforeDisable: () => shared,
             });
             document
                 .querySelector(".timer-paused")

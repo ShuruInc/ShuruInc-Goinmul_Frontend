@@ -1,8 +1,8 @@
 type ShareDataWithImageUrl = ShareData & { imageUrl?: string };
 
-export default function initShareButton(): (
-    content: ShareDataWithImageUrl
-) => void {
+export default function initShareButton(
+    shareCompleteHandler?: () => void
+): (content: ShareDataWithImageUrl) => void {
     let content: ShareDataWithImageUrl = {};
     let webShareButton = document.querySelector(".share-web-share"),
         twitterButton = document.querySelector(".share-twitter"),
@@ -12,7 +12,17 @@ export default function initShareButton(): (
     twitterButton?.classList.add("display-none");
     kakaoButton?.classList.add("display-none");
 
-    webShareButton?.addEventListener("click", () => navigator.share(content));
+    webShareButton?.addEventListener("click", () => {
+        navigator.share(content).then(() => {
+            if (shareCompleteHandler) shareCompleteHandler();
+        });
+    });
+    twitterButton?.addEventListener("click", (_evt) => {
+        if (shareCompleteHandler) shareCompleteHandler();
+    });
+    kakaoButton?.addEventListener("click", (_evt) => {
+        if (shareCompleteHandler) shareCompleteHandler();
+    });
 
     return (newContent: ShareDataWithImageUrl) => {
         content = newContent;
