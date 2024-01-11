@@ -65,9 +65,11 @@ const toggleHelpMe = (toggle: boolean) => {
     if (toggle) {
         document.querySelector("article")!.classList.add("display-none");
         helpMe.classList.add("active");
+        helpMeFriendEnabledHandler();
     } else {
         document.querySelector("article")!.classList.remove("display-none");
         helpMe.classList.remove("active");
+        helpMeFriendDisabledHandler();
     }
 };
 
@@ -221,6 +223,12 @@ export function updateProgress(percentage: number) {
     ).style.width = `${percentage}%`;
 }
 
+let helpMeFriendEnabledHandler: () => void = () => {
+        return;
+    },
+    helpMeFriendDisabledHandler: () => void = () => {
+        return;
+    };
 export function initQuizSolveUI() {
     // 이어서 풀기 버튼 이벤트 핸들러 추가
     document
@@ -229,6 +237,17 @@ export function initQuizSolveUI() {
             evt.preventDefault();
             toggleHelpMe(false);
         });
+}
+
+export function setHelpMeFriendsEventHandler(
+    options: {
+        onEnabled?: () => void;
+        onDisabled?: () => void;
+    } = {}
+) {
+    if (options.onDisabled) helpMeFriendDisabledHandler = options.onDisabled;
+
+    if (options.onEnabled) helpMeFriendEnabledHandler = options.onEnabled;
 }
 
 /**
