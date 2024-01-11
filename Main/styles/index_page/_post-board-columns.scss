@@ -18,7 +18,7 @@
         position: absolute;
         left: 50%;
         top: 0px;
-        padding: 145px 0px 180px 0px;
+        padding: 145px 0px 0px 0px;
         width: 100%;
         min-width: 100%;
         height: var(--columns-height);
@@ -27,5 +27,13 @@
         overflow-y: scroll;
 
         @include hide-scrollbar;
+
+        footer {
+            margin-top: 90px;
+            padding: 1em 2em 90px 1em;
+            text-align: center;
+            padding: 30px 15px 30px 15px;
+            background-color: #e5f7ff;
+        }
     }
 }
