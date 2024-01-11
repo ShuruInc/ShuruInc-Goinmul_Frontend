@@ -28,7 +28,7 @@ export function preparePlaceholderSection(
     placeholder = true
 ) {
     placeholderSection.innerHTML = "";
-    placeholderSection.className = "post-section";
+    placeholderSection.classList.add("post-section");
 
     // 제목 생성
     placeholderSection.appendChild(document.createElement("h2"));
