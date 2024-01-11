@@ -187,6 +187,7 @@ const render = async () => {
     }
 };
 
+let timeoutIdx: NodeJS.Timeout | undefined = undefined;
 const setQuery = (newQuery: string) => {
     query = newQuery;
     history.replaceState(
@@ -194,7 +195,10 @@ const setQuery = (newQuery: string) => {
         "",
         "/search.html?query=" + encodeURIComponent(newQuery)
     );
-    render();
+    clearTimeout(timeoutIdx);
+    timeoutIdx = setTimeout(() => {
+        render();
+    }, 100);
 };
 document.querySelector("input.search")?.addEventListener("input", (evt) => {
     setQuery((evt.target as HTMLInputElement).value);
