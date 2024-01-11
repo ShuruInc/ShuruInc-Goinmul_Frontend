@@ -4,31 +4,37 @@
 @import "common/styled-inputs";
 @import "index_page/post-board";
 
-.top-fixed-bar nav {
-    font-size: 24px;
-    @include styled-inputs;
-    button.go-back {
-        background-color: transparent !important;
+.top-fixed-bar .container {
+    width: 100%;
+    padding: 5px 20px 5px 10px;
+    box-sizing: border-box;
 
-        font-size: inherit;
-        max-width: 100%;
+    nav {
+        font-size: 24px;
+        @include styled-inputs;
+        button.go-back {
+            background-color: transparent !important;
 
-        padding: 7.5px 15px;
-    }
+            font-size: inherit;
+            max-width: 100%;
 
-    input.search {
-        background-image: var(--search-icon);
-        background-position: 10px center;
-        background-size: auto 20px;
-        background-repeat: no-repeat;
-        padding: 7.5px 15px 7.5px 36px;
-        width: 100%;
-        color: #000000b2;
+            padding: 7.5px 15px;
+        }
 
-        &:focus,
-        &:active {
-            background-image: var(--search-icon-active);
-            color: black;
+        input.search {
+            background-image: var(--search-icon);
+            background-position: 10px center;
+            background-size: auto 20px;
+            background-repeat: no-repeat;
+            padding: 7.5px 15px 7.5px 36px;
+            width: 100%;
+            color: #000000b2;
+
+            &:focus,
+            &:active {
+                background-image: var(--search-icon-active);
+                color: black;
+            }
         }
     }
 }
