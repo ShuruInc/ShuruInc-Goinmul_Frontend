@@ -6,6 +6,7 @@ import {
     displayCorrectnessAnimation,
     displayProblem,
     initQuizSolveUI,
+    setHelpMeFriendsEventHandler,
     updateProgress,
     updateShareProblem,
 } from "../../quiz-solve-ui";
@@ -51,6 +52,14 @@ const setShareData = initShareButton();
             updateProgress(
                 ((problem.index - 1) / sessionInfo.totalProblemCount!) * 100
             );
+        } else {
+            setHelpMeFriendsEventHandler({
+                onDisabled: () => session.getStopWatch().resume(),
+                onEnabled: () => session.getStopWatch().pause(),
+            });
+            document
+                .querySelector(".timer-paused")
+                ?.classList.remove("display-none");
         }
     };
 
