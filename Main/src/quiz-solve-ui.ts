@@ -84,6 +84,7 @@ const createAnswerElement = (question: QuizProblem) => {
         <div class="row with-input">
         </div>
         <div class="row">
+            <button class="submit">제출</button>
             <button class="idk">모르겠어요</button>
         </div>`;
 
@@ -91,6 +92,7 @@ const createAnswerElement = (question: QuizProblem) => {
     if (question.choices === null) {
         rowWithInput.innerHTML = `<input type="input" placeholder="답을 입력하세요">`;
     } else {
+        rowWithInput.classList.add("radios");
         for (const choice of question.choices) {
             const label = document.createElement("label");
             label.textContent = choice;
@@ -100,9 +102,6 @@ const createAnswerElement = (question: QuizProblem) => {
             rowWithInput.appendChild(label);
         }
     }
-
-    rowWithInput.innerHTML += `
-    <button class="submit">제출</button>`;
 
     answerEl.querySelector("button.idk")!.addEventListener("click", (evt) => {
         evt.preventDefault();
