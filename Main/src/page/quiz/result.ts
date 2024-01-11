@@ -33,6 +33,13 @@ SearchApiClient.recommend(8).then((posts) => {
         return (location.href =
             "/quiz/solve.html?session=" + encodeURIComponent(sessionId));
 
+    const whoami = document.querySelector(".whoami")!;
+    if (result.nickname && result.hashtag) {
+        whoami.querySelector(".nickname")!.textContent = result.nickname;
+        whoami.querySelector(".hashtag")!.textContent = "#" + result.hashtag;
+    } else {
+        whoami.parentNode?.removeChild(whoami);
+    }
     document.querySelector(".quiz-title")!.textContent = result.title;
     document.querySelector(".score")!.textContent = result.points + "점";
     if (typeof result.percentage !== "undefined") {

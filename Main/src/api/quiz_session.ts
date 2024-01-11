@@ -8,11 +8,15 @@ type QuizResult = {
     quizId: string;
     points: number;
     title: string;
+    hashtag?: string;
+    nickname?: string;
     ranking?: number;
     percentage?: number;
 } & (
     | {
           ranking: number;
+          hashtag: string;
+          nickname: string;
       }
     | {
           percentage: number;
@@ -110,7 +114,13 @@ export class QuizSession {
                   title: "어 쩌 구 저 쩌 구 고사",
                   quizId: this.getDummyInteralSession().quizId,
                   ...(this.getDummyInteralSession().nerdTest
-                      ? { ranking: Math.ceil(Math.random() * 10) }
+                      ? {
+                            ranking: Math.ceil(Math.random() * 10),
+                            hashtag: Math.round(
+                                Math.random() * 9999
+                            ).toString(),
+                            nickname: this.getDummyInteralSession().nickname,
+                        }
                       : {
                             percentage: Math.round(Math.random() * 100),
                         }),

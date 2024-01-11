@@ -28,6 +28,10 @@
                 list-style-position: inside;
                 li {
                     white-space: pre;
+                    .hashtag {
+                        color: gray;
+                        font-size: 0.75em;
+                    }
                 }
             }
         }

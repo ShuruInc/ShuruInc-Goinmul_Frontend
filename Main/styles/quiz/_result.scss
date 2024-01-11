@@ -16,9 +16,16 @@ article.with-result {
             letter-spacing: 1em;
         }
 
-        .score {
-            margin: 1em 0em;
-            font-size: 2em;
+        .score-container {
+            margin: 1.15em 0em;
+            .score {
+                font-size: 2em;
+            }
+
+            .hashtag {
+                font-size: 0.7em;
+                color: gray;
+            }
         }
     }
 
