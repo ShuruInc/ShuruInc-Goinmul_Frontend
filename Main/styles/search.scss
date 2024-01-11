@@ -51,7 +51,7 @@ article {
                 }
                 li {
                     list-style-position: inside;
-                    text-wrap: nowrap;
+                    white-space: nowrap;
                 }
                 a {
                     text-decoration: none;
@@ -67,7 +67,7 @@ article {
         flex-wrap: wrap;
         gap: 10px;
         a.bubble {
-            text-wrap: nowrap;
+            white-space: nowrap;
             display: block;
             text-decoration: none;
             color: black;
