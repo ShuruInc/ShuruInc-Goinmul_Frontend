@@ -26,6 +26,7 @@ document.body.style.setProperty(
 // 뒤로 가기 버튼
 document.querySelector("button.go-back")?.addEventListener("click", (evt) => {
     evt.preventDefault();
+    history.state;
     history.back();
 });
 
@@ -34,11 +35,7 @@ createFloatingButton("home");
 
 // query 매개변수 가져오기
 const params = new URLSearchParams(
-    location.hash.length > 0
-        ? location.hash.substring(1)
-        : location.search.length > 0
-        ? location.search.substring(1)
-        : ""
+    location.search.length > 0 ? location.search.substring(1) : ""
 );
 let query = params.get("query") ?? "";
 (document.querySelector("input.search") as HTMLInputElement).value = query;
@@ -192,7 +189,11 @@ const render = async () => {
 
 const setQuery = (newQuery: string) => {
     query = newQuery;
-    location.hash = "#query=" + encodeURIComponent(newQuery);
+    history.replaceState(
+        history.state,
+        "",
+        "/search.html?query=" + encodeURIComponent(newQuery)
+    );
     render();
 };
 document.querySelector("input.search")?.addEventListener("input", (evt) => {
