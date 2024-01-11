@@ -1,6 +1,6 @@
 import { QuizProblem } from "../quiz-solve-ui";
 import { getDummyProblemData } from "./dummy_data/problems";
-import StopWatch from "./stopwatch";
+import StopWatch from "../stopwatch";
 
 type QuizSessionId = string;
 
