@@ -11,7 +11,7 @@ export type ShareDatas = {
     twitter: {
         text: string;
     };
-    image: File | Blob;
+    image: File;
 };
 
 const importKakaoSdk = () => {
@@ -29,7 +29,9 @@ const importKakaoSdk = () => {
     document.head.appendChild(script);
 };
 
-const uploadImage = (_image: Blob | File) => `https://picsum.photos/128/128`;
+const uploadKakaoImage = async (image: File) =>
+    (await (window as any).Kakao.Share.uploadImage({ file: [image] })).infos
+        .original.url as string;
 
 type InitShareButtonOptions = Partial<{
     onComplete: () => void;
@@ -68,34 +70,37 @@ export default function initShareButton(
             })
             .catch((err) => alert("오류가 발생했습니다: " + err));
     });
-    kakaoButton?.addEventListener("click", (_evt) => {
-        (options.beforeShare ? options.beforeShare : async () => {})()
-            .then(async () => {
-                if (content === null) return;
-                (window as any).Kakao.Share.sendDefault({
-                    objectType: "feed",
-                    content: {
-                        title: content.kakao.title,
-                        description: content.kakao.content,
-                        imageUrl: await uploadImage(content.image),
-                        link: {
-                            mobileWebUrl: content.kakao.url,
-                            webUrl: content.kakao.url,
-                        },
+    kakaoButton?.addEventListener("click", async (_evt) => {
+        _evt.preventDefault();
+        await (options.beforeShare
+            ? options.beforeShare()
+            : new Promise<void>((resolve, _reject) => {
+                  resolve();
+              }));
+
+        if (content === null) return;
+        (window as any).Kakao.Share.sendDefault({
+            objectType: "feed",
+            content: {
+                title: content.kakao.title,
+                description: content.kakao.content,
+                imageUrl: await uploadKakaoImage(content.image),
+                link: {
+                    mobileWebUrl: content.kakao.url,
+                    webUrl: content.kakao.url,
+                },
+            },
+            buttons: [
+                {
+                    title: content.kakao.buttonText,
+                    link: {
+                        mobileWebUrl: content.kakao.url,
+                        webUrl: content.kakao.url,
                     },
-                    buttons: [
-                        {
-                            title: content.kakao.buttonText,
-                            link: {
-                                mobileWebUrl: content.kakao.url,
-                                webUrl: content.kakao.url,
-                            },
-                        },
-                    ],
-                });
-                if (options.onComplete) options.onComplete();
-            })
-            .catch((err) => alert("오류가 발생했습니다: " + err));
+                },
+            ],
+        });
+        if (options.onComplete) options.onComplete();
     });
 
     return (newContent: ShareDatas) => {
