@@ -1,6 +1,6 @@
 import { dom, library } from "@fortawesome/fontawesome-svg-core";
 import { QuizSession } from "./api/quiz_session";
-import initShareButton from "./initShare";
+import initShareButton, { ShareDatas } from "./initShare";
 import {
     addAnswerSubmitListener,
     displayCorrectnessAnimation,
@@ -13,6 +13,7 @@ import {
 import solveBody from "./solvePage.html";
 import { InitTopNav } from "./top_bottom_animation";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
+import html2canvas from "html2canvas";
 
 export default function initSolvePage(session: QuizSession) {
     document.body.innerHTML = solveBody;
@@ -25,7 +26,39 @@ export default function initSolvePage(session: QuizSession) {
 
     let shared = false;
     const sessionId = session.getSessionId();
-    const setShareData = initShareButton(() => (shared = true));
+    let shareData: Omit<ShareDatas, "image"> | null = null;
+    const setShareData = initShareButton({
+        onComplete: () => (shared = true),
+        beforeShare: () => {
+            return html2canvas(
+                document.querySelector(".help-me .problem-box")!,
+                {
+                    useCORS: true,
+                }
+            ).then(
+                (canvas) =>
+                    new Promise<void>((resolve, reject) => {
+                        canvas.toBlob((blob) => {
+                            if (shareData && blob) {
+                                setShareData({
+                                    ...shareData,
+                                    webShare: {
+                                        ...shareData.webShare,
+                                        files: [
+                                            new File([blob], "problem.png", {
+                                                type: "image/png",
+                                            }),
+                                        ],
+                                    },
+                                    image: blob,
+                                });
+                                resolve();
+                            } else reject("오류가 발생했습니다.");
+                        });
+                    })
+            );
+        },
+    });
 
     (async () => {
         updateProgress(0);
@@ -51,9 +84,6 @@ export default function initSolvePage(session: QuizSession) {
                 problem,
                 problem.index
             );
-            setShareData({
-                text: "친구들야, 도와줘!",
-            });
 
             if (!sessionInfo.isNerdTest) {
                 updateProgress(
@@ -80,6 +110,33 @@ export default function initSolvePage(session: QuizSession) {
                     .querySelector(".timer-paused")
                     ?.classList.remove("display-none");
             }
+
+            const quizUrl = `https://example.com/quiz/solve.html?id=${sessionInfo.quizId}`;
+            shareData = {
+                twitter: {
+                    text: `${sessionInfo.title} ${
+                        sessionInfo.isNerdTest ? "고인물 테스트" : "모의고사"
+                    } 푸는 중인데 이 문제 도저히 모르겠다... 아는 사람? 😀
+
+🔗 https://example.com/quiz/solve.html?id=${sessionInfo.quizId}
+#고인물테스트 #슈르네`,
+                },
+                kakao: {
+                    title: `[${sessionInfo.title}] 모의고사`,
+                    content: "이 문제 도저히 모르겠다...\n도와줄 사람?",
+                    buttonText: "나도 풀어보기",
+                    url: quizUrl,
+                },
+                webShare: {
+                    url: quizUrl,
+                    title: `[${sessionInfo.title}] 모의고사`,
+                    text: "이 문제 도저히 모르겠다... 도와줄 사람?",
+                },
+            };
+            setShareData({
+                ...shareData,
+                image: new Blob([""], { type: "iamge/png" }),
+            });
         };
 
         addAnswerSubmitListener(async (answer) => {
