@@ -158,6 +158,7 @@ const createQuestionElement = (question: QuizProblem, index: number) => {
         case "image":
             const img = document.createElement("img");
             img.src = question.figure;
+            img.crossOrigin = "anonymous";
             questionEl.querySelector(".figure")!.append(img);
             break;
         case "initials":

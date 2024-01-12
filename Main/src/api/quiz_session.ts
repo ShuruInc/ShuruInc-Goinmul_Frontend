@@ -26,6 +26,8 @@ type QuizResult = {
 type QuizSessionInfo = {
     isNerdTest: boolean;
     totalProblemCount?: number;
+    quizId: string;
+    title: string;
 };
 
 type QuizSessionInternalDummyData = {
@@ -75,6 +77,8 @@ export class QuizSession {
             totalProblemCount: this.getDummyInteralSession().nerdTest
                 ? undefined
                 : this.dummyProblems().length,
+            quizId: this.getDummyInteralSession().quizId,
+            title: "어 쩌 구 저 쩌 구 고사",
         };
     }
     async currentProblem(): Promise<(QuizProblem & { index: number }) | null> {
