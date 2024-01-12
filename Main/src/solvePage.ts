@@ -101,6 +101,15 @@ export default function initSolvePage(session: QuizSession) {
                         .padStart(2, "0")}`
                 );
             }, 500);
+        } else {
+            const quizId = new URLSearchParams(
+                location.search.substring(1)
+            ).get("id");
+            history.replaceState(
+                null,
+                "",
+                `/quiz/solve.html?session=${sessionId}&id=${quizId}`
+            );
         }
         renewProblem();
     })();
