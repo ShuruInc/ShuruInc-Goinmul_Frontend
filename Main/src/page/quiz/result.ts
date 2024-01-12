@@ -12,6 +12,7 @@ import {
 } from "../../post_board";
 import { InitTopNav } from "../../top_bottom_animation";
 import { getJosaPicker } from "josa";
+import padCanvas from "../../padCanvas";
 
 const sessionId =
     new URLSearchParams(location.search.substring(1)).get("session") ?? "";
@@ -63,13 +64,11 @@ SearchApiClient.recommend(8).then((posts) => {
 
     const eunJosa = getJosaPicker("은");
     const url = "https://example.com";
-    const canvas = await html2canvas(document.querySelector(".result")!);
-    const blob: Blob = await new Promise<Blob>((resolve, reject) =>
-        canvas.toBlob(
-            (blob) => (blob === null ? reject() : resolve(blob)),
-            "image/png"
-        )
+    const canvas = padCanvas(
+        await html2canvas(document.querySelector(".result")!)
     );
+    const blob: Blob = await canvas.convertToBlob({ type: "iamge/png" });
+    const imageFile = new File([blob], "result.png", { type: "image/png" });
 
     if (typeof result.nickname === "undefined")
         // 모의고사
@@ -78,7 +77,7 @@ SearchApiClient.recommend(8).then((posts) => {
                 url,
                 title: `[${result.title}] 모의고사`,
                 text: `${result.points}점을 넘을 수 있을까?`,
-                files: [new File([blob], "result.png", { type: "image/png" })],
+                files: [imageFile],
             },
             kakao: {
                 title: `[${result.title}] 모의고사`,
@@ -94,7 +93,7 @@ SearchApiClient.recommend(8).then((posts) => {
 🔗 ${url}
 #고인물테스트 #슈르네`,
             },
-            image: blob,
+            image: imageFile,
         });
     // 고인물테스트
     else
@@ -103,7 +102,7 @@ SearchApiClient.recommend(8).then((posts) => {
                 url,
                 title: `[${result.title}] 고인물 테스트`,
                 text: `${result.points}점을 넘을 수 있을까?`,
-                files: [new File([blob], "result.png", { type: "image/png" })],
+                files: [imageFile],
             },
             kakao: {
                 title: `[${result.title}] 고인물 테스트`,
@@ -125,6 +124,6 @@ SearchApiClient.recommend(8).then((posts) => {
 🔗 ${url}
 #고인물테스트 #슈르네`,
             },
-            image: blob,
+            image: new File([new Blob()], "asdf.png", { type: "image/png" }),
         });
 })();

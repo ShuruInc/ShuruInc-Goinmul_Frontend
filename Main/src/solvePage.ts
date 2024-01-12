@@ -14,6 +14,7 @@ import solveBody from "./solvePage.html";
 import { InitTopNav } from "./top_bottom_animation";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import html2canvas from "html2canvas";
+import padCanvas from "./padCanvas";
 
 export default function initSolvePage(session: QuizSession) {
     document.body.innerHTML = solveBody;
@@ -38,23 +39,28 @@ export default function initSolvePage(session: QuizSession) {
             ).then(
                 (canvas) =>
                     new Promise<void>((resolve, reject) => {
-                        canvas.toBlob((blob) => {
-                            if (shareData && blob) {
-                                setShareData({
-                                    ...shareData,
-                                    webShare: {
-                                        ...shareData.webShare,
-                                        files: [
-                                            new File([blob], "problem.png", {
-                                                type: "image/png",
-                                            }),
-                                        ],
-                                    },
-                                    image: blob,
-                                });
-                                resolve();
-                            } else reject("오류가 발생했습니다.");
-                        });
+                        padCanvas(canvas)
+                            .convertToBlob({ type: "image/png" })
+                            .then((blob) => {
+                                if (shareData && blob) {
+                                    const file = new File(
+                                        [blob],
+                                        "problem.png",
+                                        {
+                                            type: "image/png",
+                                        }
+                                    );
+                                    setShareData({
+                                        ...shareData,
+                                        webShare: {
+                                            ...shareData.webShare,
+                                            files: [file],
+                                        },
+                                        image: file,
+                                    });
+                                    resolve();
+                                } else reject("오류가 발생했습니다.");
+                            });
                     })
             );
         },
@@ -135,7 +141,13 @@ export default function initSolvePage(session: QuizSession) {
             };
             setShareData({
                 ...shareData,
-                image: new Blob([""], { type: "iamge/png" }),
+                image: new File(
+                    [new Blob([""], { type: "iamge/png" })],
+                    "problem.png",
+                    {
+                        type: "image/png",
+                    }
+                ),
             });
         };
 
