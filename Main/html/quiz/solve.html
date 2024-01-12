@@ -17,36 +17,33 @@
             <button class="search-icon">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </button>
-        </nav>
+        </nav>       
         <div class="progress-container">
             <div class="progress" style="width: 0%;"></div>
-            <div class="progress-text"></div>
         </div>
     </div>
     <div id="mainContainer" class="main-container">
-        <article class="">
+        <article class="quiz-entry display-none">
+            <div class="introduction">
+                <h1>수험자 정보 입력</h1>
+                <p>평점 기록 및 경품 수령을 위한 어쩌구입니다.</p>
+            </div>
+            <form>
+                <label>
+                    닉네임
+                    <input type="input" id="nickname" min="6" required>
+                </label>
+                <label>
+                    이메일
+                    <input type="email" id="email" required>
+                </label>
+                <button type="submit">시작하기</button>
+            </form>
+        </article>
+        <article class="loading">
             <i class="fa-solid fa-spin fa-spinner"></i>
+            잠시만 기다려주세요....
         </article>
-        <article class="help-me">
-            <div class="timer-paused display-none">타이머가 일시정지 되었습니다.</div>
-            <h1>친구들야, 도와줘!</h1>
-            <div class="problem-box">
-             </div>
-             <div class="buttons">
-                <button class="share-web-share">친구한테 물어보기</button>
-                <button class="share-twitter">트친한테 물어보기</button>
-                <button class="share-kakao">실친한테 물어보기</button>
-                <button class="continue">이어서 풀기</button>
-             </div>
-        </article>
-    </div>
-    <div class="correctness-effect display-none">
-        <div class="ok">
-            <i class="fa-solid fa-check"></i>
-        </div>
-        <div class="fail">
-            <i class="fa-solid fa-xmark"></i>
-        </div>
     </div>
 </body>
 </html>

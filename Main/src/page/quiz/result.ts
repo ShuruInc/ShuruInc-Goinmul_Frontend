@@ -30,8 +30,7 @@ SearchApiClient.recommend(8).then((posts) => {
 (async () => {
     const result = await session.result();
     if (result === null)
-        return (location.href =
-            "/quiz/solve.html?session=" + encodeURIComponent(sessionId));
+        return alert("오류가 발생했습니다: 퀴즈가 아직 안 끝났습니다!");
 
     const whoami = document.querySelector(".whoami")!;
     if (result.nickname && result.hashtag) {
@@ -55,7 +54,7 @@ SearchApiClient.recommend(8).then((posts) => {
     document.querySelector(".retry")?.addEventListener("click", (evt) => {
         evt.preventDefault();
         location.href =
-            "/quiz/entry.html?id=" + encodeURIComponent(result.quizId);
+            "/quiz/solve.html?id=" + encodeURIComponent(result.quizId);
     });
 
     initShareButton()({ text: "test" });

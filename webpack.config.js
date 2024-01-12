@@ -28,6 +28,11 @@ module.exports = {
                 exclude: /node_modules/,
             },
             {
+                test: /\.html?$/,
+                use: "html-loader",
+                exclude: /node_modules/,
+            },
+            {
                 test: /\.s[ac]ss$/,
                 use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
                 exclude: /node_modules/,
