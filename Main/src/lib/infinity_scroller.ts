@@ -14,7 +14,7 @@ type HorizontalInfinityScrollerOptions = {
  * 다음과 같은 경우만이 고려되었다.
  *  1) root의 직계자손들은 가로방향으로 정렬된다.
  *  2) 각 요소의 중앙에서 scroll에서 snap된다.
- *  3) 각 요소의 너비는 동일하다.
+ *  3) 각 요소의 너비는 동일하며 부모 요소의 너비와 동일하다.
  */
 export class HorizontalInfinityScroller {
     _rootElement: HTMLElement;
@@ -34,7 +34,6 @@ export class HorizontalInfinityScroller {
 
     // 옵션 및 캐싱
     _options: HorizontalInfinityScrollerOptions;
-    _childWidthCache: number;
     _childrenCache: HTMLElement[];
 
     // easing용
@@ -52,7 +51,6 @@ export class HorizontalInfinityScroller {
         // 함수 bind (setInterval이나 setTimeout으로 인한 버그 해결)
         this.addScrollOffset = this.addScrollOffset.bind(this);
         this._basisChild = this._basisChild.bind(this);
-        this._childWidth = this._childWidth.bind(this);
         this._children = this._children.bind(this);
         this._render = this._render.bind(this);
         this._rootWidth = this._rootWidth.bind(this);
@@ -70,10 +68,7 @@ export class HorizontalInfinityScroller {
         this._rootElement = root;
 
         // 캐싱
-        this._childWidthCache =
-            root.firstElementChild!.getBoundingClientRect().width;
         this._childrenCache = this._children(true);
-        this._childWidthCache = this._childWidth(this._children()[0], true);
 
         // 렌더링 시작
         window.requestAnimationFrame(this._render);
@@ -144,6 +139,19 @@ export class HorizontalInfinityScroller {
             }
         }
 
+        // offset 한 번 더 정규화
+        if (!this._easing) {
+            const nearestToCenter = translates
+                .map((i, idx) => ({ offset: i, index: idx }))
+                .filter((i) => i.offset !== null)
+                .sort((a, b) => Math.abs(a.offset!) - Math.abs(b.offset!))[0];
+            if (this._basisChildIdx !== nearestToCenter.index) {
+                console.log(translates);
+                this._basisChildOffsetFromCenter = nearestToCenter.offset!;
+                this._basisChildIdx = nearestToCenter.index;
+            }
+        }
+
         // 무한루프
         window.requestAnimationFrame(this._render);
     }
@@ -173,23 +181,6 @@ export class HorizontalInfinityScroller {
     _basisChild() {
         return this._children()[this._basisChildIdx];
     }
-
-    /**
-     * 자식 요소의 너비를 가져온다.
-     * @param element 너비를 가져올 요소
-     * @param ignoreCache 캐시를 무지할 지의 여부
-     * @returns 요소의 너비
-     */
-    _childWidth(
-        element: HTMLElement /* 일단 각 자식 요소의 너비가 다른 경우도 대비할 수 있도록 매개변수 추가 */,
-        ignoreCache: boolean = false
-    ) {
-        return this._options.everyChildrenWidthAreEqualAndNeverChange &&
-            !ignoreCache
-            ? this._childWidthCache
-            : element.getBoundingClientRect().width;
-    }
-
     /**
      * offset만큼 스크롤한다.
      * @param offset 변화값
@@ -255,7 +246,7 @@ export class HorizontalInfinityScroller {
         for (let i = 0; i < this._children().length; i++) translates.push(null);
 
         // 기준 요소를 배치하고 기준 요소의 좌우에 남은 여백
-        const childOnCenterWidth = this._childWidth(this._basisChild());
+        const childOnCenterWidth = this._rootWidth();
         let remaningRootWidth = {
             left:
                 rootWidth / 2 -
@@ -271,7 +262,7 @@ export class HorizontalInfinityScroller {
         // 왼쪽 여백을 채운다.
         for (let i = 1; remaningRootWidth.left > 0; i++) {
             const childIdx = this._basisChildIdx - i,
-                childWidth = this._childWidth(this._children()[childIdx]);
+                childWidth = this._rootWidth();
             if (childIdx < 0) {
                 i = this._basisChildIdx - this._children().length; // 다음 loop에서 마지막 요소의 index가 됨.
                 continue;
@@ -284,7 +275,7 @@ export class HorizontalInfinityScroller {
         // 오른족 여백을 채운다.
         for (let i = 1; remaningRootWidth.right > 0; i++) {
             const childIdx = this._basisChildIdx + i,
-                childWidth = this._childWidth(this._children()[childIdx]);
+                childWidth = this._rootWidth();
             if (childIdx >= this._children().length) {
                 i = -this._basisChildIdx - 1; // 다음 loop에서 i = 0이 됨.
                 continue;
@@ -305,12 +296,7 @@ export class HorizontalInfinityScroller {
      * @returns 자식 요소들의 너비의 총합
      */
     _childWidthSum() {
-        let sum = 0;
-        for (const i of this._children()) {
-            sum += this._childWidth(i);
-        }
-
-        return sum;
+        return this._rootWidth() * this._children().length;
     }
 
     /**
@@ -333,7 +319,7 @@ export class HorizontalInfinityScroller {
         // 오른쪽 방향으로 이동할 때의 변화값을 계산
         tmp = indexOfCenter;
         while (tmp != indexOfTarget) {
-            offsetOnRightDirection += this._childWidth(this._children()[tmp]);
+            offsetOnRightDirection += this._rootWidth();
             tmp--;
             while (tmp < 0) tmp += this._children().length;
             tmp = tmp % this._children().length;
@@ -342,7 +328,7 @@ export class HorizontalInfinityScroller {
         // 왼쪽 방향으로 이동할 때의 변화값을 계산
         tmp = indexOfCenter;
         while (tmp != indexOfTarget) {
-            offsetOnLeftDirection -= this._childWidth(this._children()[tmp]);
+            offsetOnLeftDirection -= this._rootWidth();
             tmp = (tmp + 1) % this._children().length;
         }
 
