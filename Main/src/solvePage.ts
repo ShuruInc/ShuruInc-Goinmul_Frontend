@@ -1,3 +1,4 @@
+import { dom, library } from "@fortawesome/fontawesome-svg-core";
 import { QuizSession } from "./api/quiz_session";
 import initShareButton from "./initShare";
 import {
@@ -11,11 +12,16 @@ import {
 } from "./quiz-solve-ui";
 import solveBody from "./solvePage.html";
 import { InitTopNav } from "./top_bottom_animation";
+import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 export default function initSolvePage(session: QuizSession) {
     document.body.innerHTML = solveBody;
     InitTopNav();
     initQuizSolveUI();
+
+    library.add(faCheck);
+    library.add(faXmark);
+    dom.i2svg({ node: document.querySelector(".correctness-effect")! });
 
     let shared = false;
     const sessionId = session.getSessionId();
