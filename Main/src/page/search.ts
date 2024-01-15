@@ -7,6 +7,7 @@ import {
     fillPlaceholderSectionInto,
     preparePlaceholderSection,
 } from "../post_board";
+import setHorizontalDragScrollOnDesktop from "../horizontal_drag_to_scroll_on_desktop";
 
 // 아이콘 렌더링
 library.add(faSearch);
@@ -42,8 +43,11 @@ const searchInput = document.querySelector("input.search") as HTMLInputElement;
 searchInput.value = query;
 
 const renderPopularQueries = (queries: string[]) => {
-    const columns = document.querySelector(".popularNow .columns")!;
+    const columns = document.querySelector(
+        ".popularNow .columns"
+    ) as HTMLElement;
     columns.innerHTML = "";
+    setHorizontalDragScrollOnDesktop(columns);
 
     while (queries.length > 0) {
         let ol = document.createElement("ol");

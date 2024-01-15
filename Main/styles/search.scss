@@ -3,6 +3,7 @@
 @use "common/utils";
 @import "common/styled-inputs";
 @import "index_page/post-board";
+@import "mixins";
 
 .top-fixed-bar .container {
     width: 100%;
@@ -43,11 +44,15 @@ article {
     width: 100%;
     padding-top: 80px;
     .popularNow {
+        user-select: None;
+
         .columns {
             display: flex;
             flex-direction: row;
             width: 100%;
             overflow-x: auto;
+            @include hide-scrollbar;
+
             .column {
                 display: block;
                 padding: 10px 30px;

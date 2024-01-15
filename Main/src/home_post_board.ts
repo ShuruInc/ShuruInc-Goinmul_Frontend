@@ -5,6 +5,7 @@ import {
     fillPlaceholderSectionInto,
     preparePlaceholderSection,
 } from "./post_board";
+import setHorizontalDragScrollOnDesktop from "./horizontal_drag_to_scroll_on_desktop";
 
 /**
  * 랭킹 아이템
@@ -55,6 +56,8 @@ export function createRankingSection(title: string, data: RankingItem[]) {
     data.splice(0, 3);
     (section.querySelector("img.podium") as HTMLImageElement).src = podium;
     section.querySelector("h2")!.textContent = title;
+    const more = section.querySelector(".more") as HTMLElement;
+    setHorizontalDragScrollOnDesktop(more);
 
     let start = 4;
     while (data.length > 0) {
@@ -77,7 +80,7 @@ export function createRankingSection(title: string, data: RankingItem[]) {
             .forEach((i) => ol.appendChild(i));
 
         column.appendChild(ol);
-        section.querySelector(".more")!.appendChild(column);
+        more.appendChild(column);
         start += 3;
     }
 
