@@ -108,16 +108,25 @@ PostBoardApiClient.getMainBoard()
                 );
                 categoryNav.activateButtonByKey("home", true, sign);
             }
-            let scrollDelta =
-                (document
+            const tryScroll: () => void = () => {
+                const rect = document
                     .querySelector(".column.main section.ranking-section h2")
-                    ?.getBoundingClientRect().top ?? 0) - 150;
+                    ?.getBoundingClientRect()!;
+                if (rect.width === 0 || rect.height === 0)
+                    return setTimeout(tryScroll, 1);
 
-            console.log(scrollDelta);
-            document.querySelector(".column.main")?.scrollBy({
-                top: scrollDelta,
-                behavior: "smooth",
-            });
+                const top = rect.top;
+                console.log(top);
+
+                let scrollDelta = top - 150;
+                document.querySelector(".column.main")?.scrollBy({
+                    top: scrollDelta,
+                    behavior: "smooth",
+                });
+            };
+            // Q. 왜 400ms인가요?
+            // A. 너무 짧으면 상단 카테고리 버튼 스크롤링이 중간에 멈추는 버그가 발생한다.
+            setTimeout(tryScroll, 400);
         };
         SetCustomRankingHandler(goToRankings);
 
