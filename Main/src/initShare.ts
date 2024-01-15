@@ -1,4 +1,4 @@
-import { kakaoApiKey } from "./kakao_api_key";
+import { kakaoApiKey } from "./env";
 
 export type ShareDatas = {
     webShare: ShareData;
