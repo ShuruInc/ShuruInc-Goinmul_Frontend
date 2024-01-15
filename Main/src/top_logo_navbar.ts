@@ -14,11 +14,21 @@ function getRandomInt(max: number) {
 }
 
 let customRankingHandler: (() => void) | null = null;
+
+/**
+ * 랭킹 아이콘 버튼이 클릭됐을 때의 동작을 설정한다.
+ * 미설정시의 기본 동작은 /#ranking으로의 이동한다.
+ * @param handler 랭킹 아이콘 배튼이 클릭됐을 때 실행될 이벤트 핸들러 함수
+ */
 export function SetCustomRankingHandler(handler: () => void) {
     customRankingHandler = handler;
 }
 
-export function InitTopNav() {
+/**
+ * 상단 네비게이션 바를 초기화한다.
+ * @param animated 스크롤 애니메이션 여부
+ */
+export function InitTopNav(animated = false) {
     const topFixedBar = document.getElementById("topFixedBar")!;
     // 아이콘 렌더링
     library.add(faMagnifyingGlass, faRankingStar);
@@ -48,18 +58,16 @@ export function InitTopNav() {
             evt.preventDefault();
             location.href = "/search.html";
         });
+
+    if (animated) InitTopBottomAnimation(topFixedBar, mainTopLogo);
 }
 
 // 애니메이션이 있는 모바일형 상단바
 // 하향 스크롤 시 감추고 반대의 경우 드러냄
-export function InitTopBottomAnimation() {
-    var topFixedBar = document.getElementById("topFixedBar")!;
-    var mainTopLogo = document.querySelector(
-        ".main-top-logo-image"
-    )! as HTMLImageElement;
-
-    InitTopNav();
-
+export function InitTopBottomAnimation(
+    topFixedBar: HTMLElement,
+    mainTopLogo: HTMLImageElement
+) {
     var isHidden = false;
     var mainLogoNum = 1;
     var logoChangeAllowed = true;
