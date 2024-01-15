@@ -1,15 +1,31 @@
 type TimerInternalState = Partial<{
+    /**
+     * 스톱워치가 시작한 타임스탬프
+     */
     startedAt: number;
+    /**
+     * 스톱워치가 흐른 시간에서 빼야하는 값 (밀리초)
+     */
     negativeDelta: number;
+    /**
+     * 스톱워치가 일시정지한 타임스탬프
+     */
     pausedAt: number;
+    /**
+     * 스톱워치가 정지한 타임스탬프
+     */
     stoppedAt: number;
 }>;
 
+/**
+ * 브라우저 내장 스토리지를 이용한 간단한 스톱워치
+ */
 export default class StopWatch {
     private id: string;
     constructor(id: string) {
         this.id = id;
     }
+
     private getInternalState(): TimerInternalState {
         return JSON.parse(localStorage.getItem(`stopwatch-${this.id}`) ?? "{}");
     }
@@ -34,6 +50,7 @@ export default class StopWatch {
         let state = this.getInternalState();
         if (typeof state.pausedAt === "undefined") return;
 
+        // 스톱워치가 일시정지된 시간동안 negativeDelta가 늘어난다.
         state.negativeDelta =
             (state.negativeDelta ?? 0) + (Date.now() - state.pausedAt);
         delete state.pausedAt;
@@ -47,6 +64,12 @@ export default class StopWatch {
         });
     }
     elapsed() {
+        /**
+         * 동작중이라면: 지금 시각 - 시작한 시각 - negativeDelta
+         * 정지했다면: 정지한 시각 - 시작한 시각 - negativeDelta
+         * 일시정지했다면: 일지정지한 시각 - 시작한 시각 - negativeDelta
+         *   (일시정지하는 동안 시간은 흘러가지 않으므로!)
+         */
         const state = this.getInternalState(),
             now = Date.now();
         return (

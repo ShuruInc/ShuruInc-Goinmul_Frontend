@@ -9,6 +9,7 @@ import { HorizontalInfinityScroller } from "../lib/infinity_scroller";
 import { setupPostBoard } from "../post_board";
 import {
     InitTopBottomAnimation,
+    InitTopNav,
     SetCustomRankingHandler,
 } from "../top_logo_navbar";
 import { TopCategoryButtonNav } from "../top_category_button_nav";
@@ -132,5 +133,5 @@ PostBoardApiClient.getMainBoard()
 
         if (location.hash.includes("ranking")) goToRankings();
 
-        InitTopBottomAnimation();
+        InitTopNav(true);
     });

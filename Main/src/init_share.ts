@@ -14,6 +14,9 @@ export type ShareDatas = {
     image: File;
 };
 
+/**
+ * Kakao SDK를 로드합니다.
+ */
 const importKakaoSdk = () => {
     if (document.querySelector("script#kakao-sdk") !== null) return;
 
@@ -29,12 +32,23 @@ const importKakaoSdk = () => {
     document.head.appendChild(script);
 };
 
+/**
+ * 카카오에 이미지를 업로드합니다.
+ * @param image 업로드할 이미지
+ * @returns 이미지 url
+ */
 const uploadKakaoImage = async (image: File) =>
     (await (window as any).Kakao.Share.uploadImage({ file: [image] })).infos
         .original.url as string;
 
 type InitShareButtonOptions = Partial<{
+    /**
+     * 사용자가 공유를 취소하지 않았을 시의 동작 (단 사용자가 실제로 공유를 했는 지는 알 수 없다.)
+     */
     onComplete: () => void;
+    /**
+     * 공유 직전에 할 동작
+     */
     beforeShare: () => Promise<void>;
 }>;
 

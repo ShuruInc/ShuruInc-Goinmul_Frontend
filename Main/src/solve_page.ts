@@ -17,10 +17,12 @@ import html2canvas from "html2canvas";
 import padCanvas from "./canvas_padding";
 
 export default function initSolvePage(session: QuizSession) {
+    // HTML 변경 및 레이아웃 초기화
     document.body.innerHTML = solveBody;
     InitTopNav();
     initQuizSolveUI();
 
+    // 아이콘 렌더링
     library.add(faCheck);
     library.add(faXmark);
     dom.i2svg({ node: document.querySelector(".correctness-effect")! });
@@ -31,9 +33,14 @@ export default function initSolvePage(session: QuizSession) {
     const setShareData = initShareButton({
         onComplete: () => (shared = true),
         beforeShare: () => {
+            /**
+             * .problem-box가 보이지 않으면 svg 렌더링이 되지 않으므로
+             * .problem-box가 보일 때 svg 렌더링을 한다.
+             */
             return html2canvas(
                 document.querySelector(".help-me .problem-box")!,
                 {
+                    // 이미지가 안 보이는 버그 수정
                     useCORS: true,
                 }
             ).then(
