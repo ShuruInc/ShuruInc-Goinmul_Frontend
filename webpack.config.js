@@ -1,3 +1,4 @@
+const webpack = require("webpack");
 const { createHash } = require("crypto");
 const { readdirSync } = require("fs");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -10,6 +11,11 @@ let htmlFiles = readdirSync("Main/html", {
     recursive: true,
 }).filter((i) => i.toLowerCase().endsWith(".html"));
 let hashes = htmlFiles.map(md5);
+
+if (typeof process.env.KAKAO_API_KEY === "undefined")
+    throw new Error("KAKAO_API_KEY NOT PROVIDED");
+else if (typeof process.env.BACKEND_URL === "undefined")
+    throw new Error("BACKEND_URL not provided");
 
 const dev = process.env.NODE_ENV === "development";
 module.exports = {
@@ -80,6 +86,7 @@ module.exports = {
                     template: path.join("Main/html", i),
                 })
         ),
+        new webpack.EnvironmentPlugin(["KAKAO_API_KEY", "BACKEND_URL"]),
         new MiniCssExtractPlugin(),
     ],
 };

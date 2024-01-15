@@ -3,14 +3,15 @@
   "version": "1.0.0",
   "description": "frontend of singsongsangsong",
   "scripts": {
-    "dev": "NODE_ENV=development webpack",
-    "build": "NODE_ENV=production webpack"
+    "dev": "dotenv -e dev.env -- webpack --watch",
+    "build": "webpack"
   },
   "author": "ShuruInc",
   "license": "UNLICENSED",
   "devDependencies": {
     "@types/josa": "^3.0.5",
     "css-loader": "^6.8.1",
+    "dotenv-cli": "^7.3.0",
     "file-loader": "^6.2.0",
     "html-loader": "^4.2.0",
     "html-webpack-plugin": "^5.6.0",

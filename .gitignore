@@ -1,4 +1,4 @@
 Main/dist/assets/css/*.css*
 node_modules/
 Main/dist
-*_api_key.ts
+*.env*
