@@ -4,15 +4,15 @@ import { QuizSession } from "../../api/quiz_session";
 import SearchApiClient from "../../api/search";
 import createFloatingButton, {
     addFloatingButonListener,
-} from "../../floatingButton";
-import initShareButton from "../../initShare";
+} from "../../floating_button";
+import initShareButton from "../../init_share";
 import {
     fillPlaceholderSectionInto,
     preparePlaceholderSection,
 } from "../../post_board";
-import { InitTopNav } from "../../top_bottom_animation";
+import { InitTopNav } from "../../top_logo_navbar";
 import { getJosaPicker } from "josa";
-import padCanvas from "../../padCanvas";
+import padCanvas from "../../canvas_padding";
 
 const sessionId =
     new URLSearchParams(location.search.substring(1)).get("session") ?? "";

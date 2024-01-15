@@ -2,7 +2,7 @@ import "../../styles/index.scss";
 import PostBoardApiClient from "../api/posts";
 import createFloatingButton, {
     addFloatingButonListener,
-} from "../floatingButton";
+} from "../floating_button";
 
 import { displayMainPostBoard } from "../home_post_board";
 import { HorizontalInfinityScroller } from "../lib/infinity_scroller";
@@ -10,7 +10,7 @@ import { setupPostBoard } from "../post_board";
 import {
     InitTopBottomAnimation,
     SetCustomRankingHandler,
-} from "../top_bottom_animation";
+} from "../top_logo_navbar";
 import { TopCategoryButtonNav } from "../top_category_button_nav";
 
 createFloatingButton("home");
