@@ -49,9 +49,11 @@ const renderPopularQueries = (queries: string[]) => {
     columns.innerHTML = "";
     setHorizontalDragScrollOnDesktop(columns);
 
+    let start = 1;
     while (queries.length > 0) {
         let ol = document.createElement("ol");
         ol.className = "column";
+        ol.start = start;
 
         for (let i = 0; i < 5; i++) {
             const query = queries.pop();
@@ -69,6 +71,7 @@ const renderPopularQueries = (queries: string[]) => {
             a.textContent = query;
 
             ol.appendChild(li);
+            start++;
         }
 
         columns.appendChild(ol);
