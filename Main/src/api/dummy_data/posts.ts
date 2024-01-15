@@ -1,5 +1,5 @@
 import { Post, PostBoardSectionData } from "../../post_board";
-import RandomImageUrl from "./randomImageUrl";
+import RandomImageUrl from "./random_image_url";
 
 export const dummyCategories = {
     "K-POP": [

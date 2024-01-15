@@ -1,6 +1,6 @@
 import { dom, library } from "@fortawesome/fontawesome-svg-core";
 import { QuizSession } from "./api/quiz_session";
-import initShareButton, { ShareDatas } from "./initShare";
+import initShareButton, { ShareDatas } from "./init_share";
 import {
     addAnswerSubmitListener,
     displayCorrectnessAnimation,
@@ -9,12 +9,12 @@ import {
     setHelpMeFriendsEventHandler,
     updateProgress,
     updateShareProblem,
-} from "./quiz-solve-ui";
-import solveBody from "./solvePage.html";
-import { InitTopNav } from "./top_bottom_animation";
+} from "./quiz_solve_ui";
+import solveBody from "./solve_page.html";
+import { InitTopNav } from "./top_logo_navbar";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import html2canvas from "html2canvas";
-import padCanvas from "./padCanvas";
+import padCanvas from "./canvas_padding";
 
 export default function initSolvePage(session: QuizSession) {
     document.body.innerHTML = solveBody;

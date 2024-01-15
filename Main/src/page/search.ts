@@ -1,7 +1,7 @@
 import { dom, icon, library } from "@fortawesome/fontawesome-svg-core";
 import "../../styles/search.scss";
 import { faChevronLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
-import createFloatingButton from "../floatingButton";
+import createFloatingButton from "../floating_button";
 import SearchApiClient from "../api/search";
 import {
     fillPlaceholderSectionInto,

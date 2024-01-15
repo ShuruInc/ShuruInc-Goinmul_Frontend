@@ -1,9 +1,9 @@
 import { dom, library } from "@fortawesome/fontawesome-svg-core";
 import "../../../styles/quiz";
 import { QuizApiClient } from "../../api/quiz";
-import { InitTopNav } from "../../top_bottom_animation";
+import { InitTopNav } from "../../top_logo_navbar";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
-import initSolvePage from "../../solvePage";
+import initSolvePage from "../../solve_page";
 import { QuizSession } from "../../api/quiz_session";
 
 InitTopNav();

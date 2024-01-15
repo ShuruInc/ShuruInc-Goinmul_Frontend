@@ -1,4 +1,4 @@
-import { QuizProblem } from "../quiz-solve-ui";
+import { QuizProblem } from "../quiz_solve_ui";
 import { getDummyProblemData } from "./dummy_data/problems";
 import StopWatch from "../stopwatch";
 

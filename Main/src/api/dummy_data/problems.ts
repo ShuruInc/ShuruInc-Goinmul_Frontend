@@ -1,5 +1,5 @@
-import { QuizProblem } from "../../quiz-solve-ui";
-import RandomImageUrl from "./randomImageUrl";
+import { QuizProblem } from "../../quiz_solve_ui";
+import RandomImageUrl from "./random_image_url";
 
 const chosung = (str: string) => {
     // https://zetawiki.com/w/index.php?oldid=746550
