@@ -27,13 +27,15 @@
                 border-bottom: 1px solid black;
             }
             .choices {
-                display: flex;
-                flex-direction: row;
-                flex-wrap: wrap;
+                display: grid;
+                align-items: baseline;
+                grid-template-columns: repeat(2, 1fr);
                 gap: 0.5em 3em;
-                justify-content: center;
+                margin: 0px;
+                padding: 0px;
                 li {
-                    max-width: fit-content;
+                    list-style-position: inside;
+                    text-align: left;
                 }
             }
         }
