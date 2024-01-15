@@ -59,6 +59,7 @@ export function preparePlaceholderSection(
                 image.className = "cell-img";
                 cell.className = "table-cell";
             }
+            cell.draggable = false;
 
             // 정보 추가
             const info = document.createElement("div");
