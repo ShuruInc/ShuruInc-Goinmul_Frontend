@@ -1,4 +1,5 @@
 import footer from "./footer";
+import setHorizontalDragScrollOnDesktop from "./horizontal_drag_to_scroll_on_desktop";
 
 type RowInfo = { landscape: boolean; count: number };
 export type Post = {
@@ -40,6 +41,9 @@ export function preparePlaceholderSection(
         const postTable = document.createElement("div");
         postTable.className =
             "post-table" + (rowInfo.landscape ? " landscape" : " portfrait");
+        if (!rowInfo.landscape) {
+            setHorizontalDragScrollOnDesktop(postTable);
+        }
 
         for (let i = 0; i < rowInfo.count; i++) {
             // 요소 생성 후 이미지 소스 설정
