@@ -1,13 +1,13 @@
 # 빌드방법
 1. node.js를 설치한다.
 1. (최초 혹은 의존성에 변화가 있을 때에만) `npm i`를 실행한다.
-1. `npx webpack`을 실행한다.
+1. `npm run build`을 실행한다.
 1. 끝
 
 ## watch하는 방법
 1. node.js를 설치한다.
 1. (최초 혹은 의존성에 변화가 있을 때에만) `npm i`를 실행한다.
-1. `npx webpack --watch`을 실행한다.
+1. `npm run dev`을 실행한다.
 1. 끝
 
 # 서버 열때 참고사항
