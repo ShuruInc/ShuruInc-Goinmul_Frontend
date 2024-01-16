@@ -7,11 +7,7 @@ import createFloatingButton, {
 import { displayMainPostBoard } from "../home_post_board";
 import { HorizontalInfinityScroller } from "../lib/infinity_scroller";
 import { setupPostBoard } from "../post_board";
-import {
-    InitTopBottomAnimation,
-    InitTopNav,
-    SetCustomRankingHandler,
-} from "../top_logo_navbar";
+import { InitTopNav, SetCustomRankingHandler } from "../top_logo_navbar";
 import { TopCategoryButtonNav } from "../top_category_button_nav";
 
 createFloatingButton("home");
