@@ -1,3 +1,5 @@
+import TouchVelocityCalculator from "./touch_snap_interpreter";
+
 /**
  * HorizontalInfinityScroller 옵션
  */
@@ -7,6 +9,11 @@ type HorizontalInfinityScrollerOptions = {
     /** 자식이 추가되거나 삭제되지 않음 */
     childrenNeverChange: boolean;
 };
+
+function positiveModular(val: number, maxExcluding: number) {
+    while (val < 0) val += maxExcluding;
+    return val % maxExcluding;
+}
 
 /**
  * 무한반복되는 스크롤을 구현한다.
@@ -31,6 +38,7 @@ export class HorizontalInfinityScroller {
 
     // 이벤트 리스너용
     _scrollListeners: (() => void)[] = [];
+    _touchDragListeners: ((key: string, direction: 1 | -1) => void)[] = [];
 
     // 옵션 및 캐싱
     _options: HorizontalInfinityScrollerOptions;
@@ -44,6 +52,11 @@ export class HorizontalInfinityScroller {
     _easingTarget = 0;
     _easingEndOffset = 0;
 
+    // 가로 스크롤 해석용
+    _horizontalScrollVelocityCalculator: TouchVelocityCalculator;
+    _origianlOffsetBeforeDragging = 0;
+    _dragging = false;
+
     constructor(
         root: HTMLElement,
         options: Partial<HorizontalInfinityScroller> = {}
@@ -55,6 +68,28 @@ export class HorizontalInfinityScroller {
         this._render = this._render.bind(this);
         this._rootWidth = this._rootWidth.bind(this);
         this._doEasing = this._doEasing.bind(this);
+        this._onHorizontalTouchEnd = this._onHorizontalTouchEnd.bind(this);
+        this._onHorizontalTouchMove = this._onHorizontalTouchMove.bind(this);
+        this._onHorizontalTouchStart = this._onHorizontalTouchStart.bind(this);
+        this.calculateOffsetDeltaToCenterOf =
+            this.calculateOffsetDeltaToCenterOf.bind(this);
+
+        // 모바일에서 터치 드래그로 좌우 스크롤할 수 있도록 관련 클래스 변수 초기화
+        this._horizontalScrollVelocityCalculator = new TouchVelocityCalculator(
+            root
+        );
+        this._horizontalScrollVelocityCalculator.addEventListner(
+            "dragstart",
+            this._onHorizontalTouchStart
+        );
+        this._horizontalScrollVelocityCalculator.addEventListner(
+            "dragmove",
+            this._onHorizontalTouchMove
+        );
+        this._horizontalScrollVelocityCalculator.addEventListner(
+            "dragend",
+            this._onHorizontalTouchEnd
+        );
 
         // 생성자의 매개변수로 받은 options 저장
         // 매개변수에서 지정되지 않은 경우 기본값을 저장한다.
@@ -72,6 +107,48 @@ export class HorizontalInfinityScroller {
 
         // 렌더링 시작
         window.requestAnimationFrame(this._render);
+    }
+
+    _onHorizontalTouchStart() {
+        if (this._easing) {
+            this._easing = false;
+        }
+        this._dragging = true;
+        this._origianlOffsetBeforeDragging = this._basisChildOffsetFromCenter;
+    }
+
+    _onHorizontalTouchMove(delta: number) {
+        console.log(delta);
+        let newOffset = this._basisChildOffsetFromCenter + delta;
+        if (Math.abs(newOffset) > this._rootWidth()) {
+            return;
+        } else {
+            this._basisChildOffsetFromCenter = newOffset;
+        }
+    }
+
+    _onHorizontalTouchEnd(speed: number) {
+        this._dragging = false;
+        const scrolledEnough =
+            Math.abs(this._basisChildOffsetFromCenter) >
+            this._rootWidth() * 0.5;
+        if (Math.abs(speed) > 5 || scrolledEnough) {
+            let sign = Math.sign(this._basisChildOffsetFromCenter) as -1 | 1;
+            const targetChild = scrolledEnough
+                ? this.getCurrentlyMostVisibleChild()!
+                : this._children()[
+                      positiveModular(
+                          this._basisChildIdx - sign,
+                          this._children().length
+                      )
+                  ];
+            this.scrollIntoCenterView(targetChild, true, sign);
+            this._touchDragListeners.forEach((i) =>
+                i(targetChild.dataset.key as string, sign)
+            );
+        } else {
+            this.scrollIntoCenterView(this._basisChild());
+        }
     }
 
     /**
@@ -119,7 +196,7 @@ export class HorizontalInfinityScroller {
      */
     _render(timestamp: number) {
         // offset 정규화
-        if (!this._easing)
+        if (!this._easing && !this._dragging)
             this._basisChildOffsetFromCenter %= this._childWidthSum();
 
         // easing해야 한다면 easing한다.
@@ -140,7 +217,7 @@ export class HorizontalInfinityScroller {
         }
 
         // offset 한 번 더 정규화
-        if (!this._easing) {
+        if (!this._easing && !this._dragging) {
             const nearestToCenter = translates
                 .map((i, idx) => ({ offset: i, index: idx }))
                 .filter((i) => i.offset !== null)
@@ -436,5 +513,11 @@ export class HorizontalInfinityScroller {
 
     addScrollEventListener(listener: () => void) {
         this._scrollListeners.push(listener);
+    }
+
+    addTouchDragScrollEventListener(
+        listener: (key: string, direction: 1 | -1) => void
+    ) {
+        this._touchDragListeners.push(listener);
     }
 }

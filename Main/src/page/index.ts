@@ -75,6 +75,10 @@ PostBoardApiClient.getMainBoard()
                 );
             }
         });
+        scroller.addTouchDragScrollEventListener((key, direction) => {
+            if (categoryNav._getActiveButton().dataset.key !== key)
+                categoryNav.activateButtonByKey(key, true, direction);
+        });
 
         addFloatingButonListener(() => {
             if (
