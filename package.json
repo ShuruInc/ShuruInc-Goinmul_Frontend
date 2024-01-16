@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "frontend of singsongsangsong",
   "scripts": {
-    "dev": "dotenv -e dev.env -- webpack --watch",
+    "dev": "dotenv -e dev.env -- webpack --watch --progress",
     "build": "webpack"
   },
   "author": "ShuruInc",
