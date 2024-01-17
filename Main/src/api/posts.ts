@@ -1,6 +1,7 @@
 import { MainPostBoardData } from "../home_post_board";
 import { PostBoardSectionData } from "../post_board";
-import { dummyPosts, dummyTopCategories } from "./dummy_data/posts";
+import { Api } from "./api_http_client/ApiHttpClient";
+import { transformArticleDtoToPost } from "./transform";
 
 export type PostBoardData = {
     id: string;
@@ -8,54 +9,73 @@ export type PostBoardData = {
     fetchNextSection: () => Promise<PostBoardSectionData | null>;
 };
 
-function randomPick<T>(arr: T[], count: number): T[] {
-    let result = [],
-        newArr = [...arr];
-    while (result.length < count && newArr.length > 0)
-        result.push(newArr.splice(Math.random() * newArr.length, 1)[0]);
-
-    return result;
-}
+const apiClient = new Api();
 
 export default class PostBoardApiClient {
     static async getMainBoard(): Promise<MainPostBoardData> {
-        const dummyNicknames =
-            "Curabitur et pharetra nisi. Mauris sapien leo, dictum porttitor diam ut, mollis dictum urna. Maecenas hendrerit sapien dui, eu sagittis ipsum porttitor non. Nullam vehicula consequat lorem a egestas. Donec sapien ante, placerat eget gravida in, tristique vitae risus. Suspendisse mattis, ipsum."
-                .replace(/[.,]/g, "")
-                .split(" ");
         return {
-            popularTests: randomPick(
-                Object.values(dummyPosts)
-                    .reduce((pv, cv) => pv.concat(cv), [])
-                    .map((i) => i.portraits ?? [])
-                    .reduce((pv, cv) => pv.concat(cv), []),
-                10
+            popularTests: await Promise.all(
+                [1, 2, 3, 4, 5, 6, 7, 8]
+                    .map(async (i) => apiClient.api.getArticle(i))
+                    .map(async (i) => (await i).data)
+                    .map(async (i) =>
+                        transformArticleDtoToPost((await i).result!),
+                    ),
             ),
             rankings: Object.fromEntries(
-                dummyTopCategories.map((i, idx) => [
-                    i,
-                    dummyNicknames.slice(14 * idx, 14 * (idx + 1)).map((i) => ({
-                        nickname: i,
-                        score: Math.round(Math.random() * 100),
-                        hashtag: Math.round(Math.random() * 9999).toString(),
+                (await apiClient.api.getRanks()).data.result!.map((i) => [
+                    i.categoryNm,
+                    i.rankDtoList!.map((i) => ({
+                        nickname: i.nickname!,
+                        score: i.score!,
+                        hashtag: "1234",
                     })),
-                ])
+                ]),
             ),
         };
     }
     static async getPostBoards(): Promise<PostBoardData[]> {
-        return dummyTopCategories.map((title) => {
-            let index = 0;
-            return {
-                id: title + "00",
-                title,
-                async fetchNextSection() {
-                    let currentIdx = index++;
-                    return currentIdx < dummyPosts[title].length
-                        ? dummyPosts[title][currentIdx]
-                        : null;
-                },
-            };
-        });
+        const firstCategories = await apiClient.api.getFirstCategories();
+        if (firstCategories.ok) {
+            const result = (
+                await Promise.all(
+                    firstCategories.data.result!.map(async (i) => {
+                        const secondCategoriesResponse =
+                            await apiClient.api.getSecondCategories(i.id!);
+                        const secondCategories =
+                            secondCategoriesResponse.data.result!;
+                        console.log(secondCategories);
+                        return { firstCategory: i, secondCategories };
+                    }),
+                )
+            ).map(({ firstCategory, secondCategories }) => {
+                return {
+                    id: firstCategory.id!.toString(),
+                    title: firstCategory.categoryNm!,
+                    async fetchNextSection() {
+                        let secondCategory = secondCategories.shift();
+                        if (typeof secondCategory === "undefined") return null;
+
+                        const articles =
+                            await apiClient.api.getArticlesBySecCategory(
+                                secondCategory.id!,
+                            );
+
+                        return {
+                            title: secondCategory.categoryNm!,
+                            portraits: articles.data.result!.map(
+                                transformArticleDtoToPost,
+                            ),
+                        };
+                    },
+                };
+            });
+
+            return result;
+        } else {
+            throw new Error(
+                "오류가 발생했습니다: " + firstCategories.data.message,
+            );
+        }
     }
 }

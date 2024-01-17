@@ -2,3 +2,4 @@ Main/dist/assets/css/*.css*
 node_modules/
 Main/dist
 *.env*
+Main/src/api/api_http_client
