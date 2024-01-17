@@ -42,7 +42,7 @@ export default function initSolvePage(session: QuizSession) {
                 {
                     // 이미지가 안 보이는 버그 수정
                     useCORS: true,
-                }
+                },
             ).then(
                 (canvas) =>
                     new Promise<void>((resolve, reject) => {
@@ -55,7 +55,7 @@ export default function initSolvePage(session: QuizSession) {
                                         "problem.png",
                                         {
                                             type: "image/png",
-                                        }
+                                        },
                                     );
                                     setShareData({
                                         ...shareData,
@@ -68,7 +68,7 @@ export default function initSolvePage(session: QuizSession) {
                                     resolve();
                                 } else reject("오류가 발생했습니다.");
                             });
-                    })
+                    }),
             );
         },
     });
@@ -82,7 +82,6 @@ export default function initSolvePage(session: QuizSession) {
 
         const renewProblem = async () => {
             const problem = await session.currentProblem();
-            console.log(problem);
             if (problem === null) {
                 return goResult();
             }
@@ -90,19 +89,19 @@ export default function initSolvePage(session: QuizSession) {
             displayProblem(
                 document.querySelector("article")!,
                 problem,
-                problem.index
+                problem.index,
             );
             updateShareProblem(
                 document.querySelector(".help-me .problem-box")!,
                 problem,
-                problem.index
+                problem.index,
             );
 
             if (!sessionInfo.isNerdTest) {
                 updateProgress(
                     ((problem.index - 1) / sessionInfo.totalProblemCount!) *
                         100,
-                    `${problem.index}/${sessionInfo.totalProblemCount!}`
+                    `${problem.index}/${sessionInfo.totalProblemCount!}`,
                 );
                 setHelpMeFriendsEventHandler({
                     onEnabled: () => {
@@ -153,7 +152,7 @@ export default function initSolvePage(session: QuizSession) {
                     "problem.png",
                     {
                         type: "image/png",
-                    }
+                    },
                 ),
             });
         };
@@ -163,7 +162,6 @@ export default function initSolvePage(session: QuizSession) {
             displayCorrectnessAnimation(correct);
 
             renewProblem();
-            console.log(answer);
         });
 
         if (sessionInfo.isNerdTest) {
@@ -180,17 +178,17 @@ export default function initSolvePage(session: QuizSession) {
                         Math.floor(leftTime / 1000) % 60
                     )
                         .toString()
-                        .padStart(2, "0")}`
+                        .padStart(2, "0")}`,
                 );
             }, 500);
         } else {
             const quizId = new URLSearchParams(
-                location.search.substring(1)
+                location.search.substring(1),
             ).get("id");
             history.replaceState(
                 null,
                 "",
-                `/quiz/solve.html?session=${sessionId}&id=${quizId}`
+                `/quiz/solve.html?session=${sessionId}&id=${quizId}`,
             );
         }
         renewProblem();

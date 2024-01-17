@@ -59,7 +59,7 @@ export class HorizontalInfinityScroller {
 
     constructor(
         root: HTMLElement,
-        options: Partial<HorizontalInfinityScroller> = {}
+        options: Partial<HorizontalInfinityScroller> = {},
     ) {
         // 함수 bind (setInterval이나 setTimeout으로 인한 버그 해결)
         this.addScrollOffset = this.addScrollOffset.bind(this);
@@ -76,19 +76,19 @@ export class HorizontalInfinityScroller {
 
         // 모바일에서 터치 드래그로 좌우 스크롤할 수 있도록 관련 클래스 변수 초기화
         this._horizontalScrollVelocityCalculator = new TouchVelocityCalculator(
-            root
+            root,
         );
         this._horizontalScrollVelocityCalculator.addEventListner(
             "dragstart",
-            this._onHorizontalTouchStart
+            this._onHorizontalTouchStart,
         );
         this._horizontalScrollVelocityCalculator.addEventListner(
             "dragmove",
-            this._onHorizontalTouchMove
+            this._onHorizontalTouchMove,
         );
         this._horizontalScrollVelocityCalculator.addEventListner(
             "dragend",
-            this._onHorizontalTouchEnd
+            this._onHorizontalTouchEnd,
         );
 
         // 생성자의 매개변수로 받은 options 저장
@@ -118,7 +118,6 @@ export class HorizontalInfinityScroller {
     }
 
     _onHorizontalTouchMove(delta: number) {
-        console.log(delta);
         let newOffset = this._basisChildOffsetFromCenter + delta;
         if (Math.abs(newOffset) > this._rootWidth()) {
             return;
@@ -139,12 +138,12 @@ export class HorizontalInfinityScroller {
                 : this._children()[
                       positiveModular(
                           this._basisChildIdx - sign,
-                          this._children().length
+                          this._children().length,
                       )
                   ];
             this.scrollIntoCenterView(targetChild, true, sign);
             this._touchDragListeners.forEach((i) =>
-                i(targetChild.dataset.key as string, sign)
+                i(targetChild.dataset.key as string, sign),
             );
         } else {
             this.scrollIntoCenterView(this._basisChild());
@@ -182,7 +181,7 @@ export class HorizontalInfinityScroller {
             this._basisChildOffsetFromCenter = this._easingFunction(
                 this._easingStartOffset,
                 this._easingEndOffset,
-                (timestamp - this._easingStartTime) / this._easingDuration
+                (timestamp - this._easingStartTime) / this._easingDuration,
             );
         }
 
@@ -223,7 +222,6 @@ export class HorizontalInfinityScroller {
                 .filter((i) => i.offset !== null)
                 .sort((a, b) => Math.abs(a.offset!) - Math.abs(b.offset!))[0];
             if (this._basisChildIdx !== nearestToCenter.index) {
-                console.log(translates);
                 this._basisChildOffsetFromCenter = nearestToCenter.offset!;
                 this._basisChildIdx = nearestToCenter.index;
             }
@@ -384,7 +382,7 @@ export class HorizontalInfinityScroller {
      */
     calculateOffsetDeltaToCenterOf(
         target: HTMLElement,
-        direction: -1 | 1 | null
+        direction: -1 | 1 | null,
     ) {
         let indexOfCenter = this._basisChildIdx;
         let indexOfTarget = this._children().indexOf(target);
@@ -445,7 +443,7 @@ export class HorizontalInfinityScroller {
     scrollIntoCenterView(
         target: HTMLElement,
         smooth = true,
-        direction: -1 | 1 | null = null
+        direction: -1 | 1 | null = null,
     ) {
         if (smooth) {
             let delta = this.calculateOffsetDeltaToCenterOf(target, direction);
@@ -491,11 +489,6 @@ export class HorizontalInfinityScroller {
      * @returns easing 함수가 적용된 [Math.min(from, to), Math.max(from, to)] 이내의 값
      */
     _easingFunction(from: number, to: number, progress: number) {
-        console.log(
-            `easing ${from} to ${to} (progress: ${progress
-                .toString()
-                .substring(0, 5)})`
-        );
         const easing = 1 - Math.pow(1 - progress, 3); // easeOutCubic
         return progress === 1 ? to : from + (to - from) * easing;
     }
@@ -504,10 +497,10 @@ export class HorizontalInfinityScroller {
     addEventListenerToChildren<K extends keyof HTMLElementEventMap>(
         type: K,
         listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
-        options?: boolean | AddEventListenerOptions
+        options?: boolean | AddEventListenerOptions,
     ) {
         this._children().forEach((i) =>
-            i.addEventListener(type, listener, options)
+            i.addEventListener(type, listener, options),
         );
     }
 
@@ -516,7 +509,7 @@ export class HorizontalInfinityScroller {
     }
 
     addTouchDragScrollEventListener(
-        listener: (key: string, direction: 1 | -1) => void
+        listener: (key: string, direction: 1 | -1) => void,
     ) {
         this._touchDragListeners.push(listener);
     }

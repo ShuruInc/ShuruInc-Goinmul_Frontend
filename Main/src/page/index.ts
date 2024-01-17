@@ -16,7 +16,7 @@ PostBoardApiClient.getMainBoard()
     .then((mainBoardData) => {
         displayMainPostBoard(
             document.querySelector(".post-board-columns .column.main")!,
-            mainBoardData
+            mainBoardData,
         );
     })
     .then(PostBoardApiClient.getPostBoards)
@@ -45,13 +45,13 @@ PostBoardApiClient.getMainBoard()
     })
     .then((buttonData) => {
         const scroller = new HorizontalInfinityScroller(
-            document.querySelector(".post-board-columns")!
+            document.querySelector(".post-board-columns")!,
         );
 
         const categoryNav = new TopCategoryButtonNav(
             buttonData,
             document.querySelector("nav.top-category-buttons")!,
-            scroller
+            scroller,
         );
 
         scroller.addEventListenerToChildren("scroll", (evt) => {
@@ -71,7 +71,7 @@ PostBoardApiClient.getMainBoard()
                 createFloatingButton(
                     document.querySelector(".column.main")?.scrollTop === 0
                         ? "home"
-                        : "up"
+                        : "up",
                 );
             }
         });
@@ -87,7 +87,7 @@ PostBoardApiClient.getMainBoard()
             ) {
                 let sign = scroller.scrollIntoCenterView(
                     document.querySelector(".column.main")!,
-                    true
+                    true,
                 );
                 categoryNav.activateButtonByKey("home", true, sign);
             } else {
@@ -105,7 +105,7 @@ PostBoardApiClient.getMainBoard()
             ) {
                 let sign = scroller.scrollIntoCenterView(
                     document.querySelector(".column.main")!,
-                    true
+                    true,
                 );
                 categoryNav.activateButtonByKey("home", true, sign);
             }
@@ -117,7 +117,6 @@ PostBoardApiClient.getMainBoard()
                     return setTimeout(tryScroll, 1);
 
                 const top = rect.top;
-                console.log(top);
 
                 let scrollDelta = top - 150;
                 document.querySelector(".column.main")?.scrollBy({

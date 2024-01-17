@@ -72,7 +72,7 @@ export default class TouchVelocityCalculator {
 
     addEventListner(
         type: TouchVelocityCalculatorEventType,
-        listener: Function
+        listener: Function,
     ) {
         this.listeners[type].push(listener);
     }
@@ -107,7 +107,7 @@ export default class TouchVelocityCalculator {
         ) {
             this.horizontal = this.isAngleHorizontal(
                 this.currentXpos - this.startingPos![0],
-                this.currentYpos - this.startingPos![1]
+                this.currentYpos - this.startingPos![1],
             );
             if (this.horizontal) {
                 this.listeners.dragstart.forEach((i) => i());
@@ -118,7 +118,6 @@ export default class TouchVelocityCalculator {
             let currentXpos = this.currentXpos;
             let delta =
                 (currentXpos ?? this.referenceXpos!) - this.referenceXpos!;
-            console.log(delta);
             let v =
                 (delta / (1 + (timestampNow - this.referenceTimestamp!))) * 100;
             this.velocity = 0.8 * v + 0.2 * (this.velocity ?? 0);
