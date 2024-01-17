@@ -247,9 +247,9 @@ export function setupPostBoard(
         )
             // 모든 빈 섹션이 보이지 않고 있다면 무시한다.
             return;
-        getNextSection().then(fillPlaceholderSection);
-
-        setupIntersectionObserver();
+        getNextSection()
+            .then(fillPlaceholderSection)
+            .then(setupIntersectionObserver);
     }
 
     // 첫 2개의 포스트만 가져온다.
