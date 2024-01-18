@@ -87,6 +87,7 @@ export function preparePlaceholderSection(
 export function fillPlaceholderSectionInto(
     posts: Partial<PostBoardSectionData>,
     section: HTMLElement,
+    noCellInfo = false,
 ) {
     // placeholder 재생성 (필요한 경우)
     const hasLandscape =
@@ -123,12 +124,18 @@ export function fillPlaceholderSectionInto(
         section.querySelector(
             ".table-landscape-cell .cell-info .title",
         )!.innerHTML = posts.landscape!.title;
-        section.querySelector(
-            ".table-landscape-cell .cell-info .like-count",
-        )!.innerHTML = posts.landscape!.likes.toString();
-        section.querySelector(
-            ".table-landscape-cell .cell-info .view-count",
-        )!.innerHTML = posts.landscape!.views.toString();
+        if (noCellInfo) {
+            section
+                .querySelector(".table-landscape-cell")!
+                .classList.add("no-cell-popularity-info");
+        } else {
+            section.querySelector(
+                ".table-landscape-cell .cell-info .like-count",
+            )!.innerHTML = posts.landscape!.likes.toString();
+            section.querySelector(
+                ".table-landscape-cell .cell-info .view-count",
+            )!.innerHTML = posts.landscape!.views.toString();
+        }
     }
 
     // 세로형 이미지 설정
@@ -143,10 +150,16 @@ export function fillPlaceholderSectionInto(
                 post.imgUrl;
             portraitCell.querySelector(".cell-info .title")!.innerHTML =
                 post.title;
-            portraitCell.querySelector(".cell-info .like-count")!.innerHTML =
-                post.likes.toString();
-            portraitCell.querySelector(".cell-info .view-count")!.innerHTML =
-                post.views.toString();
+            if (noCellInfo) {
+                portraitCell.classList.add("no-cell-popularity-info");
+            } else {
+                portraitCell.querySelector(
+                    ".cell-info .like-count",
+                )!.innerHTML = post.likes.toString();
+                portraitCell.querySelector(
+                    ".cell-info .view-count",
+                )!.innerHTML = post.views.toString();
+            }
         }
     }
 

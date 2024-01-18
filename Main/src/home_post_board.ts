@@ -51,7 +51,7 @@ export function createRankingSection(title: string, data: RankingItem[]) {
     const podium = createPodium(
         nicknameAndHashtag(data[0]),
         nicknameAndHashtag(data[1]),
-        nicknameAndHashtag(data[2])
+        nicknameAndHashtag(data[2]),
     );
     data.splice(0, 3);
     (section.querySelector("img.podium") as HTMLImageElement).src = podium;
@@ -71,7 +71,7 @@ export function createRankingSection(title: string, data: RankingItem[]) {
             .map((i) => {
                 const li = document.createElement("li");
                 li.innerHTML = `${encode(
-                    i.nickname
+                    i.nickname,
                 )}<span class="hashtag">#${encode(i.hashtag)}</span> (${
                     i.score
                 }점)`;
@@ -94,7 +94,7 @@ export function createRankingSection(title: string, data: RankingItem[]) {
  */
 export function displayMainPostBoard(
     element: HTMLElement,
-    data: MainPostBoardData
+    data: MainPostBoardData,
 ) {
     element.innerHTML = `<section class="post-section"></section>`;
     preparePlaceholderSection(element.querySelector(".post-section")!, [
@@ -107,7 +107,8 @@ export function displayMainPostBoard(
             landscape: data.popularTests[0],
             portraits: data.popularTests.slice(1),
         },
-        element.querySelector(".post-section")!
+        element.querySelector(".post-section")!,
+        true,
     );
     for (const i in data.rankings) {
         const rankingSection = createRankingSection(i, data.rankings[i]);
