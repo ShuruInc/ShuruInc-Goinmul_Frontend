@@ -7,6 +7,9 @@ import {
     faMagnifyingGlass,
     faRankingStar,
 } from "@fortawesome/free-solid-svg-icons";
+import tippy from "tippy.js";
+import "tippy.js/dist/tippy.css";
+
 const images = [logoImage1, logoImage2, logoImage3, logoImage4];
 
 function getRandomInt(max: number) {
@@ -36,7 +39,7 @@ export function InitTopNav(animated = false) {
 
     // 로고 이미지 랜덤 설정
     const mainTopLogo = document.querySelector(
-        ".main-top-logo-image"
+        ".main-top-logo-image",
     )! as HTMLImageElement;
     mainTopLogo.src = images[getRandomInt(4)];
 
@@ -59,6 +62,14 @@ export function InitTopNav(animated = false) {
             location.href = "/search.html";
         });
 
+    const tippyInstance = tippy(topFixedBar.querySelector(".search-icon")!, {
+        content: "검색해보세요!",
+        placement: "bottom-end",
+    });
+    setTimeout(() => {
+        tippyInstance.show();
+    }, 10);
+
     if (animated) InitTopBottomAnimation(topFixedBar, mainTopLogo);
 }
 
@@ -66,7 +77,7 @@ export function InitTopNav(animated = false) {
 // 하향 스크롤 시 감추고 반대의 경우 드러냄
 export function InitTopBottomAnimation(
     topFixedBar: HTMLElement,
-    mainTopLogo: HTMLImageElement
+    mainTopLogo: HTMLImageElement,
 ) {
     var isHidden = false;
     var mainLogoNum = 1;
@@ -132,6 +143,6 @@ export function InitTopBottomAnimation(
     }
 
     [...document.querySelectorAll(".column")].forEach(
-        setupScrollEventHandlerForcolumn
+        setupScrollEventHandlerForcolumn,
     );
 }
