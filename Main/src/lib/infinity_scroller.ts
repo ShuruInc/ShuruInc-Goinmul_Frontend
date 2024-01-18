@@ -115,6 +115,7 @@ export class HorizontalInfinityScroller {
         }
         this._dragging = true;
         this._origianlOffsetBeforeDragging = this._basisChildOffsetFromCenter;
+        this._rootElement.classList.add("y-scroll-hidden");
     }
 
     _onHorizontalTouchMove(delta: number) {
@@ -148,6 +149,7 @@ export class HorizontalInfinityScroller {
         } else {
             this.scrollIntoCenterView(this._basisChild());
         }
+        this._rootElement.classList.remove("y-scroll-hidden");
     }
 
     /**

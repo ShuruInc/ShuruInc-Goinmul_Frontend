@@ -36,4 +36,8 @@
             background-color: #e5f7ff;
         }
     }
+
+    &.y-scroll-hidden > .column {
+        overflow-y: hidden;
+    }
 }
