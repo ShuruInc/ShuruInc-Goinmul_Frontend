@@ -92,7 +92,7 @@ const createAnswerElement = (question: QuizProblem) => {
 
     const rowWithInput = answerEl.querySelector(".row.with-input")!;
     if (question.choices === null) {
-        rowWithInput.innerHTML = `<input type="input" placeholder="답을 입력하세요">`;
+        rowWithInput.innerHTML = `<input autofocus type="input" placeholder="답을 입력하세요">`;
     } else {
         rowWithInput.classList.add("radios");
         for (const choice of question.choices) {
@@ -197,6 +197,7 @@ export function displayProblem(
 
     root.appendChild(createQuestionElement(question, index));
     root.appendChild(createAnswerElement(question));
+    (root.querySelector(".answer input") as HTMLInputElement).focus();
 }
 
 /**
