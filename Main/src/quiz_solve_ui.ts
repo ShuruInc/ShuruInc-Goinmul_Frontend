@@ -17,7 +17,9 @@ export type QuizProblem = {
     /** 이미지인지? 초성인지? */
     figureType: "image" | "initials";
     /** 선택지 (null이면 주관식) */
-    choices: null | string[];
+    choices: null | { label: string; value: string }[];
+    /** 퀴즈 id */
+    id: number;
 };
 
 let answerSubmitListeners: ((answer: string) => void)[] = [];
@@ -41,7 +43,7 @@ const createAnswerElementForShare = (question: QuizProblem) => {
         question.choices
             .map((i) => {
                 const li = document.createElement("li");
-                li.textContent = i;
+                li.textContent = i.label;
                 return li;
             })
             .forEach((i) => answer.appendChild(i));
@@ -95,10 +97,10 @@ const createAnswerElement = (question: QuizProblem) => {
         rowWithInput.classList.add("radios");
         for (const choice of question.choices) {
             const label = document.createElement("label");
-            label.textContent = choice;
+            label.textContent = choice.label;
             label.innerHTML =
                 `<input type="radio" name="answer">` + label.innerHTML;
-            label.querySelector("input")!.value = choice;
+            label.querySelector("input")!.value = choice.value;
             rowWithInput.appendChild(label);
         }
     }
@@ -115,7 +117,7 @@ const createAnswerElement = (question: QuizProblem) => {
             if (question.choices === null) {
                 answer = (
                     answerEl.querySelector(
-                        'input[type="input"]'
+                        'input[type="input"]',
                     ) as HTMLInputElement
                 ).value;
             } else {
@@ -189,7 +191,7 @@ const createQuestionElement = (question: QuizProblem, index: number) => {
 export function displayProblem(
     root: HTMLElement,
     question: QuizProblem,
-    index: number
+    index: number,
 ) {
     root.innerHTML = ``;
 
@@ -206,7 +208,7 @@ export function displayProblem(
 export function updateShareProblem(
     root: HTMLElement,
     question: QuizProblem,
-    index: number
+    index: number,
 ) {
     root.innerHTML = "";
     root.appendChild(createQuestionElement(question, index));
@@ -223,7 +225,7 @@ export function updateProgress(percentage: number, text?: string) {
     ).style.width = `${percentage}%`;
 
     const textElement = document.querySelector(
-        ".progress-container .progress-text"
+        ".progress-container .progress-text",
     );
     if (textElement && text) textElement.textContent = text;
 }
@@ -253,7 +255,7 @@ export function setHelpMeFriendsEventHandler(
         onEnabled?: () => void;
         onDisabled?: () => void;
         beforeDisable?: () => boolean;
-    } = {}
+    } = {},
 ) {
     if (options.onDisabled) helpMeFriendDisabledHandler = options.onDisabled;
     if (options.onEnabled) helpMeFriendEnabledHandler = options.onEnabled;
