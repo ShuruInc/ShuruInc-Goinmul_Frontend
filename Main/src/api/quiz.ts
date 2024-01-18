@@ -1,14 +1,57 @@
-import { initDummyProblemData } from "./dummy_data/problems";
-import { QuizSession } from "./quiz_session";
+import { backendUrl } from "../env";
+import { QuizProblem } from "../quiz_solve_ui";
+import { Api } from "./api_http_client/ApiHttpClient";
+import { QuizSession, QuizInternalSessionData } from "./quiz_session";
+
+const apiClient = new Api();
 
 export class QuizApiClient {
     static async isNerdTest(id: string): Promise<boolean> {
-        return id.includes("nerd");
+        return (
+            (await apiClient.api.getArticle(parseInt(id))).data.result!
+                .articleType === "NERD"
+        );
+    }
+
+    private static async prepareQuestions(id: string) {
+        localStorage.setItem(
+            `problems-${id}`,
+            JSON.stringify(
+                (
+                    await apiClient.api.getArticleProblems(parseInt(id))
+                ).data.result!.map(
+                    (i) =>
+                        ({
+                            choices:
+                                i.choiceDtoList?.length === 0
+                                    ? null
+                                    : i.choiceDtoList?.map((j) => ({
+                                          label: j.choiceContent,
+                                          value: j.choiceId,
+                                      })),
+                            figure:
+                                i.imgUrl === "" || i.imgUrl === null
+                                    ? i.problemFigure
+                                    : backendUrl + "/" + i.imgUrl,
+                            figureType:
+                                i.imgUrl === "" || i.imgUrl === null
+                                    ? "initials"
+                                    : "image",
+                            points: 10,
+                            question: i.problemContent,
+                            id: i.problemId,
+                        }) as QuizProblem,
+                ),
+            ),
+        );
+        console.log(JSON.parse(localStorage.getItem(`problems-${id}`) ?? "[]"));
     }
 
     static async startQuiz(id: string): Promise<QuizSession> {
-        initDummyProblemData(id);
         const sessionId = Date.now() + "-" + Math.floor(Math.random() * 5000);
+        const title = (await apiClient.api.getArticle(parseInt(id))).data
+            .result!.title!;
+        await QuizApiClient.prepareQuestions(id);
         localStorage.setItem(
             `session-${sessionId}`,
             JSON.stringify({
@@ -19,17 +62,20 @@ export class QuizApiClient {
                 email: "",
                 nickname: "",
                 startedAt: Date.now(),
-            })
+                title,
+            } as QuizInternalSessionData),
         );
 
         return new QuizSession(sessionId);
     }
     static async startNerdQuiz(
         id: string,
-        info: { nickname: string; email: string }
+        info: { nickname: string; email: string },
     ): Promise<QuizSession> {
-        initDummyProblemData(id);
         const sessionId = Date.now() + "-" + Math.floor(Math.random() * 5000);
+        const title = (await apiClient.api.getArticle(parseInt(id))).data
+            .result!.title!;
+        await QuizApiClient.prepareQuestions(id);
         localStorage.setItem(
             `session-${sessionId}`,
             JSON.stringify({
@@ -39,7 +85,8 @@ export class QuizApiClient {
                 nerdTest: true,
                 ...info,
                 startedAt: Date.now(),
-            })
+                title,
+            } as QuizInternalSessionData),
         );
 
         return new QuizSession(sessionId);

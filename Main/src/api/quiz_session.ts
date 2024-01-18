@@ -1,6 +1,6 @@
 import { QuizProblem } from "../quiz_solve_ui";
-import { getDummyProblemData } from "./dummy_data/problems";
 import StopWatch from "../stopwatch";
+import { Api } from "./api_http_client/ApiHttpClient";
 
 type QuizSessionId = string;
 
@@ -30,8 +30,9 @@ type QuizSessionInfo = {
     title: string;
 };
 
-type QuizSessionInternalDummyData = {
+export type QuizInternalSessionData = {
     quizId: string;
+    title: string;
     problemIndex: number;
     points: number;
     nerdTest: boolean;
@@ -39,6 +40,8 @@ type QuizSessionInternalDummyData = {
     nickname: string;
     startedAt: number;
 };
+
+const apiClient = new Api();
 
 export class QuizSession {
     private sessionId: string = "";
@@ -51,60 +54,55 @@ export class QuizSession {
     getStopWatch() {
         return this.stopwatch;
     }
-    private getDummyInteralSession(): QuizSessionInternalDummyData {
+    private getLocalSession(): QuizInternalSessionData {
         return JSON.parse(
-            localStorage.getItem(`session-${this.sessionId}`) ?? "{}"
+            localStorage.getItem(`session-${this.sessionId}`) ?? "{}",
         );
     }
-    private saveDummyInternalSession(session: QuizSessionInternalDummyData) {
+    private saveLocalSession(session: QuizInternalSessionData) {
         localStorage.setItem(
             `session-${this.sessionId}`,
-            JSON.stringify(session)
+            JSON.stringify(session),
         );
     }
-    private dummyProblems() {
-        return getDummyProblemData(this.getDummyInteralSession().quizId);
+    private problems() {
+        return JSON.parse(
+            localStorage.getItem(`problems-${this.getLocalSession().quizId}`) ??
+                "[]",
+        ) as QuizProblem[];
     }
     private ended() {
-        return (
-            this.getDummyInteralSession().problemIndex >=
-            this.dummyProblems().length
-        );
+        return this.getLocalSession().problemIndex >= this.problems().length;
     }
     async sessionInfo(): Promise<QuizSessionInfo> {
         return {
-            isNerdTest: this.getDummyInteralSession().nerdTest,
-            totalProblemCount: this.getDummyInteralSession().nerdTest
+            isNerdTest: this.getLocalSession().nerdTest,
+            totalProblemCount: this.getLocalSession().nerdTest
                 ? undefined
-                : this.dummyProblems().length,
-            quizId: this.getDummyInteralSession().quizId,
-            title: "어 쩌 구 저 쩌 구 고사",
+                : this.problems().length,
+            quizId: this.getLocalSession().quizId,
+            title: this.getLocalSession().title,
         };
     }
     async currentProblem(): Promise<(QuizProblem & { index: number }) | null> {
         return this.ended()
             ? null
             : {
-                  ...this.dummyProblems()[
-                      this.getDummyInteralSession().problemIndex
-                  ],
-                  index: this.getDummyInteralSession().problemIndex + 1,
+                  ...this.problems()[this.getLocalSession().problemIndex],
+                  index: this.getLocalSession().problemIndex + 1,
               };
     }
     async submit(answer: string): Promise<boolean> {
-        console.log(answer);
-        console.log(
-            this.dummyProblems()[this.getDummyInteralSession().problemIndex]
-        );
-        let correct =
-            this.dummyProblems()[this.getDummyInteralSession().problemIndex]
-                .answer === answer;
+        let correct = (
+            await apiClient.api.getAnswers((await this.currentProblem())!.id!, {
+                answer,
+            })
+        ).data.result!.correct!;
 
-        let newProblemIndex = this.getDummyInteralSession().problemIndex + 1;
-        let newPoints =
-            this.getDummyInteralSession().points + (correct ? 10 : 0);
-        this.saveDummyInternalSession({
-            ...this.getDummyInteralSession(),
+        let newProblemIndex = this.getLocalSession().problemIndex + 1;
+        let newPoints = this.getLocalSession().points + (correct ? 10 : 0);
+        this.saveLocalSession({
+            ...this.getLocalSession(),
             problemIndex: newProblemIndex,
             points: newPoints,
         });
@@ -112,18 +110,18 @@ export class QuizSession {
         return correct;
     }
     async result(): Promise<QuizResult | null> {
-        return this.ended() || this.getDummyInteralSession().nerdTest
+        return this.ended() || this.getLocalSession().nerdTest
             ? {
-                  points: this.getDummyInteralSession().points,
-                  title: "어 쩌 구 저 쩌 구 고사",
-                  quizId: this.getDummyInteralSession().quizId,
-                  ...(this.getDummyInteralSession().nerdTest
+                  points: this.getLocalSession().points,
+                  title: this.getLocalSession().title,
+                  quizId: this.getLocalSession().quizId,
+                  ...(this.getLocalSession().nerdTest
                       ? {
                             ranking: Math.ceil(Math.random() * 10),
                             hashtag: Math.round(
-                                Math.random() * 9999
+                                Math.random() * 9999,
                             ).toString(),
-                            nickname: this.getDummyInteralSession().nickname,
+                            nickname: this.getLocalSession().nickname,
                         }
                       : {
                             percentage: Math.round(Math.random() * 100),
