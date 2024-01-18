@@ -84,4 +84,8 @@ export default class PostBoardApiClient {
             typeof articleId === "string" ? parseInt(articleId) : articleId,
         );
     }
+
+    static async requestMakeTest(keyword: string): Promise<void> {
+        await apiClient.api.postKeyword({ keyword });
+    }
 }
