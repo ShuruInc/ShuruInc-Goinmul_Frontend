@@ -1,3 +1,4 @@
+import { backendUrl } from "../env";
 import { QuizProblem } from "../quiz_solve_ui";
 import StopWatch from "../stopwatch";
 import { Api } from "./api_http_client/ApiHttpClient";
@@ -41,7 +42,7 @@ export type QuizInternalSessionData = {
     startedAt: number;
 };
 
-const apiClient = new Api();
+const apiClient = new Api({ baseUrl: backendUrl });
 
 export class QuizSession {
     private sessionId: string = "";

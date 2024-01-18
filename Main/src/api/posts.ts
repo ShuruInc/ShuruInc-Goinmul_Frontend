@@ -1,3 +1,4 @@
+import { backendUrl } from "../env";
 import { MainPostBoardData } from "../home_post_board";
 import { PostBoardSectionData } from "../post_board";
 import { Api } from "./api_http_client/ApiHttpClient";
@@ -9,7 +10,7 @@ export type PostBoardData = {
     fetchNextSection: () => Promise<PostBoardSectionData | null>;
 };
 
-const apiClient = new Api();
+const apiClient = new Api({ baseUrl: backendUrl });
 
 export default class PostBoardApiClient {
     static async getMainBoard(): Promise<MainPostBoardData> {

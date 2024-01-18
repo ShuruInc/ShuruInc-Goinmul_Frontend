@@ -1,3 +1,4 @@
+import { backendUrl } from "../env";
 import { Post } from "../post_board";
 import { Api } from "./api_http_client/ApiHttpClient";
 import PostBoardApiClient from "./posts";
@@ -23,7 +24,7 @@ const randomPick = <T>(arr: T[], count: number): T[] => {
     return result;
 };
 
-const apiClient = new Api();
+const apiClient = new Api({ baseUrl: backendUrl });
 
 export default class SearchApiClient {
     static async recommend(count: number): Promise<Post[]> {

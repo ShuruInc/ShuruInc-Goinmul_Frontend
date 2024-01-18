@@ -3,7 +3,7 @@ import { QuizProblem } from "../quiz_solve_ui";
 import { Api } from "./api_http_client/ApiHttpClient";
 import { QuizSession, QuizInternalSessionData } from "./quiz_session";
 
-const apiClient = new Api();
+const apiClient = new Api({ baseUrl: backendUrl });
 
 export class QuizApiClient {
     static async isNerdTest(id: string): Promise<boolean> {
