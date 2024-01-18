@@ -79,10 +79,11 @@ export default class PostBoardApiClient {
         }
     }
 
-    static async like(articleId: string | number): Promise<void> {
-        await apiClient.api.likeArticle(
+    static async like(articleId: string | number): Promise<boolean> {
+        const result = await apiClient.api.likeArticle(
             typeof articleId === "string" ? parseInt(articleId) : articleId,
         );
+        return result.ok;
     }
 
     static async requestMakeTest(keyword: string): Promise<void> {
