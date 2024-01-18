@@ -47,12 +47,18 @@ export default class SearchApiClient {
         ).data.result!.map((i) => i.tag!);
     }
 
+    static async searchByHashtags(keyword: string): Promise<Post[]> {
+        return (
+            await apiClient.api.getArticlesRelatedToHashtags({ keyword })
+        ).data.result!.map(transformArticleDtoToPost);
+    }
+
     static async search(query: string): Promise<SearchResult> {
         return {
             result: (
                 await apiClient.api.getArticles({ keyword: query })
             ).data.result!.map(transformArticleDtoToPost),
-            similar: await this.recommend(10),
+            similar: await this.searchByHashtags(query),
         };
     }
 
