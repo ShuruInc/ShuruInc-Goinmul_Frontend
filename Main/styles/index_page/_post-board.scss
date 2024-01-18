@@ -27,6 +27,15 @@
             @include hide-scrollbar;
         }
 
+        .no-cell-popularity-info {
+            .cell-info .popularity {
+                display: none !important;
+            }
+            .title {
+                margin-bottom: 25px;
+            }
+        }
+
         .table-cell {
             display: block;
             padding: 2px 2px 2px 2px;
