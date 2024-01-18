@@ -27,13 +27,13 @@ export class QuizApiClient {
                                     ? null
                                     : i.choiceDtoList?.map((j) => ({
                                           label: j.choiceContent,
-                                          value: j.choiceId,
+                                          value: j.choiceContent,
                                       })),
                             figure:
                                 i.problemFigure !== ""
                                     ? i.problemFigure
                                     : i.imgUrl !== ""
-                                    ? i.imgUrl
+                                    ? backendUrl + "/" + i.imgUrl
                                     : null,
                             figureType:
                                 i.problemFigure !== ""
@@ -44,6 +44,8 @@ export class QuizApiClient {
                             points: 10,
                             question: i.problemContent,
                             id: i.problemId,
+                            secondCategoryName: i.categoryNm,
+                            condition: i.condition,
                         }) as QuizProblem,
                 ),
             ),

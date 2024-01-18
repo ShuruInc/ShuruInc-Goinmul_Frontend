@@ -20,6 +20,10 @@ export type QuizProblem = {
     choices: null | { label: string; value: string }[];
     /** 퀴즈 id */
     id: number;
+    /** 중분류 */
+    secondCategoryName: string;
+    /** 제약조건 */
+    condition: string | null;
 };
 
 let answerSubmitListeners: ((answer: string) => void)[] = [];
@@ -149,14 +153,24 @@ const createQuestionElement = (question: QuizProblem, index: number) => {
     const questionEl = document.createElement("div");
     questionEl.className = "question";
     questionEl.innerHTML = `
+        <div class="category"></div>
         <div class="text">
             <span class="id-number">${index}.</span>&nbsp;
+            <span class="problem-text"></span>&nbsp;
+            <span class="condition"></span>
         </div>
         <div class="points"></div>
         <div class="figure">
         </div>`;
 
-    questionEl.querySelector(".text")!.textContent += question.question;
+    questionEl.querySelector(".category")!.textContent =
+        question.secondCategoryName;
+    questionEl.querySelector(".condition")!.textContent =
+        question.condition ?? "";
+    questionEl.querySelector(".text .problem-text")!.textContent =
+        question.question;
+    questionEl.querySelector(".text .condition")!.textContent =
+        question.condition;
     questionEl.querySelector(".points")!.textContent = `[${question.points}점]`;
 
     switch (question.figureType) {
