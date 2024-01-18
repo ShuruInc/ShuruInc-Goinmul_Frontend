@@ -30,13 +30,17 @@ export class QuizApiClient {
                                           value: j.choiceId,
                                       })),
                             figure:
-                                i.imgUrl === "" || i.imgUrl === null
+                                i.problemFigure !== ""
                                     ? i.problemFigure
-                                    : backendUrl + "/" + i.imgUrl,
+                                    : i.imgUrl !== ""
+                                    ? i.imgUrl
+                                    : null,
                             figureType:
-                                i.imgUrl === "" || i.imgUrl === null
+                                i.problemFigure !== ""
                                     ? "initials"
-                                    : "image",
+                                    : i.imgUrl !== ""
+                                    ? "image"
+                                    : "empty",
                             points: 10,
                             question: i.problemContent,
                             id: i.problemId,
