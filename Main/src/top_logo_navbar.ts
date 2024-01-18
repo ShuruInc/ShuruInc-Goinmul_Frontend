@@ -64,7 +64,7 @@ export function InitTopNav(animated = false) {
 
     const tippyInstance = tippy(topFixedBar.querySelector(".search-icon")!, {
         content: "검색해보세요!",
-        placement: "bottom-end",
+        placement: "left",
     });
     setTimeout(() => {
         tippyInstance.show();
