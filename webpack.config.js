@@ -24,7 +24,7 @@ module.exports = {
         htmlFiles.map((i, idx) => [
             hashes[idx],
             "./" + path.join("Main/src/page", i.replace(/\.html$/, ".ts")),
-        ])
+        ]),
     ),
     module: {
         rules: [
@@ -42,6 +42,10 @@ module.exports = {
                 test: /\.s[ac]ss$/,
                 use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
                 exclude: /node_modules/,
+            },
+            {
+                test: /\.css$/i,
+                use: [MiniCssExtractPlugin.loader, "css-loader"],
             },
             {
                 test: /\.(png|jpe?g|gif|svg|webp)$/i,
@@ -64,6 +68,7 @@ module.exports = {
             ".ts",
             ".js",
             ".sass",
+            ".css",
             ".scss",
             ".png",
             ".jpeg",
@@ -84,7 +89,7 @@ module.exports = {
                     filename: path.resolve(__dirname, "Main/dist", i),
                     chunks: [hashes[idx]],
                     template: path.join("Main/html", i),
-                })
+                }),
         ),
         new webpack.EnvironmentPlugin(["KAKAO_API_KEY", "BACKEND_URL"]),
         new MiniCssExtractPlugin(),
