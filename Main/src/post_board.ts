@@ -127,7 +127,17 @@ export function fillPlaceholderSectionInto(
             .querySelector(".table-landscape-cell .likes-link")
             ?.addEventListener("click", (evt) => {
                 evt.preventDefault();
-                PostBoardApiClient.like(posts.landscape!.id!);
+                PostBoardApiClient.like(posts.landscape!.id!).then(() => {
+                    section.querySelector(
+                        ".table-landscape-cell .likes",
+                    )!.textContent = (
+                        parseInt(
+                            section.querySelector(
+                                ".table-landscape-cell .likes",
+                            )!.textContent ?? "0",
+                        ) + 1
+                    ).toString();
+                });
             });
         section.querySelector(
             ".table-landscape-cell .cell-info .title",
@@ -162,7 +172,14 @@ export function fillPlaceholderSectionInto(
                 .querySelector(".likes-link")
                 ?.addEventListener("click", (evt) => {
                     evt.preventDefault();
-                    PostBoardApiClient.like(post.id!);
+                    PostBoardApiClient.like(post.id!).then(() => {
+                        portraitCell.querySelector(".likes")!.textContent = (
+                            parseInt(
+                                portraitCell.querySelector(".likes")!
+                                    .textContent ?? "0",
+                            ) + 1
+                        ).toString();
+                    });
                 });
             if (noCellInfo) {
                 portraitCell.classList.add("no-cell-popularity-info");
