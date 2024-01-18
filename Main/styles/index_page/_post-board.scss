@@ -116,6 +116,11 @@
                 border-radius: 6px;
                 font-size: 16px;
 
+                .likes-link {
+                    text-decoration: none;
+                    color: unset;
+                }
+
                 .likes::before {
                     content: "❤";
                     color: #e04343;

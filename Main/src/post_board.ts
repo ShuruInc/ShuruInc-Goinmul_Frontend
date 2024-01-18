@@ -1,3 +1,4 @@
+import PostBoardApiClient from "./api/posts";
 import footer from "./footer";
 import setHorizontalDragScrollOnDesktop from "./horizontal_drag_to_scroll_on_desktop";
 
@@ -8,6 +9,7 @@ export type Post = {
     likes: number;
     views: number;
     href: string;
+    id: number;
 };
 export type PostBoardSectionData = Partial<{
     title: string;
@@ -69,7 +71,7 @@ export function preparePlaceholderSection(
             const info = document.createElement("div");
             info.className = "cell-info";
             info.innerHTML =
-                '<div class="title"></div><div class="popularity"><div class="likes"><span class="like-count" /></div><div class="views"><span class="view-count" /></div></div>';
+                '<div class="title"></div><div class="popularity"><a href="#" class="likes-link"><div class="likes"><span class="like-count" /></div></a><div class="views"><span class="view-count" /></div></div>';
 
             postTable.appendChild(cell);
             cell.appendChild(image);
@@ -121,6 +123,12 @@ export function fillPlaceholderSectionInto(
         (
             section.querySelector(".table-landscape-cell") as HTMLAnchorElement
         ).href = posts.landscape!.href;
+        section
+            .querySelector(".table-landscape-cell .likes-link")
+            ?.addEventListener("click", (evt) => {
+                evt.preventDefault();
+                PostBoardApiClient.like(posts.landscape!.id!);
+            });
         section.querySelector(
             ".table-landscape-cell .cell-info .title",
         )!.innerHTML = posts.landscape!.title;
@@ -150,6 +158,12 @@ export function fillPlaceholderSectionInto(
                 post.imgUrl;
             portraitCell.querySelector(".cell-info .title")!.innerHTML =
                 post.title;
+            portraitCell
+                .querySelector(".likes-link")
+                ?.addEventListener("click", (evt) => {
+                    evt.preventDefault();
+                    PostBoardApiClient.like(post.id!);
+                });
             if (noCellInfo) {
                 portraitCell.classList.add("no-cell-popularity-info");
             } else {

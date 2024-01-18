@@ -2,6 +2,7 @@ import { encode } from "html-entities";
 import footer from "./footer";
 import { createPodium } from "./podium";
 import {
+    Post,
     fillPlaceholderSectionInto,
     preparePlaceholderSection,
 } from "./post_board";
@@ -21,13 +22,7 @@ export type RankingItem = {
  */
 export type MainPostBoardData = {
     /** 인기 BEST 테스트 데이터 */
-    popularTests: {
-        imgUrl: string;
-        title: string;
-        likes: number;
-        views: number;
-        href: string;
-    }[];
+    popularTests: Post[];
     /** 명예의 전당 데이터 */
     rankings: { [key: string]: RankingItem[] };
 };
