@@ -35,7 +35,10 @@ export default class SearchApiClient {
     }
 
     static async hotQueries(count: number): Promise<string[]> {
-        return randomPick(["a", "b", "c", "d", "e", "f", "g"], count);
+        return (await apiClient.api.getPopularSearchList()).data.result!.slice(
+            0,
+            count,
+        );
     }
 
     static async recommendKeyword(count: number): Promise<string[]> {
