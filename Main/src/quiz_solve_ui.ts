@@ -124,7 +124,7 @@ const createAnswerElement = (question: QuizProblem) => {
                         'input[type="input"]',
                     ) as HTMLInputElement
                 ).value;
-                if (/[^a-zA-Zㄱ-힣0-9]/.test(answer)) {
+                if (/[^a-zA-Zㄱ-힣0-9\s]/.test(answer)) {
                     return alert("특수문자는 입력할 수 없습니다!");
                 }
             } else {
