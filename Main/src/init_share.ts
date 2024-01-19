@@ -53,7 +53,7 @@ type InitShareButtonOptions = Partial<{
 }>;
 
 export default function initShareButton(
-    options: InitShareButtonOptions = {}
+    options: InitShareButtonOptions = {},
 ): (content: ShareDatas) => void {
     importKakaoSdk();
 
@@ -80,6 +80,13 @@ export default function initShareButton(
         (options.beforeShare ? options.beforeShare : async () => {})()
             .then(() => {
                 if (content === null) return;
+                window.open(
+                    "https://twitter.com/intent/tweet?text=" +
+                        encodeURIComponent(content.twitter.text),
+                    "_blank",
+                    "",
+                );
+
                 if (options.onComplete) options.onComplete();
             })
             .catch((err) => alert("오류가 발생했습니다: " + err));
