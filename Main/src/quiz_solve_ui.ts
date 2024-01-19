@@ -187,7 +187,7 @@ const createQuestionElement = (question: QuizProblem, index: number) => {
             [
                 ...question.figure.split("").map((i) => {
                     const initial = document.createElement("div");
-                    initial.textContent = i;
+                    initial.textContent = i == "$" ? " " : i;
                     initial.className =
                         i === "$"
                             ? "initial"
