@@ -52,6 +52,12 @@
         width: 100%;
         height: 18px;
         background: #e5f9ff;
+        &.red {
+            background-color: #ffe5e5;
+            .progress {
+                background-color: #c45d5d;
+            }
+        }
         .progress {
             width: 0%;
             height: 18px;
@@ -79,8 +85,11 @@
         color: rgba(255, 255, 255, 1);
         height: var(--top-fixed-bar-height);
 
-        transition: transform 0.3s ease, background-color 0.3s ease-in-out,
-            color 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        transition:
+            transform 0.3s ease,
+            background-color 0.3s ease-in-out,
+            color 0.3s ease-in-out,
+            opacity 0.3s ease-in-out;
 
         &.is-hidden {
             color: rgba(255, 255, 255, 0);
