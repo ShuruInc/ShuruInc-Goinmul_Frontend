@@ -13,7 +13,7 @@ export class QuizApiClient {
         );
     }
 
-    private static async prepareQuestions(id: string) {
+    private static async prepareQuestions(id: string, nerd = false) {
         localStorage.setItem(
             `problems-${id}`,
             JSON.stringify(
@@ -44,7 +44,7 @@ export class QuizApiClient {
                             points: 10,
                             question: i.problemContent,
                             id: i.problemId,
-                            secondCategoryName: i.categoryNm,
+                            secondCategoryName: nerd ? i.categoryNm : "",
                             condition: i.condition,
                         }) as QuizProblem,
                 ),
@@ -57,7 +57,7 @@ export class QuizApiClient {
         const sessionId = Date.now() + "-" + Math.floor(Math.random() * 5000);
         const title = (await apiClient.api.getArticle(parseInt(id))).data
             .result!.title!;
-        await QuizApiClient.prepareQuestions(id);
+        await QuizApiClient.prepareQuestions(id, false);
         localStorage.setItem(
             `session-${sessionId}`,
             JSON.stringify({
@@ -81,7 +81,7 @@ export class QuizApiClient {
         const sessionId = Date.now() + "-" + Math.floor(Math.random() * 5000);
         const title = (await apiClient.api.getArticle(parseInt(id))).data
             .result!.title!;
-        await QuizApiClient.prepareQuestions(id);
+        await QuizApiClient.prepareQuestions(id, true);
         localStorage.setItem(
             `session-${sessionId}`,
             JSON.stringify({
