@@ -159,7 +159,10 @@ export default function initSolvePage(session: QuizSession) {
 
         addAnswerSubmitListener(async (answer) => {
             const correct = await session.submit(answer);
-            displayCorrectnessAnimation(correct);
+            [
+                ...document.querySelectorAll(".answer input, .answer button"),
+            ].forEach((i) => ((i as HTMLInputElement).disabled = true));
+            await displayCorrectnessAnimation(correct);
 
             renewProblem();
         });

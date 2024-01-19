@@ -296,18 +296,21 @@ export function setHelpMeFriendsEventHandler(
  * @param correct 정답 여부
  */
 export function displayCorrectnessAnimation(correct: boolean) {
-    const element = document.querySelector(".correctness-effect");
-    if (element === null) return;
+    return new Promise<void>((resolve, _reject) => {
+        const element = document.querySelector(".correctness-effect");
+        if (element === null) return;
 
-    if (correct) {
-        element.classList.remove("fail");
-        element.classList.add("ok");
-    } else {
-        element.classList.remove("ok");
-        element.classList.add("fail");
-    }
-    element.classList.remove("display-none");
-    setTimeout(() => {
-        element.classList.add("display-none");
-    }, 400);
+        if (correct) {
+            element.classList.remove("fail");
+            element.classList.add("ok");
+        } else {
+            element.classList.remove("ok");
+            element.classList.add("fail");
+        }
+        element.classList.remove("display-none");
+        setTimeout(() => {
+            element.classList.add("display-none");
+            resolve();
+        }, 600);
+    });
 }
