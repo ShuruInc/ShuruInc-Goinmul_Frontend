@@ -1,0 +1,64 @@
+@import "../mixins";
+
+/*데스크탑*/
+@include desktop {
+    .table-cell {
+        width: 162px !important;
+        height: 280px !important;
+    }
+
+    .table-landscape-cell {
+        height: 430px !important;
+    }
+}
+
+/*태블릿*/
+@include tablet {
+    .table-cell {
+        width: calc(
+            var(--main-container-width) * (1 / 4.5)
+        ) !important; /* 4.5 posts visible in a row */
+        height: calc(
+            var(--main-container-width) * (1 / 4.5) * 1.728
+        ) !important;
+    }
+
+    .table-landscape-cell {
+        height: 350px !important;
+    }
+}
+
+/*스마트폰*/
+@include mobile {
+    .table-cell {
+        padding: 0.5vw !important;
+        width: 28.57% !important; /* 3.5 posts visible in a row */
+        height: calc(49.02vw - 40px) !important;
+
+        .cell-info {
+            .popularity {
+                padding: 4px 8px !important;
+                font-size: 9px !important;
+                gap: 10px !important;
+            }
+
+            .title {
+                font-size: 16px !important;
+            }
+        }
+    }
+
+    .table-landscape-cell {
+        height: calc(70vw) !important;
+    }
+
+    .cell-landscape-img {
+        border-radius: 3vw !important;
+    }
+
+    .cell-img {
+        width: calc(100% - 1.1vw) !important;
+        height: calc(100% - 1.1vw) !important;
+        border-radius: 2vw !important;
+    }
+}

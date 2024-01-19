@@ -1,0 +1,44 @@
+@import "../mixins";
+
+.ranking-section {
+    img.podium {
+        width: 100%;
+        max-width: min(400px, 75vw);
+    }
+    h2 {
+        width: 100%;
+        font-size: 24px;
+        margin: 72px 0px 42px 0px;
+        pad: 0px;
+    }
+    .more {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        overflow-x: auto;
+        max-width: 100%;
+        user-select: none;
+        @include hide-scrollbar;
+
+        .more-column {
+            padding-right: 10px;
+            border-right: 5px solid #6c6c6c;
+            margin: 10px 0px;
+            &:last-child {
+                border-right: 0px;
+            }
+            ol {
+                padding: 0px;
+                margin: 0px 10px;
+                list-style-position: inside;
+                li {
+                    white-space: pre;
+                    .hashtag {
+                        color: gray;
+                        font-size: 0.75em;
+                    }
+                }
+            }
+        }
+    }
+}

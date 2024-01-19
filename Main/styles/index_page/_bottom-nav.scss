@@ -1,0 +1,15 @@
+@use "../media-queries/bottom-nav";
+
+.bottom-navigator {
+    position: fixed;
+    bottom: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 48px;
+    z-index: 1;
+    background-color: white;
+    border-top: 1px solid lightgray;
+    overscroll-behavior: none;
+    box-sizing: border-box;
+    user-select: none;
+}

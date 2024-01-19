@@ -1,0 +1,53 @@
+@use "../media-queries/top-category-buttons";
+
+/* 상단 로고 애니메이션시 버튼 네브도 애니메이션 */
+.top-fixed-bar.is-hidden ~ nav {
+    top: 10px !important;
+    transform: translateX(-50%);
+}
+
+/* top-category-buttons 버튼 스타일링 */
+nav.top-category-buttons {
+    /* 사이즈 */
+    --button-gap: 10px;
+    --button-width: 200px;
+
+    /* flexbox랑*/
+    display: flex;
+    gap: var(--button-gap);
+    margin: 0px 0px 50px 0px;
+
+    /* 너비 */
+    width: 100%;
+    overflow: hidden;
+
+    /* 포지셔닝 */
+    position: fixed;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99;
+
+    /* 애니메이션 */
+    transition: top 0.3s ease;
+
+    & > button {
+        border: 0px;
+        border-radius: 14px;
+        padding: 3% 6%;
+        font-size: 18px;
+        white-space: nowrap;
+        word-break: keep-all;
+        cursor: pointer;
+        background-color: #f0f0f0;
+        scroll-snap-align: center;
+        text-align: center;
+        width: var(--button-width);
+        min-width: var(--button-width);
+        touch-action: manipulation;
+
+        &.active {
+            background: linear-gradient(30deg, #43c3ff, #94ddff, #7bd5ff);
+        }
+    }
+}

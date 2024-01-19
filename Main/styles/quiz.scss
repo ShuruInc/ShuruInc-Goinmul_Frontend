@@ -1,0 +1,18 @@
+@use "common/reset";
+@use "common/container";
+@use "common/top-logo-nav";
+@use "common/utils";
+@import "common/styled-inputs";
+
+.main-container {
+    padding-top: 145px;
+}
+
+article {
+    width: 80%;
+}
+
+@import "quiz/result";
+@import "quiz/solve";
+@import "quiz/entry";
+@import "quiz/correctness-animation";

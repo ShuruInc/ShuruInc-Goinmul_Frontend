@@ -3,43 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="../dist/assets/css/styles.css">
-    <link rel="stylesheet" href="../dist/assets/css/top-bottom-navs.css">
-    
-    <link rel="stylesheet" href="../dist/assets/css/media-queries.css">
-    <link rel="stylesheet" href="../dist/assets/css/post-board-columns.css">
     <title>싱숑샹숑</title>
 </head>
 <body>
-    <div id="topFixedBar" class="top-fixed-bar">
-        <img id="mainTopLogo" class="main-top-logo" src= "../dist/assets/images/logo/MainLogo_1_alpha.png" alt="err.png">        
+    <div id="topFixedBar" class="top-fixed-bar gradient">
+        <nav>
+            <button class="ranking-icon">
+                <i class="fa-solid fa-ranking-star"></i>
+            </button>        
+            <a class="main-top-logo" href="/">
+                <img class="main-top-logo-image" alt="err.png">
+            </a>
+            <button class="search-icon">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </nav>
     </div>
     <nav class="top-category-buttons">
-        <button data-key="article-board-0">K-POP</button>
-        <button data-key="article-board-1">J-POP</button>
-        <button data-key="article-board-2">C-POP</button>
-        <button data-key="article-board-0" class="active">K-POP</button>
-        <button data-key="article-board-1">J-POP</button>
-        <button data-key="article-board-2">C-POP</button>
-        <button data-key="article-board-0">K-POP</button>
-        <button data-key="article-board-1">J-POP</button>
-        <button data-key="article-board-2">C-POP</button>
     </nav>
     <div id="mainContainer" class="main-container">
         <div class="post-board-columns">
-            <article class="column" data-key="article-board-0">
-            </article>
-            <article class="column" data-key="article-board-1">
-            </article>
-            <article class="column" data-key="article-board-2">
+            <article class="column main" data-key="home">
             </article>
         </div class="post-board-columns">
     </div>
     
     <div class="bottom-navigator"></div>
-    <script src="../dist/assets/js/post_board.js"></script>
-    <script src="../dist/assets/js/top_bottom_animation.js"></script>
-    <script src="../dist/assets/js/top_category_button_nav.js"></script>
-    <script src="../dist/assets//js/lib/infinity_scroller.js"></script>
 </body>
 </html>

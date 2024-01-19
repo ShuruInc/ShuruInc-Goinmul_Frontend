@@ -1,0 +1,11 @@
+@use "../media-queries/container";
+
+.main-container {
+    /*모든 콘텐츠가 담김*/
+    background-color: white;
+    margin: 0 auto; /* Center the container horizontally */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
