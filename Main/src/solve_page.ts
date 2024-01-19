@@ -179,6 +179,7 @@ export default function initSolvePage(session: QuizSession) {
                     )
                         .toString()
                         .padStart(2, "0")}`,
+                    percentage > 50,
                 );
             }, 500);
         } else {

@@ -241,10 +241,16 @@ export function updateShareProblem(
  * 상단 진행바를 업데이트합니다.
  * @param percentage 0이상 100이하의 진행률
  */
-export function updateProgress(percentage: number, text?: string) {
-    (
-        document.querySelector(".progress-container .progress") as HTMLElement
-    ).style.width = `${percentage}%`;
+export function updateProgress(percentage: number, text?: string, red = false) {
+    const progress = document.querySelector(
+        ".progress-container .progress",
+    ) as HTMLElement;
+    progress.style.width = `${percentage}%`;
+    if (red) {
+        document.querySelector(".progress-container")?.classList.add("red");
+    } else {
+        document.querySelector(".progress-container")?.classList.remove("red");
+    }
 
     const textElement = document.querySelector(
         ".progress-container .progress-text",
