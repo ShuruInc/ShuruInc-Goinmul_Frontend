@@ -68,7 +68,10 @@ export function InitTopNav(animated = false) {
     });
     setTimeout(() => {
         tippyInstance.show();
-    }, 10);
+        setTimeout(() => {
+            tippyInstance.hide();
+        }, 800);
+    }, 100);
 
     if (animated) InitTopBottomAnimation(topFixedBar, mainTopLogo);
 }
