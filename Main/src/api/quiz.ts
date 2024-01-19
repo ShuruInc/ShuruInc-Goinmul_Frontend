@@ -55,6 +55,23 @@ export class QuizApiClient {
         console.log(JSON.parse(localStorage.getItem(`problems-${id}`) ?? "[]"));
     }
 
+    private static shakeProblems(id: string) {
+        const problems: any[] = JSON.parse(
+            localStorage.getItem(`problems-${id}`) ?? "[]",
+        );
+        const result: any[] = [];
+        while (problems.length > 0) {
+            result.push(
+                problems.splice(
+                    Math.floor(Math.random() * problems.length),
+                    1,
+                )[0],
+            );
+        }
+
+        localStorage.setItem(`problems-${id}`, JSON.stringify(result));
+    }
+
     static async startQuiz(id: string): Promise<QuizSession> {
         const sessionId = Date.now() + "-" + Math.floor(Math.random() * 5000);
         const title = (await apiClient.api.getArticle(parseInt(id))).data
@@ -84,6 +101,7 @@ export class QuizApiClient {
         const title = (await apiClient.api.getArticle(parseInt(id))).data
             .result!.title!;
         await QuizApiClient.prepareQuestions(id, true);
+        this.shakeProblems(id);
         localStorage.setItem(
             `session-${sessionId}`,
             JSON.stringify({
