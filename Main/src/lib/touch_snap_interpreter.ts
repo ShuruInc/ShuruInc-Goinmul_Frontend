@@ -143,7 +143,11 @@ export default class TouchVelocityCalculator {
     }
 
     private isAngleHorizontal(deltaX: number, deltaY: number) {
-        const angle = Math.atan2(deltaX, deltaY) * (180 / Math.PI) + 180;
-        return (angle >= 240 && angle <= 300) || (angle >= 60 && angle <= 120);
+        const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI) + 180;
+        console.log(angle);
+        return !(
+            (angle >= 240 && angle <= 300) ||
+            (angle >= 60 && angle <= 120)
+        );
     }
 }
