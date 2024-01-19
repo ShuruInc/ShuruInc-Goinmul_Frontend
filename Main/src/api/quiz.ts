@@ -30,15 +30,17 @@ export class QuizApiClient {
                                           value: j.choiceContent,
                                       })),
                             figure:
-                                i.problemFigure !== ""
+                                i.problemFigure !== "" &&
+                                i.problemFigure !== null
                                     ? i.problemFigure
-                                    : i.imgUrl !== ""
+                                    : i.imgUrl !== "" && i.imgUrl !== null
                                     ? backendUrl + "/" + i.imgUrl
                                     : null,
                             figureType:
-                                i.problemFigure !== ""
+                                i.problemFigure !== "" &&
+                                i.problemFigure !== null
                                     ? "initials"
-                                    : i.imgUrl !== ""
+                                    : i.imgUrl !== "" && i.imgUrl !== null
                                     ? "image"
                                     : "empty",
                             points: 10,
