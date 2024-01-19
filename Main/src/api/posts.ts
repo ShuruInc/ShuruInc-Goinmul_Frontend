@@ -50,10 +50,25 @@ export default class PostBoardApiClient {
                     }),
                 )
             ).map(({ firstCategory, secondCategories }) => {
+                let nerd = true;
                 return {
                     id: firstCategory.id!.toString(),
                     title: firstCategory.categoryNm!,
                     async fetchNextSection() {
+                        if (nerd) {
+                            const articles =
+                                await apiClient.api.getArticlesBySecCategory(
+                                    firstCategory.id!,
+                                );
+                            nerd = false;
+
+                            return {
+                                title: "",
+                                landscape: transformArticleDtoToPost(
+                                    articles.data.result![0]!,
+                                ),
+                            };
+                        }
                         let secondCategory = secondCategories.shift();
                         if (typeof secondCategory === "undefined") return null;
 
