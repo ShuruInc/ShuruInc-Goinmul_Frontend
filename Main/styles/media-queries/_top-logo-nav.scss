@@ -1,0 +1,40 @@
+@import "../mixins";
+
+.top-fixed-bar nav {
+    @include desktop {
+        margin: 35px 0px 6px !important;
+    }
+    @include tablet {
+        margin: 38px 0px 8px !important;
+    }
+    @include mobile {
+        margin: 35px 0px 6px !important;
+    }
+}
+
+.main-top-logo {
+    @include desktop {
+        width: 90px !important;
+    }
+    @include tablet {
+        width: 80px !important;
+    }
+    @include mobile {
+        width: 70px !important;
+    }
+}
+
+#topFixedBar {
+    @include desktop {
+        --top-fixed-bar-height: 140px;
+        --top-fixed-bar-width: 700px;
+    }
+    @include tablet {
+        --top-fixed-bar-height: 135px;
+        --top-fixed-bar-width: 550px;
+    }
+    @include mobile {
+        --top-fixed-bar-height: 120px;
+        --top-fixed-bar-width: 100%;
+    }
+}

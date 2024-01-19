@@ -1,0 +1,14 @@
+@import "../mixins";
+
+.floating-btn {
+    @include desktop {
+        --floating-btn-width: 648px;
+    }
+    @include tablet {
+        --floating-btn-width: 500px;
+    }
+    @include mobile {
+        --floating-btn-width: calc(100% - 40px);
+    }
+    width: var(--floating-btn-width);
+}

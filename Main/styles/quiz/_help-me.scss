@@ -1,0 +1,49 @@
+@import "../common/styled-inputs";
+
+.help-me {
+    display: none;
+    &.active {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .problem-box {
+        width: 400px;
+        padding: 2em;
+        background-color: #ffe2c5;
+        text-align: center;
+        .answer {
+            display: flex;
+        }
+        .answer-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            .fill-in {
+                width: 10em;
+                height: 1em;
+                border-bottom: 1px solid black;
+            }
+            .choices {
+                display: grid;
+                align-items: baseline;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5em 3em;
+                margin: 0px;
+                padding: 0px;
+                li {
+                    list-style-position: inside;
+                    text-align: left;
+                }
+            }
+        }
+    }
+    .buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        @include styled-inputs;
+    }
+}

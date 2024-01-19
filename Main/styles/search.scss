@@ -1,0 +1,104 @@
+@use "common/top-logo-nav";
+@use "common/container";
+@use "common/utils";
+@import "common/styled-inputs";
+@import "index_page/post-board";
+@import "mixins";
+
+.top-fixed-bar .container {
+    width: 100%;
+    padding: 5px 20px 5px 10px;
+    box-sizing: border-box;
+
+    nav {
+        font-size: 24px;
+        @include styled-inputs;
+        button.go-back {
+            background-color: transparent !important;
+
+            font-size: inherit;
+            max-width: 100%;
+
+            padding: 7.5px 15px;
+        }
+
+        input.search {
+            background-image: var(--search-icon);
+            background-position: 10px center;
+            background-size: auto 20px;
+            background-repeat: no-repeat;
+            padding: 7.5px 15px 7.5px 36px;
+            width: 100%;
+            color: #000000b2;
+
+            &:focus,
+            &:active {
+                background-image: var(--search-icon-active);
+                color: black;
+            }
+        }
+    }
+}
+
+article {
+    width: 100%;
+    padding-top: 80px;
+    .popularNow {
+        user-select: None;
+
+        .columns {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            overflow-x: auto;
+            @include hide-scrollbar;
+
+            .column {
+                display: block;
+                padding: 10px 30px;
+                border-right: 5px solid gray;
+                &:last-child {
+                    border-right: 0px;
+                }
+                li {
+                    list-style-position: inside;
+                    white-space: nowrap;
+                }
+                a {
+                    text-decoration: none;
+                    color: black;
+                }
+            }
+        }
+    }
+
+    .bubbles {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+        a.bubble {
+            white-space: nowrap;
+            display: block;
+            text-decoration: none;
+            color: black;
+            background-color: #bababa;
+            font-size: 16px;
+            padding: 4px 8px;
+            border-radius: 8px;
+        }
+    }
+
+    .no-results .request {
+        width: 100%;
+        font-size: 1.25em;
+        background-color: orange;
+        color: white;
+        padding: 1em 10px;
+        border: 0px;
+        border-radius: 20px;
+        &.requested {
+            background-color: gray;
+        }
+    }
+}
