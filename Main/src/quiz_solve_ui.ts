@@ -189,7 +189,11 @@ const createQuestionElement = (question: QuizProblem, index: number) => {
                     const initial = document.createElement("div");
                     initial.textContent = i;
                     initial.className =
-                        i === " " ? "initial whitespace" : "initial";
+                        i === "$"
+                            ? "initial"
+                            : i === " "
+                            ? "whitespace"
+                            : "normal";
                     return initial;
                 }),
             ].forEach((i) => initials.appendChild(i));
