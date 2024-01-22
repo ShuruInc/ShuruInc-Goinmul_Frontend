@@ -1,7 +1,7 @@
 import { backendUrl } from "../env";
 import { MainPostBoardData } from "../home_post_board";
 import { PostBoardSectionData } from "../post_board";
-import { Api } from "./api_http_client/ApiHttpClient";
+import { Api } from "./api_http_client/Api";
 import { transformArticleDtoToPost } from "./transform";
 
 export type PostBoardData = {
@@ -17,14 +17,14 @@ export default class PostBoardApiClient {
         return {
             popularTests: await Promise.all(
                 [1, 2, 3, 4, 5, 6, 7, 8]
-                    .map(async (i) => apiClient.api.getArticle(i))
+                    .map(async (i) => apiClient.getArticle(i))
                     .map(async (i) => (await i).data)
                     .map(async (i) =>
                         transformArticleDtoToPost((await i).result!),
                     ),
             ),
             rankings: Object.fromEntries(
-                (await apiClient.api.getRanks()).data.result!.map((i) => [
+                (await apiClient.getRanks()).data.result!.map((i) => [
                     i.categoryNm,
                     i.rankDtoList!.map((i) => ({
                         nickname: i.nickname!,
@@ -36,13 +36,13 @@ export default class PostBoardApiClient {
         };
     }
     static async getPostBoards(): Promise<PostBoardData[]> {
-        const firstCategories = await apiClient.api.getFirstCategories();
+        const firstCategories = await apiClient.getFirstCategories();
         if (firstCategories.ok) {
             const result = (
                 await Promise.all(
                     firstCategories.data.result!.map(async (i) => {
                         const secondCategoriesResponse =
-                            await apiClient.api.getSecondCategories(i.id!);
+                            await apiClient.getSecondCategories(i.id!);
                         const secondCategories =
                             secondCategoriesResponse.data.result!;
                         console.log(secondCategories);
@@ -57,7 +57,7 @@ export default class PostBoardApiClient {
                     async fetchNextSection() {
                         if (nerd) {
                             const articles =
-                                await apiClient.api.getArticlesBySecCategory(
+                                await apiClient.getArticlesBySecCategory(
                                     firstCategory.id!,
                                 );
                             nerd = false;
@@ -73,7 +73,7 @@ export default class PostBoardApiClient {
                         if (typeof secondCategory === "undefined") return null;
 
                         const articles =
-                            await apiClient.api.getArticlesBySecCategory(
+                            await apiClient.getArticlesBySecCategory(
                                 secondCategory.id!,
                             );
 
@@ -96,13 +96,13 @@ export default class PostBoardApiClient {
     }
 
     static async like(articleId: string | number): Promise<boolean> {
-        const result = await apiClient.api.likeArticle(
+        const result = await apiClient.likeArticle(
             typeof articleId === "string" ? parseInt(articleId) : articleId,
         );
         return result.ok;
     }
 
     static async requestMakeTest(keyword: string): Promise<void> {
-        await apiClient.api.postKeyword({ keyword });
+        await apiClient.postKeyword({ keyword });
     }
 }

@@ -4,7 +4,7 @@
   "description": "frontend of singsongsangsong",
   "scripts": {
     "dev": "dotenv -e dev.env -- webpack --watch --progress",
-    "build-api-client": "dotenv -- swagger-typescript-api --clean-output --default-response json --union-enums -n ApiHttpClient -o Main/src/api/api_http_client",
+    "build-api-client": "dotenv -- swagger-typescript-api --clean-output --default-response json --union-enums --modular -n ApiHttpClient -o Main/src/api/api_http_client",
     "build": "dotenv -e build.env -- webpack --progress"
   },
   "author": "ShuruInc",
