@@ -1,7 +1,7 @@
 import { backendUrl } from "../env";
 import { QuizProblem } from "../quiz_solve_ui";
 import StopWatch from "../stopwatch";
-import { Api } from "./api_http_client/ApiHttpClient";
+import { Api } from "./api_http_client/Api";
 
 type QuizSessionId = string;
 
@@ -13,6 +13,7 @@ type QuizResult = {
     nickname?: string;
     ranking?: number;
     percentage?: number;
+    comment: string;
 } & (
     | {
           ranking: number;
@@ -40,6 +41,13 @@ export type QuizInternalSessionData = {
     email: string;
     nickname: string;
     startedAt: number;
+    postedRank: boolean;
+    hashtag: string;
+    ranking: {
+        comment: string;
+        percentage: number;
+        rank: number;
+    } | null;
 };
 
 const apiClient = new Api({ baseUrl: backendUrl });
@@ -95,7 +103,7 @@ export class QuizSession {
     }
     async submit(answer: string): Promise<boolean> {
         let correct = (
-            await apiClient.api.getAnswers((await this.currentProblem())!.id!, {
+            await apiClient.getAnswers((await this.currentProblem())!.id!, {
                 answer,
             })
         ).data.result!.correct!;
@@ -110,25 +118,49 @@ export class QuizSession {
 
         return correct;
     }
+    async postRank(): Promise<void> {
+        const localSession = this.getLocalSession();
+        if (localSession.postedRank) return;
+
+        const result = await apiClient.postRank({
+            articleId: parseInt(localSession.quizId),
+            articleType: localSession.nerdTest ? "NERD" : "NORMAL",
+            score: localSession.points,
+        });
+
+        this.saveLocalSession({
+            ...localSession,
+            hashtag: result.data!.result!.nicknameHashtag!,
+            ranking: {
+                comment: result.data!.result!.comment!,
+                percentage: result.data!.result!.percentile!,
+                rank: result.data!.result!.rank!,
+            },
+        });
+    }
     async result(): Promise<QuizResult | null> {
-        return this.ended() || this.getLocalSession().nerdTest
-            ? {
-                  points: this.getLocalSession().points,
-                  title: this.getLocalSession().title,
-                  quizId: this.getLocalSession().quizId,
-                  ...(this.getLocalSession().nerdTest
-                      ? {
-                            ranking: Math.ceil(Math.random() * 10),
-                            hashtag: Math.round(
-                                Math.random() * 9999,
-                            ).toString(),
-                            nickname: this.getLocalSession().nickname,
-                        }
-                      : {
-                            percentage: Math.round(Math.random() * 100),
-                        }),
-              }
-            : null;
+        const ended = this.ended() || this.getLocalSession().nerdTest;
+        if (ended) {
+            await this.postRank();
+            return {
+                points: this.getLocalSession().points,
+                title: this.getLocalSession().title,
+                quizId: this.getLocalSession().quizId,
+                comment: this.getLocalSession().ranking!.comment ?? "",
+                ...(this.getLocalSession().nerdTest
+                    ? {
+                          ranking: this.getLocalSession().ranking!.rank,
+                          hashtag: this.getLocalSession().hashtag,
+                          nickname: this.getLocalSession().nickname,
+                      }
+                    : {
+                          percentage:
+                              this.getLocalSession().ranking!.percentage,
+                      }),
+            };
+        } else {
+            return null;
+        }
     }
     getSessionId(): string {
         return this.sessionId;

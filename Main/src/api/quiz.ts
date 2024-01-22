@@ -1,6 +1,6 @@
 import { backendUrl } from "../env";
 import { QuizProblem } from "../quiz_solve_ui";
-import { Api } from "./api_http_client/ApiHttpClient";
+import { Api } from "./api_http_client/Api";
 import { QuizSession, QuizInternalSessionData } from "./quiz_session";
 
 const apiClient = new Api({ baseUrl: backendUrl });
@@ -8,7 +8,7 @@ const apiClient = new Api({ baseUrl: backendUrl });
 export class QuizApiClient {
     static async isNerdTest(id: string): Promise<boolean> {
         return (
-            (await apiClient.api.getArticle(parseInt(id))).data.result!
+            (await apiClient.getArticle(parseInt(id))).data.result!
                 .articleType === "NERD"
         );
     }
@@ -18,7 +18,7 @@ export class QuizApiClient {
             `problems-${id}`,
             JSON.stringify(
                 (
-                    await apiClient.api.getArticleProblems(parseInt(id))
+                    await apiClient.getArticleProblems(parseInt(id))
                 ).data.result!.map(
                     (i) =>
                         ({
@@ -73,9 +73,14 @@ export class QuizApiClient {
     }
 
     static async startQuiz(id: string): Promise<QuizSession> {
+        await apiClient.saveTempUser({
+            email: "example@example.com",
+            nickname: "example",
+            score: 0,
+        });
         const sessionId = Date.now() + "-" + Math.floor(Math.random() * 5000);
-        const title = (await apiClient.api.getArticle(parseInt(id))).data
-            .result!.title!;
+        const title = (await apiClient.getArticle(parseInt(id))).data.result!
+            .title!;
         await QuizApiClient.prepareQuestions(id, false);
         localStorage.setItem(
             `session-${sessionId}`,
@@ -88,6 +93,7 @@ export class QuizApiClient {
                 nickname: "",
                 startedAt: Date.now(),
                 title,
+                postedRank: false,
             } as QuizInternalSessionData),
         );
 
@@ -97,9 +103,10 @@ export class QuizApiClient {
         id: string,
         info: { nickname: string; email: string },
     ): Promise<QuizSession> {
+        await apiClient.saveTempUser({ ...info, score: 0 });
         const sessionId = Date.now() + "-" + Math.floor(Math.random() * 5000);
-        const title = (await apiClient.api.getArticle(parseInt(id))).data
-            .result!.title!;
+        const title = (await apiClient.getArticle(parseInt(id))).data.result!
+            .title!;
         await QuizApiClient.prepareQuestions(id, true);
         this.shakeProblems(id);
         localStorage.setItem(
@@ -112,6 +119,7 @@ export class QuizApiClient {
                 ...info,
                 startedAt: Date.now(),
                 title,
+                postedRank: false,
             } as QuizInternalSessionData),
         );
 

@@ -27,7 +27,7 @@ SearchApiClient.recommend(8).then((posts) => {
         {
             portraits: posts,
         },
-        document.querySelector(".post-section")!
+        document.querySelector(".post-section")!,
     );
 });
 (async () => {
@@ -47,11 +47,11 @@ SearchApiClient.recommend(8).then((posts) => {
     if (typeof result.percentage !== "undefined") {
         document.querySelector(".rankings-ad")?.classList.add("display-none");
         document.querySelector(
-            ".ranking"
-        )!.innerHTML = `(점수대에 따라 다른 멘트)<br>당신은 상위 ${result.percentage}%`;
+            ".ranking",
+        )!.innerHTML = `${result.comment}<br>당신은 상위 ${result.percentage}%`;
     } else
         document.querySelector(
-            ".ranking"
+            ".ranking",
         )!.innerHTML = `맞히셨습니다!<br>당신은 현재 랭킹 ${result.ranking}위!`;
 
     document.querySelector(".retry")?.addEventListener("click", (evt) => {
@@ -65,7 +65,7 @@ SearchApiClient.recommend(8).then((posts) => {
     const eunJosa = getJosaPicker("은");
     const url = "https://example.com";
     const canvas = padCanvas(
-        await html2canvas(document.querySelector(".result")!)
+        await html2canvas(document.querySelector(".result")!),
     );
     const blob: Blob = await canvas.convertToBlob({ type: "iamge/png" });
     const imageFile = new File([blob], "result.png", { type: "image/png" });
@@ -107,7 +107,7 @@ SearchApiClient.recommend(8).then((posts) => {
             kakao: {
                 title: `[${result.title}] 고인물 테스트`,
                 content: `당신의 친구 [${result.nickname}]${eunJosa(
-                    result.nickname
+                    result.nickname,
                 )}
 [${result.nickname}에 이만큼 고였습니다.
 이 점수를 넘을 수 있다면?

@@ -1,6 +1,6 @@
 import { backendUrl } from "../env";
 import { Post } from "../post_board";
-import { Api } from "./api_http_client/ApiHttpClient";
+import { Api } from "./api_http_client/Api";
 import PostBoardApiClient from "./posts";
 import { transformArticleDtoToPost } from "./transform";
 
@@ -28,7 +28,7 @@ const apiClient = new Api({ baseUrl: backendUrl });
 
 export default class SearchApiClient {
     static async recommend(count: number): Promise<Post[]> {
-        const articles = (await apiClient.api.getArticles()).data
+        const articles = (await apiClient.getArticles()).data
             .result!.filter((i) => i.articleType !== "NERD")
             .map(transformArticleDtoToPost);
 
@@ -36,28 +36,28 @@ export default class SearchApiClient {
     }
 
     static async hotQueries(count: number): Promise<string[]> {
-        return (await apiClient.api.getPopularSearchList()).data.result!.slice(
+        return (await apiClient.getPopularSearchList()).data.result!.slice(
             0,
             count,
         );
     }
 
     static async recommendKeyword(count: number): Promise<string[]> {
-        return (
-            await apiClient.api.getHashtags({ size: count })
-        ).data.result!.map((i) => i.tag!);
+        return (await apiClient.getHashtags({ size: count })).data.result!.map(
+            (i) => i.tag!,
+        );
     }
 
     static async searchByHashtags(keyword: string): Promise<Post[]> {
         return (
-            await apiClient.api.getArticlesRelatedToHashtags({ keyword })
+            await apiClient.getArticlesRelatedToHashtags({ keyword })
         ).data.result!.map(transformArticleDtoToPost);
     }
 
     static async search(query: string): Promise<SearchResult> {
         return {
             result: (
-                await apiClient.api.getArticles({ keyword: query })
+                await apiClient.getArticles({ keyword: query })
             ).data.result!.map(transformArticleDtoToPost),
             similar: await this.searchByHashtags(query),
         };
