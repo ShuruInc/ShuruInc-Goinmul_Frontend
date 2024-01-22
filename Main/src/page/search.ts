@@ -1,7 +1,9 @@
 import { dom, icon, library } from "@fortawesome/fontawesome-svg-core";
 import "../../styles/search.scss";
 import { faChevronLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
-import createFloatingButton from "../floating_button";
+import createFloatingButton, {
+    addFloatingButonListener,
+} from "../floating_button";
 import SearchApiClient from "../api/search";
 import {
     fillPlaceholderSectionInto,
@@ -16,12 +18,12 @@ dom.i2svg({ node: document.querySelector("#topFixedBar")! });
 document.body.style.setProperty(
     "--search-icon",
     `url("data:image/svg+xml;,${encodeURIComponent(
-        icon(faSearch, { styles: { opacity: "0.5" } }).html[0]
-    )}")`
+        icon(faSearch, { styles: { opacity: "0.5" } }).html[0],
+    )}")`,
 );
 document.body.style.setProperty(
     "--search-icon-active",
-    `url("data:image/svg+xml;,${encodeURIComponent(icon(faSearch).html[0])}")`
+    `url("data:image/svg+xml;,${encodeURIComponent(icon(faSearch).html[0])}")`,
 );
 
 // 뒤로 가기 버튼
@@ -33,10 +35,11 @@ document.querySelector("button.go-back")?.addEventListener("click", (evt) => {
 
 // 홈 버튼 추가
 createFloatingButton("home");
+addFloatingButonListener(() => (location.href = "/"));
 
 // query 매개변수 가져오기
 const params = new URLSearchParams(
-    location.search.length > 0 ? location.search.substring(1) : ""
+    location.search.length > 0 ? location.search.substring(1) : "",
 );
 let query = params.get("query") ?? "";
 const searchInput = document.querySelector("input.search") as HTMLInputElement;
@@ -44,7 +47,7 @@ searchInput.value = query;
 
 const renderPopularQueries = (queries: string[]) => {
     const columns = document.querySelector(
-        ".popularNow .columns"
+        ".popularNow .columns",
     ) as HTMLElement;
     columns.innerHTML = "";
     setHorizontalDragScrollOnDesktop(columns);
@@ -101,10 +104,10 @@ const renderKeywords = (keywords: string[]) => {
 
 const render = async () => {
     [...document.querySelectorAll("section")].forEach((i) =>
-        i.classList.add("display-none")
+        i.classList.add("display-none"),
     );
     [...document.querySelectorAll("section.post-section")].forEach(
-        (i) => (i.innerHTML = "")
+        (i) => (i.innerHTML = ""),
     );
 
     if (query === "") {
@@ -112,7 +115,7 @@ const render = async () => {
             i.classList.contains("popularNow") ||
             i.classList.contains("keywords")
                 ? i.classList.remove("display-none")
-                : i.classList.add("display-none")
+                : i.classList.add("display-none"),
         );
         renderKeywords(await SearchApiClient.recommendKeyword(15));
         renderPopularQueries(await SearchApiClient.hotQueries(10));
@@ -123,7 +126,7 @@ const render = async () => {
         if (hasResults) {
             // 검색 결과
             const resultSection = document.querySelector(
-                ".result"
+                ".result",
             )! as HTMLElement;
             preparePlaceholderSection(resultSection, [
                 {
@@ -136,14 +139,14 @@ const render = async () => {
                     portraits: result.result,
                     title: `총 ${result.result.length}건의 검색 결과가 있습니다.`,
                 },
-                resultSection
+                resultSection,
             );
             resultSection.classList.remove("display-none");
 
             // 연관 모의고사
             if (result.similar.length > 0) {
                 const similarSection = document.querySelector(
-                    ".similar"
+                    ".similar",
                 )! as HTMLElement;
                 preparePlaceholderSection(similarSection, [
                     {
@@ -156,14 +159,14 @@ const render = async () => {
                         portraits: result.similar,
                         title: "연간된 모의고사",
                     },
-                    similarSection
+                    similarSection,
                 );
                 similarSection.classList.remove("display-none");
             }
         } else {
             // 요청 버튼 활성화
             const requestBtn = document.querySelector(
-                "button.request"
+                "button.request",
             ) as HTMLButtonElement;
             requestBtn.classList.remove("requested");
             requestBtn.disabled = false;
@@ -176,7 +179,7 @@ const render = async () => {
         // 추천 모의고사
         const recommendedPosts = await SearchApiClient.recommend(10);
         const recommendSection = document.querySelector(
-            ".recommended"
+            ".recommended",
         )! as HTMLElement;
         preparePlaceholderSection(recommendSection, [
             {
@@ -189,7 +192,7 @@ const render = async () => {
                 portraits: recommendedPosts,
                 title: "추천 모의고사",
             },
-            recommendSection
+            recommendSection,
         );
         recommendSection.classList.remove("display-none");
     }
@@ -201,7 +204,7 @@ const setQuery = (newQuery: string, setInputValue = false) => {
     history.replaceState(
         history.state,
         "",
-        "/search.html?query=" + encodeURIComponent(newQuery)
+        "/search.html?query=" + encodeURIComponent(newQuery),
     );
     clearTimeout(timeoutIdx);
     timeoutIdx = setTimeout(() => {
@@ -214,7 +217,7 @@ searchInput.addEventListener("input", (evt) => {
 });
 
 const requestBtn = document.querySelector(
-    "button.request"
+    "button.request",
 ) as HTMLButtonElement;
 requestBtn?.addEventListener("click", (evt) => {
     evt.preventDefault();
