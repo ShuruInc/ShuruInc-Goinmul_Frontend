@@ -117,4 +117,7 @@ export class QuizApiClient {
 
         return new QuizSession(sessionId);
     }
+    static async sendStatistics(gender: string | null, age: string | null) {
+        console.log(`received statistics: gender=${gender}, age=${age}`);
+    }
 }

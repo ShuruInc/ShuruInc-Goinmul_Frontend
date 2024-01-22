@@ -30,6 +30,7 @@
     "@fortawesome/free-brands-svg-icons": "^6.5.1",
     "@fortawesome/free-regular-svg-icons": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
+    "email-validator": "^2.0.4",
     "html-entities": "^2.4.0",
     "html2canvas": "^1.4.1",
     "josa": "^3.0.1",
