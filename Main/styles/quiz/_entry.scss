@@ -4,15 +4,49 @@ article.quiz-entry {
     margin: 0 auto;
     width: fit-content;
 
+    .introduction {
+        h1 {
+            font-size: 24px;
+        }
+    }
+    .statistics-header {
+        h2 {
+            font-size: 20px;
+        }
+        p {
+            font-size: 0.8em;
+        }
+    }
+
     @include styled-inputs;
-    form {
+    form.entry {
         margin: 40px 0px;
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 10px;
+        & > label {
+            display: block;
+        }
     }
-    label {
-        display: block;
+
+    form.statistics {
+        margin: 40px 0px;
+        gap: 10px;
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        align-items: center;
+        .specified-gender {
+            width: 8em;
+        }
+        .age {
+            width: 10em;
+        }
+    }
+
+    .start-button {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
     }
 }

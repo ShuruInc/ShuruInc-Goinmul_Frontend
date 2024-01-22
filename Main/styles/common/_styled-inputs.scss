@@ -7,6 +7,7 @@
     }
 
     input,
+    select,
     button {
         font-size: inherit;
         max-width: 100%;
@@ -14,6 +15,11 @@
         padding: 7.5px 15px;
         border: 0px;
         border-radius: 10px;
+
+        &.small-padding {
+            padding: 4px 0.45em;
+            border-radius: 0.3em;
+        }
 
         &[type="text"],
         &[type="input"],
