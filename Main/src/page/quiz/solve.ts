@@ -6,6 +6,7 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import initSolvePage from "../../solve_page";
 import { QuizSession } from "../../api/quiz_session";
 import { validate as validateEmail } from "email-validator";
+import randomKoreanNickname from "../../random_korean_nickname";
 
 InitTopNav();
 
@@ -25,10 +26,15 @@ const initByQuizId = () => {
             document
                 .querySelector("article.display-none")
                 ?.classList.remove("display-none");
+            let defaultNickname = randomKoreanNickname();
             if (!isNerdTest) {
                 [
                     ...document.querySelectorAll(".introduction, form.entry"),
                 ].forEach((i) => i.classList.add("display-none"));
+            } else {
+                (
+                    document.querySelector("#nickname") as HTMLInputElement
+                ).placeholder = defaultNickname;
             }
             [...document.querySelectorAll("form")].forEach((i) =>
                 i.addEventListener("submit", async (evt) => {
@@ -62,16 +68,12 @@ const initByQuizId = () => {
                         const emailEl = document.querySelector(
                             "#email",
                         ) as HTMLInputElement;
-                        const nickname = nicknameEl.value;
+                        const nickname =
+                            nicknameEl.value.trim() === ""
+                                ? defaultNickname
+                                : nicknameEl.value;
                         const email = emailEl.value;
-                        if (nickname.trim() === "") {
-                            alert("닉네임을 올바르게 입력해주세요!");
-                            nicknameEl.focus();
-                            return;
-                        } else if (
-                            email.trim() === "" ||
-                            !validateEmail(email)
-                        ) {
+                        if (email.trim() === "" || !validateEmail(email)) {
                             alert("이메일을 올바르게 입력해주세요!");
                             emailEl.focus();
                             return;
