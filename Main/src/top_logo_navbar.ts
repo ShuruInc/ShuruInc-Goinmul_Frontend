@@ -66,12 +66,13 @@ export function InitTopNav(animated = false) {
         content: "내 장르 찾기!",
         placement: "left",
     });
-    setTimeout(() => {
-        tippyInstance.show();
+    if (location.pathname === "/")
         setTimeout(() => {
-            tippyInstance.hide();
-        }, 800);
-    }, 100);
+            tippyInstance.show();
+            setTimeout(() => {
+                tippyInstance.hide();
+            }, 800);
+        }, 100);
 
     if (animated) InitTopBottomAnimation(topFixedBar, mainTopLogo);
 }
