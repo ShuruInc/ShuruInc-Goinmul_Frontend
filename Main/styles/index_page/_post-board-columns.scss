@@ -1,7 +1,7 @@
 @import "../mixins";
 
 .post-board-columns {
-    --columns-height: calc(100vh - 48px);
+    --columns-height: 100vh;
     position: relative;
     display: flex;
     flex-direction: row;
