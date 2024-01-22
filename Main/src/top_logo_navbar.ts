@@ -63,12 +63,15 @@ export function InitTopNav(animated = false) {
         });
 
     const tippyInstance = tippy(topFixedBar.querySelector(".search-icon")!, {
-        content: "검색해보세요!",
+        content: "내 장르 찾기!",
         placement: "left",
     });
     setTimeout(() => {
         tippyInstance.show();
-    }, 10);
+        setTimeout(() => {
+            tippyInstance.hide();
+        }, 800);
+    }, 100);
 
     if (animated) InitTopBottomAnimation(topFixedBar, mainTopLogo);
 }

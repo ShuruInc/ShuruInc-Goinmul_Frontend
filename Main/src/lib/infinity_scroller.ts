@@ -132,7 +132,10 @@ export class HorizontalInfinityScroller {
         const scrolledEnough =
             Math.abs(this._basisChildOffsetFromCenter) >
             this._rootWidth() * 0.5;
-        if (Math.abs(speed) > 5 || scrolledEnough) {
+        if (
+            (Math.abs(speed) > 5 || scrolledEnough) &&
+            Math.sign(this._basisChildOffsetFromCenter) === Math.sign(speed)
+        ) {
             let sign = Math.sign(this._basisChildOffsetFromCenter) as -1 | 1;
             const targetChild = scrolledEnough
                 ? this.getCurrentlyMostVisibleChild()!
