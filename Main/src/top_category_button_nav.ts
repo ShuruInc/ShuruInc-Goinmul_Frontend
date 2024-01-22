@@ -24,6 +24,7 @@ export class TopCategoryButtonNav {
     _data: TopCategoryButtonData[] = [];
     _root: HTMLElement;
     _scroller: HorizontalInfinityScroller;
+    _scrollTimeout: NodeJS.Timeout | null = null;
 
     /**
      * 상단 카테고리 버튼 네비게이션 클래스를 생성합니다.
@@ -34,7 +35,7 @@ export class TopCategoryButtonNav {
     constructor(
         data: TopCategoryButtonData[],
         root: HTMLElement,
-        scroller: HorizontalInfinityScroller
+        scroller: HorizontalInfinityScroller,
     ) {
         this._data = data;
         this._root = root;
@@ -57,6 +58,11 @@ export class TopCategoryButtonNav {
         this._keyIndexToKey = this._keyIndexToKey.bind(this);
         this._getButtonElements = this._getButtonElements.bind(this);
         this._getActiveButton = this._getActiveButton.bind(this);
+        this._onScroll = this._onScroll.bind(this);
+        this._onScrollEnd = this._onScrollEnd.bind(this);
+
+        // 스크롤 이벤트 핸들러 추가
+        root.addEventListener("scroll", this._onScroll);
 
         // active된 버튼을 중앙에 정렬 (창 크기가 바뀌었을 때도!)
         this.scrollToCenter(this._getActiveButton(), false);
@@ -66,8 +72,39 @@ export class TopCategoryButtonNav {
 
         // 이벤트 핸들러 추가
         this._getButtonElements().forEach((i) =>
-            i.addEventListener("click", this._handleTopButtonNavClick)
+            i.addEventListener("click", this._handleTopButtonNavClick),
         );
+    }
+
+    _onScroll() {
+        if (this._scrollTimeout !== null) clearTimeout(this._scrollTimeout);
+        this._scrollTimeout = setTimeout(this._onScrollEnd, 200);
+    }
+
+    _onScrollEnd() {
+        const rootRect = this._root.getBoundingClientRect();
+        const activeNow = this._getActiveButton();
+        const buttons = this._getButtonElements()
+            .map((i) => ({
+                button: i,
+                distance:
+                    i.getBoundingClientRect().width == 0 ||
+                    i.getBoundingClientRect().height == 0
+                        ? Infinity
+                        : Math.abs(
+                              (i.getBoundingClientRect().left +
+                                  i.getBoundingClientRect().right) /
+                                  2 -
+                                  (rootRect.left + rootRect.right) / 2,
+                          ),
+            }))
+            .sort((a, b) => a.distance - b.distance);
+
+        const targetButton = buttons[0].button;
+        this.scrollToCenter(targetButton);
+        if (targetButton !== activeNow) {
+            targetButton.click();
+        }
     }
 
     /**
@@ -144,8 +181,8 @@ export class TopCategoryButtonNav {
                 distance: Math.abs(
                     this._getButtonElements().indexOf(i) -
                         this._getButtonElements().indexOf(
-                            this._getActiveButton()
-                        )
+                            this._getActiveButton(),
+                        ),
                 ),
             }))
             .sort((a, b) => a.distance - b.distance);
@@ -167,10 +204,10 @@ export class TopCategoryButtonNav {
         const buttonWidth = parseInt(
             getComputedStyle(this._root)
                 .getPropertyValue("--button-width")
-                .replace("px", "")
+                .replace("px", ""),
         );
         const neededButtonOnOneSide = Math.ceil(
-            (navWidth / buttonWidth - 1) / 2
+            (navWidth / buttonWidth - 1) / 2,
         );
 
         // 좌우에 실제로 있는 버튼 개수 (좀 무식한 방법으로...)
@@ -198,13 +235,13 @@ export class TopCategoryButtonNav {
                                     (
                                         this._root
                                             .firstElementChild as HTMLElement
-                                    ).dataset.key!
+                                    ).dataset.key!,
                                 ) - 1,
-                                this._data.length
-                            )
-                        )
+                                this._data.length,
+                            ),
+                        ),
                     ),
-                    this._root.firstElementChild
+                    this._root.firstElementChild,
                 );
                 this.scrollToCenter(activeNow, false); // 버그 방지
             }
@@ -224,12 +261,12 @@ export class TopCategoryButtonNav {
                             normalizeIntoRange(
                                 this._getIndexOfButtonKey(
                                     (this._root.lastElementChild as HTMLElement)
-                                        .dataset.key!
+                                        .dataset.key!,
                                 ) + 1,
-                                this._data.length
-                            )
-                        )
-                    )
+                                this._data.length,
+                            ),
+                        ),
+                    ),
                 );
         }
     }
@@ -260,7 +297,7 @@ export class TopCategoryButtonNav {
 
             if (targetButton === null || typeof targetButton === "undefined") {
                 this._createRequiredButtonAround(
-                    direction < 0 ? buttons[buttons.length - 1] : buttons[0]
+                    direction < 0 ? buttons[buttons.length - 1] : buttons[0],
                 );
             }
         }
@@ -308,8 +345,8 @@ export class TopCategoryButtonNav {
                 .filter((i) => i.dataset.key === target.dataset.key)[0],
             true,
             Math.sign(
-                buttons.indexOf(currentActive) - buttons.indexOf(target)
-            ) as 1 | -1
+                buttons.indexOf(currentActive) - buttons.indexOf(target),
+            ) as 1 | -1,
         );
     }
 }

@@ -17,6 +17,39 @@ export type PostBoardSectionData = Partial<{
     portraits: Post[];
 }>;
 
+const millify = (number: number): string => {
+    let units: [string, number][] = [
+        ["k", Math.pow(10, 3)] as [string, number],
+        ["M", Math.pow(10, 6)] as [string, number],
+        ["G", Math.pow(10, 9)] as [string, number],
+        ["T", Math.pow(10, 12)] as [string, number],
+        ["P", Math.pow(10, 15)] as [string, number],
+        ["E", Math.pow(10, 18)] as [string, number],
+        ["Z", Math.pow(10, 21)] as [string, number],
+        ["Y", Math.pow(10, 24)] as [string, number],
+        ["R", Math.pow(10, 27)] as [string, number],
+        ["Q", Math.pow(10, 30)] as [string, number],
+    ].reverse();
+
+    for (let i = 0; i < units.length; i++) {
+        const unit = units[i];
+        if (number >= unit[1]) {
+            let quotientString = Math.floor(number / unit[1]).toString();
+            let remainder = number % unit[1];
+
+            let precision = Math.max(3 - quotientString.length, 0);
+            let remainderString = remainder.toString().substring(0, precision);
+
+            return (
+                quotientString +
+                (remainderString !== "" ? "." + remainderString : "") +
+                unit[0]
+            );
+        }
+    }
+    return number.toString();
+};
+
 /** placeholderSection 요소를 빈 섹션으로 바꾼다. */
 export function preparePlaceholderSection(
     placeholderSection: HTMLElement,
@@ -149,10 +182,10 @@ export function fillPlaceholderSectionInto(
         } else {
             section.querySelector(
                 ".table-landscape-cell .cell-info .like-count",
-            )!.innerHTML = posts.landscape!.likes.toString();
+            )!.innerHTML = millify(posts.landscape!.likes).toString();
             section.querySelector(
                 ".table-landscape-cell .cell-info .view-count",
-            )!.innerHTML = posts.landscape!.views.toString();
+            )!.innerHTML = millify(posts.landscape!.views).toString();
         }
     }
 
@@ -186,10 +219,10 @@ export function fillPlaceholderSectionInto(
             } else {
                 portraitCell.querySelector(
                     ".cell-info .like-count",
-                )!.innerHTML = post.likes.toString();
+                )!.innerHTML = millify(post.likes).toString();
                 portraitCell.querySelector(
                     ".cell-info .view-count",
-                )!.innerHTML = post.views.toString();
+                )!.innerHTML = millify(post.views).toString();
             }
         }
     }

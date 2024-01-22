@@ -53,7 +53,7 @@ type InitShareButtonOptions = Partial<{
 }>;
 
 export default function initShareButton(
-    options: InitShareButtonOptions = {}
+    options: InitShareButtonOptions = {},
 ): (content: ShareDatas) => void {
     importKakaoSdk();
 
@@ -77,9 +77,15 @@ export default function initShareButton(
             .catch((err) => alert("오류가 발생했습니다: " + err));
     });
     twitterButton?.addEventListener("click", (_evt) => {
+        const newWindow = window.open("about:blank", "_blank"); // Safari blocks window.open in some conditions
         (options.beforeShare ? options.beforeShare : async () => {})()
             .then(() => {
                 if (content === null) return;
+                if (newWindow !== null)
+                    newWindow.location.href =
+                        "https://twitter.com/intent/tweet?text=" +
+                        encodeURIComponent(content.twitter.text);
+
                 if (options.onComplete) options.onComplete();
             })
             .catch((err) => alert("오류가 발생했습니다: " + err));

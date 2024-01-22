@@ -124,7 +124,7 @@ const createAnswerElement = (question: QuizProblem) => {
                         'input[type="input"]',
                     ) as HTMLInputElement
                 ).value;
-                if (/[^a-zA-Zㄱ-힣0-9]/.test(answer)) {
+                if (/[^a-zA-Zㄱ-힣0-9\s]/.test(answer)) {
                     return alert("특수문자는 입력할 수 없습니다!");
                 }
             } else {
@@ -187,9 +187,13 @@ const createQuestionElement = (question: QuizProblem, index: number) => {
             [
                 ...question.figure.split("").map((i) => {
                     const initial = document.createElement("div");
-                    initial.textContent = i;
+                    initial.textContent = i == "$" ? " " : i;
                     initial.className =
-                        i === " " ? "initial whitespace" : "initial";
+                        i === "$"
+                            ? "initial"
+                            : i === " "
+                            ? "whitespace"
+                            : "normal";
                     return initial;
                 }),
             ].forEach((i) => initials.appendChild(i));
@@ -237,10 +241,16 @@ export function updateShareProblem(
  * 상단 진행바를 업데이트합니다.
  * @param percentage 0이상 100이하의 진행률
  */
-export function updateProgress(percentage: number, text?: string) {
-    (
-        document.querySelector(".progress-container .progress") as HTMLElement
-    ).style.width = `${percentage}%`;
+export function updateProgress(percentage: number, text?: string, red = false) {
+    const progress = document.querySelector(
+        ".progress-container .progress",
+    ) as HTMLElement;
+    progress.style.width = `${percentage}%`;
+    if (red) {
+        document.querySelector(".progress-container")?.classList.add("red");
+    } else {
+        document.querySelector(".progress-container")?.classList.remove("red");
+    }
 
     const textElement = document.querySelector(
         ".progress-container .progress-text",
@@ -286,18 +296,21 @@ export function setHelpMeFriendsEventHandler(
  * @param correct 정답 여부
  */
 export function displayCorrectnessAnimation(correct: boolean) {
-    const element = document.querySelector(".correctness-effect");
-    if (element === null) return;
+    return new Promise<void>((resolve, _reject) => {
+        const element = document.querySelector(".correctness-effect");
+        if (element === null) return;
 
-    if (correct) {
-        element.classList.remove("fail");
-        element.classList.add("ok");
-    } else {
-        element.classList.remove("ok");
-        element.classList.add("fail");
-    }
-    element.classList.remove("display-none");
-    setTimeout(() => {
-        element.classList.add("display-none");
-    }, 400);
+        if (correct) {
+            element.classList.remove("fail");
+            element.classList.add("ok");
+        } else {
+            element.classList.remove("ok");
+            element.classList.add("fail");
+        }
+        element.classList.remove("display-none");
+        setTimeout(() => {
+            element.classList.add("display-none");
+            resolve();
+        }, 600);
+    });
 }
