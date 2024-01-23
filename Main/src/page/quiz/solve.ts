@@ -5,7 +5,6 @@ import { InitTopNav } from "../../top_logo_navbar";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import initSolvePage from "../../solve_page";
 import { QuizSession } from "../../api/quiz_session";
-import { validate as validateEmail } from "email-validator";
 import randomKoreanNickname from "../../random_korean_nickname";
 
 InitTopNav();
@@ -71,23 +70,14 @@ const initByQuizId = async () => {
                     const nicknameEl = document.querySelector(
                         "#nickname",
                     ) as HTMLInputElement;
-                    const emailEl = document.querySelector(
-                        "#email",
-                    ) as HTMLInputElement;
                     const nickname =
                         nicknameEl.value.trim() === ""
                             ? defaultNickname
                             : nicknameEl.value;
-                    const email = emailEl.value;
-                    if (email.trim() === "" || !validateEmail(email)) {
-                        alert("이메일을 올바르게 입력해주세요!");
-                        emailEl.focus();
-                        return;
-                    }
                     await QuizApiClient.sendStatistics(gender, age);
                     QuizApiClient.startNerdQuiz(quizId, {
                         nickname,
-                        email,
+                        email: "example@example.com",
                     }).then(initSolvePage);
                 } else {
                     await QuizApiClient.sendStatistics(gender, age);
