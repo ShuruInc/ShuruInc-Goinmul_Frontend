@@ -151,52 +151,52 @@ export function fillPlaceholderSectionInto(
 
     // 가로형 이미지 설정
     if (hasLandscape) {
-        (section.querySelector(".cell-landscape-img") as HTMLImageElement).src =
-            posts.landscape!.imgUrl;
+        const landscapeCell = section.querySelector(
+            ".table-landscape-cell",
+        ) as HTMLAnchorElement;
         (
-            section.querySelector(".table-landscape-cell") as HTMLAnchorElement
-        ).href = posts.landscape!.href;
-        section
-            .querySelector(".table-landscape-cell .likes-link")
+            landscapeCell.querySelector(
+                ".cell-landscape-img",
+            ) as HTMLImageElement
+        ).src = posts.landscape!.imgUrl;
+        landscapeCell.href = posts.landscape!.href;
+        landscapeCell.dataset.id = posts.landscape!.id.toString();
+        landscapeCell
+            .querySelector(".likes-link")
             ?.addEventListener("click", (evt) => {
                 evt.preventDefault();
                 PostBoardApiClient.like(posts.landscape!.id!).then(() => {
-                    section.querySelector(
-                        ".table-landscape-cell .likes",
-                    )!.textContent = (
+                    landscapeCell.querySelector(".likes")!.textContent = (
                         parseInt(
-                            section.querySelector(
-                                ".table-landscape-cell .likes",
-                            )!.textContent ?? "0",
+                            landscapeCell.querySelector(".likes")!
+                                .textContent ?? "0",
                         ) + 1
                     ).toString();
                 });
             });
-        section.querySelector(
-            ".table-landscape-cell .cell-info .title",
-        )!.innerHTML = posts.landscape!.title;
+        landscapeCell.querySelector(".cell-info .title")!.innerHTML =
+            posts.landscape!.title;
         if (noCellInfo) {
-            section
-                .querySelector(".table-landscape-cell")!
-                .classList.add("no-cell-popularity-info");
+            landscapeCell.classList.add("no-cell-popularity-info");
         } else {
-            section.querySelector(
-                ".table-landscape-cell .cell-info .like-count",
-            )!.innerHTML = millify(posts.landscape!.likes).toString();
-            section.querySelector(
-                ".table-landscape-cell .cell-info .view-count",
-            )!.innerHTML = millify(posts.landscape!.views).toString();
+            landscapeCell.querySelector(".cell-info .like-count")!.innerHTML =
+                millify(posts.landscape!.likes).toString();
+            landscapeCell.querySelector(".cell-info .view-count")!.innerHTML =
+                millify(posts.landscape!.views).toString();
         }
     }
 
     // 세로형 이미지 설정
     if (hasPortraits) {
-        const portraitCells = [...section.querySelectorAll(".table-cell")];
+        const portraitCells = [
+            ...section.querySelectorAll(".table-cell"),
+        ] as HTMLAnchorElement[];
         for (const portraitCell of portraitCells) {
             const post = posts.portraits!.pop();
             if (typeof post === "undefined") break;
 
-            (portraitCell as HTMLAnchorElement).href = post.href;
+            portraitCell.href = post.href;
+            portraitCell.dataset.id = post.id.toString();
             (portraitCell.querySelector(".cell-img") as HTMLImageElement).src =
                 post.imgUrl;
             portraitCell.querySelector(".cell-info .title")!.innerHTML =
@@ -224,6 +224,38 @@ export function fillPlaceholderSectionInto(
                     ".cell-info .view-count",
                 )!.innerHTML = millify(post.views).toString();
             }
+        }
+    }
+
+    // 조회수 올리는 로직
+    let thumbnailIntersectionObserver = new IntersectionObserver(
+        onThumbnailVisible,
+    );
+
+    for (const i of [
+        ...section.querySelectorAll(".table-cell, .table-landscape-cell"),
+    ]) {
+        thumbnailIntersectionObserver.observe(i);
+    }
+
+    function onThumbnailVisible(entries: IntersectionObserverEntry[]) {
+        const alreadyHit = JSON.parse(
+            sessionStorage.getItem("hit-articles") ?? "[]",
+        ) as string[];
+        for (const entry of entries.filter((i) => i.intersectionRatio > 0.0)) {
+            const id = (entry.target as HTMLElement).dataset.id!;
+            if (alreadyHit.includes(id)) continue;
+
+            PostBoardApiClient.hit((entry.target as HTMLElement).dataset.id!);
+            sessionStorage.setItem(
+                "hit-articles",
+                JSON.stringify([
+                    ...JSON.parse(
+                        sessionStorage.getItem("hit-articles") ?? "[]",
+                    ),
+                    id,
+                ]),
+            );
         }
     }
 
@@ -294,22 +326,25 @@ export function setupPostBoard(
     // 무한 스크롤을 구현한다.
 
     // 하단 빈 섹션이 보이는지의 여부를 감지하는 데 이용되는 IntersectionObserver
-    let intersectionObserver = new IntersectionObserver(onPlaceholderVisible, {
-        rootMargin: "2000px",
-    });
+    let placeholderIntersectionObserver = new IntersectionObserver(
+        onPlaceholderVisible,
+        {
+            rootMargin: "2000px",
+        },
+    );
 
     // intersectionObserver를 초기화한다.
     // 새로운 빈 섹션이 추가된 경우에도 호출되어야 한다.
-    function setupIntersectionObserver() {
+    function setupPlaceholderIntersectionObserver() {
         // 기존에 관찰되고 있던 요소는 더이상 빈 섹션이 아닐 수 있으므로 모두 끊는다.
-        intersectionObserver.disconnect();
+        placeholderIntersectionObserver.disconnect();
         // 빈 섹션들을 모두 관찰한다.
         for (const i of [...column.querySelectorAll("section.placeholder")]) {
-            intersectionObserver.observe(i);
+            placeholderIntersectionObserver.observe(i);
         }
 
         // 이벤트 핸들러를 호출한다. (버그 방지)
-        onPlaceholderVisible(intersectionObserver.takeRecords());
+        onPlaceholderVisible(placeholderIntersectionObserver.takeRecords());
     }
 
     // intersectionObserver의 이벤드 핸들러
@@ -326,7 +361,7 @@ export function setupPostBoard(
             return;
         getNextSection()
             .then(fillPlaceholderSection)
-            .then(setupIntersectionObserver);
+            .then(setupPlaceholderIntersectionObserver);
     }
 
     // 첫 2개의 포스트만 가져온다.
@@ -335,5 +370,5 @@ export function setupPostBoard(
         .then(getNextSection)
         .then(fillPlaceholderSection)
         // 나머지는 동적으로 가져올 수 있도록 IntersectionObserver를 설정한다.
-        .then(setupIntersectionObserver);
+        .then(setupPlaceholderIntersectionObserver);
 }

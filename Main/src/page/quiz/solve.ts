@@ -6,6 +6,7 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import initSolvePage from "../../solve_page";
 import { QuizSession } from "../../api/quiz_session";
 import randomKoreanNickname from "../../random_korean_nickname";
+import PostBoardApiClient from "../../api/posts";
 
 InitTopNav();
 
@@ -19,6 +20,7 @@ const sessionId = params.get("session");
 const skipStatistics = params.get("skip_statistics") === "true";
 const initByQuizId = async () => {
     if (quizId !== null) {
+        await PostBoardApiClient.hit(quizId);
         const isNerdTest = await QuizApiClient.isNerdTest(quizId);
         const title = await QuizApiClient.getQuizTitle(quizId);
         document.querySelector("h1.test-title")!.textContent = title;
