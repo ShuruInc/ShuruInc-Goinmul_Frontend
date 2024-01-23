@@ -218,7 +218,6 @@ export function displayProblem(
 
     root.appendChild(createQuestionElement(question, index));
     root.appendChild(createAnswerElement(question));
-    (root.querySelector(".answer input") as HTMLInputElement).focus();
 }
 
 /**
