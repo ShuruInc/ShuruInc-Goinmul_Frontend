@@ -1,4 +1,5 @@
 @use "../common/styled-inputs";
+@import "../mixins";
 
 article.quiz-entry {
     margin: 0 auto;
@@ -39,10 +40,17 @@ article.quiz-entry {
         margin: 40px 0px;
         gap: 10px;
         display: grid;
-        grid-template-columns: max-content 1fr;
+        justify-content: center;
+        grid-template-columns: max-content 350px;
+        @include mobile {
+            grid-template-columns: max-content 220px;
+        }
         align-items: center;
+        .gender-radios label {
+            display: inline-block;
+        }
         .specified-gender {
-            width: 8em;
+            width: 120px;
         }
         .age {
             width: 10em;
