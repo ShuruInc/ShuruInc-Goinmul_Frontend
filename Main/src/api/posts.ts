@@ -105,4 +105,8 @@ export default class PostBoardApiClient {
     static async requestMakeTest(keyword: string): Promise<void> {
         await apiClient.postKeyword({ keyword });
     }
+
+    static async hit(articleId: string) {
+        console.log(`articleId: ${articleId}`);
+    }
 }
