@@ -81,8 +81,8 @@ SearchApiClient.recommend(8).then((posts) => {
                 files: [imageFile],
             },
             kakao: {
-                title: `[${result.title}] 모의고사`,
-                content: "이 점수를 넘을 수 있다면?\n↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓",
+                title: `[${result.category}] 모의고사`,
+                content: `이 점수를 넘을 수 있다면?\n🔽🔽🔽🔽🔽\n${result.title}`,
                 buttonText: "나도 풀어보기",
                 url,
             },
@@ -110,9 +110,9 @@ SearchApiClient.recommend(8).then((posts) => {
                 content: `당신의 친구 [${result.nickname}]${eunJosa(
                     result.nickname,
                 )}
-[${result.nickname}에 이만큼 고였습니다.
+[${result.nickname}]에 이만큼 고였습니다.
 이 점수를 넘을 수 있다면?
-↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓`,
+🔽🔽🔽🔽🔽`,
                 buttonText: "나도 풀어보기",
                 url,
             },

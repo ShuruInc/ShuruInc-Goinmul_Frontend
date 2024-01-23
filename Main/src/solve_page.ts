@@ -132,9 +132,11 @@ export default function initSolvePage(session: QuizSession) {
             const quizUrl = `https://example.com/quiz/solve.html?id=${sessionInfo.quizId}`;
             shareData = {
                 twitter: {
-                    text: `${sessionInfo.title} ${
-                        sessionInfo.isNerdTest ? "고인물 테스트" : "모의고사"
-                    } 푸는 중인데 이 문제 도저히 모르겠다... 아는 사람? 😀
+                    text: `[${sessionInfo.category}] ${
+                        sessionInfo.isNerdTest
+                            ? "고인물 테스트 도전!"
+                            : "모의고사"
+                    } 푸는 중인데 이 문제 도저히 모르겠다... 아는 사람? 😭
 
 🔗 https://example.com/quiz/solve.html?id=${sessionInfo.quizId}
 #고인물테스트 #슈르네`,
