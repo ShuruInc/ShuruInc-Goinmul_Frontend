@@ -56,10 +56,8 @@ PostBoardApiClient.getMainBoard()
 
         scroller.addEventListenerToChildren("scroll", (evt) => {
             const target = evt.target as HTMLElement;
-            if (target.dataset.key === "home") {
-                if (target.scrollTop !== 0) createFloatingButton("up");
-                else createFloatingButton("home");
-            }
+            if (target.scrollTop !== 0) createFloatingButton("up");
+            else createFloatingButton("home");
         });
         scroller.addScrollEventListener(() => {
             if (
@@ -81,21 +79,17 @@ PostBoardApiClient.getMainBoard()
         });
 
         addFloatingButonListener(() => {
-            if (
-                scroller.getCurrentlyMostVisibleChild(true)?.dataset?.key !==
-                "home"
-            ) {
-                let sign = scroller.scrollIntoCenterView(
+            const currentVisibleChild =
+                scroller.getCurrentlyMostVisibleChild(true);
+            if (currentVisibleChild === null) return;
+
+            if (currentVisibleChild.scrollTop !== 0)
+                currentVisibleChild.scrollTo({ top: 0, behavior: "smooth" });
+            else if (currentVisibleChild.dataset.key !== "home")
+                scroller.scrollIntoCenterView(
                     document.querySelector(".column.main")!,
                     true,
                 );
-                categoryNav.activateButtonByKey("home", true, sign);
-            } else {
-                document.querySelector(".column.main")!.scrollTo({
-                    top: 0,
-                    behavior: "smooth",
-                });
-            }
         });
 
         const goToRankings = () => {
