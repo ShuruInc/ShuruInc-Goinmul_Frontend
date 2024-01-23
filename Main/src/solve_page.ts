@@ -16,7 +16,15 @@ import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import html2canvas from "html2canvas";
 import padCanvas from "./canvas_padding";
 
+function confirmUnload(evt: Event) {
+    evt.preventDefault();
+    return "정말로 나가시겠습니까?";
+}
+
 export default function initSolvePage(session: QuizSession) {
+    // 페이지 나갈시 확인 대화상자 표시
+    window.addEventListener("beforeunload", confirmUnload);
+
     // HTML 변경 및 레이아웃 초기화
     document.body.innerHTML = solveBody;
     InitTopNav();
@@ -75,9 +83,11 @@ export default function initSolvePage(session: QuizSession) {
 
     (async () => {
         updateProgress(0);
-        const goResult = () =>
-            (location.href =
-                "/quiz/result.html?session=" + encodeURIComponent(sessionId));
+        const goResult = () => {
+            window.removeEventListener("beforeunload", confirmUnload);
+            location.href =
+                "/quiz/result.html?session=" + encodeURIComponent(sessionId);
+        };
         const sessionInfo = await session.sessionInfo();
 
         const renewProblem = async () => {
