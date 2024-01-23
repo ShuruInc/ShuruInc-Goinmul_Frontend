@@ -13,6 +13,10 @@ export class QuizApiClient {
         );
     }
 
+    static async getQuizTitle(id: string): Promise<string> {
+        return (await apiClient.getArticle(parseInt(id))).data.result!.title!;
+    }
+
     private static async prepareQuestions(id: string, nerd = false) {
         localStorage.setItem(
             `problems-${id}`,

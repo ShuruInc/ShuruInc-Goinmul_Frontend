@@ -57,7 +57,8 @@ SearchApiClient.recommend(8).then((posts) => {
     document.querySelector(".retry")?.addEventListener("click", (evt) => {
         evt.preventDefault();
         location.href =
-            "/quiz/solve.html?id=" + encodeURIComponent(result.quizId);
+            "/quiz/solve.html?skip_statistics=true&id=" +
+            encodeURIComponent(result.quizId);
     });
 
     const changeShareData = initShareButton();
