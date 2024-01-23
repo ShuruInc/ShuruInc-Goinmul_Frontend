@@ -2,7 +2,7 @@ import { dom, library } from "@fortawesome/fontawesome-svg-core";
 import "../../../styles/quiz";
 import { QuizApiClient } from "../../api/quiz";
 import { InitTopNav } from "../../top_logo_navbar";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faArrowsRotate, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import initSolvePage from "../../solve_page";
 import { QuizSession } from "../../api/quiz_session";
 import randomKoreanNickname from "../../random_korean_nickname";
@@ -11,8 +11,12 @@ import PostBoardApiClient from "../../api/posts";
 InitTopNav();
 
 // FontAwesome 아이콘 렌더링
-library.add(faSpinner);
-dom.i2svg({ node: document.querySelector("article.loading")! });
+library.add(faSpinner, faArrowsRotate);
+for (const i of [
+    document.querySelector("article.loading")!,
+    document.querySelector(".refresh-nickname")!,
+])
+    dom.i2svg({ node: i });
 
 const params = new URLSearchParams(location.search.substring(1));
 const quizId = params.get("id");
@@ -23,7 +27,14 @@ const initByQuizId = async () => {
         await PostBoardApiClient.hit(quizId);
         const isNerdTest = await QuizApiClient.isNerdTest(quizId);
         const title = await QuizApiClient.getQuizTitle(quizId);
+        document.querySelector;
         document.querySelector("h1.test-title")!.textContent = title;
+        document
+            .querySelector(".refresh-nickname")
+            ?.addEventListener("click", (evt) => {
+                evt.preventDefault();
+                location.reload();
+            });
         document
             .querySelector("article.loading")
             ?.classList.add("display-none");
