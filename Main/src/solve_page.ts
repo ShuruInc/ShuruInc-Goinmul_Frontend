@@ -17,6 +17,12 @@ import html2canvas from "html2canvas";
 import padCanvas from "./canvas_padding";
 
 export default function initSolvePage(session: QuizSession) {
+    // 페이지 나갈시 확인 대화상자 표시
+    window.addEventListener("beforeunload", (evt) => {
+        evt.preventDefault();
+        return "정말로 나가시겠습니까?";
+    });
+
     // HTML 변경 및 레이아웃 초기화
     document.body.innerHTML = solveBody;
     InitTopNav();
