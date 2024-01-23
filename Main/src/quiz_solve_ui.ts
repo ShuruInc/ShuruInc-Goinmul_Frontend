@@ -90,8 +90,8 @@ const createAnswerElement = (question: QuizProblem) => {
         <div class="row with-input">
         </div>
         <div class="row">
-            <button class="submit">제출</button>
             <button class="idk">모르겠어요</button>
+            <button class="submit">제출</button>
         </div>`;
 
     const rowWithInput = answerEl.querySelector(".row.with-input")!;
