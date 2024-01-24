@@ -50,6 +50,9 @@ const initByQuizId = async () => {
             .querySelector(".refresh-nickname")
             ?.addEventListener("click", (evt) => {
                 evt.preventDefault();
+                (
+                    document.querySelector("#nickname") as HTMLInputElement
+                ).value = "";
                 location.reload();
             });
         document
