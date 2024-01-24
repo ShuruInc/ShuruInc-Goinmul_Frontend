@@ -1,4 +1,10 @@
-export default function randomKoreanNickname() {
+function randomPick<T>(arr: T[]): T | null {
+    return arr.length === 0
+        ? null
+        : arr[Math.floor(Math.random() * arr.length)];
+}
+
+export default function randomKoreanNickname(maxlen = 8) {
     const adjs = [
         "가냘픈",
         "가는",
@@ -732,7 +738,13 @@ export default function randomKoreanNickname() {
         "연진",
     ];
 
-    const adj = adjs[Math.floor(Math.random() * adjs.length)];
-    const noun = nouns[Math.floor(Math.random() * adjs.length)];
+    let adj: string = adjs[Math.floor(Math.random() * adjs.length)];
+    let noun: string | null = null;
+    do {
+        noun = randomPick(
+            nouns.filter((i) => i.length <= maxlen - (adj.length + 1)),
+        );
+        if (noun === null) adj = adjs[Math.floor(Math.random() * adjs.length)];
+    } while (noun === null);
     return `${adj} ${noun}`;
 }
