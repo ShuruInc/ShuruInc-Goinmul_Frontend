@@ -1,5 +1,6 @@
 import { dom, library } from "@fortawesome/fontawesome-svg-core";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { isMobile } from "./is_mobile";
 
 // FontAwesome 렌더링
 library.add(faXmark);
@@ -250,6 +251,8 @@ export function displayProblem(
 
     root.appendChild(createQuestionElement(question, index));
     root.appendChild(createAnswerElement(question));
+    if (!isMobile)
+        (root.querySelector(".answer input") as HTMLInputElement).focus();
 }
 
 /**
