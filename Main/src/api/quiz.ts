@@ -53,7 +53,8 @@ export class QuizApiClient {
                             question: i.problemContent,
                             id: i.problemId,
                             secondCategoryName: nerd ? i.categoryNm : "",
-                            condition: i.precaution,
+                            condition:
+                                i.precaution === "" ? null : i.precaution,
                         }) as QuizProblem,
                 ),
             ),

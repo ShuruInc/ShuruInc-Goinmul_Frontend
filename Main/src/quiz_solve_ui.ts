@@ -197,13 +197,15 @@ const createQuestionElement = (question: QuizProblem, index: number) => {
         </div>`;
 
     questionEl.querySelector(".category")!.textContent =
-        question.secondCategoryName;
+        question.secondCategoryName === ""
+            ? ""
+            : question.secondCategoryName + " 모의고사";
     questionEl.querySelector(".condition")!.textContent =
-        question.condition ?? "";
+        question.condition === null ? "" : `(${question.condition})`;
     questionEl.querySelector(".text .problem-text")!.textContent =
         question.question;
     questionEl.querySelector(".text .condition")!.textContent =
-        question.condition;
+        question.condition === null ? "" : `(${question.condition})`;
     questionEl.querySelector(".points")!.textContent = `[${question.points}점]`;
 
     switch (question.figureType) {

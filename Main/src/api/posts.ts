@@ -25,7 +25,7 @@ export default class PostBoardApiClient {
             ),
             rankings: Object.fromEntries(
                 (await apiClient.getRanks()).data.result!.map((i) => [
-                    i.categoryNm,
+                    i.categoryNm + " 모의고사",
                     i.rankDtoList!.map((i) => ({
                         nickname: i.nickname!,
                         score: i.score!,
@@ -78,7 +78,7 @@ export default class PostBoardApiClient {
                             );
 
                         return {
-                            title: secondCategory.categoryNm!,
+                            title: secondCategory.categoryNm! + " 모의고사",
                             portraits: articles.data.result!.map(
                                 transformArticleDtoToPost,
                             ),
