@@ -29,3 +29,8 @@
 
 ## 빌드 결과
 빌드된 결과물은 `Main/dist` 디렉토리에 생성된다.
+
+## 저작권
+### 욕설/비속어 데이터
+- [korean-bad-words](https://github.com/doublems/korean-bad-words) by Doublem.org, Licensed under MIT License
+- [badwords-ko](https://github.com/yoonheyjung/badwords-ko) By Michael Price, Licensed under MIT License

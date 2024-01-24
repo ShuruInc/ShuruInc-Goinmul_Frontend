@@ -7,6 +7,7 @@ import initSolvePage from "../../solve_page";
 import { QuizSession } from "../../api/quiz_session";
 import randomKoreanNickname from "../../random_korean_nickname";
 import PostBoardApiClient from "../../api/posts";
+import hasBadWord from "../../bad_words/has_bad_word";
 
 InitTopNav();
 
@@ -87,6 +88,13 @@ const initByQuizId = async () => {
                         nicknameEl.value.trim() === ""
                             ? defaultNickname
                             : nicknameEl.value;
+                    if (hasBadWord(nickname)) {
+                        return alert("닉네임에 부적절한 단어가 있습니다");
+                    } else if (nickname.length === 0) {
+                        return alert("닉네임을 입력해주세요.");
+                    } else if (nickname.length > 8) {
+                        return alert("닉네임은 최대 8자입니다.");
+                    }
                     await QuizApiClient.sendStatistics(gender, age);
                     QuizApiClient.startNerdQuiz(quizId, {
                         nickname,
