@@ -22,7 +22,7 @@ for (const i of [
 const params = new URLSearchParams(location.search.substring(1));
 const quizId = params.get("id");
 const sessionId = params.get("session");
-const skipStatistics = params.get("skip_statistics") === "true";
+const skipStatistics = true;
 const initByQuizId = async () => {
     if (quizId !== null) {
         await PostBoardApiClient.hit(quizId);
