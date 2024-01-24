@@ -240,15 +240,37 @@ export function updateShareProblem(
  * 상단 진행바를 업데이트합니다.
  * @param percentage 0이상 100이하의 진행률
  */
-export function updateProgress(percentage: number, text?: string, red = false) {
+export function updateProgress(
+    percentage: number,
+    text?: string,
+    color?: "red" | "yellow" | undefined,
+) {
     const progress = document.querySelector(
         ".progress-container .progress",
     ) as HTMLElement;
     progress.style.width = `${percentage}%`;
-    if (red) {
-        document.querySelector(".progress-container")?.classList.add("red");
-    } else {
-        document.querySelector(".progress-container")?.classList.remove("red");
+    switch (color) {
+        case "red":
+            document.querySelector(".progress-container")?.classList.add("red");
+            document
+                .querySelector(".progress-container")
+                ?.classList.remove("yellow");
+            break;
+        case "yellow":
+            document
+                .querySelector(".progress-container")
+                ?.classList.add("yellow");
+            document
+                .querySelector(".progress-container")
+                ?.classList.remove("red");
+            break;
+        default:
+            document
+                .querySelector(".progress-container")
+                ?.classList.remove("yellow");
+            document
+                .querySelector(".progress-container")
+                ?.classList.remove("red");
     }
 
     const textElement = document.querySelector(
