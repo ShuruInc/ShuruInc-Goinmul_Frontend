@@ -143,6 +143,11 @@ export class QuizSession {
             },
         });
     }
+    async getImageLinks(): Promise<string[]> {
+        return this.problems()
+            .filter((i) => i.figureType === "image")
+            .map((i) => i.figure);
+    }
     async result(): Promise<QuizResult | null> {
         const ended = this.ended() || this.getLocalSession().nerdTest;
         if (ended) {

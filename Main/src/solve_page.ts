@@ -90,6 +90,14 @@ export default function initSolvePage(session: QuizSession) {
         };
         const sessionInfo = await session.sessionInfo();
 
+        for (const i of await session.getImageLinks()) {
+            const link = document.createElement("link");
+            link.rel = "preload";
+            link.href = i;
+            link.as = "image";
+            document.head.appendChild(link);
+        }
+
         const renewProblem = async () => {
             const problem = await session.currentProblem();
             if (problem === null) {
