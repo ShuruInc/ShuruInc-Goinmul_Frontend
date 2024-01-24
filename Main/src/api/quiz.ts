@@ -31,7 +31,7 @@ export class QuizApiClient {
                                     ? null
                                     : i.choiceDtoList?.map((j) => ({
                                           label: j.choiceContent,
-                                          value: j.choiceContent,
+                                          value: j.seq,
                                       })),
                             figure:
                                 i.problemFigure !== "" &&

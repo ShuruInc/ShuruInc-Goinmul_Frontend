@@ -105,10 +105,11 @@ export class QuizSession {
                   index: this.getLocalSession().problemIndex + 1,
               };
     }
-    async submit(answer: string): Promise<boolean> {
+    async submit(answer: string, subjective: boolean): Promise<boolean> {
         let correct = (
             await apiClient.getAnswers((await this.currentProblem())!.id!, {
                 answer,
+                problemType: subjective ? "SUBJECTIVE" : "MULTIPLE_CHOICE",
             })
         ).data.result!.correct!;
 

@@ -178,8 +178,8 @@ export default function initSolvePage(session: QuizSession) {
             });
         };
 
-        addAnswerSubmitListener(async (answer) => {
-            const correct = await session.submit(answer);
+        addAnswerSubmitListener(async (answer, subjective) => {
+            const correct = await session.submit(answer, subjective);
             [
                 ...document.querySelectorAll(".answer input, .answer button"),
             ].forEach((i) => ((i as HTMLInputElement).disabled = true));

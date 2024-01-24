@@ -26,9 +26,12 @@ export type QuizProblem = {
     condition: string | null;
 };
 
-let answerSubmitListeners: ((answer: string) => void)[] = [];
+let answerSubmitListeners: ((answer: string, subjective: boolean) => void)[] =
+    [];
 
-export function addAnswerSubmitListener(listener: (answer: string) => void) {
+export function addAnswerSubmitListener(
+    listener: (answer: string, subjective: boolean) => void,
+) {
     answerSubmitListeners.push(listener);
 }
 
@@ -138,7 +141,10 @@ const createAnswerElement = (question: QuizProblem) => {
                         .map((i) => i.value)[0] ?? "";
             }
 
-            if (answer !== "") answerSubmitListeners.forEach((i) => i(answer));
+            if (answer !== "")
+                answerSubmitListeners.forEach((i) =>
+                    i(answer, question.choices === null),
+                );
         });
 
     return answerEl;
