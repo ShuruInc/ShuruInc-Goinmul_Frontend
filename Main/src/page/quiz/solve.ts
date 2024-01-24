@@ -19,6 +19,22 @@ for (const i of [
 ])
     dom.i2svg({ node: i });
 
+let warningText = "";
+function setWarningText(newText: string) {
+    warningText = newText;
+    const warning = document.querySelector(".start-button .warning")!;
+    warning.textContent = newText;
+    if (newText === "") {
+        document
+            .querySelector(".start-button button")
+            ?.classList.remove("disabled");
+    } else {
+        document
+            .querySelector(".start-button button")
+            ?.classList.add("disabled");
+    }
+}
+
 const params = new URLSearchParams(location.search.substring(1));
 const quizId = params.get("id");
 const sessionId = params.get("session");
@@ -55,6 +71,25 @@ const initByQuizId = async () => {
                 document.querySelector("#nickname") as HTMLInputElement
             ).placeholder = defaultNickname;
         }
+        const validateNickname = (nickname: string) => {
+            const badWord = hasBadWord(nickname);
+            if (badWord !== false) {
+                setWarningText("닉네임에 부적절한 단어가 있습니다: " + badWord);
+            } else if (nickname.length > 0 && nickname.trim().length === 0) {
+                setWarningText("공백만으로 이루어진 닉네임은 불가능합니다.");
+            } else if (nickname.length > 8) {
+                setWarningText("닉네임은 최대 8자입니다.");
+            } else {
+                setWarningText("");
+            }
+        };
+        (
+            document.querySelector("#nickname") as HTMLInputElement
+        ).addEventListener("input", (evt) => {
+            const nickname = (evt.target as HTMLInputElement).value;
+            validateNickname(nickname);
+        });
+        let shakeTimeout: NodeJS.Timeout | null = null;
         [...document.querySelectorAll("form")].forEach((i) =>
             i.addEventListener("submit", async (evt) => {
                 evt.preventDefault();
@@ -88,15 +123,19 @@ const initByQuizId = async () => {
                         nicknameEl.value.trim() === ""
                             ? defaultNickname
                             : nicknameEl.value;
-                    const badWord = hasBadWord(nickname);
-                    if (hasBadWord(nickname) !== false) {
-                        return alert(
-                            "닉네임에 부적절한 단어가 있습니다: " + badWord,
+                    validateNickname(nickname);
+                    if (warningText !== "") {
+                        const warning = document.querySelector(
+                            ".start-button .warning",
                         );
-                    } else if (nickname.length === 0) {
-                        return alert("닉네임을 입력해주세요.");
-                    } else if (nickname.length > 8) {
-                        return alert("닉네임은 최대 8자입니다.");
+                        if (shakeTimeout === null) {
+                            warning?.classList.add("shaking");
+                            shakeTimeout = setTimeout(() => {
+                                warning?.classList.remove("shaking");
+                                shakeTimeout = null;
+                            }, 1000);
+                        }
+                        return;
                     }
                     await QuizApiClient.sendStatistics(gender, age);
                     QuizApiClient.startNerdQuiz(quizId, {
