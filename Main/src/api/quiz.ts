@@ -77,11 +77,6 @@ export class QuizApiClient {
     }
 
     static async startQuiz(id: string): Promise<QuizSession> {
-        await apiClient.saveTempUser({
-            email: "example@example.com",
-            nickname: "example",
-            score: 0,
-        });
         const sessionId = Date.now() + "-" + Math.floor(Math.random() * 5000);
         const { title, categoryNm } = (await apiClient.getArticle(parseInt(id)))
             .data.result!;
