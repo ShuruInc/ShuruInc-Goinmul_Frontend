@@ -88,8 +88,11 @@ const initByQuizId = async () => {
                         nicknameEl.value.trim() === ""
                             ? defaultNickname
                             : nicknameEl.value;
-                    if (hasBadWord(nickname)) {
-                        return alert("닉네임에 부적절한 단어가 있습니다");
+                    const badWord = hasBadWord(nickname);
+                    if (hasBadWord(nickname) !== false) {
+                        return alert(
+                            "닉네임에 부적절한 단어가 있습니다: " + badWord,
+                        );
                     } else if (nickname.length === 0) {
                         return alert("닉네임을 입력해주세요.");
                     } else if (nickname.length > 8) {
