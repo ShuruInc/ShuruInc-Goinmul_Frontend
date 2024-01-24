@@ -82,6 +82,21 @@ const toggleHelpMe = (toggle: boolean) => {
     }
 };
 
+const createAnswerValidator = (
+    warningElement: HTMLElement,
+    validateSpecialChars = true,
+) => {
+    return (answer: string) => {
+        if (validateSpecialChars && /[^a-zA-Zㄱ-힣0-9\s]/.test(answer)) {
+            warningElement.textContent = "특수문자는 입력할 수 없습니다!";
+        } else if (answer.length === 0) {
+            warningElement.textContent = "정답이 비어있습니다!";
+        } else {
+            warningElement.textContent = "";
+        }
+    };
+};
+
 /**
  * 정답을 입력하거나 선택하는 HTML 요소를 만듭니다.
  * @param question 퀴즈 문제 데이터
@@ -90,6 +105,8 @@ const createAnswerElement = (question: QuizProblem) => {
     const answerEl = document.createElement("form");
     answerEl.className = "answer";
     answerEl.innerHTML = `
+        <div class="row warning">
+        </div>
         <div class="row with-input">
         </div>
         <div class="row">
@@ -97,10 +114,20 @@ const createAnswerElement = (question: QuizProblem) => {
             <button class="idk">모르겠어요</button>
             <button class="submit">제출</button>
         </div>`;
+    const warningEl = answerEl.querySelector(".row.warning") as HTMLElement;
+    const validateAnswer = createAnswerValidator(
+        warningEl,
+        question.choices === null,
+    );
 
     const rowWithInput = answerEl.querySelector(".row.with-input")!;
     if (question.choices === null) {
         rowWithInput.innerHTML = `<input autofocus type="input" placeholder="답을 입력하세요">`;
+        rowWithInput
+            .querySelector("input")
+            ?.addEventListener("input", (evt) => {
+                validateAnswer((evt.target as HTMLInputElement).value);
+            });
     } else {
         rowWithInput.classList.add("radios");
         for (const choice of question.choices) {
@@ -127,9 +154,6 @@ const createAnswerElement = (question: QuizProblem) => {
                         'input[type="input"]',
                     ) as HTMLInputElement
                 ).value;
-                if (/[^a-zA-Zㄱ-힣0-9\s]/.test(answer)) {
-                    return alert("특수문자는 입력할 수 없습니다!");
-                }
             } else {
                 answer =
                     (
@@ -141,7 +165,8 @@ const createAnswerElement = (question: QuizProblem) => {
                         .map((i) => i.value)[0] ?? "";
             }
 
-            if (answer !== "")
+            validateAnswer(answer);
+            if (warningEl.textContent === "")
                 answerSubmitListeners.forEach((i) =>
                     i(answer, question.choices === null),
                 );

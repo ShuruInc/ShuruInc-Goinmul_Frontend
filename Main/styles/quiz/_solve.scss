@@ -82,6 +82,10 @@ article {
         align-items: center;
         gap: 0.5em;
 
+        &.warning {
+            color: red;
+        }
+
         &.with-input.radios {
             display: grid;
             align-items: baseline;
