@@ -93,6 +93,7 @@ const createAnswerElement = (question: QuizProblem) => {
         <div class="row with-input">
         </div>
         <div class="row">
+            <button class="submit display-none">제출</button>
             <button class="idk">모르겠어요</button>
             <button class="submit">제출</button>
         </div>`;
@@ -116,9 +117,8 @@ const createAnswerElement = (question: QuizProblem) => {
         evt.preventDefault();
         toggleHelpMe(true);
     });
-    answerEl
-        .querySelector("button.submit")!
-        .addEventListener("click", (evt) => {
+    [...answerEl.querySelectorAll("button.submit")].forEach((i) =>
+        i.addEventListener("click", (evt) => {
             evt.preventDefault();
             let answer = "";
             if (question.choices === null) {
@@ -145,7 +145,8 @@ const createAnswerElement = (question: QuizProblem) => {
                 answerSubmitListeners.forEach((i) =>
                     i(answer, question.choices === null),
                 );
-        });
+        }),
+    );
 
     return answerEl;
 };
