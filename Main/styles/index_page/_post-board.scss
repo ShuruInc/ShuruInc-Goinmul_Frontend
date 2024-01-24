@@ -95,6 +95,8 @@
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
+            background: linear-gradient(#00000000, #00000080);
+            border-radius: 8px;
 
             position: absolute;
             top: 0;
@@ -105,6 +107,9 @@
             .title {
                 font-size: 48px;
                 color: #d1d1d1;
+                box-sizing: border-box;
+                padding: 0px 0.5em;
+                text-align: center;
             }
 
             .popularity {
