@@ -38,6 +38,9 @@ SearchApiClient.recommend(8).then((posts) => {
     if (result.nickname && result.hashtag) {
         whoami.querySelector(".nickname")!.textContent = result.nickname;
         whoami.querySelector(".hashtag")!.textContent = "#" + result.hashtag;
+        document.querySelector(
+            ".rankings-ad .nickname",
+        )!.textContent = `${result.nickname}#${result.hashtag}`;
     } else {
         whoami.parentNode?.removeChild(whoami);
     }
