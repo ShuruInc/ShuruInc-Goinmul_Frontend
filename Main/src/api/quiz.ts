@@ -51,7 +51,7 @@ export class QuizApiClient {
                             question: i.problemContent,
                             id: i.problemId,
                             secondCategoryName: nerd ? i.categoryNm : "",
-                            condition: i.condition,
+                            condition: i.precaution,
                         }) as QuizProblem,
                 ),
             ),
@@ -83,8 +83,8 @@ export class QuizApiClient {
             score: 0,
         });
         const sessionId = Date.now() + "-" + Math.floor(Math.random() * 5000);
-        const title = (await apiClient.getArticle(parseInt(id))).data.result!
-            .title!;
+        const { title, categoryNm } = (await apiClient.getArticle(parseInt(id)))
+            .data.result!;
         await QuizApiClient.prepareQuestions(id, false);
         localStorage.setItem(
             `session-${sessionId}`,
@@ -96,6 +96,7 @@ export class QuizApiClient {
                 email: "",
                 nickname: "",
                 startedAt: Date.now(),
+                category: categoryNm,
                 title,
                 postedRank: false,
             } as QuizInternalSessionData),
@@ -109,8 +110,8 @@ export class QuizApiClient {
     ): Promise<QuizSession> {
         await apiClient.saveTempUser({ ...info, score: 0 });
         const sessionId = Date.now() + "-" + Math.floor(Math.random() * 5000);
-        const title = (await apiClient.getArticle(parseInt(id))).data.result!
-            .title!;
+        const { title, categoryNm } = (await apiClient.getArticle(parseInt(id)))
+            .data.result!;
         await QuizApiClient.prepareQuestions(id, true);
         this.shakeProblems(id);
         localStorage.setItem(
@@ -122,6 +123,7 @@ export class QuizApiClient {
                 nerdTest: true,
                 ...info,
                 startedAt: Date.now(),
+                category: categoryNm,
                 title,
                 postedRank: false,
             } as QuizInternalSessionData),
