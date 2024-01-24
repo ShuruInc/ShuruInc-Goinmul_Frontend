@@ -22,7 +22,9 @@ export class QuizApiClient {
             `problems-${id}`,
             JSON.stringify(
                 (
-                    await apiClient.getArticleProblems(parseInt(id))
+                    await apiClient.getArticleProblems(parseInt(id), {
+                        articleType: nerd ? "NERD" : "NORMAL",
+                    })
                 ).data.result!.map(
                     (i) =>
                         ({
