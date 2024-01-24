@@ -39,6 +39,13 @@ const params = new URLSearchParams(location.search.substring(1));
 const quizId = params.get("id");
 const sessionId = params.get("session");
 const skipStatistics = true;
+
+const trickyReload = () => {
+    const params = new URLSearchParams(location.search.substring(1));
+    params.set("dummy", Date.now().toString());
+    location.href = location.pathname + "?" + params.toString() + location.hash;
+};
+
 const initByQuizId = async () => {
     if (quizId !== null) {
         await PostBoardApiClient.hit(quizId);
@@ -53,7 +60,8 @@ const initByQuizId = async () => {
                 (
                     document.querySelector("#nickname") as HTMLInputElement
                 ).value = "";
-                location.reload();
+                // tricky fix to solve non-working location.reload
+                trickyReload();
             });
         document
             .querySelector("article.loading")
