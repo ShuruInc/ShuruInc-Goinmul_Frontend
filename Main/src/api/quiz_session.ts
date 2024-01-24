@@ -13,6 +13,7 @@ type QuizResult = {
     nickname?: string;
     ranking?: number;
     percentage?: number;
+    category: string;
     comment: string;
 } & (
     | {
@@ -30,6 +31,7 @@ type QuizSessionInfo = {
     totalProblemCount?: number;
     quizId: string;
     title: string;
+    category: string;
 };
 
 export type QuizInternalSessionData = {
@@ -43,6 +45,7 @@ export type QuizInternalSessionData = {
     startedAt: number;
     postedRank: boolean;
     hashtag: string;
+    category: string;
     ranking: {
         comment: string;
         percentage: number;
@@ -91,6 +94,7 @@ export class QuizSession {
                 : this.problems().length,
             quizId: this.getLocalSession().quizId,
             title: this.getLocalSession().title,
+            category: this.getLocalSession().category,
         };
     }
     async currentProblem(): Promise<(QuizProblem & { index: number }) | null> {
@@ -146,6 +150,7 @@ export class QuizSession {
                 points: this.getLocalSession().points,
                 title: this.getLocalSession().title,
                 quizId: this.getLocalSession().quizId,
+                category: this.getLocalSession().category,
                 comment: this.getLocalSession().ranking!.comment ?? "",
                 ...(this.getLocalSession().nerdTest
                     ? {
