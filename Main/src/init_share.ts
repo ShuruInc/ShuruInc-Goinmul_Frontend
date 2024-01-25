@@ -77,14 +77,15 @@ export default function initShareButton(
             .catch((err) => alert("오류가 발생했습니다: " + err));
     });
     twitterButton?.addEventListener("click", (_evt) => {
-        const newWindow = window.open("about:blank", "_blank"); // Safari blocks window.open in some conditions
         (options.beforeShare ? options.beforeShare : async () => {})()
             .then(() => {
                 if (content === null) return;
-                if (newWindow !== null)
-                    newWindow.location.href =
+                setTimeout(() => {
+                    window.open(
                         "https://twitter.com/intent/tweet?text=" +
-                        encodeURIComponent(content.twitter.text);
+                            encodeURIComponent(content!.twitter.text),
+                    );
+                }, 1);
 
                 if (options.onComplete) options.onComplete();
             })

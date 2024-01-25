@@ -135,6 +135,7 @@ export class QuizSession {
 
         this.saveLocalSession({
             ...localSession,
+            postedRank: true,
             hashtag: result.data!.result!.nicknameHashtag!,
             ranking: {
                 comment: result.data!.result!.comment!,
