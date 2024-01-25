@@ -16,6 +16,17 @@ import padCanvas from "../../canvas_padding";
 const sessionId =
     new URLSearchParams(location.search.substring(1)).get("session") ?? "";
 const session = new QuizSession(sessionId);
+const loadTime = Date.now();
+
+const removeLoading = (delay: number) =>
+    new Promise<void>((resolve) => {
+        setTimeout(() => {
+            (
+                document.querySelector(".main-container") as HTMLElement
+            ).classList.remove("loading");
+            resolve();
+        }, delay);
+    });
 
 InitTopNav();
 preparePlaceholderSection(document.querySelector(".post-section")!);
@@ -66,6 +77,7 @@ SearchApiClient.recommend(8).then((posts) => {
     const changeShareData = initShareButton();
 
     const url = "https://example.com";
+    await removeLoading(Math.max(1, 1000 - (Date.now() - loadTime)));
     const canvas = padCanvas(
         await html2canvas(document.querySelector(".result")!),
     );
