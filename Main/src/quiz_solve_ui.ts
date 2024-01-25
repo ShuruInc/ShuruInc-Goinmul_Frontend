@@ -189,7 +189,7 @@ const createQuestionElement = (question: QuizProblem, index: number) => {
         <div class="category"></div>
         <div class="text">
             <span class="id-number">${index}.</span>&nbsp;
-            <span class="problem-text"></span>&nbsp;
+            <span class="problem-text"></span><br>
             <span class="condition"></span>
         </div>
         <div class="points"></div>
