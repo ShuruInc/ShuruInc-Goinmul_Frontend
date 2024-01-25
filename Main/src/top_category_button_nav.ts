@@ -112,9 +112,12 @@ export class TopCategoryButtonNav {
      * @param element 정중앙으로 스크롤할 상단 카테고리 버튼
      * @param smooth smooth하게 스크롤할 지의 여부
      */
-    scrollToCenter(element: HTMLElement, smooth = true) {
+    scrollToCenter(element: HTMLElement, smooth?: boolean | undefined) {
+        const isSafari = /^((?!chrome|android).)*safari/i.test(
+            navigator.userAgent,
+        );
         element.scrollIntoView({
-            behavior: smooth ? "smooth" : "instant",
+            behavior: smooth && !isSafari ? "smooth" : "instant",
             inline: "center",
         });
     }
