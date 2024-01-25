@@ -95,6 +95,11 @@ article {
                 text-align: left;
             }
         }
+
+        // safari fix
+        button[type="submit"] {
+            font-weight: normal;
+        }
     }
 
     @include styled-inputs;

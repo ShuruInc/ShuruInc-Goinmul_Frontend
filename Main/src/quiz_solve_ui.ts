@@ -111,9 +111,9 @@ const createAnswerElement = (question: QuizProblem) => {
         <div class="row with-input">
         </div>
         <div class="row">
-            <button class="submit display-none">제출</button>
-            <button class="idk">모르겠어요</button>
-            <button class="submit">제출</button>
+            <button class="submit display-none" type="submit">제출</button>
+            <button class="idk" type="button">모르겠어요</button>
+            <button class="submit" type="submit">제출</button>
         </div>`;
     const warningEl = answerEl.querySelector(".row.warning") as HTMLElement;
     const validateAnswer = createAnswerValidator(
@@ -145,34 +145,32 @@ const createAnswerElement = (question: QuizProblem) => {
         evt.preventDefault();
         toggleHelpMe(true);
     });
-    [...answerEl.querySelectorAll("button.submit")].forEach((i) =>
-        i.addEventListener("click", (evt) => {
-            evt.preventDefault();
-            let answer = "";
-            if (question.choices === null) {
-                answer = (
-                    answerEl.querySelector(
-                        'input[type="input"]',
-                    ) as HTMLInputElement
-                ).value;
-            } else {
-                answer =
-                    (
-                        [
-                            ...document.querySelectorAll('input[type="radio"]'),
-                        ] as HTMLInputElement[]
-                    )
-                        .filter((i) => i.checked)
-                        .map((i) => i.value)[0] ?? "";
-            }
+    answerEl.addEventListener("submit", (evt) => {
+        evt.preventDefault();
+        let answer = "";
+        if (question.choices === null) {
+            answer = (
+                answerEl.querySelector(
+                    'input[type="input"]',
+                ) as HTMLInputElement
+            ).value;
+        } else {
+            answer =
+                (
+                    [
+                        ...document.querySelectorAll('input[type="radio"]'),
+                    ] as HTMLInputElement[]
+                )
+                    .filter((i) => i.checked)
+                    .map((i) => i.value)[0] ?? "";
+        }
 
-            validateAnswer(answer);
-            if (warningEl.textContent === "")
-                answerSubmitListeners.forEach((i) =>
-                    i(answer, question.choices === null),
-                );
-        }),
-    );
+        validateAnswer(answer);
+        if (warningEl.textContent === "")
+            answerSubmitListeners.forEach((i) =>
+                i(answer, question.choices === null),
+            );
+    });
 
     return answerEl;
 };
