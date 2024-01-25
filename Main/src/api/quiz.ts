@@ -54,7 +54,9 @@ export class QuizApiClient {
                             id: i.problemId,
                             secondCategoryName: nerd ? i.articleTitle : "",
                             condition:
-                                i.precaution === "" ? null : i.precaution,
+                                (i.precaution ?? "").trim().length === 0
+                                    ? null
+                                    : i.precaution,
                         }) as QuizProblem,
                 ),
             ),
