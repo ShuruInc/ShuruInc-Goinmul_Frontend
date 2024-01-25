@@ -222,9 +222,12 @@ const createQuestionElement = (question: QuizProblem, index: number) => {
             [
                 ...question.figure.split("").map((i) => {
                     const initial = document.createElement("div");
-                    initial.textContent = i == "$" ? " " : i;
+                    initial.textContent = i == "$" ? "　" : i;
                     initial.className =
-                        i === "$"
+                        i === "$" ||
+                        "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ"
+                            .split("")
+                            .includes(i)
                             ? "initial"
                             : i === " "
                             ? "whitespace"
