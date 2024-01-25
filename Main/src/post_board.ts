@@ -192,7 +192,7 @@ export function fillPlaceholderSectionInto(
             ...section.querySelectorAll(".table-cell"),
         ] as HTMLAnchorElement[];
         for (const portraitCell of portraitCells) {
-            const post = posts.portraits!.pop();
+            const post = posts.portraits!.shift();
             if (typeof post === "undefined") break;
 
             portraitCell.href = post.href;
