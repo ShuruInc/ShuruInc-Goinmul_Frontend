@@ -78,7 +78,8 @@ export default class TouchVelocityCalculator {
     }
 
     private onTouchStart(evt: TouchEvent) {
-        if (this.ignore || isIgnorable(evt.target as Element)) return;
+        if (this.ignore || isIgnorable(evt.target as Element) || this.dragging)
+            return;
         this.dragging = true;
         this.referenceXpos = evt.targetTouches[0].screenX;
         this.referenceTimestamp = Date.now();
@@ -136,6 +137,7 @@ export default class TouchVelocityCalculator {
     }
 
     private onTouchEnd(evt: TouchEvent) {
+        if (evt.targetTouches.length !== 0) return;
         if (this.dragging && this.horizontal) evt.preventDefault();
         if (!this.ignore && this.dragging && this.horizontal)
             this.listeners.dragend.forEach((i) => i(this.velocity));
