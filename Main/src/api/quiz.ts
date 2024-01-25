@@ -52,7 +52,7 @@ export class QuizApiClient {
                             points: 10,
                             question: i.problemContent,
                             id: i.problemId,
-                            secondCategoryName: nerd ? i.categoryNm : "",
+                            secondCategoryName: nerd ? i.articleTitle : "",
                             condition:
                                 i.precaution === "" ? null : i.precaution,
                         }) as QuizProblem,
