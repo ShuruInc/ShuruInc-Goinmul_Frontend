@@ -81,10 +81,11 @@ export default function initShareButton(
             .then(() => {
                 if (content === null) return;
                 setTimeout(() => {
-                    window.open(
+                    const newWindow = window.open(
                         "https://twitter.com/intent/tweet?text=" +
                             encodeURIComponent(content!.twitter.text),
                     );
+                    if (newWindow === null) alert("팝업 설정을 해제해주세요!");
                 }, 1);
 
                 if (options.onComplete) options.onComplete();
