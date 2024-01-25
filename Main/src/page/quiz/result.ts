@@ -78,10 +78,9 @@ SearchApiClient.recommend(8).then((posts) => {
 
     const url = "https://example.com";
     await removeLoading(Math.max(1, 1000 - (Date.now() - loadTime)));
-    const canvas = padCanvas(
+    const blob = await padCanvas(
         await html2canvas(document.querySelector(".result")!),
     );
-    const blob: Blob = await canvas.convertToBlob({ type: "iamge/png" });
     const imageFile = new File([blob], "result.png", { type: "image/png" });
 
     let isNerdTest = typeof result.nickname !== "undefined";

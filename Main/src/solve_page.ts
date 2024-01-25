@@ -54,28 +54,22 @@ export default function initSolvePage(session: QuizSession) {
             ).then(
                 (canvas) =>
                     new Promise<void>((resolve, reject) => {
-                        padCanvas(canvas)
-                            .convertToBlob({ type: "image/png" })
-                            .then((blob) => {
-                                if (shareData && blob) {
-                                    const file = new File(
-                                        [blob],
-                                        "problem.png",
-                                        {
-                                            type: "image/png",
-                                        },
-                                    );
-                                    setShareData({
-                                        ...shareData,
-                                        webShare: {
-                                            ...shareData.webShare,
-                                            files: [file],
-                                        },
-                                        image: file,
-                                    });
-                                    resolve();
-                                } else reject("오류가 발생했습니다.");
-                            });
+                        padCanvas(canvas).then((blob) => {
+                            if (shareData && blob) {
+                                const file = new File([blob], "problem.png", {
+                                    type: "image/png",
+                                });
+                                setShareData({
+                                    ...shareData,
+                                    webShare: {
+                                        ...shareData.webShare,
+                                        files: [file],
+                                    },
+                                    image: file,
+                                });
+                                resolve();
+                            } else reject("오류가 발생했습니다.");
+                        });
                     }),
             );
         },
