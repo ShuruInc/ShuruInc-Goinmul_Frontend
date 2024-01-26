@@ -136,7 +136,11 @@ export function fillPlaceholderSectionInto(
     preparePlaceholderSection(section, rowInfos, false);
 
     // 제목 설정
-    if (posts.title === null || typeof posts.title === "undefined")
+    if (
+        posts.title === null ||
+        typeof posts.title === "undefined" ||
+        posts.title.trim().length === 0
+    )
         section.querySelector("h2")!.classList.add("display-none");
     else section.querySelector("h2")!.textContent = posts.title;
 
