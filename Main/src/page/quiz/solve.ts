@@ -39,7 +39,6 @@ function setWarningText(newText: string) {
 const params = new URLSearchParams(location.search.substring(1));
 const quizId = params.get("id");
 const sessionId = params.get("session");
-const skipStatistics = true; // 모의고사는 그냥 통계를 생략한다.
 
 /**
  * location.reload()가 안 되는 경우가 있어서 만든
@@ -84,14 +83,13 @@ const initByQuizId = async () => {
             defaultNickname = randomKoreanNickname();
 
         if (!isNerdTest) {
-            // 모의고사라면 닉네임 입력란을 가린다.
-            [...document.querySelectorAll(".introduction, form.entry")].forEach(
-                (i) => i.classList.add("display-none"),
-            );
-            if (skipStatistics) {
-                // 모의고사라면 통계를 생략한다.
-                QuizApiClient.startQuiz(quizId).then(initSolvePage);
-            }
+            // 모의고사라면 닉네임 입력과 통계를 가린다.
+            [
+                ...document.querySelectorAll(
+                    ".introduction, form.entry, .statistics",
+                ),
+            ].forEach((i) => i.classList.add("display-none"));
+            QuizApiClient.startQuiz(quizId).then(initSolvePage);
         } else {
             (
                 document.querySelector("#nickname") as HTMLInputElement
