@@ -42,6 +42,8 @@ export default function initSolvePage(session: QuizSession) {
     const setShareData = initShareButton({
         onComplete: () => (shared = true),
         beforeShare: () => {
+            // 공유 버튼을 눌렀을 때 공유 직전에 이미지를 설정한다.
+
             /**
              * .problem-box가 보이지 않으면 svg 렌더링이 되지 않으므로
              * .problem-box가 보일 때 svg 렌더링을 한다.
@@ -54,12 +56,16 @@ export default function initSolvePage(session: QuizSession) {
                 },
             ).then(
                 (canvas) =>
+                    // 이미지를 렌더링 한다.
                     new Promise<void>((resolve, reject) => {
                         addPadding(canvas).then((blob) => {
+                            // 이미지에 여백을 추가한다.
                             if (shareData && blob) {
                                 const file = new File([blob], "problem.png", {
                                     type: "image/png",
                                 });
+
+                                // 공유 데이터에 이미지를 설정한다.
                                 setShareData({
                                     ...shareData,
                                     webShare: {
@@ -79,6 +85,7 @@ export default function initSolvePage(session: QuizSession) {
     (async () => {
         updateProgress(0);
         const goResult = () => {
+            // 결과 페이지로 갈 때는 페이지 나갈 시 뜨는 확인 대화상자가 뜨면 안 된다.
             window.removeEventListener("beforeunload", confirmUnload);
             location.href =
                 "/quiz/result.html?session=" + encodeURIComponent(sessionId);
@@ -215,6 +222,7 @@ export default function initSolvePage(session: QuizSession) {
                     )
                         .toString()
                         .padStart(2, "0")}`,
+                    // 1분 이하로 남았으면 노란색, 30초 이하로 남았으면 빨간색
                     leftTime < 1000 * 30
                         ? "red"
                         : leftTime < 1000 * 60
@@ -223,6 +231,7 @@ export default function initSolvePage(session: QuizSession) {
                 );
             }, 500);
         } else {
+            // 모의고사는 새로고침이 되도 계속 풀 수 있게 주소에 세션 id를 넣는다.
             const quizId = new URLSearchParams(
                 location.search.substring(1),
             ).get("id");

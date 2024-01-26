@@ -19,6 +19,7 @@ for (const i of [
 ])
     dom.i2svg({ node: i });
 
+// 문제 입력칸 상단 경고문구
 let warningText = "";
 function setWarningText(newText: string) {
     warningText = newText;
@@ -38,8 +39,12 @@ function setWarningText(newText: string) {
 const params = new URLSearchParams(location.search.substring(1));
 const quizId = params.get("id");
 const sessionId = params.get("session");
-const skipStatistics = true;
+const skipStatistics = true; // 모의고사는 그냥 통계를 생략한다.
 
+/**
+ * location.reload()가 안 되는 경우가 있어서 만든
+ * 약간 tricky한 새로고침 로직
+ */
 const trickyReload = () => {
     const params = new URLSearchParams(location.search.substring(1));
     params.set("dummy", Date.now().toString());
@@ -56,11 +61,13 @@ const initByQuizId = async () => {
         document
             .querySelector(".refresh-nickname")
             ?.addEventListener("click", (evt) => {
+                // 닉네임 입력칸을 초기화하지 않으면 새로고침해도 그대로 있다.
                 evt.preventDefault();
                 (
                     document.querySelector("#nickname") as HTMLInputElement
                 ).value = "";
-                // tricky fix to solve non-working location.reload
+
+                // 새로고침
                 trickyReload();
             });
         document
@@ -69,12 +76,20 @@ const initByQuizId = async () => {
         document
             .querySelector("article.display-none")
             ?.classList.remove("display-none");
+
+        // 닉네임 랜덤 생성
         let defaultNickname = randomKoreanNickname();
+        // 랜덤 생성된 닉네임이 필터링에 걸리는 닉네임이면 한 번 더 생성
+        while (hasBadWord(defaultNickname) !== false)
+            defaultNickname = randomKoreanNickname();
+
         if (!isNerdTest) {
+            // 모의고사라면 닉네임 입력란을 가린다.
             [...document.querySelectorAll(".introduction, form.entry")].forEach(
                 (i) => i.classList.add("display-none"),
             );
             if (skipStatistics) {
+                // 모의고사라면 통계를 생략한다.
                 QuizApiClient.startQuiz(quizId).then(initSolvePage);
             }
         } else {
@@ -82,6 +97,8 @@ const initByQuizId = async () => {
                 document.querySelector("#nickname") as HTMLInputElement
             ).placeholder = defaultNickname;
         }
+
+        // 닉네임 유효성 검증
         const validateNickname = (nickname: string) => {
             const badWord = hasBadWord(nickname);
             if (badWord !== false) {
@@ -94,19 +111,25 @@ const initByQuizId = async () => {
                 setWarningText("");
             }
         };
+
+        // 닉네임을 입력할 때마다 유효성 검증
         (
             document.querySelector("#nickname") as HTMLInputElement
         ).addEventListener("input", (evt) => {
             const nickname = (evt.target as HTMLInputElement).value;
             validateNickname(nickname);
         });
+
         let shakeTimeout: NodeJS.Timeout | null = null;
         let submitting = false;
         [...document.querySelectorAll("form")].forEach((i) =>
             i.addEventListener("submit", async (evt) => {
                 evt.preventDefault();
+
+                // 세션이 동시에 여러번 초기화되는 것을 방지
                 if (submitting) return;
                 else submitting = true;
+
                 let age: string | null = (
                     document.querySelector("select.age") as HTMLInputElement
                 ).value;
@@ -130,6 +153,7 @@ const initByQuizId = async () => {
                     ).value;
 
                 if (isNerdTest) {
+                    // 닉네임의 유효성을 검증한다.
                     const nicknameEl = document.querySelector(
                         "#nickname",
                     ) as HTMLInputElement;
@@ -138,6 +162,8 @@ const initByQuizId = async () => {
                             ? defaultNickname
                             : nicknameEl.value;
                     validateNickname(nickname);
+
+                    // 유효성에 문제가 있다면 return
                     if (warningText !== "") {
                         const warning = document.querySelector(
                             ".start-button .warning",
@@ -151,13 +177,16 @@ const initByQuizId = async () => {
                         }
                         return;
                     }
+
+                    // 통계를 보내고 퀴즈를 시작한다.
                     await QuizApiClient.sendStatistics(gender, age);
                     QuizApiClient.startNerdQuiz(quizId, {
                         nickname,
                         email: "example@example.com",
                     }).then(initSolvePage);
                 } else {
-                    await QuizApiClient.sendStatistics(gender, age);
+                    // 모의고사라면 닉네임 관련 로직없이 바로 퀴즈를 시작한다.
+                    // await QuizApiClient.sendStatistics(gender, age);
                     QuizApiClient.startQuiz(quizId).then(initSolvePage);
                 }
             }),
@@ -166,6 +195,8 @@ const initByQuizId = async () => {
         alert("오류가 발생했습니다.");
     }
 };
+
+// (모의고사) 세션 id가 주어졌다면 바로 퀴즈를 시작한다.
 if (sessionId !== null) {
     const session = new QuizSession(sessionId);
     session.sessionInfo().then((info) => {
