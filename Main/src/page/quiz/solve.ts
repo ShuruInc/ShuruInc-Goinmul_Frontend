@@ -101,9 +101,12 @@ const initByQuizId = async () => {
             validateNickname(nickname);
         });
         let shakeTimeout: NodeJS.Timeout | null = null;
+        let submitting = false;
         [...document.querySelectorAll("form")].forEach((i) =>
             i.addEventListener("submit", async (evt) => {
                 evt.preventDefault();
+                if (submitting) return;
+                else submitting = true;
                 let age: string | null = (
                     document.querySelector("select.age") as HTMLInputElement
                 ).value;
