@@ -3,7 +3,7 @@
  * @param canvas 여백을 넣을 이미지
  * @returns 여백이 넣어진 정사각형 형태의 이미지
  */
-export default async function padCanvas(
+export default async function addPadding(
     canvas: HTMLCanvasElement,
     fill: string | CanvasGradient | CanvasPattern = "#ffe2c5",
 ): Promise<Blob> {

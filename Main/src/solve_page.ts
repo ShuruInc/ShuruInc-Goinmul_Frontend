@@ -14,7 +14,7 @@ import solveBody from "./solve_page.html";
 import { InitTopNav } from "./top_logo_navbar";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import html2canvas from "html2canvas";
-import padCanvas from "./canvas_padding";
+import addPadding from "./canvas_padding";
 
 function confirmUnload(evt: Event) {
     evt.preventDefault();
@@ -54,7 +54,7 @@ export default function initSolvePage(session: QuizSession) {
             ).then(
                 (canvas) =>
                     new Promise<void>((resolve, reject) => {
-                        padCanvas(canvas).then((blob) => {
+                        addPadding(canvas).then((blob) => {
                             if (shareData && blob) {
                                 const file = new File([blob], "problem.png", {
                                     type: "image/png",

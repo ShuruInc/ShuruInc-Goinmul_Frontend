@@ -11,7 +11,7 @@ import {
     preparePlaceholderSection,
 } from "../../post_board";
 import { InitTopNav } from "../../top_logo_navbar";
-import padCanvas from "../../canvas_padding";
+import addPadding from "../../canvas_padding";
 
 const sessionId =
     new URLSearchParams(location.search.substring(1)).get("session") ?? "";
@@ -78,7 +78,7 @@ SearchApiClient.recommend(8).then((posts) => {
 
     const url = "https://example.com";
     await removeLoading(Math.max(1, 1000 - (Date.now() - loadTime)));
-    const blob = await padCanvas(
+    const blob = await addPadding(
         await html2canvas(document.querySelector(".result")!),
     );
     const imageFile = new File([blob], "result.png", { type: "image/png" });
