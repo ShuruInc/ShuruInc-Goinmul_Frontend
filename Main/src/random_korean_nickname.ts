@@ -86,7 +86,6 @@ export default function randomKoreanNickname(maxlen = 8) {
         "무서운",
         "미끈미끈한",
         "미운",
-        "미친",
         "바람직스러운",
         "반가운",
         "밝은",
