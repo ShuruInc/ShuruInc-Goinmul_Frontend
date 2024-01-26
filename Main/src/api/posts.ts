@@ -107,6 +107,6 @@ export default class PostBoardApiClient {
     }
 
     static async hit(articleId: string) {
-        console.log(`articleId: ${articleId}`);
+        await apiClient.viewArticle(parseInt(articleId));
     }
 }
