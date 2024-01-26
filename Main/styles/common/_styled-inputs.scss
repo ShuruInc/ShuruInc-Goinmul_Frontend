@@ -1,5 +1,5 @@
 @mixin styled-inputs {
-    button {
+    button, a.button {
         background-color: #efefef;
         &.active {
             background-color: #c3c3c3;
@@ -14,7 +14,9 @@
 
     input,
     select,
+    a.button,
     button {
+        text-decoration: none;
         font-size: inherit;
         max-width: 100%;
         color: black; /* Safari default color is not black */

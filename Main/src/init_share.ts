@@ -47,7 +47,7 @@ type InitShareButtonOptions = Partial<{
      */
     onComplete: () => void;
     /**
-     * 공유 직전에 할 동작
+     * 공유 직전에 할 동작 (단 트위터는 해당되지 않음)
      */
     beforeShare: () => Promise<void>;
 }>;
@@ -59,7 +59,9 @@ export default function initShareButton(
 
     let content: ShareDatas | null = null;
     let webShareButton = document.querySelector(".share-web-share"),
-        twitterButton = document.querySelector(".share-twitter"),
+        twitterButton = document.querySelector(
+            ".share-twitter",
+        ) as HTMLAnchorElement,
         kakaoButton = document.querySelector(".share-kakao");
 
     webShareButton?.classList.add("display-none");
@@ -76,21 +78,8 @@ export default function initShareButton(
             })
             .catch((err) => alert("오류가 발생했습니다: " + err));
     });
-    twitterButton?.addEventListener("click", (_evt) => {
-        (options.beforeShare ? options.beforeShare : async () => {})()
-            .then(() => {
-                if (content === null) return;
-                setTimeout(() => {
-                    const newWindow = window.open(
-                        "https://twitter.com/intent/tweet?text=" +
-                            encodeURIComponent(content!.twitter.text),
-                    );
-                    if (newWindow === null) alert("팝업 설정을 해제해주세요!");
-                }, 1);
-
-                if (options.onComplete) options.onComplete();
-            })
-            .catch((err) => alert("오류가 발생했습니다: " + err));
+    twitterButton.addEventListener("click", () => {
+        if (options.onComplete) options.onComplete();
     });
     kakaoButton?.addEventListener("click", async (_evt) => {
         _evt.preventDefault();
@@ -136,5 +125,8 @@ export default function initShareButton(
             twitterButton?.classList.remove("display-none");
             kakaoButton?.classList.remove("display-none");
         }
+        twitterButton.href =
+            "https://twitter.com/intent/tweet?text=" +
+            encodeURIComponent(content!.twitter.text);
     };
 }
