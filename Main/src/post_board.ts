@@ -91,12 +91,11 @@ export function preparePlaceholderSection(
             image.alt = "빈 이미지";
 
             // 클래스 설정
+            image.className = "cell-img";
             if (rowInfo.landscape) {
-                image.className = "cell-landscape-img ";
-                cell.className = "table-landscape-cell";
+                cell.className = "table-cell landscape";
             } else {
-                image.className = "cell-img";
-                cell.className = "table-cell";
+                cell.className = "table-cell portrait";
             }
             cell.draggable = false;
 
@@ -152,13 +151,10 @@ export function fillPlaceholderSectionInto(
     // 가로형 이미지 설정
     if (hasLandscape) {
         const landscapeCell = section.querySelector(
-            ".table-landscape-cell",
+            ".table-cell.landscape",
         ) as HTMLAnchorElement;
-        (
-            landscapeCell.querySelector(
-                ".cell-landscape-img",
-            ) as HTMLImageElement
-        ).src = posts.landscape!.imgUrl;
+        (landscapeCell.querySelector(".cell-img") as HTMLImageElement).src =
+            posts.landscape!.imgUrl;
         landscapeCell.href = posts.landscape!.href;
         landscapeCell.dataset.id = posts.landscape!.id.toString();
         landscapeCell
@@ -232,9 +228,7 @@ export function fillPlaceholderSectionInto(
         onThumbnailVisible,
     );
 
-    for (const i of [
-        ...section.querySelectorAll(".table-cell, .table-landscape-cell"),
-    ]) {
+    for (const i of [...section.querySelectorAll(".table-cell")]) {
         thumbnailIntersectionObserver.observe(i);
     }
 
