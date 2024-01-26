@@ -85,13 +85,6 @@ export function preparePlaceholderSection(
             const cell = document.createElement("a");
             cell.href = "quiz.html";
 
-            const image = new Image();
-            image.loading = "lazy";
-            image.style.backgroundColor = "gray";
-            image.alt = "빈 이미지";
-
-            // 클래스 설정
-            image.className = "cell-img";
             if (rowInfo.landscape) {
                 cell.className = "table-cell landscape";
             } else {
@@ -106,7 +99,6 @@ export function preparePlaceholderSection(
                 '<div class="title"></div><div class="popularity"><a href="#" class="likes-link"><div class="likes"><span class="like-count" /></div></a><div class="views"><span class="view-count" /></div></div>';
 
             postTable.appendChild(cell);
-            cell.appendChild(image);
             cell.appendChild(info);
         }
 
@@ -153,8 +145,9 @@ export function fillPlaceholderSectionInto(
         const landscapeCell = section.querySelector(
             ".table-cell.landscape",
         ) as HTMLAnchorElement;
-        (landscapeCell.querySelector(".cell-img") as HTMLImageElement).src =
-            posts.landscape!.imgUrl;
+        landscapeCell.style.backgroundImage = `url("${
+            posts.landscape!.imgUrl
+        }")`;
         landscapeCell.href = posts.landscape!.href;
         landscapeCell.dataset.id = posts.landscape!.id.toString();
         landscapeCell
@@ -193,8 +186,7 @@ export function fillPlaceholderSectionInto(
 
             portraitCell.href = post.href;
             portraitCell.dataset.id = post.id.toString();
-            (portraitCell.querySelector(".cell-img") as HTMLImageElement).src =
-                post.imgUrl;
+            portraitCell.style.backgroundImage = `url("${post.imgUrl}")`;
             portraitCell.querySelector(".cell-info .title")!.innerHTML =
                 post.title;
             portraitCell

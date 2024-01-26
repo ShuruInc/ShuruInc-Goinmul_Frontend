@@ -56,18 +56,13 @@
                 }
             }
 
-            .cell-img {
-                width: calc(100% - 1.1vw) !important;
-                height: calc(100% - 1.1vw) !important;
-                border-radius: 2vw !important;
-            }
+            margin: 0.55vw;
+            border-radius: 2vw !important;
         }
 
         &.landscape {
             height: calc(70vw) !important;
-            .cell-img {
-                border-radius: 3vw !important;
-            }
+            border-radius: 3vw !important;
         }
     }
 }
