@@ -4,10 +4,10 @@
 ## 빌드방법
 1. node.js를 설치한다.
 1. (최초 혹은 의존성에 변화가 있을 때에만) `npm i`를 실행한다.
-1. `npm run build-api-client -- -p (OpenAPI 파일 주소)`를 실행한다.
+1. `npm run build-api-client (OpenAPI 파일 주소)`를 실행한다.
     - 참고: 백엔드 서버가 꺼져있을 시 오류가 발생한다.
+    - Windows에서는 PowerShell이 설치되어 있어야 한다.
     - OpenAPI 파일 주소 예시: `http://127.0.0.1:1234/v3/api-docs`
-1. `Main/src/api/api_http_client/http-client.ts` 파일에서 `credentials: "same-origin"`을 `credentials: "include"`로 수정한다.
 1. `build.env` 파일을 후술된 **`dev.env`/`build.env` 내용** 문단을 참고하여 적절하게 수정한다.
 1. `npm run build`을 실행한다.
 1. 끝
@@ -15,10 +15,10 @@
 ## watch하는 방법
 1. node.js를 설치한다.
 1. (최초 혹은 의존성에 변화가 있을 때에만) `npm i`를 실행한다.
-1. `npm run build-api-client -- -p (OpenAPI파일 주소)`를 실행한다.
+1. `npm run build-api-client (OpenAPI파일 주소)`를 실행한다.
     - 참고: 백엔드 서버가 꺼져있을 시 오류가 발생한다.
+    - Windows에서는 PowerShell이 설치되어 있어야 한다.
     - OpenAPI 파일 주소 예시: `http://127.0.0.1:1234/v3/api-docs`
-1. `Main/src/api/api_http_client/http-client.ts` 파일에서 `credentials: "same-origin"`을 `credentials: "include"`로 수정한다.
 1. `dev.env` 파일을 후술된 **`dev.env`/`build.env` 내용** 문단을 참고하여 적절하게 수정한다.
 1. `npm run dev`을 실행한다.
 1. 끝
