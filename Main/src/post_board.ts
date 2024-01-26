@@ -212,7 +212,13 @@ export function fillPlaceholderSectionInto(
                     ".cell-info .view-count",
                 )!.innerHTML = millify(post.views).toString();
             }
+
+            portraitCell.classList.add("filled");
         }
+
+        portraitCells
+            .filter((i) => !i.classList.contains("filled"))
+            .forEach((i) => i.parentNode?.removeChild(i));
     }
 
     // 조회수 올리는 로직
