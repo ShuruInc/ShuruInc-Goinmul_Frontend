@@ -40,7 +40,7 @@ export class QuizApiClient {
                                 i.problemFigure !== null
                                     ? i.problemFigure
                                     : i.imgUrl !== "" && i.imgUrl !== null
-                                    ? backendUrl + "/" + i.imgUrl
+                                    ? backendUrl! + i.imgUrl
                                     : null,
                             figureType:
                                 i.problemFigure !== "" &&
