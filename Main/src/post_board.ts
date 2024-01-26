@@ -238,25 +238,17 @@ export function fillPlaceholderSectionInto(
         thumbnailIntersectionObserver.observe(i);
     }
 
+    let hitIdsBefore: string[] = [];
     function onThumbnailVisible(entries: IntersectionObserverEntry[]) {
-        const alreadyHit = JSON.parse(
-            sessionStorage.getItem("hit-articles") ?? "[]",
-        ) as string[];
-        for (const entry of entries.filter((i) => i.intersectionRatio > 0.0)) {
-            const id = (entry.target as HTMLElement).dataset.id!;
-            if (alreadyHit.includes(id)) continue;
+        const ids = entries
+            .filter((i) => i.intersectionRatio > 0.0)
+            .map((i) => (i.target as HTMLElement).dataset.id!);
+        for (const id of ids) {
+            if (hitIdsBefore.includes(id)) continue;
 
-            PostBoardApiClient.hit((entry.target as HTMLElement).dataset.id!);
-            sessionStorage.setItem(
-                "hit-articles",
-                JSON.stringify([
-                    ...JSON.parse(
-                        sessionStorage.getItem("hit-articles") ?? "[]",
-                    ),
-                    id,
-                ]),
-            );
+            PostBoardApiClient.hit(id);
         }
+        hitIdsBefore = ids;
     }
 
     return;
