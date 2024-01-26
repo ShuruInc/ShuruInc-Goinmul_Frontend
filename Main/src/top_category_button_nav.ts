@@ -25,6 +25,7 @@ export class TopCategoryButtonNav {
     _root: HTMLElement;
     _scroller: HorizontalInfinityScroller;
     _scrollTimeout: NodeJS.Timeout | null = null;
+    _scrollToCenterBugfixTimeout: NodeJS.Timeout | null = null;
 
     /**
      * 상단 카테고리 버튼 네비게이션 클래스를 생성합니다.
@@ -116,10 +117,40 @@ export class TopCategoryButtonNav {
         const isSafari = /^((?!chrome|android).)*safari/i.test(
             navigator.userAgent,
         );
+
+        // 스크롤이 진행되는 도중에 아무곳이나 클릭하면 스크롤이 멈추는 버그 (버튼 빠르게 여러번 누르면 생기는 버그) 해결
+        if (this._scrollToCenterBugfixTimeout !== null)
+            clearTimeout(this._scrollToCenterBugfixTimeout);
+        if (smooth) {
+            this._root.style.overflowX = "hidden";
+            this._scrollToCenterBugfixTimeout = setTimeout(
+                this.createScrollToCenterBugfixFunction(element),
+            );
+        }
+
         element.scrollIntoView({
             behavior: smooth && !isSafari ? "smooth" : "instant",
             inline: "center",
         });
+    }
+
+    createScrollToCenterBugfixFunction(element: HTMLElement) {
+        const func = () => {
+            const elementRect = element.getBoundingClientRect();
+            const rootRect = this._root.getBoundingClientRect();
+
+            if (
+                Math.abs(
+                    (elementRect.left + elementRect.right) / 2 -
+                        (rootRect.left + rootRect.right) / 2,
+                ) <= 1
+            ) {
+                this._root.style.removeProperty("overflow-x");
+            } else {
+                this._scrollToCenterBugfixTimeout = setTimeout(func, 5);
+            }
+        };
+        return func;
     }
 
     /**
