@@ -159,12 +159,11 @@ export function fillPlaceholderSectionInto(
             ?.addEventListener("click", (evt) => {
                 evt.preventDefault();
                 PostBoardApiClient.like(posts.landscape!.id!).then(() => {
-                    landscapeCell.querySelector(".likes")!.textContent = (
-                        parseInt(
-                            landscapeCell.querySelector(".likes")!
-                                .textContent ?? "0",
-                        ) + 1
-                    ).toString();
+                    const likes = landscapeCell.querySelector(
+                        ".likes",
+                    ) as HTMLElement;
+                    likes.classList.add("liked");
+                    likes.textContent = ":D";
                 });
             });
         landscapeCell.querySelector(".cell-info .title")!.innerHTML =
@@ -198,12 +197,11 @@ export function fillPlaceholderSectionInto(
                 ?.addEventListener("click", (evt) => {
                     evt.preventDefault();
                     PostBoardApiClient.like(post.id!).then(() => {
-                        portraitCell.querySelector(".likes")!.textContent = (
-                            parseInt(
-                                portraitCell.querySelector(".likes")!
-                                    .textContent ?? "0",
-                            ) + 1
-                        ).toString();
+                        const likes = portraitCell.querySelector(
+                            ".likes",
+                        ) as HTMLElement;
+                        likes.classList.add("liked");
+                        likes.textContent = ":D";
                     });
                 });
             if (noCellInfo) {

@@ -120,6 +120,12 @@
 
                 .likes::before {
                     content: "❤";
+                    color: #979797;
+                    margin-right: 0.15em;
+                }
+
+                .likes.liked::before {
+                    content: "❤";
                     color: #e04343;
                     margin-right: 0.15em;
                 }
