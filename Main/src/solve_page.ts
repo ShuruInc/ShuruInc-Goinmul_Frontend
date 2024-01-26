@@ -15,6 +15,7 @@ import { InitTopNav } from "./top_logo_navbar";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import html2canvas from "html2canvas";
 import addPadding from "./canvas_padding";
+import ImageCache from "./image_cache";
 
 function confirmUnload(evt: Event) {
     evt.preventDefault();
@@ -84,12 +85,9 @@ export default function initSolvePage(session: QuizSession) {
         };
         const sessionInfo = await session.sessionInfo();
 
+        const imageCache = new ImageCache();
         for (const i of await session.getImageLinks()) {
-            const link = document.createElement("link");
-            link.rel = "preload";
-            link.href = i;
-            link.as = "image";
-            document.head.appendChild(link);
+            imageCache.fetch(i);
         }
 
         const renewProblem = async () => {
@@ -100,12 +98,24 @@ export default function initSolvePage(session: QuizSession) {
 
             displayProblem(
                 document.querySelector("article")!,
-                problem,
+                {
+                    ...problem,
+                    figure:
+                        problem.figureType === "image"
+                            ? await imageCache.get(problem.figure)
+                            : problem.figure,
+                },
                 problem.index,
             );
             updateShareProblem(
                 document.querySelector(".help-me .problem-box")!,
-                problem,
+                {
+                    ...problem,
+                    figure:
+                        problem.figureType === "image"
+                            ? await imageCache.get(problem.figure)
+                            : problem.figure,
+                },
                 problem.index,
             );
 
