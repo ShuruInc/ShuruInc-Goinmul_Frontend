@@ -4,6 +4,12 @@
         &.active {
             background-color: #c3c3c3;
         }
+        &:hover {
+            background-color: #d4d4d4;
+            &.active {
+                background-color: #a3a3a3;
+            }
+        }
     }
 
     input,
