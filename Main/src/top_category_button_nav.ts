@@ -414,7 +414,7 @@ export class TopCategoryButtonNav {
         const target = evt.target as HTMLButtonElement;
         if (currentActive === target) return;
 
-        this.activateButton(target);
+        //this.activateButton(target);
         this._scroller.scrollIntoCenterView(
             this._scroller
                 ._children()

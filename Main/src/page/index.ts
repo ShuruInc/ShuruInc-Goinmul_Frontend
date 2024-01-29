@@ -68,7 +68,7 @@ PostBoardApiClient.getMainBoard()
 
         //let _contentScrollerScrollingByUserDrag = false;
         // 좌우 스크롤시 플로팅버튼을 변경한다.
-        scroller.addScrollEventListener((byUserDrag) => {
+        scroller.addScrollEventListener(() => {
             if (
                 scroller.getCurrentlyMostVisibleChild(false)?.dataset?.key !==
                 "home"
@@ -83,14 +83,11 @@ PostBoardApiClient.getMainBoard()
             }
 
             //_contentScrollerScrollingByUserDrag = byUserDrag;
-            if (byUserDrag) {
-                const basis = scroller.centerEnsuredBasis();
-                categoryNav.activateWithMarginToBasis(
-                    scroller._children()[basis.basisIndex].dataset
-                        .key as string,
-                    basis.offset! / scroller._rootWidth(),
-                );
-            }
+            const basis = scroller.centerEnsuredBasis();
+            categoryNav.activateWithMarginToBasis(
+                scroller._children()[basis.basisIndex].dataset.key as string,
+                basis.offset! / scroller._rootWidth(),
+            );
         });
 
         // Post board column이 좌우 스크롤됐다면 상단 카테고리 버튼도 변경하낟.
