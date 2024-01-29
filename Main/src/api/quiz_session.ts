@@ -84,7 +84,11 @@ export class QuizSession {
         ) as QuizProblem[];
     }
     private ended() {
-        return this.getLocalSession().problemIndex >= this.problems().length;
+        return (
+            this.getLocalSession().problemIndex >= this.problems().length ||
+            (this.getLocalSession().nerdTest &&
+                this.stopwatch.elapsed() >= 1000 * 60 * 5)
+        );
     }
     async sessionInfo(): Promise<QuizSessionInfo> {
         return {
@@ -150,7 +154,7 @@ export class QuizSession {
             .map((i) => i.figure);
     }
     async result(): Promise<QuizResult | null> {
-        const ended = this.ended() || this.getLocalSession().nerdTest;
+        const ended = this.ended();
         if (ended) {
             await this.postRank();
             return {
