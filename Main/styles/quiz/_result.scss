@@ -51,6 +51,10 @@ article.with-result {
         }
     }
 
+    .post-section > h2 {
+        margin: 0.25em 0em 1em 0em !important;
+    }
+
     @include styled-inputs;
     @import "../index_page/post-board";
 }

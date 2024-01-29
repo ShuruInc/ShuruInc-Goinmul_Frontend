@@ -41,6 +41,7 @@ export default function initializeResultPage() {
     SearchApiClient.recommend(8).then((posts) => {
         fillPlaceholderSectionInto(
             {
+                title: "다른 모의고사 풀기",
                 portraits: posts,
             },
             document.querySelector(".post-section")!,
