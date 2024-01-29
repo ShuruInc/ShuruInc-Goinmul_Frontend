@@ -43,7 +43,7 @@ export class TopCategoryButtonNav {
         this._scroller = scroller;
 
         // 초기화
-        for (const isCenter of [false, true, false])
+        for (const isCenter of [false, false, true, false, false])
             for (let i = 0; i < this._data.length; i++) {
                 const button = this._createButtonByKey(data[i].key);
                 if (isCenter && i === 0) button.classList.add("active");
@@ -65,6 +65,24 @@ export class TopCategoryButtonNav {
         window.addEventListener("resize", () => {
             this.scrollToCenter(this._getActiveButton(), false);
         });
+
+        // 터치 이벤트 패스쓰루
+        for (const i of [
+            "touchstart",
+            "touchmove",
+            "touchend",
+            "touchcancel",
+        ]) {
+            this._root.addEventListener(i, (evt) => {
+                const newEvt = new TouchEvent(i, {
+                    touches: [...(evt as TouchEvent).touches],
+                    targetTouches: [...(evt as TouchEvent).targetTouches],
+                    changedTouches: [...(evt as TouchEvent).changedTouches],
+                });
+
+                scroller._rootElement.dispatchEvent(newEvt);
+            });
+        }
 
         // 이벤트 핸들러 추가
         this._getButtonElements().forEach((i) =>
@@ -318,6 +336,66 @@ export class TopCategoryButtonNav {
         // 버튼 활성화
         this._getActiveButton().classList.remove("active");
         element.classList.add("active");
+    }
+
+    getButtonOnCenter() {
+        const rootCenter =
+            (this._root.getBoundingClientRect().left +
+                this._root.getBoundingClientRect().right) /
+            2;
+        return this._getButtonElements()
+            .map((i) => ({
+                element: i,
+                distance:
+                    i.getBoundingClientRect().width === 0
+                        ? Infinity
+                        : Math.abs(
+                              (i.getBoundingClientRect().left +
+                                  i.getBoundingClientRect().right) /
+                                  2 -
+                                  rootCenter,
+                          ),
+            }))
+            .filter((i) => isFinite(i.distance))
+            .sort((a, b) => a.distance - b.distance)[0].element;
+    }
+
+    activateWithMarginToBasis(basisKey: string, marginRatio: number) {
+        let basis: HTMLButtonElement = this._getButtonElements()
+            .map((i, idx) => ({ element: i, index: idx }))
+            .filter((i) => i.element.dataset.key === basisKey)
+            .map((i) => ({
+                element: i.element,
+                distance: Math.abs(
+                    this._getButtonElements().length / 2 - i.index,
+                ),
+            }))
+            .sort((a, b) => a.distance - b.distance)[0].element;
+
+        // 계산에 필요한 것들
+        const width = Math.max(
+            ...this._getButtonElements().map(
+                (i) => i.getBoundingClientRect().width,
+            ),
+        );
+        const rootCenter =
+            (this._root.getBoundingClientRect().left +
+                this._root.getBoundingClientRect().right) /
+            2;
+        const elementCenter =
+            (basis.getBoundingClientRect().left +
+                basis.getBoundingClientRect().right) /
+            2;
+
+        // 스크롤 변화값 계산
+        const delta = elementCenter - rootCenter - width * marginRatio;
+
+        // 스크롤
+        this._root.scrollLeft += delta;
+
+        // 버튼 활성화
+        this._getActiveButton().classList.remove("active");
+        this.getButtonOnCenter().classList.add("active");
     }
 
     /**

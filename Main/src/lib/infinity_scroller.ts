@@ -37,7 +37,7 @@ export class HorizontalInfinityScroller {
     _basisChildOffsetFromCenter = 0; // basisChild중앙과 부모의 중앙간의 거리
 
     // 이벤트 리스너용
-    _scrollListeners: (() => void)[] = [];
+    _scrollListeners: ((byUserDrag: boolean) => void)[] = [];
     _touchDragListeners: ((key: string, direction: 1 | -1) => void)[] = [];
 
     // 옵션 및 캐싱
@@ -56,6 +56,7 @@ export class HorizontalInfinityScroller {
     _horizontalScrollVelocityCalculator: TouchVelocityCalculator;
     _origianlOffsetBeforeDragging = 0;
     _dragging = false;
+    _easingByDragging = false;
 
     constructor(
         root: HTMLElement,
@@ -112,6 +113,7 @@ export class HorizontalInfinityScroller {
     _onHorizontalTouchStart() {
         if (this._easing) {
             this._easing = false;
+            this._easingByDragging = false;
         }
         this._dragging = true;
         this._origianlOffsetBeforeDragging = this._basisChildOffsetFromCenter;
@@ -124,6 +126,7 @@ export class HorizontalInfinityScroller {
             return;
         } else {
             this._basisChildOffsetFromCenter = newOffset;
+            this._scrollListeners.forEach((i) => i(this._scrollingByUser()));
         }
     }
 
@@ -145,14 +148,20 @@ export class HorizontalInfinityScroller {
                           this._children().length,
                       )
                   ];
+            this._easingByDragging = true;
             this.scrollIntoCenterView(targetChild, true, sign);
             this._touchDragListeners.forEach((i) =>
                 i(targetChild.dataset.key as string, sign),
             );
         } else {
+            this._easingByDragging = true;
             this.scrollIntoCenterView(this._basisChild());
         }
         this._rootElement.classList.remove("y-scroll-hidden");
+    }
+
+    _scrollingByUser() {
+        return (this._easingByDragging && this._easing) || this._dragging;
     }
 
     /**
@@ -179,6 +188,7 @@ export class HorizontalInfinityScroller {
             // easing 시간이 다 지났다면 easing 변수를 초기화하고
             // _basisOffsetFromCenter를 목표값으로 설정한 뒤 return
             this._easing = false;
+            this._easingByDragging = false;
             this._easingStartOffset = null;
             this._basisChildOffsetFromCenter = this._easingEndOffset;
         } else {
@@ -191,7 +201,15 @@ export class HorizontalInfinityScroller {
         }
 
         // 스크롤 이벤트 핸들러 호출
-        this._scrollListeners.forEach((i) => i());
+        this._scrollListeners.forEach((i) => i(this._scrollingByUser()));
+    }
+
+    centerEnsuredBasis() {
+        return this._translateValues()
+            .map((i, idx) => ({ translate: i, index: idx }))
+            .filter((i) => i.translate !== null)
+            .sort((a, b) => Math.abs(a.translate!) - Math.abs(b.translate!))
+            .map((i) => ({ basisIndex: i.index, offset: i.translate }))[0];
     }
 
     /**
@@ -267,7 +285,7 @@ export class HorizontalInfinityScroller {
      */
     addScrollOffset(offset: number) {
         this._basisChildOffsetFromCenter += offset;
-        this._scrollListeners.forEach((i) => i());
+        this._scrollListeners.forEach((i) => i(this._scrollingByUser()));
         return;
     }
 
@@ -462,7 +480,7 @@ export class HorizontalInfinityScroller {
         } else {
             this._basisChildIdx = this._children().indexOf(target);
             this._basisChildOffsetFromCenter = 0;
-            this._scrollListeners.forEach((i) => i());
+            this._scrollListeners.forEach((i) => i(this._scrollingByUser()));
             return 0;
         }
     }
@@ -509,7 +527,7 @@ export class HorizontalInfinityScroller {
         );
     }
 
-    addScrollEventListener(listener: () => void) {
+    addScrollEventListener(listener: (byUserDrag: boolean) => void) {
         this._scrollListeners.push(listener);
     }
 
@@ -517,5 +535,12 @@ export class HorizontalInfinityScroller {
         listener: (key: string, direction: 1 | -1) => void,
     ) {
         this._touchDragListeners.push(listener);
+    }
+
+    setScrollOffset(basisKey: string, offsetRatio: number) {
+        this._basisChildIdx = this._children().findIndex(
+            (v) => v.dataset.key === basisKey,
+        );
+        this._basisChildOffsetFromCenter = this._rootWidth() * offsetRatio;
     }
 }

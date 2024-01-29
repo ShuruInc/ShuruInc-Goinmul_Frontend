@@ -66,8 +66,9 @@ PostBoardApiClient.getMainBoard()
             else createFloatingButton("home");
         });
 
+        //let _contentScrollerScrollingByUserDrag = false;
         // 좌우 스크롤시 플로팅버튼을 변경한다.
-        scroller.addScrollEventListener(() => {
+        scroller.addScrollEventListener((byUserDrag) => {
             if (
                 scroller.getCurrentlyMostVisibleChild(false)?.dataset?.key !==
                 "home"
@@ -78,6 +79,16 @@ PostBoardApiClient.getMainBoard()
                     document.querySelector(".column.main")?.scrollTop === 0
                         ? "home"
                         : "up",
+                );
+            }
+
+            //_contentScrollerScrollingByUserDrag = byUserDrag;
+            if (byUserDrag) {
+                const basis = scroller.centerEnsuredBasis();
+                categoryNav.activateWithMarginToBasis(
+                    scroller._children()[basis.basisIndex].dataset
+                        .key as string,
+                    basis.offset! / scroller._rootWidth(),
                 );
             }
         });
