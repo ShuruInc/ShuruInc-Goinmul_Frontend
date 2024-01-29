@@ -59,11 +59,6 @@ export class TopCategoryButtonNav {
         this._keyIndexToKey = this._keyIndexToKey.bind(this);
         this._getButtonElements = this._getButtonElements.bind(this);
         this._getActiveButton = this._getActiveButton.bind(this);
-        this._onScroll = this._onScroll.bind(this);
-        this._onScrollEnd = this._onScrollEnd.bind(this);
-
-        // 스크롤 이벤트 핸들러 추가
-        root.addEventListener("scroll", this._onScroll);
 
         // active된 버튼을 중앙에 정렬 (창 크기가 바뀌었을 때도!)
         this.scrollToCenter(this._getActiveButton(), false);
@@ -75,37 +70,6 @@ export class TopCategoryButtonNav {
         this._getButtonElements().forEach((i) =>
             i.addEventListener("click", this._handleTopButtonNavClick),
         );
-    }
-
-    _onScroll() {
-        if (this._scrollTimeout !== null) clearTimeout(this._scrollTimeout);
-        this._scrollTimeout = setTimeout(this._onScrollEnd, 200);
-    }
-
-    _onScrollEnd() {
-        const rootRect = this._root.getBoundingClientRect();
-        const activeNow = this._getActiveButton();
-        const buttons = this._getButtonElements()
-            .map((i) => ({
-                button: i,
-                distance:
-                    i.getBoundingClientRect().width == 0 ||
-                    i.getBoundingClientRect().height == 0
-                        ? Infinity
-                        : Math.abs(
-                              (i.getBoundingClientRect().left +
-                                  i.getBoundingClientRect().right) /
-                                  2 -
-                                  (rootRect.left + rootRect.right) / 2,
-                          ),
-            }))
-            .sort((a, b) => a.distance - b.distance);
-
-        const targetButton = buttons[0].button;
-        this.scrollToCenter(targetButton);
-        if (targetButton !== activeNow) {
-            targetButton.click();
-        }
     }
 
     /**
