@@ -111,8 +111,6 @@ const createAnswerElement = (question: QuizProblem) => {
         <div class="row with-input">
         </div>
         <div class="row">
-            <button class="submit display-none" type="submit">제출</button>
-            <button class="idk" type="button">모르겠어요</button>
             <button class="submit" type="submit">제출</button>
         </div>`;
     const warningEl = answerEl.querySelector(".row.warning") as HTMLElement;
@@ -141,10 +139,6 @@ const createAnswerElement = (question: QuizProblem) => {
         }
     }
 
-    answerEl.querySelector("button.idk")!.addEventListener("click", (evt) => {
-        evt.preventDefault();
-        toggleHelpMe(true);
-    });
     answerEl.addEventListener("submit", (evt) => {
         evt.preventDefault();
         let answer = "";
@@ -180,10 +174,17 @@ const createAnswerElement = (question: QuizProblem) => {
  * @param question 퀴즈 문제 데이터
  * @param index 문제 번호
  */
-const createQuestionElement = (question: QuizProblem, index: number) => {
+const createQuestionElement = (
+    question: QuizProblem,
+    index: number,
+    forShare = false,
+) => {
     const questionEl = document.createElement("div");
     questionEl.className = "question";
     questionEl.innerHTML = `
+        <div class="idk-row">
+            <button class="idk">친구찬스!</button>
+        </div>
         <div class="category"></div>
         <div class="text">
             <span class="id-number">${index}.</span>&nbsp;
@@ -205,6 +206,16 @@ const createQuestionElement = (question: QuizProblem, index: number) => {
     questionEl.querySelector(".text .condition")!.textContent =
         question.condition === null ? "" : `(${question.condition})`;
     questionEl.querySelector(".points")!.textContent = `[${question.points}점]`;
+
+    if (forShare) {
+        questionEl.removeChild(questionEl.querySelector(".idk-row")!);
+    } else
+        questionEl
+            .querySelector("button.idk")!
+            .addEventListener("click", (evt) => {
+                evt.preventDefault();
+                toggleHelpMe(true);
+            });
 
     switch (question.figureType) {
         case "image":
@@ -270,7 +281,7 @@ export function updateShareProblem(
     index: number,
 ) {
     root.innerHTML = "";
-    root.appendChild(createQuestionElement(question, index));
+    root.appendChild(createQuestionElement(question, index, true));
     root.appendChild(createAnswerElementForShare(question));
 }
 

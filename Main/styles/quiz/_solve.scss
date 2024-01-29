@@ -4,6 +4,19 @@ article {
     width: 80%;
 }
 .question {
+    .idk-row {
+        text-align: right;
+        margin-bottom: 10px;
+        .idk {
+            border: 0px;
+            padding: 3px 6px;
+            background: #ffc956;
+            font-size: 0.9em;
+            color: white;
+            cursor: pointer;
+        }
+    }
+
     .category {
         display: block;
         font-size: 0.8em;
