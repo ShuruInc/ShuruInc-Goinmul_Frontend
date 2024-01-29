@@ -16,6 +16,7 @@ import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import html2canvas from "html2canvas";
 import addPadding from "./canvas_padding";
 import ImageCache from "./image_cache";
+import initializeResultPage from "./result_page";
 
 function confirmUnload(evt: Event) {
     evt.preventDefault();
@@ -24,6 +25,7 @@ function confirmUnload(evt: Event) {
 
 export default function initSolvePage(session: QuizSession) {
     // 페이지 나갈시 확인 대화상자 표시
+    let timerInterval: NodeJS.Timeout | null = null;
     window.addEventListener("beforeunload", confirmUnload);
 
     // HTML 변경 및 레이아웃 초기화
@@ -85,10 +87,16 @@ export default function initSolvePage(session: QuizSession) {
     (async () => {
         updateProgress(0);
         const goResult = () => {
+            if (timerInterval !== null) clearInterval(timerInterval);
+
             // 결과 페이지로 갈 때는 페이지 나갈 시 뜨는 확인 대화상자가 뜨면 안 된다.
             window.removeEventListener("beforeunload", confirmUnload);
-            location.href =
-                "/quiz/result.html?session=" + encodeURIComponent(sessionId);
+            history.replaceState(
+                null,
+                "",
+                "/quiz/result.html?session=" + encodeURIComponent(sessionId),
+            );
+            initializeResultPage();
         };
         const sessionInfo = await session.sessionInfo();
 
@@ -208,7 +216,7 @@ export default function initSolvePage(session: QuizSession) {
         });
 
         if (sessionInfo.isNerdTest) {
-            setInterval(() => {
+            timerInterval = setInterval(() => {
                 const elapsed = session.getStopWatch().elapsed();
                 const totalTime = 1000 * 60 * 5;
                 const percentage = (elapsed / totalTime) * 100;
