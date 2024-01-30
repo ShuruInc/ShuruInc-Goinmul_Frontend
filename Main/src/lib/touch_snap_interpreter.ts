@@ -95,7 +95,7 @@ export default class TouchVelocityCalculator {
         if (this.intervalId !== null && !this.ignore)
             clearInterval(this.intervalId);
 
-        this.intervalId = setInterval(this.calculateVelocity, 100);
+        this.intervalId = setInterval(this.calculateVelocity, 10);
     }
 
     private calculateVelocity() {

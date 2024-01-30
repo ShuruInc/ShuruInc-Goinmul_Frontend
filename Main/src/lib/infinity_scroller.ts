@@ -121,7 +121,7 @@ export class HorizontalInfinityScroller {
     }
 
     _onHorizontalTouchMove(delta: number) {
-        let newOffset = this._basisChildOffsetFromCenter + delta;
+        let newOffset = Math.round(this._basisChildOffsetFromCenter + delta);
         if (Math.abs(newOffset) > this._rootWidth()) {
             return;
         } else {
