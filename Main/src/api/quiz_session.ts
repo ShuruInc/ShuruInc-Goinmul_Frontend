@@ -101,6 +101,22 @@ export class QuizSession {
             category: this.getLocalSession().category,
         };
     }
+    async firstCategory() {
+        const quizId = this.getLocalSession().quizId;
+        const article = await apiClient.getArticle(parseInt(quizId));
+
+        const firstCategoryName = this.getLocalSession().nerdTest
+            ? this.getLocalSession().category
+            : article.data.result?.parentCategoryNm!;
+        const firstCategoryId = (
+            await apiClient.getFirstCategories()
+        ).data.result!.find((i) => i.categoryNm === firstCategoryName)!.id!;
+
+        return {
+            name: firstCategoryName,
+            id: firstCategoryId,
+        };
+    }
     async currentProblem(): Promise<(QuizProblem & { index: number }) | null> {
         return this.ended()
             ? null

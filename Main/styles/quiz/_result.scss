@@ -27,29 +27,7 @@ article.with-result {
     align-items: center;
     gap: 10px;
 
-
-    .result {
-        padding: 2em;
-        background-color: #ffe2c5;
-        text-align: center;
-
-        .subtitle {
-            text-indent: 1em;
-            letter-spacing: 1em;
-        }
-
-        .score-container {
-            margin: 1.15em 0em;
-            .score {
-                font-size: 2em;
-            }
-
-            .hashtag {
-                font-size: 0.7em;
-                color: gray;
-            }
-        }
-    }
+    @import "./result_box";
 
     .post-section > h2 {
         margin: 0.25em 0em 1em 0em !important;

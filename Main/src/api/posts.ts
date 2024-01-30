@@ -35,6 +35,14 @@ export default class PostBoardApiClient {
             ),
         };
     }
+
+    static async getNerdTestOf(firstCategoryId: number) {
+        return transformArticleDtoToPost(
+            (await apiClient.getArticlesBySecCategory(firstCategoryId)).data
+                .result![0]!,
+        );
+    }
+
     static async getPostBoards(): Promise<PostBoardData[]> {
         const firstCategories = await apiClient.getFirstCategories();
         if (firstCategories.ok) {

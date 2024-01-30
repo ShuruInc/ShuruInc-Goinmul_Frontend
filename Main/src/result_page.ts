@@ -13,6 +13,8 @@ import {
 import { InitTopNav } from "./top_logo_navbar";
 import addPadding from "./canvas_padding";
 import resultPageHtml from "./result_page.html";
+import createResultElement from "./create_result_element";
+import PostBoardApiClient from "./api/posts";
 
 export default function initializeResultPage() {
     if (!document.body.classList.contains("result-page-html-prepared")) {
@@ -52,30 +54,48 @@ export default function initializeResultPage() {
         if (result === null)
             return alert("오류가 발생했습니다: 퀴즈가 아직 안 끝났습니다!");
 
-        const whoami = document.querySelector(".whoami")!;
         if (result.nickname && result.hashtag) {
-            whoami.querySelector(".nickname")!.textContent = result.nickname;
-            whoami.querySelector(".hashtag")!.textContent =
-                "#" + result.hashtag;
             document.querySelector(
                 ".rankings-ad .nickname",
             )!.textContent = `${result.nickname}#${result.hashtag}`;
-        } else {
-            whoami.parentNode?.removeChild(whoami);
         }
-        document.querySelector(".quiz-title")!.textContent = result.title;
-        document.querySelector(".score")!.textContent = result.points + "점";
+
         if (typeof result.percentage !== "undefined") {
             document
                 .querySelector(".rankings-ad")
                 ?.classList.add("display-none");
-            document.querySelector(
-                ".ranking",
-            )!.innerHTML = `${result.comment}<br>당신은 상위 ${result.percentage}%`;
-        } else
-            document.querySelector(
-                ".ranking",
-            )!.innerHTML = `맞히셨습니다!<br>당신은 현재 랭킹 ${result.ranking}위!`;
+        }
+
+        const topCategory = await session.firstCategory();
+        const nerdTest = await await PostBoardApiClient.getNerdTestOf(
+            topCategory.id,
+        );
+
+        createResultElement(
+            document.querySelector(".result")!,
+            typeof result.ranking === "undefined"
+                ? {
+                      nerd: false,
+                      date: new Date(),
+                      percentage: result.percentage!,
+                      points: result.points!,
+                      lowCategory: (await session.sessionInfo()).title,
+                      middleCategory: (await session.sessionInfo()).category,
+                      link: {
+                          href: nerdTest.title,
+                          text: nerdTest.href,
+                      },
+                  }
+                : {
+                      nerd: true,
+                      date: new Date(),
+                      hashtag: result.hashtag!,
+                      nickname: result.nickname!,
+                      points: result.points!,
+                      ranking: result.ranking!,
+                      topCategory: topCategory.name,
+                  },
+        );
 
         document.querySelector(".retry")?.addEventListener("click", (evt) => {
             evt.preventDefault();
