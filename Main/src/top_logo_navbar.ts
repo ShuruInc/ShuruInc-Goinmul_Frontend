@@ -62,6 +62,36 @@ export function InitTopNav(animated = false) {
             location.href = "/search.html";
         });
 
+    // 클릭 이벤트 투과 (버그 수정용)
+    topFixedBar.addEventListener("click", (evt) => {
+        if (topFixedBar.style.pointerEvents === "none") return;
+
+        const target = evt.target as HTMLElement;
+        let temp: HTMLElement | null = target,
+            clickedNav = false;
+        while (temp !== null) {
+            if (temp.nodeType === temp.ELEMENT_NODE) {
+                if (
+                    (temp as HTMLElement).nodeName === "NAV" ||
+                    (temp as HTMLElement).nodeName === "BUTTON"
+                ) {
+                    clickedNav = true;
+                    break;
+                }
+            }
+            temp = temp.parentElement;
+        }
+
+        if (!clickedNav) {
+            topFixedBar.style.pointerEvents = "none";
+            let elem = document.elementFromPoint(evt.x, evt.y);
+            if (elem !== null && "click" in elem) {
+                (elem as any).click();
+            }
+            topFixedBar.style.pointerEvents = "";
+        }
+    });
+
     const tippyInstance = tippy(topFixedBar.querySelector(".search-icon")!, {
         content: "내 장르 찾기!",
         placement: "left",
@@ -107,7 +137,7 @@ export function InitTopBottomAnimation(
                 if (!isHidden) {
                     changeMainTopLogo();
                     topFixedBar.style.transform =
-                        "translateX(-50%) translateY(-45%)";
+                        "translateX(-50%) translateY(-30%)";
                     isHidden = true;
                 }
             } else if (scrollTop < lastScrollTop - 15) {
