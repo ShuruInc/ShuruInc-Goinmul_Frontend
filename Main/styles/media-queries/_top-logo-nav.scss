@@ -26,15 +26,15 @@
 
 #topFixedBar {
     @include desktop {
-        --top-fixed-bar-height: 140px;
+        --top-fixed-bar-height: 200px;
         --top-fixed-bar-width: 700px;
     }
     @include tablet {
-        --top-fixed-bar-height: 135px;
+        --top-fixed-bar-height: 200px;
         --top-fixed-bar-width: 550px;
     }
     @include mobile {
-        --top-fixed-bar-height: 120px;
+        --top-fixed-bar-height: 160px;
         --top-fixed-bar-width: 100%;
     }
 }
