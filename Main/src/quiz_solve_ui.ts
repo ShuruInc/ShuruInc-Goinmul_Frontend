@@ -121,12 +121,16 @@ const createAnswerElement = (question: QuizProblem) => {
 
     const rowWithInput = answerEl.querySelector(".row.with-input")!;
     if (question.choices === null) {
-        rowWithInput.innerHTML = `<input autofocus type="input" placeholder="답을 입력하세요">`;
-        rowWithInput
-            .querySelector("input")
-            ?.addEventListener("input", (evt) => {
-                validateAnswer((evt.target as HTMLInputElement).value);
-            });
+        rowWithInput.innerHTML = `<input autofocus class="with-animation" type="input" placeholder="답을 입력하세요">`;
+        const input = rowWithInput.querySelector("input")!;
+        input.addEventListener("input", (evt) => {
+            validateAnswer((evt.target as HTMLInputElement).value);
+            input.classList.remove("animated");
+            input.classList.add("animated");
+            setTimeout(() => {
+                input.classList.remove("animated");
+            }, 100);
+        });
     } else {
         rowWithInput.classList.add("radios");
         for (const choice of question.choices) {
