@@ -98,6 +98,10 @@ export default class TouchVelocityCalculator {
         this.intervalId = setInterval(this.calculateVelocity, 10);
     }
 
+    /**
+     * x축의 터치 속도를 계산한다.
+     * @returns
+     */
     private calculateVelocity() {
         let timestampNow = Date.now();
         if (!this.dragging) return;
@@ -120,7 +124,11 @@ export default class TouchVelocityCalculator {
             let delta =
                 (currentXpos ?? this.referenceXpos!) - this.referenceXpos!;
             let v =
-                (delta / (1 + (timestampNow - this.referenceTimestamp!))) * 100;
+                (delta /
+                    (1 /* 0에 의한 나눗셈 방지 */ +
+                        (timestampNow - this.referenceTimestamp!))) *
+                100;
+            // 이동평균 (값이 튀는 걸 막는다.)
             this.velocity = 0.8 * v + 0.2 * (this.velocity ?? 0);
             this.referenceTimestamp = timestampNow;
             this.referenceXpos = currentXpos;

@@ -111,19 +111,31 @@ export class HorizontalInfinityScroller {
         window.requestAnimationFrame(this._render);
     }
 
+    /**
+     * 모바일 터치 시작 이벤트 핸들러
+     */
     _onHorizontalTouchStart() {
+        // easing중이라면 easing을 중지한다.
         if (this._easing) {
             this._easing = false;
             this._easingByDragging = false;
         }
+
         this._dragging = true;
         this._origianlOffsetBeforeDragging = this._basisChildOffsetFromCenter;
+        // 가로 스크롤중일 때는 세로 스크롤이 되지 않도록 한다.
         this._rootElement.classList.add("y-scroll-hidden");
     }
 
+    /**
+     * 모바일 터치 진행 이벤트 핸들러
+     * @param delta x 좌표의 변화값
+     */
     _onHorizontalTouchMove(delta: number) {
+        // x 변화값만큼 가로 스크롤한다.
         let newOffset = Math.round(this._basisChildOffsetFromCenter + delta);
         if (Math.abs(newOffset) > this._rootWidth()) {
+            // 한 번에 하나의 자식 만큼만 스크롤할 수 있다.
             return;
         } else {
             this._basisChildOffsetFromCenter = newOffset;
@@ -131,16 +143,23 @@ export class HorizontalInfinityScroller {
         }
     }
 
+    /**
+     * 모바일 터치가 끝났을 때의 이벤트 핸들러
+     * @param speed 터치 속도
+     */
     _onHorizontalTouchEnd(speed: number) {
         this._dragging = false;
         const scrolledEnough =
             Math.abs(this._basisChildOffsetFromCenter) >
             this._rootWidth() * 0.5;
         if (
+            // 터치 속도가 5 이상이거나 절반이상 스크롤했고
             (Math.abs(speed) > 5 || scrolledEnough) &&
+            // 속도의 방향과 지금까지 스크롤된 방향이 서로 일치한다면
             Math.sign(this._basisChildOffsetFromCenter) === Math.sign(speed)
         ) {
             let sign = Math.sign(this._basisChildOffsetFromCenter) as -1 | 1;
+            // 다음 자식 요소를 구해서
             const targetChild = scrolledEnough
                 ? this.getCurrentlyMostVisibleChild()!
                 : this._children()[
@@ -150,17 +169,25 @@ export class HorizontalInfinityScroller {
                       )
                   ];
             this._easingByDragging = true;
+            // 스크롤한다
             this.scrollIntoCenterView(targetChild, true, sign);
             this._touchDragListeners.forEach((i) =>
                 i(targetChild.dataset.key as string, sign),
             );
         } else {
+            // 다시 원래 위치로 되돌아간다
             this._easingByDragging = true;
             this.scrollIntoCenterView(this._basisChild());
         }
+
+        // 세로 스크롤 활성화
         this._rootElement.classList.remove("y-scroll-hidden");
     }
 
+    /**
+     * 이용자의 터치 및 제스쳐에 의한 스크롤이거나 혹은 그에 의한 easing에 따른 스크롤인 지의 여부를 반환한다.
+     * @returns 이용자의 터치 및 제스쳐에 의한 스크롤인 지의 여부
+     */
     _scrollingByUser() {
         return (this._easingByDragging && this._easing) || this._dragging;
     }

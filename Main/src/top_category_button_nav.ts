@@ -66,7 +66,8 @@ export class TopCategoryButtonNav {
             this.scrollToCenter(this._getActiveButton(), false);
         });
 
-        // 터치 이벤트 패스쓰루
+        // 터치 이벤트를 컨텐츠로 전달
+        // 버튼에서 터치 드래그를 하면 컨텐츠도 같이 드래그되도록 해준다.
         for (const i of [
             "touchstart",
             "touchmove",
