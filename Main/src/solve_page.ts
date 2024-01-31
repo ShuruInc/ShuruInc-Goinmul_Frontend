@@ -26,7 +26,11 @@ function confirmUnload(evt: Event) {
 export default function initSolvePage(session: QuizSession) {
     // 페이지 나갈시 확인 대화상자 표시
     let timerInterval: NodeJS.Timeout | null = null;
-    window.addEventListener("beforeunload", confirmUnload);
+    session.sessionInfo().then((info) => {
+        if (info.isNerdTest) {
+            window.addEventListener("beforeunload", confirmUnload);
+        }
+    });
 
     // HTML 변경 및 레이아웃 초기화
     document.body.innerHTML = solveBody;
