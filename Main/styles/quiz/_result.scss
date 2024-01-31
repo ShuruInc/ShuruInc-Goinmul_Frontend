@@ -1,32 +1,36 @@
 @use "../common/styled-inputs";
 
+.main-container {
+    .loading {
+        display: none;
+        height: calc(100vh - 150px);
+        width: 100%;
+        background: url("../assets/loading.gif");
+        background-position-x: 50%;
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+
+    &.loading {
+        * {
+            display: none;
+        }
+        .loading {
+            display: block;
+        }
+    }
+}
+
 article.with-result {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
 
-    .result {
-        padding: 2em;
-        background-color: #ffe2c5;
-        text-align: center;
+    @import "./result_box";
 
-        .subtitle {
-            text-indent: 1em;
-            letter-spacing: 1em;
-        }
-
-        .score-container {
-            margin: 1.15em 0em;
-            .score {
-                font-size: 2em;
-            }
-
-            .hashtag {
-                font-size: 0.7em;
-                color: gray;
-            }
-        }
+    .post-section > h2 {
+        margin: 0.25em 0em 1em 0em !important;
     }
 
     @include styled-inputs;

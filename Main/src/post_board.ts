@@ -85,18 +85,10 @@ export function preparePlaceholderSection(
             const cell = document.createElement("a");
             cell.href = "quiz.html";
 
-            const image = new Image();
-            image.loading = "lazy";
-            image.style.backgroundColor = "gray";
-            image.alt = "빈 이미지";
-
-            // 클래스 설정
             if (rowInfo.landscape) {
-                image.className = "cell-landscape-img ";
-                cell.className = "table-landscape-cell";
+                cell.className = "table-cell landscape";
             } else {
-                image.className = "cell-img";
-                cell.className = "table-cell";
+                cell.className = "table-cell portrait";
             }
             cell.draggable = false;
 
@@ -107,7 +99,6 @@ export function preparePlaceholderSection(
                 '<div class="title"></div><div class="popularity"><a href="#" class="likes-link"><div class="likes"><span class="like-count" /></div></a><div class="views"><span class="view-count" /></div></div>';
 
             postTable.appendChild(cell);
-            cell.appendChild(image);
             cell.appendChild(info);
         }
 
@@ -145,60 +136,60 @@ export function fillPlaceholderSectionInto(
     preparePlaceholderSection(section, rowInfos, false);
 
     // 제목 설정
-    if (posts.title === null || typeof posts.title === "undefined")
+    if (
+        posts.title === null ||
+        typeof posts.title === "undefined" ||
+        posts.title.trim().length === 0
+    )
         section.querySelector("h2")!.classList.add("display-none");
     else section.querySelector("h2")!.textContent = posts.title;
 
     // 가로형 이미지 설정
     if (hasLandscape) {
-        (section.querySelector(".cell-landscape-img") as HTMLImageElement).src =
-            posts.landscape!.imgUrl;
-        (
-            section.querySelector(".table-landscape-cell") as HTMLAnchorElement
-        ).href = posts.landscape!.href;
-        section
-            .querySelector(".table-landscape-cell .likes-link")
+        const landscapeCell = section.querySelector(
+            ".table-cell.landscape",
+        ) as HTMLAnchorElement;
+        landscapeCell.style.backgroundImage = `url("${
+            posts.landscape!.imgUrl
+        }")`;
+        landscapeCell.href = posts.landscape!.href;
+        landscapeCell.dataset.id = posts.landscape!.id.toString();
+        landscapeCell
+            .querySelector(".likes-link")
             ?.addEventListener("click", (evt) => {
                 evt.preventDefault();
                 PostBoardApiClient.like(posts.landscape!.id!).then(() => {
-                    section.querySelector(
-                        ".table-landscape-cell .likes",
-                    )!.textContent = (
-                        parseInt(
-                            section.querySelector(
-                                ".table-landscape-cell .likes",
-                            )!.textContent ?? "0",
-                        ) + 1
-                    ).toString();
+                    const likes = landscapeCell.querySelector(
+                        ".likes",
+                    ) as HTMLElement;
+                    likes.classList.add("liked");
+                    likes.textContent = ":D";
                 });
             });
-        section.querySelector(
-            ".table-landscape-cell .cell-info .title",
-        )!.innerHTML = posts.landscape!.title;
+        landscapeCell.querySelector(".cell-info .title")!.innerHTML =
+            posts.landscape!.title;
         if (noCellInfo) {
-            section
-                .querySelector(".table-landscape-cell")!
-                .classList.add("no-cell-popularity-info");
+            landscapeCell.classList.add("no-cell-popularity-info");
         } else {
-            section.querySelector(
-                ".table-landscape-cell .cell-info .like-count",
-            )!.innerHTML = millify(posts.landscape!.likes).toString();
-            section.querySelector(
-                ".table-landscape-cell .cell-info .view-count",
-            )!.innerHTML = millify(posts.landscape!.views).toString();
+            landscapeCell.querySelector(".cell-info .like-count")!.innerHTML =
+                millify(posts.landscape!.likes).toString();
+            landscapeCell.querySelector(".cell-info .view-count")!.innerHTML =
+                millify(posts.landscape!.views).toString();
         }
     }
 
     // 세로형 이미지 설정
     if (hasPortraits) {
-        const portraitCells = [...section.querySelectorAll(".table-cell")];
+        const portraitCells = [
+            ...section.querySelectorAll(".table-cell"),
+        ] as HTMLAnchorElement[];
         for (const portraitCell of portraitCells) {
-            const post = posts.portraits!.pop();
+            const post = posts.portraits!.shift();
             if (typeof post === "undefined") break;
 
-            (portraitCell as HTMLAnchorElement).href = post.href;
-            (portraitCell.querySelector(".cell-img") as HTMLImageElement).src =
-                post.imgUrl;
+            portraitCell.href = post.href;
+            portraitCell.dataset.id = post.id.toString();
+            portraitCell.style.backgroundImage = `url("${post.imgUrl}")`;
             portraitCell.querySelector(".cell-info .title")!.innerHTML =
                 post.title;
             portraitCell
@@ -206,12 +197,11 @@ export function fillPlaceholderSectionInto(
                 ?.addEventListener("click", (evt) => {
                     evt.preventDefault();
                     PostBoardApiClient.like(post.id!).then(() => {
-                        portraitCell.querySelector(".likes")!.textContent = (
-                            parseInt(
-                                portraitCell.querySelector(".likes")!
-                                    .textContent ?? "0",
-                            ) + 1
-                        ).toString();
+                        const likes = portraitCell.querySelector(
+                            ".likes",
+                        ) as HTMLElement;
+                        likes.classList.add("liked");
+                        likes.textContent = ":D";
                     });
                 });
             if (noCellInfo) {
@@ -224,7 +214,35 @@ export function fillPlaceholderSectionInto(
                     ".cell-info .view-count",
                 )!.innerHTML = millify(post.views).toString();
             }
+
+            portraitCell.classList.add("filled");
         }
+
+        portraitCells
+            .filter((i) => !i.classList.contains("filled"))
+            .forEach((i) => i.parentNode?.removeChild(i));
+    }
+
+    // 조회수 올리는 로직
+    let thumbnailIntersectionObserver = new IntersectionObserver(
+        onThumbnailVisible,
+    );
+
+    for (const i of [...section.querySelectorAll(".table-cell")]) {
+        thumbnailIntersectionObserver.observe(i);
+    }
+
+    let hitIdsBefore: string[] = [];
+    function onThumbnailVisible(entries: IntersectionObserverEntry[]) {
+        const ids = entries
+            .filter((i) => i.intersectionRatio > 0.0)
+            .map((i) => (i.target as HTMLElement).dataset.id!);
+        for (const id of ids) {
+            if (hitIdsBefore.includes(id)) continue;
+
+            PostBoardApiClient.hit(id);
+        }
+        hitIdsBefore = ids;
     }
 
     return;
@@ -294,22 +312,25 @@ export function setupPostBoard(
     // 무한 스크롤을 구현한다.
 
     // 하단 빈 섹션이 보이는지의 여부를 감지하는 데 이용되는 IntersectionObserver
-    let intersectionObserver = new IntersectionObserver(onPlaceholderVisible, {
-        rootMargin: "2000px",
-    });
+    let placeholderIntersectionObserver = new IntersectionObserver(
+        onPlaceholderVisible,
+        {
+            rootMargin: "2000px",
+        },
+    );
 
     // intersectionObserver를 초기화한다.
     // 새로운 빈 섹션이 추가된 경우에도 호출되어야 한다.
-    function setupIntersectionObserver() {
+    function setupPlaceholderIntersectionObserver() {
         // 기존에 관찰되고 있던 요소는 더이상 빈 섹션이 아닐 수 있으므로 모두 끊는다.
-        intersectionObserver.disconnect();
+        placeholderIntersectionObserver.disconnect();
         // 빈 섹션들을 모두 관찰한다.
         for (const i of [...column.querySelectorAll("section.placeholder")]) {
-            intersectionObserver.observe(i);
+            placeholderIntersectionObserver.observe(i);
         }
 
         // 이벤트 핸들러를 호출한다. (버그 방지)
-        onPlaceholderVisible(intersectionObserver.takeRecords());
+        onPlaceholderVisible(placeholderIntersectionObserver.takeRecords());
     }
 
     // intersectionObserver의 이벤드 핸들러
@@ -326,7 +347,7 @@ export function setupPostBoard(
             return;
         getNextSection()
             .then(fillPlaceholderSection)
-            .then(setupIntersectionObserver);
+            .then(setupPlaceholderIntersectionObserver);
     }
 
     // 첫 2개의 포스트만 가져온다.
@@ -335,5 +356,5 @@ export function setupPostBoard(
         .then(getNextSection)
         .then(fillPlaceholderSection)
         // 나머지는 동적으로 가져올 수 있도록 IntersectionObserver를 설정한다.
-        .then(setupIntersectionObserver);
+        .then(setupPlaceholderIntersectionObserver);
 }

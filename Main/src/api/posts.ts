@@ -25,7 +25,7 @@ export default class PostBoardApiClient {
             ),
             rankings: Object.fromEntries(
                 (await apiClient.getRanks()).data.result!.map((i) => [
-                    i.categoryNm,
+                    i.categoryNm + " 모의고사",
                     i.rankDtoList!.map((i) => ({
                         nickname: i.nickname!,
                         score: i.score!,
@@ -35,6 +35,14 @@ export default class PostBoardApiClient {
             ),
         };
     }
+
+    static async getNerdTestOf(firstCategoryId: number) {
+        return transformArticleDtoToPost(
+            (await apiClient.getArticlesBySecCategory(firstCategoryId)).data
+                .result![0]!,
+        );
+    }
+
     static async getPostBoards(): Promise<PostBoardData[]> {
         const firstCategories = await apiClient.getFirstCategories();
         if (firstCategories.ok) {
@@ -78,7 +86,7 @@ export default class PostBoardApiClient {
                             );
 
                         return {
-                            title: secondCategory.categoryNm!,
+                            title: secondCategory.categoryNm! + " 모의고사",
                             portraits: articles.data.result!.map(
                                 transformArticleDtoToPost,
                             ),
@@ -104,5 +112,9 @@ export default class PostBoardApiClient {
 
     static async requestMakeTest(keyword: string): Promise<void> {
         await apiClient.postKeyword({ keyword });
+    }
+
+    static async hit(articleId: string) {
+        await apiClient.viewArticle(parseInt(articleId));
     }
 }

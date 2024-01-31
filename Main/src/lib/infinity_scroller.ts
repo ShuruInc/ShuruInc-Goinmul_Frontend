@@ -25,6 +25,7 @@ function positiveModular(val: number, maxExcluding: number) {
  */
 export class HorizontalInfinityScroller {
     _rootElement: HTMLElement;
+    _gap = 10;
 
     /**
      * 기준이 되는 요소
@@ -37,7 +38,7 @@ export class HorizontalInfinityScroller {
     _basisChildOffsetFromCenter = 0; // basisChild중앙과 부모의 중앙간의 거리
 
     // 이벤트 리스너용
-    _scrollListeners: (() => void)[] = [];
+    _scrollListeners: ((byUserDrag: boolean) => void)[] = [];
     _touchDragListeners: ((key: string, direction: 1 | -1) => void)[] = [];
 
     // 옵션 및 캐싱
@@ -56,6 +57,7 @@ export class HorizontalInfinityScroller {
     _horizontalScrollVelocityCalculator: TouchVelocityCalculator;
     _origianlOffsetBeforeDragging = 0;
     _dragging = false;
+    _easingByDragging = false;
 
     constructor(
         root: HTMLElement,
@@ -109,34 +111,55 @@ export class HorizontalInfinityScroller {
         window.requestAnimationFrame(this._render);
     }
 
+    /**
+     * 모바일 터치 시작 이벤트 핸들러
+     */
     _onHorizontalTouchStart() {
+        // easing중이라면 easing을 중지한다.
         if (this._easing) {
             this._easing = false;
+            this._easingByDragging = false;
         }
+
         this._dragging = true;
         this._origianlOffsetBeforeDragging = this._basisChildOffsetFromCenter;
+        // 가로 스크롤중일 때는 세로 스크롤이 되지 않도록 한다.
         this._rootElement.classList.add("y-scroll-hidden");
     }
 
+    /**
+     * 모바일 터치 진행 이벤트 핸들러
+     * @param delta x 좌표의 변화값
+     */
     _onHorizontalTouchMove(delta: number) {
-        let newOffset = this._basisChildOffsetFromCenter + delta;
+        // x 변화값만큼 가로 스크롤한다.
+        let newOffset = Math.round(this._basisChildOffsetFromCenter + delta);
         if (Math.abs(newOffset) > this._rootWidth()) {
+            // 한 번에 하나의 자식 만큼만 스크롤할 수 있다.
             return;
         } else {
             this._basisChildOffsetFromCenter = newOffset;
+            this._scrollListeners.forEach((i) => i(this._scrollingByUser()));
         }
     }
 
+    /**
+     * 모바일 터치가 끝났을 때의 이벤트 핸들러
+     * @param speed 터치 속도
+     */
     _onHorizontalTouchEnd(speed: number) {
         this._dragging = false;
         const scrolledEnough =
             Math.abs(this._basisChildOffsetFromCenter) >
             this._rootWidth() * 0.5;
         if (
+            // 터치 속도가 5 이상이거나 절반이상 스크롤했고
             (Math.abs(speed) > 5 || scrolledEnough) &&
+            // 속도의 방향과 지금까지 스크롤된 방향이 서로 일치한다면
             Math.sign(this._basisChildOffsetFromCenter) === Math.sign(speed)
         ) {
             let sign = Math.sign(this._basisChildOffsetFromCenter) as -1 | 1;
+            // 다음 자식 요소를 구해서
             const targetChild = scrolledEnough
                 ? this.getCurrentlyMostVisibleChild()!
                 : this._children()[
@@ -145,14 +168,28 @@ export class HorizontalInfinityScroller {
                           this._children().length,
                       )
                   ];
+            this._easingByDragging = true;
+            // 스크롤한다
             this.scrollIntoCenterView(targetChild, true, sign);
             this._touchDragListeners.forEach((i) =>
                 i(targetChild.dataset.key as string, sign),
             );
         } else {
+            // 다시 원래 위치로 되돌아간다
+            this._easingByDragging = true;
             this.scrollIntoCenterView(this._basisChild());
         }
+
+        // 세로 스크롤 활성화
         this._rootElement.classList.remove("y-scroll-hidden");
+    }
+
+    /**
+     * 이용자의 터치 및 제스쳐에 의한 스크롤이거나 혹은 그에 의한 easing에 따른 스크롤인 지의 여부를 반환한다.
+     * @returns 이용자의 터치 및 제스쳐에 의한 스크롤인 지의 여부
+     */
+    _scrollingByUser() {
+        return (this._easingByDragging && this._easing) || this._dragging;
     }
 
     /**
@@ -179,6 +216,7 @@ export class HorizontalInfinityScroller {
             // easing 시간이 다 지났다면 easing 변수를 초기화하고
             // _basisOffsetFromCenter를 목표값으로 설정한 뒤 return
             this._easing = false;
+            this._easingByDragging = false;
             this._easingStartOffset = null;
             this._basisChildOffsetFromCenter = this._easingEndOffset;
         } else {
@@ -191,7 +229,15 @@ export class HorizontalInfinityScroller {
         }
 
         // 스크롤 이벤트 핸들러 호출
-        this._scrollListeners.forEach((i) => i());
+        this._scrollListeners.forEach((i) => i(this._scrollingByUser()));
+    }
+
+    centerEnsuredBasis() {
+        return this._translateValues()
+            .map((i, idx) => ({ translate: i, index: idx }))
+            .filter((i) => i.translate !== null)
+            .sort((a, b) => Math.abs(a.translate!) - Math.abs(b.translate!))
+            .map((i) => ({ basisIndex: i.index, offset: i.translate }))[0];
     }
 
     /**
@@ -267,7 +313,7 @@ export class HorizontalInfinityScroller {
      */
     addScrollOffset(offset: number) {
         this._basisChildOffsetFromCenter += offset;
-        this._scrollListeners.forEach((i) => i());
+        this._scrollListeners.forEach((i) => i(this._scrollingByUser()));
         return;
     }
 
@@ -348,8 +394,11 @@ export class HorizontalInfinityScroller {
                 continue;
             }
             translates[childIdx] =
-                remaningRootWidth.left - childWidth / 2 - rootWidth / 2;
-            remaningRootWidth.left -= childWidth;
+                remaningRootWidth.left -
+                childWidth / 2 -
+                rootWidth / 2 -
+                this._gap;
+            remaningRootWidth.left -= childWidth + this._gap;
         }
 
         // 오른족 여백을 채운다.
@@ -364,8 +413,9 @@ export class HorizontalInfinityScroller {
                 rootWidth -
                 remaningRootWidth.right +
                 childWidth / 2 -
-                rootWidth / 2;
-            remaningRootWidth.right -= childWidth;
+                rootWidth / 2 +
+                this._gap;
+            remaningRootWidth.right -= childWidth + this._gap;
         }
 
         return translates;
@@ -399,7 +449,7 @@ export class HorizontalInfinityScroller {
         // 오른쪽 방향으로 이동할 때의 변화값을 계산
         tmp = indexOfCenter;
         while (tmp != indexOfTarget) {
-            offsetOnRightDirection += this._rootWidth();
+            offsetOnRightDirection += this._rootWidth() + this._gap;
             tmp--;
             while (tmp < 0) tmp += this._children().length;
             tmp = tmp % this._children().length;
@@ -408,7 +458,7 @@ export class HorizontalInfinityScroller {
         // 왼쪽 방향으로 이동할 때의 변화값을 계산
         tmp = indexOfCenter;
         while (tmp != indexOfTarget) {
-            offsetOnLeftDirection -= this._rootWidth();
+            offsetOnLeftDirection -= this._rootWidth() + this._gap;
             tmp = (tmp + 1) % this._children().length;
         }
 
@@ -462,7 +512,7 @@ export class HorizontalInfinityScroller {
         } else {
             this._basisChildIdx = this._children().indexOf(target);
             this._basisChildOffsetFromCenter = 0;
-            this._scrollListeners.forEach((i) => i());
+            this._scrollListeners.forEach((i) => i(this._scrollingByUser()));
             return 0;
         }
     }
@@ -509,7 +559,7 @@ export class HorizontalInfinityScroller {
         );
     }
 
-    addScrollEventListener(listener: () => void) {
+    addScrollEventListener(listener: (byUserDrag: boolean) => void) {
         this._scrollListeners.push(listener);
     }
 
@@ -517,5 +567,12 @@ export class HorizontalInfinityScroller {
         listener: (key: string, direction: 1 | -1) => void,
     ) {
         this._touchDragListeners.push(listener);
+    }
+
+    setScrollOffset(basisKey: string, offsetRatio: number) {
+        this._basisChildIdx = this._children().findIndex(
+            (v) => v.dataset.key === basisKey,
+        );
+        this._basisChildOffsetFromCenter = this._rootWidth() * offsetRatio;
     }
 }

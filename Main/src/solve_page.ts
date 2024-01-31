@@ -14,9 +14,20 @@ import solveBody from "./solve_page.html";
 import { InitTopNav } from "./top_logo_navbar";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import html2canvas from "html2canvas";
-import padCanvas from "./canvas_padding";
+import addPadding from "./canvas_padding";
+import ImageCache from "./image_cache";
+import initializeResultPage from "./result_page";
+
+function confirmUnload(evt: Event) {
+    evt.preventDefault();
+    return "정말로 나가시겠습니까?";
+}
 
 export default function initSolvePage(session: QuizSession) {
+    // 페이지 나갈시 확인 대화상자 표시
+    let timerInterval: NodeJS.Timeout | null = null;
+    window.addEventListener("beforeunload", confirmUnload);
+
     // HTML 변경 및 레이아웃 초기화
     document.body.innerHTML = solveBody;
     InitTopNav();
@@ -33,6 +44,8 @@ export default function initSolvePage(session: QuizSession) {
     const setShareData = initShareButton({
         onComplete: () => (shared = true),
         beforeShare: () => {
+            // 공유 버튼을 눌렀을 때 공유 직전에 이미지를 설정한다.
+
             /**
              * .problem-box가 보이지 않으면 svg 렌더링이 되지 않으므로
              * .problem-box가 보일 때 svg 렌더링을 한다.
@@ -45,29 +58,27 @@ export default function initSolvePage(session: QuizSession) {
                 },
             ).then(
                 (canvas) =>
+                    // 이미지를 렌더링 한다.
                     new Promise<void>((resolve, reject) => {
-                        padCanvas(canvas)
-                            .convertToBlob({ type: "image/png" })
-                            .then((blob) => {
-                                if (shareData && blob) {
-                                    const file = new File(
-                                        [blob],
-                                        "problem.png",
-                                        {
-                                            type: "image/png",
-                                        },
-                                    );
-                                    setShareData({
-                                        ...shareData,
-                                        webShare: {
-                                            ...shareData.webShare,
-                                            files: [file],
-                                        },
-                                        image: file,
-                                    });
-                                    resolve();
-                                } else reject("오류가 발생했습니다.");
-                            });
+                        addPadding(canvas).then((blob) => {
+                            // 이미지에 여백을 추가한다.
+                            if (shareData && blob) {
+                                const file = new File([blob], "problem.png", {
+                                    type: "image/png",
+                                });
+
+                                // 공유 데이터에 이미지를 설정한다.
+                                setShareData({
+                                    ...shareData,
+                                    webShare: {
+                                        ...shareData.webShare,
+                                        files: [file],
+                                    },
+                                    image: file,
+                                });
+                                resolve();
+                            } else reject("오류가 발생했습니다.");
+                        });
                     }),
             );
         },
@@ -75,10 +86,24 @@ export default function initSolvePage(session: QuizSession) {
 
     (async () => {
         updateProgress(0);
-        const goResult = () =>
-            (location.href =
-                "/quiz/result.html?session=" + encodeURIComponent(sessionId));
+        const goResult = () => {
+            if (timerInterval !== null) clearInterval(timerInterval);
+
+            // 결과 페이지로 갈 때는 페이지 나갈 시 뜨는 확인 대화상자가 뜨면 안 된다.
+            window.removeEventListener("beforeunload", confirmUnload);
+            history.replaceState(
+                null,
+                "",
+                "/quiz/result.html?session=" + encodeURIComponent(sessionId),
+            );
+            initializeResultPage();
+        };
         const sessionInfo = await session.sessionInfo();
+
+        const imageCache = new ImageCache();
+        for (const i of await session.getImageLinks()) {
+            imageCache.fetch(i);
+        }
 
         const renewProblem = async () => {
             const problem = await session.currentProblem();
@@ -88,12 +113,24 @@ export default function initSolvePage(session: QuizSession) {
 
             displayProblem(
                 document.querySelector("article")!,
-                problem,
+                {
+                    ...problem,
+                    figure:
+                        problem.figureType === "image"
+                            ? await imageCache.get(problem.figure)
+                            : problem.figure,
+                },
                 problem.index,
             );
             updateShareProblem(
                 document.querySelector(".help-me .problem-box")!,
-                problem,
+                {
+                    ...problem,
+                    figure:
+                        problem.figureType === "image"
+                            ? await imageCache.get(problem.figure)
+                            : problem.figure,
+                },
                 problem.index,
             );
 
@@ -126,23 +163,34 @@ export default function initSolvePage(session: QuizSession) {
             const quizUrl = `https://example.com/quiz/solve.html?id=${sessionInfo.quizId}`;
             shareData = {
                 twitter: {
-                    text: `${sessionInfo.title} ${
+                    text: `[${sessionInfo.category}] ${
                         sessionInfo.isNerdTest ? "고인물 테스트" : "모의고사"
-                    } 푸는 중인데 이 문제 도저히 모르겠다... 아는 사람? 😀
+                    }
 
-🔗 https://example.com/quiz/solve.html?id=${sessionInfo.quizId}
+모르겠어요... 도와주세요 🚨
+모르겠어요... 도와주세요 🚨
+모르겠어요... 도와주세요 🚨
+모르겠어요... 도와주세요 🚨
+모르겠어요... 도와주세요 🚨
+모르겠어요... 도와주세요 🚨
+
+🔗 ${quizUrl}
 #고인물테스트 #슈르네`,
                 },
                 kakao: {
-                    title: `[${sessionInfo.title}] 모의고사`,
-                    content: "이 문제 도저히 모르겠다...\n도와줄 사람?",
+                    title: `[${sessionInfo.category}] ${
+                        sessionInfo.isNerdTest ? "고인물 테스트" : "모의고사"
+                    }`,
+                    content: "모르겠어요... 도와주세요 🚨\n⬇⬇⬇⬇⬇",
                     buttonText: "나도 풀어보기",
                     url: quizUrl,
                 },
                 webShare: {
                     url: quizUrl,
-                    title: `[${sessionInfo.title}] 모의고사`,
-                    text: "이 문제 도저히 모르겠다... 도와줄 사람?",
+                    title: `[${sessionInfo.category}] ${
+                        sessionInfo.isNerdTest ? "고인물 테스트" : "모의고사"
+                    }`,
+                    text: "모르겠어요... 도와주세요 🚨",
                 },
             };
             setShareData({
@@ -157,8 +205,8 @@ export default function initSolvePage(session: QuizSession) {
             });
         };
 
-        addAnswerSubmitListener(async (answer) => {
-            const correct = await session.submit(answer);
+        addAnswerSubmitListener(async (answer, subjective) => {
+            const correct = await session.submit(answer, subjective);
             [
                 ...document.querySelectorAll(".answer input, .answer button"),
             ].forEach((i) => ((i as HTMLInputElement).disabled = true));
@@ -168,7 +216,7 @@ export default function initSolvePage(session: QuizSession) {
         });
 
         if (sessionInfo.isNerdTest) {
-            setInterval(() => {
+            timerInterval = setInterval(() => {
                 const elapsed = session.getStopWatch().elapsed();
                 const totalTime = 1000 * 60 * 5;
                 const percentage = (elapsed / totalTime) * 100;
@@ -182,10 +230,16 @@ export default function initSolvePage(session: QuizSession) {
                     )
                         .toString()
                         .padStart(2, "0")}`,
-                    percentage > 50,
+                    // 1분 이하로 남았으면 노란색, 30초 이하로 남았으면 빨간색
+                    leftTime < 1000 * 30
+                        ? "red"
+                        : leftTime < 1000 * 60
+                        ? "yellow"
+                        : undefined,
                 );
             }, 500);
         } else {
+            // 모의고사는 새로고침이 되도 계속 풀 수 있게 주소에 세션 id를 넣는다.
             const quizId = new URLSearchParams(
                 location.search.substring(1),
             ).get("id");

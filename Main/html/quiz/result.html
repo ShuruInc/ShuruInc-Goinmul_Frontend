@@ -3,50 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>싱숑샹숑</title>
+    <title>고인물테스트</title>
 </head>
-<body>
+<body class="result-page-html-prepared">
     <div id="topFixedBar" class="top-fixed-bar gradient">
         <nav>
             <button class="ranking-icon">
                 <i class="fa-solid fa-ranking-star"></i>
             </button>        
             <a class="main-top-logo" href="/">
-                <img class="main-top-logo-image" alt="err.png">
+                <img class="main-top-logo-image">
             </a>
             <button class="search-icon">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </button>
         </nav>       
         <div class="progress-container">
-            <div class="progress" style="width: 0%;"></div>
+            <div class="progress" style="width: 100%;"></div>
         </div>
     </div>
-    <div id="mainContainer" class="main-container">
+    <div id="mainContainer" class="main-container loading">
+        <article class="loading">
+            
+        </article>
         <div class="rankings-ad" style="background-color: orangered; color: white; font-size: 2em;">
-            ↖ 랭킹 보러 가기
+            ↖ <span class="nickname"></span> 랭킹 보러 가기
         </div>
         <article class="with-result">
             <div class="result">
-                <div class="title"><span class="quiz-title">어쩌구 저쩌구 고사</span>
-                    <div class="subtitle">성적결과표</div>
-                </div>
-
-                <div class="score-container">
-                    <div class="whoami">
-                        <span class="nickname"></span><span class="hashtag"></span>님
-                    </div>
-                    <div class="score">??점</div>
-                </div>
-
-                <span class="ranking"></span>
+                
             </div>
             <button class="share-web-share">친구한테 자랑하기</button>
-            <button class="share-twitter">트친한테 자랑하기</button>
+            <a class="share-twitter button" href="#" target="_blank">트친한테 자랑하기</a>
             <button class="share-kakao">실친한테 자랑하기</button>
             <div class="row">
                 <button class="retry">재응시</button>
-                <button class="active">다른 모의고사 풀기</button>
             </div>
             <div class="post-section">
                 

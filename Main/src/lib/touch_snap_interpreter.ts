@@ -78,7 +78,8 @@ export default class TouchVelocityCalculator {
     }
 
     private onTouchStart(evt: TouchEvent) {
-        if (this.ignore || isIgnorable(evt.target as Element)) return;
+        if (this.ignore || isIgnorable(evt.target as Element) || this.dragging)
+            return;
         this.dragging = true;
         this.referenceXpos = evt.targetTouches[0].screenX;
         this.referenceTimestamp = Date.now();
@@ -94,9 +95,13 @@ export default class TouchVelocityCalculator {
         if (this.intervalId !== null && !this.ignore)
             clearInterval(this.intervalId);
 
-        this.intervalId = setInterval(this.calculateVelocity, 100);
+        this.intervalId = setInterval(this.calculateVelocity, 10);
     }
 
+    /**
+     * x축의 터치 속도를 계산한다.
+     * @returns
+     */
     private calculateVelocity() {
         let timestampNow = Date.now();
         if (!this.dragging) return;
@@ -119,7 +124,11 @@ export default class TouchVelocityCalculator {
             let delta =
                 (currentXpos ?? this.referenceXpos!) - this.referenceXpos!;
             let v =
-                (delta / (1 + (timestampNow - this.referenceTimestamp!))) * 100;
+                (delta /
+                    (1 /* 0에 의한 나눗셈 방지 */ +
+                        (timestampNow - this.referenceTimestamp!))) *
+                100;
+            // 이동평균 (값이 튀는 걸 막는다.)
             this.velocity = 0.8 * v + 0.2 * (this.velocity ?? 0);
             this.referenceTimestamp = timestampNow;
             this.referenceXpos = currentXpos;
@@ -136,6 +145,7 @@ export default class TouchVelocityCalculator {
     }
 
     private onTouchEnd(evt: TouchEvent) {
+        if (evt.targetTouches.length !== 0) return;
         if (this.dragging && this.horizontal) evt.preventDefault();
         if (!this.ignore && this.dragging && this.horizontal)
             this.listeners.dragend.forEach((i) => i(this.velocity));
