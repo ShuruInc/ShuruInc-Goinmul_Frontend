@@ -13,12 +13,18 @@ export class QuizApiClient {
         );
     }
 
+    static async getQuizTitle(id: string): Promise<string> {
+        return (await apiClient.getArticle(parseInt(id))).data.result!.title!;
+    }
+
     private static async prepareQuestions(id: string, nerd = false) {
         localStorage.setItem(
             `problems-${id}`,
             JSON.stringify(
                 (
-                    await apiClient.getArticleProblems(parseInt(id))
+                    await apiClient.getArticleProblems(parseInt(id), {
+                        articleType: nerd ? "NERD" : "NORMAL",
+                    })
                 ).data.result!.map(
                     (i) =>
                         ({
@@ -27,14 +33,14 @@ export class QuizApiClient {
                                     ? null
                                     : i.choiceDtoList?.map((j) => ({
                                           label: j.choiceContent,
-                                          value: j.choiceContent,
+                                          value: j.seq,
                                       })),
                             figure:
                                 i.problemFigure !== "" &&
                                 i.problemFigure !== null
                                     ? i.problemFigure
                                     : i.imgUrl !== "" && i.imgUrl !== null
-                                    ? backendUrl + "/" + i.imgUrl
+                                    ? backendUrl! + i.imgUrl
                                     : null,
                             figureType:
                                 i.problemFigure !== "" &&
@@ -46,8 +52,11 @@ export class QuizApiClient {
                             points: 10,
                             question: i.problemContent,
                             id: i.problemId,
-                            secondCategoryName: nerd ? i.categoryNm : "",
-                            condition: i.condition,
+                            secondCategoryName: nerd ? i.articleTitle : "",
+                            condition:
+                                (i.precaution ?? "").trim().length === 0
+                                    ? null
+                                    : i.precaution,
                         }) as QuizProblem,
                 ),
             ),
@@ -73,14 +82,9 @@ export class QuizApiClient {
     }
 
     static async startQuiz(id: string): Promise<QuizSession> {
-        await apiClient.saveTempUser({
-            email: "example@example.com",
-            nickname: "example",
-            score: 0,
-        });
         const sessionId = Date.now() + "-" + Math.floor(Math.random() * 5000);
-        const title = (await apiClient.getArticle(parseInt(id))).data.result!
-            .title!;
+        const { title, categoryNm } = (await apiClient.getArticle(parseInt(id)))
+            .data.result!;
         await QuizApiClient.prepareQuestions(id, false);
         localStorage.setItem(
             `session-${sessionId}`,
@@ -92,6 +96,7 @@ export class QuizApiClient {
                 email: "",
                 nickname: "",
                 startedAt: Date.now(),
+                category: categoryNm,
                 title,
                 postedRank: false,
             } as QuizInternalSessionData),
@@ -105,8 +110,8 @@ export class QuizApiClient {
     ): Promise<QuizSession> {
         await apiClient.saveTempUser({ ...info, score: 0 });
         const sessionId = Date.now() + "-" + Math.floor(Math.random() * 5000);
-        const title = (await apiClient.getArticle(parseInt(id))).data.result!
-            .title!;
+        const { title, categoryNm } = (await apiClient.getArticle(parseInt(id)))
+            .data.result!;
         await QuizApiClient.prepareQuestions(id, true);
         this.shakeProblems(id);
         localStorage.setItem(
@@ -118,6 +123,7 @@ export class QuizApiClient {
                 nerdTest: true,
                 ...info,
                 startedAt: Date.now(),
+                category: categoryNm,
                 title,
                 postedRank: false,
             } as QuizInternalSessionData),

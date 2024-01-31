@@ -3,18 +3,43 @@
  * @param canvas 여백을 넣을 이미지
  * @returns 여백이 넣어진 정사각형 형태의 이미지
  */
-export default function padCanvas(
+export default async function addPadding(
     canvas: HTMLCanvasElement,
-    fill: string | CanvasGradient | CanvasPattern = "#ffe2c5"
-) {
+    fill: string | CanvasGradient | CanvasPattern = "#ffe2c5",
+): Promise<Blob> {
     let size = Math.max(canvas.width, canvas.height);
     let x = (size - canvas.width) / 2;
     let y = (size - canvas.height) / 2;
-    const newCanvas = new OffscreenCanvas(size, size);
-    const newCanvasContext = newCanvas.getContext("2d")!;
+
+    const newCanvas =
+        typeof OffscreenCanvas === "undefined"
+            ? (() => {
+                  const canvas = document.createElement("canvas");
+                  canvas.width = size;
+                  canvas.height = size;
+                  return canvas;
+              })()
+            : new OffscreenCanvas(size, size);
+    const newCanvasContext = newCanvas.getContext("2d") as
+        | OffscreenCanvasRenderingContext2D
+        | CanvasRenderingContext2D;
     newCanvasContext.fillStyle = fill;
     newCanvasContext.fillRect(0, 0, size, size);
     newCanvasContext.drawImage(canvas, x, y);
 
-    return newCanvas;
+    if ("convertToBlob" in newCanvas) {
+        return await newCanvas.convertToBlob({ type: "image/png" });
+    } else if ("toBlob" in newCanvas) {
+        return await new Promise((resolve, reject) => {
+            newCanvas.toBlob(
+                (blob) => {
+                    if (blob === null) reject();
+                    else resolve(blob);
+                },
+                "image/png",
+                1,
+            );
+        });
+    }
+    throw new Error();
 }

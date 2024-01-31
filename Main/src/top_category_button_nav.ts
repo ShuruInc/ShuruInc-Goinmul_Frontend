@@ -25,6 +25,7 @@ export class TopCategoryButtonNav {
     _root: HTMLElement;
     _scroller: HorizontalInfinityScroller;
     _scrollTimeout: NodeJS.Timeout | null = null;
+    _scrollToCenterBugfixTimeout: NodeJS.Timeout | null = null;
 
     /**
      * 상단 카테고리 버튼 네비게이션 클래스를 생성합니다.
@@ -42,7 +43,7 @@ export class TopCategoryButtonNav {
         this._scroller = scroller;
 
         // 초기화
-        for (const isCenter of [false, true, false])
+        for (const isCenter of [false, false, true, false, false])
             for (let i = 0; i < this._data.length; i++) {
                 const button = this._createButtonByKey(data[i].key);
                 if (isCenter && i === 0) button.classList.add("active");
@@ -58,11 +59,6 @@ export class TopCategoryButtonNav {
         this._keyIndexToKey = this._keyIndexToKey.bind(this);
         this._getButtonElements = this._getButtonElements.bind(this);
         this._getActiveButton = this._getActiveButton.bind(this);
-        this._onScroll = this._onScroll.bind(this);
-        this._onScrollEnd = this._onScrollEnd.bind(this);
-
-        // 스크롤 이벤트 핸들러 추가
-        root.addEventListener("scroll", this._onScroll);
 
         // active된 버튼을 중앙에 정렬 (창 크기가 바뀌었을 때도!)
         this.scrollToCenter(this._getActiveButton(), false);
@@ -70,41 +66,29 @@ export class TopCategoryButtonNav {
             this.scrollToCenter(this._getActiveButton(), false);
         });
 
+        // 터치 이벤트를 컨텐츠로 전달
+        // 버튼에서 터치 드래그를 하면 컨텐츠도 같이 드래그되도록 해준다.
+        for (const i of [
+            "touchstart",
+            "touchmove",
+            "touchend",
+            "touchcancel",
+        ]) {
+            this._root.addEventListener(i, (evt) => {
+                const newEvt = new TouchEvent(i, {
+                    touches: [...(evt as TouchEvent).touches],
+                    targetTouches: [...(evt as TouchEvent).targetTouches],
+                    changedTouches: [...(evt as TouchEvent).changedTouches],
+                });
+
+                scroller._rootElement.dispatchEvent(newEvt);
+            });
+        }
+
         // 이벤트 핸들러 추가
         this._getButtonElements().forEach((i) =>
             i.addEventListener("click", this._handleTopButtonNavClick),
         );
-    }
-
-    _onScroll() {
-        if (this._scrollTimeout !== null) clearTimeout(this._scrollTimeout);
-        this._scrollTimeout = setTimeout(this._onScrollEnd, 200);
-    }
-
-    _onScrollEnd() {
-        const rootRect = this._root.getBoundingClientRect();
-        const activeNow = this._getActiveButton();
-        const buttons = this._getButtonElements()
-            .map((i) => ({
-                button: i,
-                distance:
-                    i.getBoundingClientRect().width == 0 ||
-                    i.getBoundingClientRect().height == 0
-                        ? Infinity
-                        : Math.abs(
-                              (i.getBoundingClientRect().left +
-                                  i.getBoundingClientRect().right) /
-                                  2 -
-                                  (rootRect.left + rootRect.right) / 2,
-                          ),
-            }))
-            .sort((a, b) => a.distance - b.distance);
-
-        const targetButton = buttons[0].button;
-        this.scrollToCenter(targetButton);
-        if (targetButton !== activeNow) {
-            targetButton.click();
-        }
     }
 
     /**
@@ -112,11 +96,44 @@ export class TopCategoryButtonNav {
      * @param element 정중앙으로 스크롤할 상단 카테고리 버튼
      * @param smooth smooth하게 스크롤할 지의 여부
      */
-    scrollToCenter(element: HTMLElement, smooth = true) {
+    scrollToCenter(element: HTMLElement, smooth?: boolean | undefined) {
+        const isSafari = /^((?!chrome|android).)*safari/i.test(
+            navigator.userAgent,
+        );
+
+        // 스크롤이 진행되는 도중에 아무곳이나 클릭하면 스크롤이 멈추는 버그 (버튼 빠르게 여러번 누르면 생기는 버그) 해결
+        if (this._scrollToCenterBugfixTimeout !== null)
+            clearTimeout(this._scrollToCenterBugfixTimeout);
+        if (smooth) {
+            this._root.style.overflowX = "hidden";
+            this._scrollToCenterBugfixTimeout = setTimeout(
+                this.createScrollToCenterBugfixFunction(element),
+            );
+        }
+
         element.scrollIntoView({
-            behavior: smooth ? "smooth" : "instant",
+            behavior: smooth && !isSafari ? "smooth" : "instant",
             inline: "center",
         });
+    }
+
+    createScrollToCenterBugfixFunction(element: HTMLElement) {
+        const func = () => {
+            const elementRect = element.getBoundingClientRect();
+            const rootRect = this._root.getBoundingClientRect();
+
+            if (
+                Math.abs(
+                    (elementRect.left + elementRect.right) / 2 -
+                        (rootRect.left + rootRect.right) / 2,
+                ) <= 1
+            ) {
+                this._root.style.removeProperty("overflow-x");
+            } else {
+                this._scrollToCenterBugfixTimeout = setTimeout(func, 5);
+            }
+        };
+        return func;
     }
 
     /**
@@ -322,6 +339,66 @@ export class TopCategoryButtonNav {
         element.classList.add("active");
     }
 
+    getButtonOnCenter() {
+        const rootCenter =
+            (this._root.getBoundingClientRect().left +
+                this._root.getBoundingClientRect().right) /
+            2;
+        return this._getButtonElements()
+            .map((i) => ({
+                element: i,
+                distance:
+                    i.getBoundingClientRect().width === 0
+                        ? Infinity
+                        : Math.abs(
+                              (i.getBoundingClientRect().left +
+                                  i.getBoundingClientRect().right) /
+                                  2 -
+                                  rootCenter,
+                          ),
+            }))
+            .filter((i) => isFinite(i.distance))
+            .sort((a, b) => a.distance - b.distance)[0].element;
+    }
+
+    activateWithMarginToBasis(basisKey: string, marginRatio: number) {
+        let basis: HTMLButtonElement = this._getButtonElements()
+            .map((i, idx) => ({ element: i, index: idx }))
+            .filter((i) => i.element.dataset.key === basisKey)
+            .map((i) => ({
+                element: i.element,
+                distance: Math.abs(
+                    this._getButtonElements().length / 2 - i.index,
+                ),
+            }))
+            .sort((a, b) => a.distance - b.distance)[0].element;
+
+        // 계산에 필요한 것들
+        const width = Math.max(
+            ...this._getButtonElements().map(
+                (i) => i.getBoundingClientRect().width,
+            ),
+        );
+        const rootCenter =
+            (this._root.getBoundingClientRect().left +
+                this._root.getBoundingClientRect().right) /
+            2;
+        const elementCenter =
+            (basis.getBoundingClientRect().left +
+                basis.getBoundingClientRect().right) /
+            2;
+
+        // 스크롤 변화값 계산
+        const delta = elementCenter - rootCenter - width * marginRatio;
+
+        // 스크롤
+        this._root.scrollLeft += delta;
+
+        // 버튼 활성화
+        this._getActiveButton().classList.remove("active");
+        this.getButtonOnCenter().classList.add("active");
+    }
+
     /**
      * 상단 카테고리 버튼의 click 이벤트를 처리합니다.
      * @param evt 이벤트 매개변수
@@ -338,7 +415,7 @@ export class TopCategoryButtonNav {
         const target = evt.target as HTMLButtonElement;
         if (currentActive === target) return;
 
-        this.activateButton(target);
+        //this.activateButton(target);
         this._scroller.scrollIntoCenterView(
             this._scroller
                 ._children()

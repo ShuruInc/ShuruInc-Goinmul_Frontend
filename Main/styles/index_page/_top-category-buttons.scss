@@ -1,5 +1,4 @@
 @use "../media-queries/top-category-buttons";
-@import "../mixins";
 
 /* 상단 로고 애니메이션시 버튼 네브도 애니메이션 */
 .top-fixed-bar.is-hidden ~ nav {
@@ -20,8 +19,7 @@ nav.top-category-buttons {
 
     /* 너비 */
     width: 100%;
-    overflow-x: scroll;
-    @include hide-scrollbar;
+    overflow: hidden;
 
     /* 포지셔닝 */
     position: fixed;
@@ -48,7 +46,11 @@ nav.top-category-buttons {
         min-width: var(--button-width);
         touch-action: manipulation;
 
-        &.active {
+        &:hover {
+            background-color: #d6d6d6;
+        }
+
+        &.active, &.active:hover {
             background: linear-gradient(30deg, #43c3ff, #94ddff, #7bd5ff);
         }
     }

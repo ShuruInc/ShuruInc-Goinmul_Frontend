@@ -36,6 +36,8 @@ export function createRankingSection(title: string, data: RankingItem[]) {
     const nicknameAndHashtag = (data: RankingItem) =>
         `${data.nickname}#${data.hashtag}`;
     const section = document.createElement("section");
+    console.log(data);
+
     section.className = "ranking-section";
     section.innerHTML = `<h2></h2>
     <img class="podium">
@@ -44,9 +46,9 @@ export function createRankingSection(title: string, data: RankingItem[]) {
     `;
 
     const podium = createPodium(
-        nicknameAndHashtag(data[0]),
-        nicknameAndHashtag(data[1]),
-        nicknameAndHashtag(data[2]),
+        data.length < 1 ? "" : nicknameAndHashtag(data[0]),
+        data.length < 2 ? "" : nicknameAndHashtag(data[1]),
+        data.length < 3 ? "" : nicknameAndHashtag(data[2]),
     );
     data.splice(0, 3);
     (section.querySelector("img.podium") as HTMLImageElement).src = podium;

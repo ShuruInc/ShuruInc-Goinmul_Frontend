@@ -13,6 +13,7 @@ type QuizResult = {
     nickname?: string;
     ranking?: number;
     percentage?: number;
+    category: string;
     comment: string;
 } & (
     | {
@@ -30,6 +31,7 @@ type QuizSessionInfo = {
     totalProblemCount?: number;
     quizId: string;
     title: string;
+    category: string;
 };
 
 export type QuizInternalSessionData = {
@@ -43,6 +45,7 @@ export type QuizInternalSessionData = {
     startedAt: number;
     postedRank: boolean;
     hashtag: string;
+    category: string;
     ranking: {
         comment: string;
         percentage: number;
@@ -81,7 +84,11 @@ export class QuizSession {
         ) as QuizProblem[];
     }
     private ended() {
-        return this.getLocalSession().problemIndex >= this.problems().length;
+        return (
+            this.getLocalSession().problemIndex >= this.problems().length ||
+            (this.getLocalSession().nerdTest &&
+                this.stopwatch.elapsed() >= 1000 * 60 * 5)
+        );
     }
     async sessionInfo(): Promise<QuizSessionInfo> {
         return {
@@ -91,6 +98,23 @@ export class QuizSession {
                 : this.problems().length,
             quizId: this.getLocalSession().quizId,
             title: this.getLocalSession().title,
+            category: this.getLocalSession().category,
+        };
+    }
+    async firstCategory() {
+        const quizId = this.getLocalSession().quizId;
+        const article = await apiClient.getArticle(parseInt(quizId));
+
+        const firstCategoryName = this.getLocalSession().nerdTest
+            ? this.getLocalSession().category
+            : article.data.result?.parentCategoryNm!;
+        const firstCategoryId = (
+            await apiClient.getFirstCategories()
+        ).data.result!.find((i) => i.categoryNm === firstCategoryName)!.id!;
+
+        return {
+            name: firstCategoryName,
+            id: firstCategoryId,
         };
     }
     async currentProblem(): Promise<(QuizProblem & { index: number }) | null> {
@@ -101,10 +125,11 @@ export class QuizSession {
                   index: this.getLocalSession().problemIndex + 1,
               };
     }
-    async submit(answer: string): Promise<boolean> {
+    async submit(answer: string, subjective: boolean): Promise<boolean> {
         let correct = (
             await apiClient.getAnswers((await this.currentProblem())!.id!, {
                 answer,
+                problemType: subjective ? "SUBJECTIVE" : "MULTIPLE_CHOICE",
             })
         ).data.result!.correct!;
 
@@ -130,6 +155,7 @@ export class QuizSession {
 
         this.saveLocalSession({
             ...localSession,
+            postedRank: true,
             hashtag: result.data!.result!.nicknameHashtag!,
             ranking: {
                 comment: result.data!.result!.comment!,
@@ -138,14 +164,20 @@ export class QuizSession {
             },
         });
     }
+    async getImageLinks(): Promise<string[]> {
+        return this.problems()
+            .filter((i) => i.figureType === "image")
+            .map((i) => i.figure);
+    }
     async result(): Promise<QuizResult | null> {
-        const ended = this.ended() || this.getLocalSession().nerdTest;
+        const ended = this.ended();
         if (ended) {
             await this.postRank();
             return {
                 points: this.getLocalSession().points,
                 title: this.getLocalSession().title,
                 quizId: this.getLocalSession().quizId,
+                category: this.getLocalSession().category,
                 comment: this.getLocalSession().ranking!.comment ?? "",
                 ...(this.getLocalSession().nerdTest
                     ? {

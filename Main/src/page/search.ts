@@ -45,6 +45,10 @@ let query = params.get("query") ?? "";
 const searchInput = document.querySelector("input.search") as HTMLInputElement;
 searchInput.value = query;
 
+/**
+ * 인기 검색어를 렌더링하는 함수
+ * @param queries 인기 검색어들
+ */
 const renderPopularQueries = (queries: string[]) => {
     const columns = document.querySelector(
         ".popularNow .columns",
@@ -81,6 +85,10 @@ const renderPopularQueries = (queries: string[]) => {
     }
 };
 
+/**
+ * 추천 키워드들을 렌더링하는 함수
+ * @param keywords 추천 키워드들
+ */
 const renderKeywords = (keywords: string[]) => {
     const keywordsContainer = document.querySelector(".keywords .bubbles")!;
     keywordsContainer.innerHTML = "";
@@ -111,6 +119,7 @@ const render = async () => {
     );
 
     if (query === "") {
+        // 검색어가 없다면 인기 검색어와 추천 키워드만 렌더링한다.
         [...document.querySelectorAll("section")].forEach((i) =>
             i.classList.contains("popularNow") ||
             i.classList.contains("keywords")
@@ -206,6 +215,8 @@ const setQuery = (newQuery: string, setInputValue = false) => {
         "",
         "/search.html?query=" + encodeURIComponent(newQuery),
     );
+    // 단기간내에 렌더링이 너무 빠르게 이루어지면
+    // 한글 분리등의 버그가 일어난다.
     clearTimeout(timeoutIdx);
     timeoutIdx = setTimeout(() => {
         render();
@@ -216,6 +227,7 @@ searchInput.addEventListener("input", (evt) => {
     setQuery((evt.target as HTMLInputElement).value);
 });
 
+// 출제 요청 버튼
 const requestBtn = document.querySelector(
     "button.request",
 ) as HTMLButtonElement;

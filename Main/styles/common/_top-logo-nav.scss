@@ -58,6 +58,12 @@
                 background-color: #c45d5d;
             }
         }
+        &.yellow {
+            background-color: #ffe2bd;
+            .progress {
+                background-color: #d7a119;
+            }
+        }
         .progress {
             width: 0%;
             height: 18px;

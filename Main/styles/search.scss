@@ -45,6 +45,7 @@ article {
     padding-top: 80px;
     .popularNow {
         user-select: None;
+        width: 100%;
 
         .columns {
             display: flex;
@@ -57,12 +58,16 @@ article {
                 display: block;
                 padding: 10px 30px;
                 border-right: 5px solid gray;
+                width: 50%;
+                box-sizing: border-box;
                 &:last-child {
                     border-right: 0px;
                 }
                 li {
                     list-style-position: inside;
                     white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
                 a {
                     text-decoration: none;

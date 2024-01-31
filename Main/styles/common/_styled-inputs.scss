@@ -1,14 +1,22 @@
 @mixin styled-inputs {
-    button {
+    button, a.button {
         background-color: #efefef;
         &.active {
             background-color: #c3c3c3;
+        }
+        &:hover {
+            background-color: #d4d4d4;
+            &.active {
+                background-color: #a3a3a3;
+            }
         }
     }
 
     input,
     select,
+    a.button,
     button {
+        text-decoration: none;
         font-size: inherit;
         max-width: 100%;
         color: black; /* Safari default color is not black */
@@ -26,6 +34,15 @@
         &[type="input"],
         &[type="email"] {
             border: 1px solid #dddddd;
+            &.with-animation {
+                transition: padding 50ms ease-out;
+                &.animated {
+                    padding: 11.5px 19px;
+                    &.small-padding {
+                        padding: 8px calc(0.45em + 4px);
+                    }
+                }
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 import { dom, library } from "@fortawesome/fontawesome-svg-core";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { isMobile } from "./is_mobile";
 
 // FontAwesome 렌더링
 library.add(faXmark);
@@ -26,9 +27,12 @@ export type QuizProblem = {
     condition: string | null;
 };
 
-let answerSubmitListeners: ((answer: string) => void)[] = [];
+let answerSubmitListeners: ((answer: string, subjective: boolean) => void)[] =
+    [];
 
-export function addAnswerSubmitListener(listener: (answer: string) => void) {
+export function addAnswerSubmitListener(
+    listener: (answer: string, subjective: boolean) => void,
+) {
     answerSubmitListeners.push(listener);
 }
 
@@ -79,6 +83,21 @@ const toggleHelpMe = (toggle: boolean) => {
     }
 };
 
+const createAnswerValidator = (
+    warningElement: HTMLElement,
+    validateSpecialChars = true,
+) => {
+    return (answer: string) => {
+        if (validateSpecialChars && /[^a-zA-Zㄱ-힣0-9\s]/.test(answer)) {
+            warningElement.textContent = "특수문자는 입력할 수 없습니다!";
+        } else if (answer.length === 0) {
+            warningElement.textContent = "정답이 비어있습니다!";
+        } else {
+            warningElement.textContent = "";
+        }
+    };
+};
+
 /**
  * 정답을 입력하거나 선택하는 HTML 요소를 만듭니다.
  * @param question 퀴즈 문제 데이터
@@ -87,16 +106,31 @@ const createAnswerElement = (question: QuizProblem) => {
     const answerEl = document.createElement("form");
     answerEl.className = "answer";
     answerEl.innerHTML = `
+        <div class="row warning">
+        </div>
         <div class="row with-input">
         </div>
         <div class="row">
-            <button class="submit">제출</button>
-            <button class="idk">모르겠어요</button>
+            <button class="submit" type="submit">제출</button>
         </div>`;
+    const warningEl = answerEl.querySelector(".row.warning") as HTMLElement;
+    const validateAnswer = createAnswerValidator(
+        warningEl,
+        question.choices === null,
+    );
 
     const rowWithInput = answerEl.querySelector(".row.with-input")!;
     if (question.choices === null) {
-        rowWithInput.innerHTML = `<input autofocus type="input" placeholder="답을 입력하세요">`;
+        rowWithInput.innerHTML = `<input autofocus class="with-animation" type="input" placeholder="답을 입력하세요">`;
+        const input = rowWithInput.querySelector("input")!;
+        input.addEventListener("input", (evt) => {
+            validateAnswer((evt.target as HTMLInputElement).value);
+            input.classList.remove("animated");
+            input.classList.add("animated");
+            setTimeout(() => {
+                input.classList.remove("animated");
+            }, 100);
+        });
     } else {
         rowWithInput.classList.add("radios");
         for (const choice of question.choices) {
@@ -109,37 +143,32 @@ const createAnswerElement = (question: QuizProblem) => {
         }
     }
 
-    answerEl.querySelector("button.idk")!.addEventListener("click", (evt) => {
+    answerEl.addEventListener("submit", (evt) => {
         evt.preventDefault();
-        toggleHelpMe(true);
-    });
-    answerEl
-        .querySelector("button.submit")!
-        .addEventListener("click", (evt) => {
-            evt.preventDefault();
-            let answer = "";
-            if (question.choices === null) {
-                answer = (
-                    answerEl.querySelector(
-                        'input[type="input"]',
-                    ) as HTMLInputElement
-                ).value;
-                if (/[^a-zA-Zㄱ-힣0-9\s]/.test(answer)) {
-                    return alert("특수문자는 입력할 수 없습니다!");
-                }
-            } else {
-                answer =
-                    (
-                        [
-                            ...document.querySelectorAll('input[type="radio"]'),
-                        ] as HTMLInputElement[]
-                    )
-                        .filter((i) => i.checked)
-                        .map((i) => i.value)[0] ?? "";
-            }
+        let answer = "";
+        if (question.choices === null) {
+            answer = (
+                answerEl.querySelector(
+                    'input[type="input"]',
+                ) as HTMLInputElement
+            ).value;
+        } else {
+            answer =
+                (
+                    [
+                        ...document.querySelectorAll('input[type="radio"]'),
+                    ] as HTMLInputElement[]
+                )
+                    .filter((i) => i.checked)
+                    .map((i) => i.value)[0] ?? "";
+        }
 
-            if (answer !== "") answerSubmitListeners.forEach((i) => i(answer));
-        });
+        validateAnswer(answer);
+        if (warningEl.textContent === "")
+            answerSubmitListeners.forEach((i) =>
+                i(answer, question.choices === null),
+            );
+    });
 
     return answerEl;
 };
@@ -149,14 +178,21 @@ const createAnswerElement = (question: QuizProblem) => {
  * @param question 퀴즈 문제 데이터
  * @param index 문제 번호
  */
-const createQuestionElement = (question: QuizProblem, index: number) => {
+const createQuestionElement = (
+    question: QuizProblem,
+    index: number,
+    forShare = false,
+) => {
     const questionEl = document.createElement("div");
     questionEl.className = "question";
     questionEl.innerHTML = `
+        <div class="idk-row">
+            <button class="idk">친구찬스!</button>
+        </div>
         <div class="category"></div>
         <div class="text">
             <span class="id-number">${index}.</span>&nbsp;
-            <span class="problem-text"></span>&nbsp;
+            <span class="problem-text"></span><br>
             <span class="condition"></span>
         </div>
         <div class="points"></div>
@@ -164,14 +200,26 @@ const createQuestionElement = (question: QuizProblem, index: number) => {
         </div>`;
 
     questionEl.querySelector(".category")!.textContent =
-        question.secondCategoryName;
+        question.secondCategoryName === ""
+            ? ""
+            : question.secondCategoryName + " 모의고사";
     questionEl.querySelector(".condition")!.textContent =
-        question.condition ?? "";
+        question.condition === null ? "" : `(${question.condition})`;
     questionEl.querySelector(".text .problem-text")!.textContent =
         question.question;
     questionEl.querySelector(".text .condition")!.textContent =
-        question.condition;
+        question.condition === null ? "" : `(${question.condition})`;
     questionEl.querySelector(".points")!.textContent = `[${question.points}점]`;
+
+    if (forShare) {
+        questionEl.removeChild(questionEl.querySelector(".idk-row")!);
+    } else
+        questionEl
+            .querySelector("button.idk")!
+            .addEventListener("click", (evt) => {
+                evt.preventDefault();
+                toggleHelpMe(true);
+            });
 
     switch (question.figureType) {
         case "image":
@@ -187,9 +235,12 @@ const createQuestionElement = (question: QuizProblem, index: number) => {
             [
                 ...question.figure.split("").map((i) => {
                     const initial = document.createElement("div");
-                    initial.textContent = i == "$" ? " " : i;
+                    initial.textContent = i == "$" ? "　" : i;
                     initial.className =
-                        i === "$"
+                        i === "$" ||
+                        "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ"
+                            .split("")
+                            .includes(i)
                             ? "initial"
                             : i === " "
                             ? "whitespace"
@@ -218,7 +269,8 @@ export function displayProblem(
 
     root.appendChild(createQuestionElement(question, index));
     root.appendChild(createAnswerElement(question));
-    (root.querySelector(".answer input") as HTMLInputElement).focus();
+    if (!isMobile)
+        (root.querySelector(".answer input") as HTMLInputElement).focus();
 }
 
 /**
@@ -233,7 +285,7 @@ export function updateShareProblem(
     index: number,
 ) {
     root.innerHTML = "";
-    root.appendChild(createQuestionElement(question, index));
+    root.appendChild(createQuestionElement(question, index, true));
     root.appendChild(createAnswerElementForShare(question));
 }
 
@@ -241,15 +293,37 @@ export function updateShareProblem(
  * 상단 진행바를 업데이트합니다.
  * @param percentage 0이상 100이하의 진행률
  */
-export function updateProgress(percentage: number, text?: string, red = false) {
+export function updateProgress(
+    percentage: number,
+    text?: string,
+    color?: "red" | "yellow" | undefined,
+) {
     const progress = document.querySelector(
         ".progress-container .progress",
     ) as HTMLElement;
     progress.style.width = `${percentage}%`;
-    if (red) {
-        document.querySelector(".progress-container")?.classList.add("red");
-    } else {
-        document.querySelector(".progress-container")?.classList.remove("red");
+    switch (color) {
+        case "red":
+            document.querySelector(".progress-container")?.classList.add("red");
+            document
+                .querySelector(".progress-container")
+                ?.classList.remove("yellow");
+            break;
+        case "yellow":
+            document
+                .querySelector(".progress-container")
+                ?.classList.add("yellow");
+            document
+                .querySelector(".progress-container")
+                ?.classList.remove("red");
+            break;
+        default:
+            document
+                .querySelector(".progress-container")
+                ?.classList.remove("yellow");
+            document
+                .querySelector(".progress-container")
+                ?.classList.remove("red");
     }
 
     const textElement = document.querySelector(
