@@ -25,6 +25,7 @@ function positiveModular(val: number, maxExcluding: number) {
  */
 export class HorizontalInfinityScroller {
     _rootElement: HTMLElement;
+    _gap = 10;
 
     /**
      * 기준이 되는 요소
@@ -366,8 +367,11 @@ export class HorizontalInfinityScroller {
                 continue;
             }
             translates[childIdx] =
-                remaningRootWidth.left - childWidth / 2 - rootWidth / 2;
-            remaningRootWidth.left -= childWidth;
+                remaningRootWidth.left -
+                childWidth / 2 -
+                rootWidth / 2 -
+                this._gap;
+            remaningRootWidth.left -= childWidth + this._gap;
         }
 
         // 오른족 여백을 채운다.
@@ -382,8 +386,9 @@ export class HorizontalInfinityScroller {
                 rootWidth -
                 remaningRootWidth.right +
                 childWidth / 2 -
-                rootWidth / 2;
-            remaningRootWidth.right -= childWidth;
+                rootWidth / 2 +
+                this._gap;
+            remaningRootWidth.right -= childWidth + this._gap;
         }
 
         return translates;
@@ -417,7 +422,7 @@ export class HorizontalInfinityScroller {
         // 오른쪽 방향으로 이동할 때의 변화값을 계산
         tmp = indexOfCenter;
         while (tmp != indexOfTarget) {
-            offsetOnRightDirection += this._rootWidth();
+            offsetOnRightDirection += this._rootWidth() + this._gap;
             tmp--;
             while (tmp < 0) tmp += this._children().length;
             tmp = tmp % this._children().length;
@@ -426,7 +431,7 @@ export class HorizontalInfinityScroller {
         // 왼쪽 방향으로 이동할 때의 변화값을 계산
         tmp = indexOfCenter;
         while (tmp != indexOfTarget) {
-            offsetOnLeftDirection -= this._rootWidth();
+            offsetOnLeftDirection -= this._rootWidth() + this._gap;
             tmp = (tmp + 1) % this._children().length;
         }
 
