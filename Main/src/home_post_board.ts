@@ -65,13 +65,15 @@ export function createRankingSection(title: string, data: RankingItem[]) {
         const ol = document.createElement("ol");
         ol.start = start;
         three
-            .map((i) => {
+            .map((i, idx) => {
                 const li = document.createElement("li");
-                li.innerHTML = `${encode(
+                li.innerHTML = `<div class="marker">${
+                    start + idx
+                }</div><div>${encode(
                     i.nickname,
                 )}<span class="hashtag">#${encode(i.hashtag)}</span> (${
                     i.score
-                }점)`;
+                }점)</div>`;
                 return li;
             })
             .forEach((i) => ol.appendChild(i));

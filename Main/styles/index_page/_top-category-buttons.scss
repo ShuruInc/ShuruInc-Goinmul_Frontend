@@ -32,26 +32,35 @@ nav.top-category-buttons {
     transition: top 0.3s ease;
 
     & > button {
-        border: 0px;
-        border-radius: 14px;
-        padding: 3% 6%;
-        font-size: 18px;
+        border: #f0f0f0 1px solid;
+        border-radius: 4px;
+        padding: 8px 16px;
+        width: 100px;
         white-space: nowrap;
         word-break: keep-all;
         cursor: pointer;
-        background-color: #f0f0f0;
+        background-color: #fbfbfb;
         scroll-snap-align: center;
         text-align: center;
         width: var(--button-width);
         min-width: var(--button-width);
         touch-action: manipulation;
+        
+        font-family: Pretendard;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 17px;
+        letter-spacing: -0.01em;
+        color: #666867;
 
         &:hover {
             background-color: #d6d6d6;
         }
 
-        &.active, &.active:hover {
-            background: linear-gradient(30deg, #43c3ff, #94ddff, #7bd5ff);
+        &.active {
+            background-color: #1da1f2;
+            border-color: #1da1f2;
+            color: white;
         }
     }
 }
