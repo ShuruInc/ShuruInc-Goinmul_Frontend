@@ -151,27 +151,6 @@ const render = async () => {
                 resultSection,
             );
             resultSection.classList.remove("display-none");
-
-            // 연관 모의고사
-            if (result.similar.length > 0) {
-                const similarSection = document.querySelector(
-                    ".similar",
-                )! as HTMLElement;
-                preparePlaceholderSection(similarSection, [
-                    {
-                        count: result.similar.length,
-                        landscape: false,
-                    },
-                ]);
-                fillPlaceholderSectionInto(
-                    {
-                        portraits: result.similar,
-                        title: "연간된 모의고사",
-                    },
-                    similarSection,
-                );
-                similarSection.classList.remove("display-none");
-            }
         } else {
             // 요청 버튼 활성화
             const requestBtn = document.querySelector(
@@ -183,6 +162,27 @@ const render = async () => {
             document
                 .querySelector(".no-results")
                 ?.classList.remove("display-none");
+        }
+
+        // 연관 모의고사
+        if (result.similar.length > 0) {
+            const similarSection = document.querySelector(
+                ".similar",
+            )! as HTMLElement;
+            preparePlaceholderSection(similarSection, [
+                {
+                    count: result.similar.length,
+                    landscape: false,
+                },
+            ]);
+            fillPlaceholderSectionInto(
+                {
+                    portraits: result.similar,
+                    title: "연간된 모의고사",
+                },
+                similarSection,
+            );
+            similarSection.classList.remove("display-none");
         }
 
         // 추천 모의고사
