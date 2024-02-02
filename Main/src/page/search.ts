@@ -178,7 +178,7 @@ const render = async () => {
             fillPlaceholderSectionInto(
                 {
                     portraits: result.similar,
-                    title: "연간된 모의고사",
+                    title: "연관된 모의고사",
                 },
                 similarSection,
             );
