@@ -13,7 +13,7 @@
         }
 
         &.landscape {
-            height: 430px !important;
+            aspect-ratio: 1 / 1;
         }
     }
 }
@@ -31,7 +31,7 @@
         }
 
         &.landscape {
-            height: 350px !important;
+            aspect-ratio: 1 / 1;
         }
     }
 }
@@ -57,12 +57,10 @@
             }
 
             margin: 0.55vw;
-            border-radius: 2vw !important;
         }
 
         &.landscape {
-            height: calc(70vw) !important;
-            border-radius: 3vw !important;
+            aspect-ratio: 1 / 1;
         }
     }
 }
