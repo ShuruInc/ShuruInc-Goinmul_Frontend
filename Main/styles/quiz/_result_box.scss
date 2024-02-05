@@ -4,11 +4,12 @@
     gap: 20px;
     padding: 12px;
     border: 1px solid black;
-    background-color: #fdfdfd;
+    background: url(../assets/paper.jpg);
+    background-repeat: repeat;
 
     & > * {
         border: 1px solid black;
-        background-color: white;
+        background-color: #FFFFFF80;
     }
 
     h1.title {
