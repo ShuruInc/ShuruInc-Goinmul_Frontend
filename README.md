@@ -43,4 +43,5 @@ BACKEND_URL=http://backend.example.com
 - [badwords-ko](https://github.com/yoonheyjung/badwords-ko) By Michael Price, Licensed under MIT License
 
 ### 이미지
+ - 카카오톡 로고 이미지 By 카카오
  - [Handmade paper - seamless texture](https://www.deviantart.com/strapaca/art/Handmade-paper-seamless-texture-782082592) By Strapaca, Licensed under CC BY 3.0
