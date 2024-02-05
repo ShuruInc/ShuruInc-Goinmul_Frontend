@@ -9,72 +9,221 @@ article.quiz-entry {
         text-decoration: none;
     }
 
-    .introduction {
-        h1 {
-            font-size: 24px;
-            text-align: center;
-            padding-bottom: 1em;
-        }
-        h2 {
-            font-size: 20px;
-        }
-    }
-    .statistics-header {
-        h2 {
-            font-size: 18px;
-        }
-        p {
-            font-size: 0.8em;
-        }
-    }
-
     @include styled-inputs;
-    form.entry {
-        margin: 40px 0px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-        & > label {
-            display: block;
-        }
-    }
+    
+    .entry-section {
+        text-align: center;
+        padding: 60px 0px;
+        border-bottom: 1px solid #DFDFDF;
 
-    form.statistics {
-        margin: 40px 0px;
-        gap: 10px;
-        display: grid;
-        justify-content: center;
-        grid-template-columns: max-content 350px;
-        @include mobile {
-            grid-template-columns: max-content 220px;
-        }
-        align-items: center;
-        .gender-radios label {
+        .entry-form-with-warning {
             display: inline-block;
+            width: fit-content;
+            text-align: left;
         }
-        .specified-gender {
-            width: 120px;
+
+        .warning {
+            margin: 8px 0px 30px 0px;
+            font-family: Pretendard;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 17px;
+            letter-spacing: -0.01em;
+            
+            color: #EE4D4D;
+            &.shaking {
+                animation: 0.1s ease-out 0s shake;
+                animation-iteration-count: 3;
+            }
         }
-        .age {
-            width: 10em;
+
+        .introduction {
+            h1 {
+                display: none;
+            }
+            h2 {
+                font-family: RixDongnimGothic_Pro;
+                font-size: 24px;
+                font-weight: 800;
+                line-height: 28px;
+                letter-spacing: 0em;
+                margin-bottom: 5px;
+            }
+            p {
+                font-family: Pretendard;
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 17px;
+                letter-spacing: -0.01em;
+                text-align: center;
+                
+                color: #898B8A;
+            }
+        }
+
+        form.entry {
+            margin: 30px 0px 0px 0px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            flex-wrap: nowrap;
+            gap: 0px;
+            input {
+                width: 270px;
+                max-width: 60vw;
+
+                border: 1px solid #dfdfdf;
+                border-radius: 4px 0px 0px 4px;
+                border-right: none;
+                padding: 9px 16px;
+
+                font-family: Pretendard;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 20px;
+                letter-spacing: 0em;
+                text-align: left;
+
+                &::placeholder {
+                   color: #B4B9B8;
+                }
+            }
+            .refresh-nickname {
+                padding: 9px 16px;
+                border: 1px solid #dfdfdf;
+                border-left: 0px;
+                border-radius: 0px 4px 4px 0px;
+            
+                height: 20px;
+                svg {
+                    display: inline;
+                    vertical-align: baseline;
+                }
+            }
         }
     }
 
+    .statistics-section {
+        padding: 60px 0px;
+        text-align: center;
+
+        .statistics-header {
+            h2 {
+                font-family: Pretendard;
+                font-size: 24px;
+                font-weight: 800;
+                line-height: 28px;
+                letter-spacing: 0em;
+                text-align: center;
+                margin-bottom: 5px;
+            }
+            p {
+                font-family: Pretendard;
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 17px;
+                letter-spacing: -0.01em;
+                text-align: center;
+                
+                color: #898B8A;
+            }
+        }
+    
+        form.statistics {
+            display: grid;
+            justify-content: center;
+            align-items: center;
+            grid-template-columns: max-content 220px;
+            gap: 30px 23px;
+            
+            margin: 40px 0px;
+            
+            text-align: left;
+
+            & > label {
+                font-family: Pretendard;
+                font-size: 14px;
+                font-weight: 600;
+                line-height: 20px;
+                letter-spacing: 0em;
+            }
+            .age {
+                width: 220px;
+                border-radius: 4px;
+                border: 1px solid #DFDFDF;
+                background: white;
+                padding: 9px 16px;
+            }
+            .gender-radios { 
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+
+                gap: 12px 40px;
+
+                label {
+                    display: inline-block;
+                    
+                    input[type="radio"] {
+                        display: none;
+                    }
+                    input[type="radio"] + label {
+                        width: 20px;
+                        height: 20px;
+                        border-radius: 4px;
+                        border: 1px solid #DFDFDF;
+                        color: transparent;
+                        text-align: center;
+                        svg {
+                            width: 10px;
+                            height: auto;
+        
+                            display: inline;
+                            vertical-align: baseline;
+                        }
+                    }
+                    input[type="radio"]:checked + label {
+                        background: #1DA1F2;
+                        color: white;
+                        border: 1px solid transparent;
+                    }
+
+                    .specified-gender {
+                        padding: 9px 16px;
+                        border-radius: 4px;
+
+                        width: 120px;
+                        &::placeholder {
+                            color: #B4B9B8;
+                        }
+                    }
+                }
+            }
+        } 
+    }
+    
     .start-button {
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 5px;
-        button.disabled {
-            background-color: #cfcfcf;
-            color: #808080;
-        }
-        .warning {
-            color: red;
-            &.shaking {
-                animation: 0.1s ease-out 0s shake;
-                animation-iteration-count: 3;
+        button {
+            border-radius: 4px;
+            background: #1DA1F2;
+    
+            color: white;
+            padding: 10px 20px;
+            width: 250px;
+            
+            font-family: Pretendard;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 19px;
+            letter-spacing: -0.01em;
+            text-align: center;
+            
+            &.disabled {
+                background-color: #cfcfcf;
             }
         }
     }
@@ -98,6 +247,5 @@ article.quiz-entry {
         to {
           transform: rotate(100%);
         }
-      }
-      
+    }
 }

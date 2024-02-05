@@ -1,8 +1,13 @@
-import { dom, library } from "@fortawesome/fontawesome-svg-core";
+import { dom, icon, library } from "@fortawesome/fontawesome-svg-core";
 import "../../../styles/quiz";
 import { QuizApiClient } from "../../api/quiz";
 import { InitTopNav } from "../../top_logo_navbar";
-import { faArrowsRotate, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import {
+    faArrowsRotate,
+    faCheck,
+    faCircleExclamation,
+    faSpinner,
+} from "@fortawesome/free-solid-svg-icons";
 import initSolvePage from "../../solve_page";
 import { QuizSession } from "../../api/quiz_session";
 import randomKoreanNickname from "../../random_korean_nickname";
@@ -12,24 +17,27 @@ import hasBadWord from "../../bad_words/has_bad_word";
 InitTopNav();
 
 // FontAwesome 아이콘 렌더링
-library.add(faSpinner, faArrowsRotate);
+library.add(faSpinner, faArrowsRotate, faCheck);
 for (const i of [
     document.querySelector("article.loading")!,
     document.querySelector(".refresh-nickname")!,
+    document.querySelector("form.statistics")!,
 ])
     dom.i2svg({ node: i });
 
 // 문제 입력칸 상단 경고문구
 let warningText = "";
+const warningIcon = icon(faCircleExclamation).html[0];
 function setWarningText(newText: string) {
     warningText = newText;
-    const warning = document.querySelector(".start-button .warning")!;
+    const warning = document.querySelector(".entry-section .warning")!;
     warning.textContent = newText;
     if (newText === "") {
         document
             .querySelector(".start-button button")
             ?.classList.remove("disabled");
     } else {
+        warning.innerHTML = warningIcon + " " + warning.innerHTML;
         document
             .querySelector(".start-button button")
             ?.classList.add("disabled");
@@ -118,6 +126,10 @@ const initByQuizId = async () => {
             validateNickname(nickname);
         });
 
+        validateNickname(
+            (document.querySelector("#nickname") as HTMLInputElement).value,
+        );
+
         let shakeTimeout: NodeJS.Timeout | null = null;
         let submitting = false;
         [...document.querySelectorAll("form")].forEach((i) =>
@@ -164,7 +176,7 @@ const initByQuizId = async () => {
                     // 유효성에 문제가 있다면 return
                     if (warningText !== "") {
                         const warning = document.querySelector(
-                            ".start-button .warning",
+                            ".entry-section .warning",
                         );
                         if (shakeTimeout === null) {
                             warning?.classList.add("shaking");
