@@ -1,4 +1,5 @@
 @import "help-me";
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
 article {
     width: 80%;
@@ -9,36 +10,63 @@ article {
         margin-bottom: 10px;
         .idk {
             border: 0px;
-            padding: 3px 6px;
+            font-family: Pretendard;
+            font-weight: 400;
+            font-size: 14px;
+
+            padding: 4px 12px;
+            border-radius: 4px;
+
             background: #ffc956;
-            font-size: 0.9em;
             color: white;
             cursor: pointer;
         }
     }
 
     .category {
+        font-family: Pretendard;
+        font-weight: 400;
         display: block;
-        font-size: 0.8em;
+        font-size: 13px;
         text-align: center;
         margin-bottom: 10px;
         color: gray;
     }
+
     .text {
-        font-size: 1.25em;
+        font-family: Pretendard;
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 21px;
+        letter-spacing: -0.01em;
+        
         .id-number {
-            font-size: 1.5em;
+            font-size: 24px;
+            font-weight: 800;
+            line-height: 23px;
+            letter-spacing: -0.01em;
+            text-align: left;
+            color: #1DA1F2;
+
+            margin-right: 11px;
         }
+
         .condition {
             color: gray;
             font-size: 0.6em;
         }
-        margin-bottom: 0.25em;
+        margin-bottom: 6px;
     }
 
     .points {
-        font-size: 0.8em;
+        font-family: Pretendard;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 17px;
+        letter-spacing: -0.01em;
         text-align: right;
+
+        color: #666867;
     }
 
     .figure {
@@ -95,23 +123,50 @@ article {
         align-items: center;
         gap: 0.5em;
 
+        margin-bottom: 24px;
+
         &.warning {
-            color: red;
+            font-family: Pretendard;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 17px;
+            letter-spacing: -0.01em;
+            margin: 0 auto 0 0; // align text left
+            
+            color: #EE4D4D;
         }
 
-        &.with-input.radios {
-            display: grid;
-            align-items: baseline;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            * {
-                text-align: left;
+        &.with-input {
+            margin: 0px;
+            input[type="input"] {
+                border-radius: 4px;
+                width: 100%;
+            }
+
+            &.radios {
+                display: grid;
+                align-items: baseline;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                * {
+                    text-align: left;
+                }
             }
         }
 
-        // safari fix
         button[type="submit"] {
-            font-weight: normal;
+            height: 49px;
+            width: 120px;
+
+            font-family: Pretendard;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 19px;
+            letter-spacing: -0.01em;
+            text-align: center;
+            color: white;
+
+            background: #1DA1F2;
         }
     }
 
