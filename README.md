@@ -41,3 +41,6 @@ BACKEND_URL=http://backend.example.com
 ### 욕설/비속어 데이터
 - [korean-bad-words](https://github.com/doublems/korean-bad-words) by Doublem.org, Licensed under MIT License
 - [badwords-ko](https://github.com/yoonheyjung/badwords-ko) By Michael Price, Licensed under MIT License
+
+### 이미지
+ - [Handmade paper - seamless texture](https://www.deviantart.com/strapaca/art/Handmade-paper-seamless-texture-782082592) By Strapaca, Licensed under CC BY 3.0
