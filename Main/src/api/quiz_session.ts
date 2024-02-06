@@ -1,4 +1,4 @@
-import { backendUrl } from "../env";
+import { backendUrl, nerdTestExitFeatureEnabled } from "../env";
 import { QuizProblem } from "../quiz_solve_ui";
 import StopWatch from "../stopwatch";
 import { Api } from "./api_http_client/Api";
@@ -46,6 +46,7 @@ export type QuizInternalSessionData = {
     postedRank: boolean;
     hashtag: string;
     category: string;
+    forcedEnded: boolean;
     ranking: {
         comment: string;
         percentage: number;
@@ -87,8 +88,15 @@ export class QuizSession {
         return (
             this.getLocalSession().problemIndex >= this.problems().length ||
             (this.getLocalSession().nerdTest &&
-                this.stopwatch.elapsed() >= 1000 * 60 * 5)
+                this.stopwatch.elapsed() >= 1000 * 60 * 5) ||
+            (nerdTestExitFeatureEnabled && this.getLocalSession().forcedEnded)
         );
+    }
+    forcedEnd() {
+        this.saveLocalSession({
+            ...this.getLocalSession(),
+            forcedEnded: true,
+        });
     }
     async sessionInfo(): Promise<QuizSessionInfo> {
         return {
