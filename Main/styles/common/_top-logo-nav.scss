@@ -9,7 +9,10 @@
 
     height: calc(var(--top-fixed-bar-height) * 0.63);
     width: var(--top-fixed-bar-width);
-    background-color: white;
+    background: linear-gradient(
+        white 63%,
+        transpraent 63%
+    );
 
     z-index: 99;
 
