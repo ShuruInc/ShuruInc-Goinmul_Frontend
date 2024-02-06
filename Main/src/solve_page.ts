@@ -17,6 +17,7 @@ import html2canvas from "html2canvas";
 import addPadding from "./canvas_padding";
 import ImageCache from "./image_cache";
 import initializeResultPage from "./result_page";
+import { nerdTestExitFeatureEnabled } from "./env";
 
 function confirmUnload(evt: Event) {
     evt.preventDefault();
@@ -102,7 +103,15 @@ export default function initSolvePage(session: QuizSession) {
             );
             initializeResultPage();
         };
+
         const sessionInfo = await session.sessionInfo();
+
+        if (nerdTestExitFeatureEnabled) {
+            (window as any).exitNerdTest = () => {
+                session.forcedEnd();
+                goResult();
+            };
+        }
 
         const imageCache = new ImageCache();
         for (const i of await session.getImageLinks()) {
