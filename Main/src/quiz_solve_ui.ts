@@ -308,33 +308,26 @@ export function updateProgress(
         ".progress-container .progress",
     ) as HTMLElement;
     progress.style.width = `${percentage}%`;
-    switch (color) {
-        case "red":
-            document.querySelector(".progress-container")?.classList.add("red");
-            document
-                .querySelector(".progress-container")
-                ?.classList.remove("yellow");
-            break;
-        case "yellow":
-            document
-                .querySelector(".progress-container")
-                ?.classList.add("yellow");
-            document
-                .querySelector(".progress-container")
-                ?.classList.remove("red");
-            break;
-        default:
-            document
-                .querySelector(".progress-container")
-                ?.classList.remove("yellow");
-            document
-                .querySelector(".progress-container")
-                ?.classList.remove("red");
-    }
+    [
+        document.querySelector(".progress-container"),
+        document.querySelector(".top-fixed-bar .progress-text"),
+    ].forEach((i) => {
+        switch (color) {
+            case "red":
+                i?.classList.add("red");
+                i?.classList.remove("yellow");
+                break;
+            case "yellow":
+                i?.classList.add("yellow");
+                i?.classList.remove("red");
+                break;
+            default:
+                i?.classList.remove("yellow");
+                i?.classList.remove("red");
+        }
+    });
 
-    const textElement = document.querySelector(
-        ".progress-container .progress-text",
-    );
+    const textElement = document.querySelector(".top-fixed-bar .progress-text");
     if (textElement && text) textElement.textContent = text;
 }
 
