@@ -1,3 +1,4 @@
+import urlJoin from "url-join";
 import { backendUrl } from "../env";
 import { QuizProblem } from "../quiz_solve_ui";
 import { Api } from "./api_http_client/Api";
@@ -40,7 +41,7 @@ export class QuizApiClient {
                                 i.problemFigure !== null
                                     ? i.problemFigure
                                     : i.imgUrl !== "" && i.imgUrl !== null
-                                    ? backendUrl! + i.imgUrl
+                                    ? urlJoin(backendUrl!, i.imgUrl!)
                                     : null,
                             figureType:
                                 i.problemFigure !== "" &&
