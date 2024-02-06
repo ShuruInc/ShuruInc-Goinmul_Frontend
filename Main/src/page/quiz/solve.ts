@@ -63,8 +63,7 @@ const initByQuizId = async () => {
         await PostBoardApiClient.hit(quizId);
         const isNerdTest = await QuizApiClient.isNerdTest(quizId);
         const title = await QuizApiClient.getQuizTitle(quizId);
-        document.querySelector;
-        document.querySelector("h1.test-title")!.textContent = title;
+        document.querySelector(".test-title")!.textContent = title;
         document
             .querySelector(".refresh-nickname")
             ?.addEventListener("click", (evt) => {

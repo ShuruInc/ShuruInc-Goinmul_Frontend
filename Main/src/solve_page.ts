@@ -90,6 +90,11 @@ export default function initSolvePage(session: QuizSession) {
     });
 
     (async () => {
+        // 제목 설정
+        document.querySelector(".test-title")!.textContent = (
+            await session.sessionInfo()
+        ).title;
+
         updateProgress(0);
         const goResult = () => {
             if (timerInterval !== null) clearInterval(timerInterval);
