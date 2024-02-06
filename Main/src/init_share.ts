@@ -1,9 +1,10 @@
-import { kakaoApiKey } from "./env";
+import { backendUrl, kakaoApiKey } from "./env";
 import "../styles/common/_share-buttons.scss";
 import kakaoTalkIcon from "../assets/kakaotalk_bubble.svg";
 import { encode } from "html-entities";
 import { icon } from "@fortawesome/fontawesome-svg-core";
 import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
+import urlJoin from "url-join";
 
 export type ShareDatas = {
     webShare: ShareData;
@@ -90,8 +91,40 @@ export default function initShareButton(
             })
             .catch((err) => alert("오류가 발생했습니다: " + err));
     });
-    twitterButton.addEventListener("click", () => {
-        if (options.onComplete) options.onComplete();
+    twitterButton.addEventListener("click", (evt) => {
+        evt.preventDefault();
+
+        (options.beforeShare ? options.beforeShare : async () => {})()
+            .then(async () => {
+                if (content === null) return;
+
+                const url = urlJoin(
+                    backendUrl!,
+                    "/api/v1/tweet?content=" +
+                        encodeURIComponent(content.twitter.text),
+                );
+
+                let container = new DataTransfer();
+                container.items.add(content.image);
+
+                const form = document.createElement("form");
+                form.enctype = "multipart/form-data";
+                form.action = url;
+                form.method = "POST";
+                form.innerHTML = '<input type="file" name="image">';
+                form.target = "_blank";
+                form.style.display = "none";
+                form.querySelector("input")!.files = container.files;
+
+                document.body.append(form);
+                form.submit();
+
+                if (options.onComplete) options.onComplete();
+            })
+            .catch((err) => {
+                alert("오류가 발생했습니다!");
+                console.error(err);
+            });
     });
     kakaoButton?.addEventListener("click", async (_evt) => {
         _evt.preventDefault();
