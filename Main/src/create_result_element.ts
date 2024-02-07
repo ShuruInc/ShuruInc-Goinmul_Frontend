@@ -67,16 +67,16 @@ export default function createResultElement(
               "랭킹",
               "#" + data.hashtag,
               data.nickname,
-              data.points.toString(),
-              data.ranking.toString(),
+              data.points.toString() + "점",
+              data.ranking.toString() + "등",
           ]
         : [
               "과목명",
               "점수",
               "상위",
               data.lowCategory,
-              data.points.toString(),
-              data.percentage.toString(),
+              data.points.toString() + "점",
+              data.percentage.toString() + "%",
           ];
     const tableColumnCount = tableData.length / 2;
 
