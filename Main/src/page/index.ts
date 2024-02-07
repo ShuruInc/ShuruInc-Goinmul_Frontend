@@ -152,4 +152,14 @@ PostBoardApiClient.getMainBoard()
         if (location.hash.includes("ranking")) goToRankings();
 
         InitTopNav(true);
+
+        // container 밖에서 스크롤해도 container가 스크롤되도록 설정
+        document.body.addEventListener("wheel", (evt) => {
+            if (evt.target !== document.body) return;
+
+            console.log(evt.deltaY);
+            scroller
+                .getCurrentlyMostVisibleChild()
+                ?.scrollBy({ top: evt.deltaY });
+        });
     });
