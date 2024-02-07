@@ -1,3 +1,5 @@
+import backgroundUrl from "../assets/paper.jpg";
+
 /**
  * 이미지에 여백을 넣어 정사각형 형태로 만든다.
  * @param canvas 여백을 넣을 이미지
@@ -5,11 +7,13 @@
  */
 export default async function addPadding(
     canvas: HTMLCanvasElement,
-    fill: string | CanvasGradient | CanvasPattern = "#ffe2c5",
 ): Promise<Blob> {
     let size = Math.max(canvas.width, canvas.height);
     let x = (size - canvas.width) / 2;
     let y = (size - canvas.height) / 2;
+
+    const backgroundImage = new Image();
+    backgroundImage.src = backgroundUrl;
 
     const newCanvas =
         typeof OffscreenCanvas === "undefined"
@@ -23,8 +27,7 @@ export default async function addPadding(
     const newCanvasContext = newCanvas.getContext("2d") as
         | OffscreenCanvasRenderingContext2D
         | CanvasRenderingContext2D;
-    newCanvasContext.fillStyle = fill;
-    newCanvasContext.fillRect(0, 0, size, size);
+    newCanvasContext.drawImage(backgroundImage, 0, 0, size, size);
     newCanvasContext.drawImage(canvas, x, y);
 
     if ("convertToBlob" in newCanvas) {
