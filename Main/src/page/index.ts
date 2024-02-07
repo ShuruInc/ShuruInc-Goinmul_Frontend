@@ -9,6 +9,7 @@ import { HorizontalInfinityScroller } from "../lib/infinity_scroller";
 import { setupPostBoard } from "../post_board";
 import { InitTopNav, SetCustomRankingHandler } from "../top_logo_navbar";
 import { TopCategoryButtonNav } from "../top_category_button_nav";
+import handleOutsideScroll from "../handle_outside_scroll";
 
 createFloatingButton("home");
 
@@ -154,25 +155,7 @@ PostBoardApiClient.getMainBoard()
         InitTopNav(true);
 
         // container 밖에서 스크롤해도 container가 스크롤되도록 설정
-        document.body.addEventListener("wheel", (evt) => {
-            if (evt.target !== document.body) return;
-            console.log(evt.deltaMode);
-
-            let delta = evt.deltaY;
-            switch (evt.deltaMode) {
-                case 0x01:
-                    // Convert line unit delta value to pixel unit
-                    delta *= Number(
-                        /[0-9]+/.exec(
-                            getComputedStyle(document.body).fontSize ?? "16px",
-                        )![0],
-                    );
-                    break;
-                case 0x02:
-                    // Convert page unit delta value to pixel unit
-                    delta *= window.innerHeight;
-            }
-
+        handleOutsideScroll((delta) => {
             scroller.getCurrentlyMostVisibleChild()?.scrollBy({ top: delta });
         });
     });
