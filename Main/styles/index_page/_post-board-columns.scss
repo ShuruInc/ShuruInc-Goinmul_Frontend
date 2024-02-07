@@ -42,7 +42,13 @@
             font-weight: 500;
             line-height: 17px;
             letter-spacing: -0.01em;
-            text-align: align;    
+            text-align: align;  
+            .icons {  
+                margin-top: 0.5em;
+                svg {
+                    color: #898B8A;
+                }
+            }
         }
     }
 
