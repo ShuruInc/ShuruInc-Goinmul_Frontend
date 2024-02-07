@@ -156,10 +156,23 @@ PostBoardApiClient.getMainBoard()
         // container 밖에서 스크롤해도 container가 스크롤되도록 설정
         document.body.addEventListener("wheel", (evt) => {
             if (evt.target !== document.body) return;
+            console.log(evt.deltaMode);
 
-            console.log(evt.deltaY);
-            scroller
-                .getCurrentlyMostVisibleChild()
-                ?.scrollBy({ top: evt.deltaY });
+            let delta = evt.deltaY;
+            switch (evt.deltaMode) {
+                case 0x01:
+                    // Convert line unit delta value to pixel unit
+                    delta *= Number(
+                        /[0-9]+/.exec(
+                            getComputedStyle(document.body).fontSize ?? "16px",
+                        )![0],
+                    );
+                    break;
+                case 0x02:
+                    // Convert page unit delta value to pixel unit
+                    delta *= window.innerHeight;
+            }
+
+            scroller.getCurrentlyMostVisibleChild()?.scrollBy({ top: delta });
         });
     });
