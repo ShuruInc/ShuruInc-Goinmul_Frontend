@@ -161,6 +161,10 @@ export class QuizSession {
             score: localSession.points,
         });
 
+        const points = this.getLocalSession().nerdTest
+            ? result.data.result!.score!
+            : this.getLocalSession().points;
+
         this.saveLocalSession({
             ...localSession,
             postedRank: true,
@@ -170,6 +174,7 @@ export class QuizSession {
                 percentage: result.data!.result!.percentile!,
                 rank: result.data!.result!.rank!,
             },
+            points,
         });
     }
     async getImageLinks(): Promise<string[]> {
