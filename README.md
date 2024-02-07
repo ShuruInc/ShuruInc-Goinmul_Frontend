@@ -27,6 +27,7 @@ watch를 하면 파일 내용이 바뀔 때 자동으로 재컴파일되므로 �
 ## `dev.env`/`build.env` 내용
 - `KAKAO_API_KEY`: 카카오 개발자 API 키
 - `BACKEND_URL`: 백엔드 서버 주소 (예시: `http://api.example.com`)
+- `DEBUG_NERD_TEST_EXIT_FEAT`: `true` 혹은 `false` 값, 디버깅을 위해 존재하는 옵션으로, 프로덕션에서는 `false`로 하면 된다. `true`일 시 고인물 테스트 중 `exitNerdTest` 함수를 브라우저 내에서 호출하여 남은 시간 및 남은 문제의 갯수와 상관없이 고인물 테스트를 종료할 수 있다.
 
 ### 예시
 ```
