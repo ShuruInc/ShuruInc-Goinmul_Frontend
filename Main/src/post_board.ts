@@ -1,3 +1,4 @@
+import SmoothScrollbar from "smooth-scrollbar";
 import PostBoardApiClient from "./api/posts";
 import footer from "./footer";
 import setHorizontalDragScrollOnDesktop from "./horizontal_drag_to_scroll_on_desktop";
@@ -252,10 +253,20 @@ export function fillPlaceholderSectionInto(
 // '포스트 보드'는 다수의 포스트로 이루어짐
 
 export function setupPostBoard(
-    column: HTMLElement,
+    columnParent: HTMLElement,
     getNextSection: () => Promise<PostBoardSectionData | null>,
 ) {
     let completed = false;
+    const columnScrollbar = document.createElement("div");
+    columnScrollbar.style.height = "100vh";
+    columnParent.appendChild(columnScrollbar);
+
+    // Smooth-scrollbar를 쓴다.
+    const scrollbar = SmoothScrollbar.init(columnScrollbar, {
+        alwaysShowTracks: false,
+    });
+    scrollbar.track.yAxis.element.remove();
+    const column = scrollbar.contentEl;
 
     function fillPlaceholderSection(posts: PostBoardSectionData | null) {
         if (posts === null || completed) {

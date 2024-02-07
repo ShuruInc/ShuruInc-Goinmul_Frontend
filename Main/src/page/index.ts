@@ -10,6 +10,7 @@ import { setupPostBoard } from "../post_board";
 import { InitTopNav, SetCustomRankingHandler } from "../top_logo_navbar";
 import { TopCategoryButtonNav } from "../top_category_button_nav";
 import handleOutsideScroll from "../handle_outside_scroll";
+import SmoothScrollbar from "smooth-scrollbar";
 
 createFloatingButton("home");
 
@@ -155,7 +156,22 @@ PostBoardApiClient.getMainBoard()
         InitTopNav(true);
 
         // container 밖에서 스크롤해도 container가 스크롤되도록 설정
-        handleOutsideScroll((delta) => {
-            scroller.getCurrentlyMostVisibleChild()?.scrollBy({ top: delta });
-        });
+        handleOutsideScroll(
+            (delta, wheel) => {
+                const scrollBar = SmoothScrollbar.get(
+                    scroller
+                        .getCurrentlyMostVisibleChild()!
+                        .querySelector("[data-scrollbar]")!,
+                )!;
+                if (wheel) {
+                    scrollBar.addMomentum(0, delta);
+                } else {
+                    scrollBar.setMomentum(0, delta * 1.5);
+                }
+            },
+            () =>
+                scroller
+                    .getCurrentlyMostVisibleChild()
+                    ?.querySelector("[data-scrollbar]") ?? null,
+        );
     });
