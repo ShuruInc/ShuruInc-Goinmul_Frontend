@@ -228,7 +228,8 @@ export default function initSolvePage(session: QuizSession) {
             [
                 ...document.querySelectorAll(".answer input, .answer button"),
             ].forEach((i) => ((i as HTMLInputElement).disabled = true));
-            await displayCorrectnessAnimation(correct);
+
+            await displayCorrectnessAnimation(correct.correct!);
 
             renewProblem();
         });

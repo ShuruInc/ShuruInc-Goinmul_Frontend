@@ -133,16 +133,20 @@ export class QuizSession {
                   index: this.getLocalSession().problemIndex + 1,
               };
     }
-    async submit(answer: string, subjective: boolean): Promise<boolean> {
+    async submit(
+        answer: string,
+        subjective: boolean,
+    ): Promise<{ combo?: number; correct?: boolean; score?: number }> {
         let correct = (
             await apiClient.getAnswers((await this.currentProblem())!.id!, {
                 answer,
                 problemType: subjective ? "SUBJECTIVE" : "MULTIPLE_CHOICE",
             })
-        ).data.result!.correct!;
+        ).data.result!;
 
         let newProblemIndex = this.getLocalSession().problemIndex + 1;
-        let newPoints = this.getLocalSession().points + (correct ? 10 : 0);
+        let newPoints =
+            this.getLocalSession().points + (correct.correct ? 10 : 0);
         this.saveLocalSession({
             ...this.getLocalSession(),
             problemIndex: newProblemIndex,
