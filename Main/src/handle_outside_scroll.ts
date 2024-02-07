@@ -1,34 +1,59 @@
 export default function handleOutsideScroll(
-    onOutsideScroll: (delta: number) => void,
+    onOutsideScroll: (delta: number, wheel: boolean) => void,
+    getTouchTarget: () => HTMLElement | null,
 ) {
-    let hnadlingTouch = false,
-        lasttouchY = 0;
+    let handlingTouch = false;
+
+    const dispatchEvent = (evt: TouchEvent, name: string) => {
+        const target = getTouchTarget();
+        if (target === null) return;
+
+        const targetBoundingRect = target.getBoundingClientRect();
+        const centerTouch = (i: Touch) =>
+            new Touch({
+                clientX:
+                    (targetBoundingRect.left + targetBoundingRect.right) / 2,
+                clientY: i.clientY,
+                identifier: i.identifier,
+                target: target,
+            });
+        const newTouchEvent = new TouchEvent(name, {
+            changedTouches: [...evt.changedTouches].map(centerTouch),
+            touches: [...evt.touches].map(centerTouch),
+            targetTouches: [...evt.targetTouches].map(centerTouch),
+        });
+        console.log(newTouchEvent);
+
+        target.dispatchEvent(newTouchEvent);
+    };
     document.body.addEventListener("touchstart", (evt) => {
         if (evt.target !== document.body) return;
-
         evt.preventDefault();
-        hnadlingTouch = true;
-        lasttouchY = evt.targetTouches[0].clientY;
+
+        handlingTouch = true;
+        dispatchEvent(evt, "touchstart");
     });
     document.body.addEventListener("touchmove", (evt) => {
-        if (hnadlingTouch) {
+        if (handlingTouch) {
             evt.preventDefault();
-
-            const newTouchY = evt.targetTouches[0].clientY;
-            onOutsideScroll(lasttouchY - newTouchY);
-            lasttouchY = newTouchY;
+            dispatchEvent(evt, "touchmove");
+            return;
         }
     });
     document.body.addEventListener("touchend", (evt) => {
-        if (hnadlingTouch) {
+        if (handlingTouch) {
+            handlingTouch = false;
             evt.preventDefault();
-            hnadlingTouch = false;
+
+            dispatchEvent(evt, "touchend");
         }
     });
     document.body.addEventListener("touchcancel", (evt) => {
-        if (hnadlingTouch) {
+        if (handlingTouch) {
+            handlingTouch = false;
             evt.preventDefault();
-            hnadlingTouch = false;
+
+            dispatchEvent(evt, "touchcancel");
         }
     });
 
@@ -52,6 +77,6 @@ export default function handleOutsideScroll(
                 delta *= window.innerHeight;
         }
 
-        onOutsideScroll(delta);
+        onOutsideScroll(delta, true);
     });
 }

@@ -35,6 +35,7 @@
     "html-entities": "^2.4.0",
     "html2canvas": "^1.4.1",
     "josa": "^3.0.1",
+    "smooth-scrollbar": "^8.8.4",
     "terser-webpack-plugin": "^5.3.10",
     "tippy.js": "^6.3.7",
     "url-join": "^5.0.0"
