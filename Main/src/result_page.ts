@@ -87,8 +87,8 @@ export default function initializeResultPage() {
                       lowCategory: (await session.sessionInfo()).title,
                       middleCategory: (await session.sessionInfo()).category,
                       link: {
-                          href: nerdTest.title,
-                          text: nerdTest.href,
+                          href: nerdTest.href,
+                          text: nerdTest.title,
                       },
                   }
                 : {
