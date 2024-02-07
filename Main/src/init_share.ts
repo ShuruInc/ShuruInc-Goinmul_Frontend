@@ -1,10 +1,10 @@
-import { backendUrl, kakaoApiKey } from "./env";
+import { kakaoApiKey } from "./env";
 import "../styles/common/_share-buttons.scss";
 import kakaoTalkIcon from "../assets/kakaotalk_bubble.svg";
 import { encode } from "html-entities";
 import { icon } from "@fortawesome/fontawesome-svg-core";
 import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
-import urlJoin from "url-join";
+import tweetDialog from "./tweet_dialog";
 
 export type ShareDatas = {
     webShare: ShareData;
@@ -98,28 +98,12 @@ export default function initShareButton(
             .then(async () => {
                 if (content === null) return;
 
-                const url = urlJoin(
-                    backendUrl!,
-                    "/api/v1/tweet?content=" +
-                        encodeURIComponent(content.twitter.text),
+                const tweeted = await tweetDialog(
+                    content.twitter.text,
+                    content.image,
                 );
 
-                let container = new DataTransfer();
-                container.items.add(content.image);
-
-                const form = document.createElement("form");
-                form.enctype = "multipart/form-data";
-                form.action = url;
-                form.method = "POST";
-                form.innerHTML = '<input type="file" name="image">';
-                form.target = "_blank";
-                form.style.display = "none";
-                form.querySelector("input")!.files = container.files;
-
-                document.body.append(form);
-                form.submit();
-
-                if (options.onComplete) options.onComplete();
+                if (options.onComplete && tweeted) options.onComplete();
             })
             .catch((err) => {
                 alert("오류가 발생했습니다!");
