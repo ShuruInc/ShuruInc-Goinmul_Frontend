@@ -10,6 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
+import SmoothScrollbar from "smooth-scrollbar";
 
 const images = [logoImage1, logoImage2, logoImage3, logoImage4];
 
@@ -126,9 +127,11 @@ export function InitTopBottomAnimation(
 
     function setupScrollEventHandlerForcolumn(column: Element) {
         var lastScrollTop = 0;
-        column.addEventListener("scroll", function (evt) {
+        SmoothScrollbar.get(
+            column.querySelector("[data-scrollbar]") as HTMLElement,
+        )?.addListener((status) => {
             // column별로 스크롤이 따로 논다!
-            var scrollTop = (evt.target as HTMLElement).scrollTop;
+            var scrollTop = status.offset.y;
 
             //페이지가 로딩되거나 column이 바뀐 경우에는 상단바를 가리지 않음
             if (firstLoad) {

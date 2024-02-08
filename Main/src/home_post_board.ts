@@ -8,6 +8,7 @@ import {
 } from "./post_board";
 import setHorizontalDragScrollOnDesktop from "./horizontal_drag_to_scroll_on_desktop";
 import SmoothScrollbar from "smooth-scrollbar";
+import "./smooth-scrollbar-scroll-lock-plugin";
 
 /**
  * 랭킹 아이템
