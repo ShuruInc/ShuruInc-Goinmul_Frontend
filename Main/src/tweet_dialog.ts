@@ -11,12 +11,12 @@ export default function tweetDialog(
         dialogWrapper.className = "tweet-dialog-wrapper";
         dialogWrapper.innerHTML = `
         <div class="tweet-dialog">
-        <h1>트윗 작성하기</h1>
-        <textarea></textarea>
-        <div>
-        <button class="submit">트윗 작성</button>
-        <button class="cancel">닫기</button>
-        </div>
+                <h1>트윗 작성하기</h1>
+                <textarea></textarea>
+            <div>
+                <button class="submit">Tweet</button>
+                <button class="cancel">닫기</button>
+            </div>
         </div>
         `;
 
