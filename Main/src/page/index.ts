@@ -130,20 +130,19 @@ PostBoardApiClient.getMainBoard()
                 categoryNav.activateButtonByKey("home", true, sign);
             }
             const tryScroll: () => void = () => {
-                const rect = document
-                    .querySelector(".column.main section.ranking-section h2")
-                    ?.getBoundingClientRect()!;
+                const scrollBar = SmoothScrollbar.get(
+                    document.querySelector(".column.main [data-scrollbar]")!,
+                );
+
+                const h2 = document.querySelector(
+                    ".column.main section.ranking-section h2",
+                ) as HTMLElement;
+                const rect = h2?.getBoundingClientRect()!;
                 if (rect.width === 0 || rect.height === 0)
                     return setTimeout(tryScroll, 1);
 
-                const top = rect.top;
-
                 // 여백(150)을 안 주면 viewport 맨 위에 딱 맞아서 상단 로고 nav에 가려진다
-                let scrollDelta = top - 150;
-                document.querySelector(".column.main")?.scrollBy({
-                    top: scrollDelta,
-                    behavior: "smooth",
-                });
+                scrollBar?.scrollIntoView(h2, { offsetTop: 150 });
             };
             // Q. 왜 400ms인가요?
             // A. 너무 짧으면 상단 카테고리 버튼 스크롤링이 중간에 멈추는 버그가 발생한다.
