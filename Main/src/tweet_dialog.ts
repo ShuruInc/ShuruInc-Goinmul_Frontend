@@ -14,7 +14,7 @@ export default function tweetDialog(
                 <h1>트윗 작성하기</h1>
                 <textarea></textarea>
             <div>
-                <button class="submit">Tweet</button>
+                <button class="submit">트윗하기</button>
                 <button class="cancel">닫기</button>
             </div>
         </div>
