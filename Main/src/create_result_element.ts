@@ -1,6 +1,10 @@
 import { icon } from "@fortawesome/fontawesome-svg-core";
 import { faRankingStar } from "@fortawesome/free-solid-svg-icons";
 import { encode } from "html-entities";
+import goldMedal from "../assets/medal/gold.png";
+import silverMedal from "../assets/medal/silver.png";
+import cooperMedal from "../assets/medal/cooper.png";
+import { randomMedalEnabled } from "./env";
 
 type NerdTestResultElementContent = {
     nerd: true;
@@ -57,6 +61,30 @@ export default function createResultElement(
                 }. ${data.date.getDate()}.</time>
                 <p class="comment"></p>
             </div>`;
+
+    let medal = null;
+    switch (
+        randomMedalEnabled
+            ? Math.floor(Math.random() * 3) + 1
+            : data.nerd
+            ? data.ranking
+            : 0
+    ) {
+        case 1:
+            medal = goldMedal;
+            break;
+        case 2:
+            medal = silverMedal;
+            break;
+        case 3:
+            medal = cooperMedal;
+            break;
+    }
+    if (medal !== null) {
+        element.querySelector(
+            ".title",
+        )!.innerHTML += `<div class="medal"><img src="${encode(medal)}"></div>`;
+    }
 
     const table = element.querySelector("table")!;
     const tableData = data.nerd
