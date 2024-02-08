@@ -2,6 +2,7 @@ import SmoothScrollbar from "smooth-scrollbar";
 import PostBoardApiClient from "./api/posts";
 import footer from "./footer";
 import setHorizontalDragScrollOnDesktop from "./horizontal_drag_to_scroll_on_desktop";
+import "./smooth-scrollbar-scroll-lock-plugin";
 
 type RowInfo = { landscape: boolean; count: number };
 export type Post = {
