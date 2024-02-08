@@ -1,0 +1,518 @@
+[33mcommit 8acdcef382aa08271173f8655d33c240cf7b7383[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mapply-design[m[33m, [m[1;31mupstream/apply-design[m[33m, [m[1;31morigin/apply-design[m[33m)[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Wed Feb 7 18:38:38 2024 +0900
+
+    docs: add env `DEBUG_NERD_TEST_EXIT_FEAT` to README
+
+[33mcommit ec849b434665f408aeea354ec36b8c28b2d0f557[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Wed Feb 7 16:58:02 2024 +0900
+
+    api: fetch combo/score when submitting answer
+
+[33mcommit fb32e60274a17a5b9d5b590431aeab21143e603a[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Wed Feb 7 16:57:21 2024 +0900
+
+    fix: swap href/text
+
+[33mcommit 8a5ef46c8b17ace9af80f2a04b8ea16d8fa2dff4[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Wed Feb 7 16:02:24 2024 +0900
+
+    fix: transparent navbar
+
+[33mcommit af6dd9ca372852481562b2595d5e054056684b25[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Wed Feb 7 15:27:53 2024 +0900
+
+    feat: add twitter text modification dialog
+
+[33mcommit bfe78b68177cec1bca0963264155594d71041126[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Wed Feb 7 14:37:14 2024 +0900
+
+    feat: enable outside scroll by touch in tablet
+
+[33mcommit 7f0dc5d36cf0cc300af5ebb3bf9237cd9732d6c2[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Wed Feb 7 13:37:07 2024 +0900
+
+    fix: consistent delta value unit across browsers
+
+[33mcommit 2aaca24e6f875c404c147a54b8d209107af249a2[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Wed Feb 7 13:36:32 2024 +0900
+
+    fix: add unit to report box
+
+[33mcommit 18d65bda6b5d983752eab732c80286d6bf6c7667[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Wed Feb 7 13:36:15 2024 +0900
+
+    fix: disable box-shadow temporarily
+    
+    box-shadow makes a bug for html2canvas
+
+[33mcommit 866fbf4386e8a277dbef512fbfd756d8585a2ee9[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Wed Feb 7 13:35:48 2024 +0900
+
+    fix: use paper texture as canvas imagew padding
+
+[33mcommit a0904dc0cc3d7a6d0846d4e5c4e85013d2bbd703[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Wed Feb 7 10:53:56 2024 +0900
+
+    fix: use server-side score on nerd test
+
+[33mcommit f1144f0e566df6fb612d8ae9adafe1d7b224ce3f[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Wed Feb 7 10:51:31 2024 +0900
+
+    feat: only-horizontally animated input on typing when solving test
+
+[33mcommit c96d339ee0f2f0d112400c236d27e2252b96e08d[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Wed Feb 7 10:47:14 2024 +0900
+
+    design: smaller font-size for portrait thumbnails on mobile
+
+[33mcommit 04f1d46fb87ff7e41b2026ee03655e1df5ad0639[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Wed Feb 7 10:39:48 2024 +0900
+
+    feat: impl outside scrolling on index page (desktop)
+
+[33mcommit 6e1f44c02c4898777d245391aeec277db22dd54a[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Wed Feb 7 10:32:38 2024 +0900
+
+    feat: add twitter link into footer
+
+[33mcommit a26f6adb0bd5cf8404d1cb0336b8886da7b33f34[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Wed Feb 7 10:19:22 2024 +0900
+
+    design: apply footer design
+
+[33mcommit 30cf1e56e0d540a984c187aea675d8d44a0234c6[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Tue Feb 6 13:51:26 2024 +0900
+
+    fix: background-on-margin bug on chrome
+
+[33mcommit 67a619b86e79be33318abd1fcc5cb94a28289912[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Tue Feb 6 13:39:50 2024 +0900
+
+    design: padding-bottom for entry page
+
+[33mcommit abd0cd3ca4316131e614b25ee8ec963e1c69ad3b[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Tue Feb 6 13:31:41 2024 +0900
+
+    design: change navbar/progress-bar design
+
+[33mcommit b7e0fff05e03130b0266d86ce56b0d1395fd4ee5[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Tue Feb 6 11:50:01 2024 +0900
+
+    feat: twitter share api integration
+
+[33mcommit 25d7129aaa2fe7d2b24f1a287622c24c79ebfa94[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Tue Feb 6 11:16:06 2024 +0900
+
+    design: result page
+
+[33mcommit efe65618ee59540247a683532d117815682da7eb[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Tue Feb 6 11:08:12 2024 +0900
+
+    feat(debug): nerd test forced exit feat
+
+[33mcommit 7228b1b7b1a4af6230ac0fc1ebc3e40dfb079c60[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Tue Feb 6 11:07:28 2024 +0900
+
+    fix: image url join bug
+
+[33mcommit 314303a2210f1c646e2bd6e1a4af9b3905288c7a[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Tue Feb 6 10:19:38 2024 +0900
+
+    design: design for help-me box
+
+[33mcommit f404733b2816a526e510355f168030ada8ab0448[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Mon Feb 5 17:31:50 2024 +0900
+
+    asset: add kakaotalk vector logo img
+
+[33mcommit c25d53b66516ec61a4ebe0c51802e1f22ac2d325[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Mon Feb 5 17:28:02 2024 +0900
+
+    design: add paper texture for background
+
+[33mcommit 16afb566eadd0ff5ca22540e2c7fa61cbd11e443[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Mon Feb 5 16:59:28 2024 +0900
+
+    design: change correct/wrong effect gradient
+
+[33mcommit 485ac378f3fd47d2b481f26103eaddb17509924a[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Mon Feb 5 16:56:14 2024 +0900
+
+    design: apply design for problem solving page
+
+[33mcommit b757b6855edada152e45d94c5be56e7df71d928a[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Mon Feb 5 15:54:10 2024 +0900
+
+    design: apply design for nerd-test entry page
+
+[33mcommit 94d3a7b8b5aad2ffac17f1a05e2fd95568bb4f31[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Mon Feb 5 11:30:44 2024 +0900
+
+    design: apply search page design
+
+[33mcommit 6330a6334db407ced959097a64c7aff6c9edc5d9[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Mon Feb 5 11:30:29 2024 +0900
+
+    fix: ignore search keyword registration error
+
+[33mcommit 0f26d02100f758b8d01fc1833045d77785fa77c4[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Mon Feb 5 11:19:39 2024 +0900
+
+    design: change floating button icon width
+
+[33mcommit 34798ea34cc8dd2568c7ead7db0faffe2bc7b271[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Feb 2 14:46:12 2024 +0900
+
+    typo: 연간 -> 연관
+
+[33mcommit c7e87d0d5ba46a9e78222b64db16e4cd6461ba4a[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Feb 2 13:47:09 2024 +0900
+
+    feat: always display similar articles on search page
+
+[33mcommit 2ff081c4b43ffdef73cd792a903a01654b31960b[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Feb 2 13:29:25 2024 +0900
+
+    design: partly apply designs for top category btn, heading, thumbnail
+
+[33mcommit 8aba63ca61d4f1d7d7ff87a510db695945e91614[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Thu Feb 1 13:18:58 2024 +0900
+
+    fix: no gradient for solve/result page
+
+[33mcommit 7f06296880ec12fb36ded9932157424c543fd2e3[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Wed Jan 31 15:46:20 2024 +0900
+
+    feat: no confirmation prompt on page exit of non-nerd test
+
+[33mcommit 502c8110340396ce8f6d812446af11eee98f4ddc[m[33m ([m[1;31mupstream/main[m[33m, [m[1;31mupstream/HEAD[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Merge: ba00b70 bd0c05e
+Author: ifHead <69696645+ifHead@users.noreply.github.com>
+Date:   Wed Jan 31 15:37:03 2024 +0900
+
+    Merge pull request #15 from ShuruInc/third-prototyping
+    
+    3차 프로토타이핑
+
+[33mcommit bd0c05e100d44f583761fea88a84933d71d078fb[m[33m ([m[1;31mupstream/third-prototyping[m[33m, [m[1;31morigin/third-prototyping[m[33m)[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Wed Jan 31 15:21:24 2024 +0900
+
+    feat: answer input animation on input event
+
+[33mcommit e3a5f2b628940ae9af94ff26cc84ebb73d12aabd[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Wed Jan 31 13:56:15 2024 +0900
+
+    misc: change title
+
+[33mcommit 0da4b7ce305583ecaf8cd7ec6bf49e5024d9909f[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Wed Jan 31 13:41:50 2024 +0900
+
+    refactor: add some comments
+
+[33mcommit c24a903e4a881896fe63fb27ee6f74129e261e0c[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Wed Jan 31 11:58:22 2024 +0900
+
+    feat: add gap on infinity scroller
+
+[33mcommit 33c64ca4731c2c9ea6243d9d2a7ad4c8cfc49096[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Tue Jan 30 16:57:29 2024 +0900
+
+    fix: fix nav gradient click bug
+
+[33mcommit 84fc2169a03d8fb6ea06643726435755fce3a18b[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Tue Jan 30 16:54:46 2024 +0900
+
+    misc: delete unused docs and images
+
+[33mcommit b4a9ea8628383846c7d4bc3f702ddb7cbea7e162[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Tue Jan 30 14:56:35 2024 +0900
+
+    design: adjust top navbar gradient height
+
+[33mcommit 288e59823b89683b00cd8cece8b4b56048e24016[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Tue Jan 30 13:55:58 2024 +0900
+
+    fix: fix buggy post board swiping
+
+[33mcommit 1cb56053faa3ff7c1bb4e2dd2e427fb577f3690a[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Tue Jan 30 11:45:32 2024 +0900
+
+    design: change result image template
+
+[33mcommit 237c1cad81e1de2421e274a3fafdfb57b4ac05fc[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Mon Jan 29 16:15:10 2024 +0900
+
+    fix: change "다른 모의고사 풀기" ui on result page
+
+[33mcommit c4a090804a68045ce93ca1c5274d53967c6d0158[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Mon Jan 29 15:44:30 2024 +0900
+
+    fix: synchronized swiping speed even on category button click
+    
+    fixes #6
+
+[33mcommit c1c1b5d2efc5f80c3a6308d3ec2c0149e53cb3a6[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Mon Jan 29 15:40:07 2024 +0900
+
+    feat: better ux of scrolling in index page
+
+[33mcommit 9010f8c6ecb2317d76fa968802fa9dda5eb37938[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Mon Jan 29 13:42:56 2024 +0900
+
+    Revert "feat: x-scrollable top category nav"
+    
+    This reverts commit ea27ffc3aa6dd8e3c719d55424b959c769900652.
+
+[33mcommit 00534e016cc88a7c4e0f4ca414e07033cb78d26a[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Mon Jan 29 13:27:08 2024 +0900
+
+    feat: change idk button position
+
+[33mcommit 7eb2af532ab5ebe7b38349d59ae15ec8f99013e6[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Mon Jan 29 13:26:12 2024 +0900
+
+    fix: 100% progress bar on reuslt page
+
+[33mcommit 82b41e5fff202cf5a64d3a6110794fe75fb73f07[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Mon Jan 29 11:34:32 2024 +0900
+
+    api: integrate postKeyword api
+
+[33mcommit 55d4f368f9fd3f902868d762119751aa2e4b9753[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Mon Jan 29 10:34:53 2024 +0900
+
+    fix: fix history bug on non-nerd test
+
+[33mcommit 7707fa1043739f96877b333706212684fcfbd245[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Mon Jan 29 09:28:24 2024 +0900
+
+    fix: check elapsed time for nerd test when checking whether it's ended
+
+[33mcommit b0339bf2ad146ce297632fb4c50e19fc22f759f8[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Jan 26 17:31:33 2024 +0900
+
+    fix: top category nav bug on linux firefox
+
+[33mcommit 288b786f8be26c8387d973764fbc2ce396d92d6e[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Jan 26 16:25:35 2024 +0900
+
+    refactor: use anchor tag for twitter share
+
+[33mcommit ed7786bda32c37012b05146ce7dc2fc93faf35ec[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Jan 26 15:19:13 2024 +0900
+
+    refactor: remove unused variable `skipStatistics`
+
+[33mcommit 911918796d77ec3d147097eb8bfa4565521d802a[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Jan 26 15:17:03 2024 +0900
+
+    design: change like button behavior
+
+[33mcommit 6fa2a79a3e361fdaa4886741b86eaeefcd352e69[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Jan 26 15:13:34 2024 +0900
+
+    design: no top margin for first-section title in post board
+
+[33mcommit 872c358db24c1f459f1a7d7e932432ac2a46c6a7[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Jan 26 15:11:33 2024 +0900
+
+    fix: handle empty string as post section title
+
+[33mcommit 4cf963dc82b22179a52348a7c2724af89f8fc3f4[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Jan 26 15:07:54 2024 +0900
+
+    fix: delete infoless table cell in post board section
+
+[33mcommit 5fa81cd4a8ef0f0840ddd97def66a3bab8b2c378[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Jan 26 15:03:03 2024 +0900
+
+    refactor: no img tag for thumbnail image
+
+[33mcommit 0ecd686794133cd3f1fa098536f6fc62145d167b[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Jan 26 14:53:17 2024 +0900
+
+    refactor: change table-cell classname
+
+[33mcommit 0caf923b61622a5559f18e10c0f46cbf8bacfc5e[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Jan 26 13:41:56 2024 +0900
+
+    fix: change viewArticle hitting logic
+
+[33mcommit 5cdf0d70a325cc7671b5c460d8f2aaab94534d96[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Jan 26 13:37:39 2024 +0900
+
+    api: integrate view api
+
+[33mcommit ce753f056fc444e3a181263cb141f19d1fa0f67e[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Jan 26 13:31:42 2024 +0900
+
+    refactor: add comment
+
+[33mcommit 726c37e25b9ef7c4661ba4ddffd774d1191218b7[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Jan 26 12:57:23 2024 +0900
+
+    feat: impl image cache
+
+[33mcommit 35a9ecd795ce3df31784e54aa409cbaa2d89061b[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Jan 26 12:55:59 2024 +0900
+
+    fix: no duplicated "/" in image url
+
+[33mcommit cb44244b1d7ca51a5cd63dbb2d9c7125f302a6e1[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Jan 26 11:27:42 2024 +0900
+
+    refactor: rename padCanvas to addPadding
+
+[33mcommit 6d91867c5a4fcccbff9a742b8ac32dacadb18fff[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Jan 26 11:27:06 2024 +0900
+
+    fix: delete "미친" from randoom nickname generation
+
+[33mcommit 0f9a9254c3281f080cb71d6da5f5d0b42b8cdb7f[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Jan 26 11:02:54 2024 +0900
+
+    fix: prevent starting session more than one time
+
+[33mcommit cb35e59062aafe125a2a3ad98e7f54820ab5d90f[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Jan 26 11:00:14 2024 +0900
+
+    design: change button color on hover
+
+[33mcommit f862535bd54b07012a197f0dd7661dfdf13d7264[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Jan 26 10:55:45 2024 +0900
+
+    docs: add simple explaination on what watch is
+
+[33mcommit 07d2ebb0f0e22d0c4ae1390b26297f13433ff849[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Jan 26 10:54:54 2024 +0900
+
+    deploy: use script when building api client
+
+[33mcommit 3e4c90758cfe5303ec14906f72178d2eaa6e3a80[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Fri Jan 26 10:15:44 2024 +0900
+
+    feat: split webpack chunks
+
+[33mcommit 97706ace77f5eec938f2f7c3888f24756b50c93a[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Thu Jan 25 17:29:02 2024 +0900
+
+    docs: add env file example
+
+[33mcommit 6ddc9485021b7ec2dd097441346a48470329c4e6[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Thu Jan 25 17:20:18 2024 +0900
+
+    fix: trim when checking precaution string
+
+[33mcommit 0cff1fc26f857ef565c2c54cd40023fc81e1bd46[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Thu Jan 25 17:04:11 2024 +0900
+
+    fix: fixes a bug that helpme is shown when entered in input
+
+[33mcommit f4cdbb820b7dd940df6a2d2993fa136c03ab31fc[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Thu Jan 25 16:52:16 2024 +0900
+
+    fix: disable top category nav smooth scrolling on safari
+
+[33mcommit 4eaac46d43d3a67d0649521dee0c400e91a03ddb[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Thu Jan 25 15:54:39 2024 +0900
+
+    fix: alert when twitter popup is blocked
+
+[33mcommit 9c495a8b4c7fa755542a3f606b563b8f716db7b3[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Thu Jan 25 15:48:33 2024 +0900
+
+    fix: Support OffscreenCanvas non-supported browser
+
+[33mcommit 77414ecbb1d4fc6e859b7ff915ed1f06c72609a4[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Thu Jan 25 15:24:55 2024 +0900
+
+    fix: fix a bug that score is posted >1 times
+
+[33mcommit c3174fa696a4e9df667670d8c4d18498d2de66d9[m
+Author: Yeonjin Shin <yeonjin@yeonjin.name>
+Date:   Thu Jan 25 15:02:02 2024 +0900
+
+    fix: newline before precaution in problem solving page
