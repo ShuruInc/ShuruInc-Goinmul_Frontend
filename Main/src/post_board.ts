@@ -191,7 +191,11 @@ export function fillPlaceholderSectionInto(
 
             portraitCell.href = post.href;
             portraitCell.dataset.id = post.id.toString();
-            portraitCell.style.backgroundImage = `url("${post.imgUrl}")`;
+            portraitCell.style.setProperty(
+                "--background-img",
+                `url("${post.imgUrl}")`,
+            );
+            portraitCell.classList.add("lazy-bg");
             portraitCell.querySelector(".cell-info .title")!.innerHTML =
                 post.title;
             portraitCell
@@ -223,6 +227,26 @@ export function fillPlaceholderSectionInto(
         portraitCells
             .filter((i) => !i.classList.contains("filled"))
             .forEach((i) => i.parentNode?.removeChild(i));
+
+        // lazy-loading 구현
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries
+                    .filter((i) => i.intersectionRatio > 0)
+                    .map((i) => i.target as HTMLElement)
+                    .filter((i) => i.classList.contains("lazy-bg"))
+                    .forEach((i) => {
+                        i.classList.remove("lazy-bg");
+                        i.style.backgroundImage =
+                            i.style.getPropertyValue("--background-img");
+                    });
+            },
+            {
+                rootMargin: "10% 10% 10% 10%",
+            },
+        );
+        for (const i of [...section.querySelectorAll(".lazy-bg")])
+            observer.observe(i);
     }
 
     // 조회수 올리는 로직
@@ -321,52 +345,10 @@ export function setupPostBoard(
         return placeholder as HTMLElement;
     }
 
-    // 무한 스크롤을 구현한다.
+    function getAllSections() {
+        if (completed) return;
 
-    // 하단 빈 섹션이 보이는지의 여부를 감지하는 데 이용되는 IntersectionObserver
-    let placeholderIntersectionObserver = new IntersectionObserver(
-        onPlaceholderVisible,
-        {
-            rootMargin: "2000px",
-        },
-    );
-
-    // intersectionObserver를 초기화한다.
-    // 새로운 빈 섹션이 추가된 경우에도 호출되어야 한다.
-    function setupPlaceholderIntersectionObserver() {
-        // 기존에 관찰되고 있던 요소는 더이상 빈 섹션이 아닐 수 있으므로 모두 끊는다.
-        placeholderIntersectionObserver.disconnect();
-        // 빈 섹션들을 모두 관찰한다.
-        for (const i of [...column.querySelectorAll("section.placeholder")]) {
-            placeholderIntersectionObserver.observe(i);
-        }
-
-        // 이벤트 핸들러를 호출한다. (버그 방지)
-        onPlaceholderVisible(placeholderIntersectionObserver.takeRecords());
+        getNextSection().then(fillPlaceholderSection).then(getAllSections);
     }
-
-    // intersectionObserver의 이벤드 핸들러
-    // 무한 스크롤이 구현된다.
-    function onPlaceholderVisible(entries: IntersectionObserverEntry[]) {
-        if (
-            entries.every(
-                (i) =>
-                    i.target.classList.contains("placeholder") &&
-                    i.intersectionRatio <= 0,
-            )
-        )
-            // 모든 빈 섹션이 보이지 않고 있다면 무시한다.
-            return;
-        getNextSection()
-            .then(fillPlaceholderSection)
-            .then(setupPlaceholderIntersectionObserver);
-    }
-
-    // 첫 2개의 포스트만 가져온다.
-    getNextSection()
-        .then(fillPlaceholderSection)
-        .then(getNextSection)
-        .then(fillPlaceholderSection)
-        // 나머지는 동적으로 가져올 수 있도록 IntersectionObserver를 설정한다.
-        .then(setupPlaceholderIntersectionObserver);
+    getAllSections();
 }
