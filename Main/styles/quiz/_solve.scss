@@ -90,7 +90,7 @@ article {
             align-items: center;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 5px;
+            gap: 5px 0px;
             font-size: 1.5em;
             .whitespace {
                 width: 1em;
@@ -99,6 +99,7 @@ article {
                 padding: 10px 10px;
                 background: #e1e1e1;
                 border-radius: 10px;
+                margin: 0px 2.5px;
 
                 &.whitespace {
                     background-color: #a7a7a7;
