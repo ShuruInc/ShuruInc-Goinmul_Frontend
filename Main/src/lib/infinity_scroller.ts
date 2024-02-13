@@ -274,9 +274,9 @@ export class HorizontalInfinityScroller {
             let child = children[i] as HTMLElement;
             let translate = translates[i];
             if (translate === null) {
-                child.style.display = "none";
+                // display: none하면 smooth-scrollbar의 scrollTop이 초기화된다.
+                child.style.transform = "translateX(-1000vw)";
             } else {
-                child.style.display = "";
                 child.style.transform = `translateX(calc(${translate}px - 50%))`;
             }
         }
