@@ -183,7 +183,7 @@ export function fillPlaceholderSectionInto(
     // 세로형 이미지 설정
     if (hasPortraits) {
         const portraitCells = [
-            ...section.querySelectorAll(".table-cell"),
+            ...section.querySelectorAll(".table-cell.portrait"),
         ] as HTMLAnchorElement[];
         for (const portraitCell of portraitCells) {
             const post = posts.portraits!.shift();
