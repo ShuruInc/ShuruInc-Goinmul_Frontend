@@ -1,5 +1,9 @@
-import { dom, library } from "@fortawesome/fontawesome-svg-core";
-import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { dom, icon, library } from "@fortawesome/fontawesome-svg-core";
+import {
+    faCheck,
+    faExclamationCircle,
+    faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { isMobile } from "./is_mobile";
 
 // FontAwesome 렌더링
@@ -87,13 +91,15 @@ const createAnswerValidator = (
     warningElement: HTMLElement,
     validateSpecialChars = true,
 ) => {
+    const iconHtml = icon(faExclamationCircle).html[0];
     return (answer: string) => {
         if (validateSpecialChars && /[^a-zA-Zㄱ-힣0-9\s]/.test(answer)) {
-            warningElement.textContent = "특수문자는 입력할 수 없습니다!";
+            warningElement.innerHTML =
+                iconHtml + " 특수문자는 입력할 수 없습니다!";
         } else if (answer.length === 0) {
-            warningElement.textContent = "정답이 비어있습니다!";
+            warningElement.innerHTML = iconHtml + " 정답이 비어있습니다!";
         } else {
-            warningElement.textContent = "";
+            warningElement.innerHTML = "";
         }
     };
 };
@@ -106,9 +112,9 @@ const createAnswerElement = (question: QuizProblem) => {
     const answerEl = document.createElement("form");
     answerEl.className = "answer";
     answerEl.innerHTML = `
-        <div class="row warning">
-        </div>
         <div class="row with-input">
+        </div>
+        <div class="row warning">
         </div>
         <div class="row">
             <button class="submit" type="submit">제출</button>
@@ -191,7 +197,7 @@ const createQuestionElement = (
         </div>
         <div class="category"></div>
         <div class="text">
-            <span class="id-number">${index}.</span>&nbsp;
+            <span class="id-number">${index}.</span>
             <span class="problem-text"></span><br>
             <span class="condition"></span>
         </div>
@@ -302,33 +308,26 @@ export function updateProgress(
         ".progress-container .progress",
     ) as HTMLElement;
     progress.style.width = `${percentage}%`;
-    switch (color) {
-        case "red":
-            document.querySelector(".progress-container")?.classList.add("red");
-            document
-                .querySelector(".progress-container")
-                ?.classList.remove("yellow");
-            break;
-        case "yellow":
-            document
-                .querySelector(".progress-container")
-                ?.classList.add("yellow");
-            document
-                .querySelector(".progress-container")
-                ?.classList.remove("red");
-            break;
-        default:
-            document
-                .querySelector(".progress-container")
-                ?.classList.remove("yellow");
-            document
-                .querySelector(".progress-container")
-                ?.classList.remove("red");
-    }
+    [
+        document.querySelector(".progress-container"),
+        document.querySelector(".top-fixed-bar .progress-text"),
+    ].forEach((i) => {
+        switch (color) {
+            case "red":
+                i?.classList.add("red");
+                i?.classList.remove("yellow");
+                break;
+            case "yellow":
+                i?.classList.add("yellow");
+                i?.classList.remove("red");
+                break;
+            default:
+                i?.classList.remove("yellow");
+                i?.classList.remove("red");
+        }
+    });
 
-    const textElement = document.querySelector(
-        ".progress-container .progress-text",
-    );
+    const textElement = document.querySelector(".top-fixed-bar .progress-text");
     if (textElement && text) textElement.textContent = text;
 }
 

@@ -35,12 +35,9 @@
         &[type="email"] {
             border: 1px solid #dddddd;
             &.with-animation {
-                transition: padding 50ms ease-out;
+                transition: transform 50ms ease-out;
                 &.animated {
-                    padding: 11.5px 19px;
-                    &.small-padding {
-                        padding: 8px calc(0.45em + 4px);
-                    }
+                    transform: scaleX(105%);
                 }
             }
         }

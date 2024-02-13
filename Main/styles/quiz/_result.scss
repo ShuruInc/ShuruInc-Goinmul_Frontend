@@ -27,12 +27,35 @@ article.with-result {
     align-items: center;
     gap: 10px;
 
+    .rankings-ad {
+        font-family: Pretendard;
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 21px;
+        letter-spacing: -0.01em;
+        text-align: center;
+    
+        padding: 14px 20px;
+        border: 1px solid #DFDFDF;
+        background-color: white;
+        color: black;
+        border-radius: 4px;
+        margin-bottom: 10px;
+    
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
     @import "./result_box";
 
     .post-section > h2 {
         margin: 0.25em 0em 1em 0em !important;
     }
 
-    @include styled-inputs;
+    .share-web-share, .share-twitter, .share-kakao, .share-continue {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
     @import "../index_page/post-board";
 }

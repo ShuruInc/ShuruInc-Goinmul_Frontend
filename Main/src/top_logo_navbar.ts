@@ -4,11 +4,13 @@ import logoImage2 from "../assets/logo/MainLogo_1_alpha.png";
 import logoImage3 from "../assets/logo/MainLogo_1_alpha.png";
 import logoImage4 from "../assets/logo/MainLogo_1_alpha.png";
 import {
+    faAngleLeft,
     faMagnifyingGlass,
     faRankingStar,
 } from "@fortawesome/free-solid-svg-icons";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
+import SmoothScrollbar from "smooth-scrollbar";
 
 const images = [logoImage1, logoImage2, logoImage3, logoImage4];
 
@@ -34,14 +36,14 @@ export function SetCustomRankingHandler(handler: () => void) {
 export function InitTopNav(animated = false) {
     const topFixedBar = document.getElementById("topFixedBar")!;
     // 아이콘 렌더링
-    library.add(faMagnifyingGlass, faRankingStar);
+    library.add(faMagnifyingGlass, faRankingStar, faAngleLeft);
     dom.i2svg({ node: topFixedBar });
 
     // 로고 이미지 랜덤 설정
     const mainTopLogo = document.querySelector(
         ".main-top-logo-image",
-    )! as HTMLImageElement;
-    mainTopLogo.src = images[getRandomInt(4)];
+    )! as HTMLImageElement | null;
+    if (mainTopLogo !== null) mainTopLogo.src = images[getRandomInt(4)];
 
     // 이벤트 핸들러 추가
     topFixedBar
@@ -61,6 +63,10 @@ export function InitTopNav(animated = false) {
             evt.preventDefault();
             location.href = "/search.html";
         });
+    topFixedBar.querySelector(".go-back")?.addEventListener("click", (evt) => {
+        evt.preventDefault();
+        history.back();
+    });
 
     // 클릭 이벤트 투과 (버그 수정용)
     topFixedBar.addEventListener("click", (evt) => {
@@ -111,7 +117,7 @@ export function InitTopNav(animated = false) {
 // 하향 스크롤 시 감추고 반대의 경우 드러냄
 export function InitTopBottomAnimation(
     topFixedBar: HTMLElement,
-    mainTopLogo: HTMLImageElement,
+    mainTopLogo: HTMLImageElement | null,
 ) {
     var isHidden = false;
     var mainLogoNum = 1;
@@ -121,9 +127,11 @@ export function InitTopBottomAnimation(
 
     function setupScrollEventHandlerForcolumn(column: Element) {
         var lastScrollTop = 0;
-        column.addEventListener("scroll", function (evt) {
+        SmoothScrollbar.get(
+            column.querySelector("[data-scrollbar]") as HTMLElement,
+        )?.addListener((status) => {
             // column별로 스크롤이 따로 논다!
-            var scrollTop = (evt.target as HTMLElement).scrollTop;
+            var scrollTop = status.offset.y;
 
             //페이지가 로딩되거나 column이 바뀐 경우에는 상단바를 가리지 않음
             if (firstLoad) {
@@ -151,10 +159,12 @@ export function InitTopBottomAnimation(
 
             if (isHidden) {
                 topFixedBar.classList.add("is-hidden");
-                mainTopLogo.classList.add("is-hidden");
+                if (mainTopLogo !== null)
+                    mainTopLogo.classList.add("is-hidden");
             } else {
                 topFixedBar.classList.remove("is-hidden");
-                mainTopLogo.classList.remove("is-hidden");
+                if (mainTopLogo !== null)
+                    mainTopLogo.classList.remove("is-hidden");
             }
 
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
@@ -165,6 +175,8 @@ export function InitTopBottomAnimation(
         if (logoChangeAllowed) {
             logoChangeAllowed = false;
             setTimeout(() => {
+                if (mainTopLogo === null) return;
+
                 if (mainLogoNum < 4) {
                     mainLogoNum++;
                 } else {

@@ -15,6 +15,8 @@ import addPadding from "./canvas_padding";
 import resultPageHtml from "./result_page.html";
 import createResultElement from "./create_result_element";
 import PostBoardApiClient from "./api/posts";
+import { dom, library } from "@fortawesome/fontawesome-svg-core";
+import { faRankingStar } from "@fortawesome/free-solid-svg-icons";
 
 export default function initializeResultPage() {
     if (!document.body.classList.contains("result-page-html-prepared")) {
@@ -55,12 +57,15 @@ export default function initializeResultPage() {
             return alert("오류가 발생했습니다: 퀴즈가 아직 안 끝났습니다!");
 
         if (result.nickname && result.hashtag) {
+            library.add(faRankingStar);
+            dom.i2svg({
+                node: document.querySelector(".rankings-ad")!,
+            });
+
             document.querySelector(
                 ".rankings-ad .nickname",
             )!.textContent = `${result.nickname}#${result.hashtag}`;
-        }
-
-        if (typeof result.percentage !== "undefined") {
+        } else {
             document
                 .querySelector(".rankings-ad")
                 ?.classList.add("display-none");
@@ -82,8 +87,8 @@ export default function initializeResultPage() {
                       lowCategory: (await session.sessionInfo()).title,
                       middleCategory: (await session.sessionInfo()).category,
                       link: {
-                          href: nerdTest.title,
-                          text: nerdTest.href,
+                          href: nerdTest.href,
+                          text: nerdTest.title,
                       },
                   }
                 : {

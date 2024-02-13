@@ -1,4 +1,10 @@
 import { kakaoApiKey } from "./env";
+import "../styles/common/_share-buttons.scss";
+import kakaoTalkIcon from "../assets/kakaotalk_bubble.svg";
+import { encode } from "html-entities";
+import { icon } from "@fortawesome/fontawesome-svg-core";
+import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
+import tweetDialog from "./tweet_dialog";
 
 export type ShareDatas = {
     webShare: ShareData;
@@ -68,6 +74,13 @@ export default function initShareButton(
     twitterButton?.classList.add("display-none");
     kakaoButton?.classList.add("display-none");
 
+    kakaoButton!.innerHTML = `<img src="${encode(
+        kakaoTalkIcon,
+    )}"> ${kakaoButton?.innerHTML}`;
+    twitterButton!.innerHTML = `${
+        icon(faXTwitter).html[0]
+    } ${twitterButton?.innerHTML}`;
+
     webShareButton?.addEventListener("click", () => {
         (options.beforeShare ? options.beforeShare : async () => {})()
             .then(() => {
@@ -78,8 +91,24 @@ export default function initShareButton(
             })
             .catch((err) => alert("오류가 발생했습니다: " + err));
     });
-    twitterButton.addEventListener("click", () => {
-        if (options.onComplete) options.onComplete();
+    twitterButton.addEventListener("click", (evt) => {
+        evt.preventDefault();
+
+        (options.beforeShare ? options.beforeShare : async () => {})()
+            .then(async () => {
+                if (content === null) return;
+
+                const tweeted = await tweetDialog(
+                    content.twitter.text,
+                    content.image,
+                );
+
+                if (options.onComplete && tweeted) options.onComplete();
+            })
+            .catch((err) => {
+                alert("오류가 발생했습니다!");
+                console.error(err);
+            });
     });
     kakaoButton?.addEventListener("click", async (_evt) => {
         _evt.preventDefault();

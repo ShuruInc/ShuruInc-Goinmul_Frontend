@@ -4,6 +4,7 @@
 @import "common/styled-inputs";
 @import "index_page/post-board";
 @import "mixins";
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
 .top-fixed-bar .container {
     width: 100%;
@@ -11,25 +12,45 @@
     box-sizing: border-box;
 
     nav {
+        align-items: center;
+        gap: 10px;
         font-size: 24px;
         @include styled-inputs;
         button.go-back {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background-color: transparent !important;
 
             font-size: inherit;
-            max-width: 100%;
+            width: 24px;
 
-            padding: 7.5px 15px;
+            padding: 0px !important;
+
+            svg {
+                height: 12px;
+                width: auto;
+            }
         }
 
         input.search {
+            --search-icon-size: 24px;
             background-image: var(--search-icon);
-            background-position: 10px center;
-            background-size: auto 20px;
+            background-position: right 16px center;
+            background-size: auto var(--search-icon-size);
             background-repeat: no-repeat;
-            padding: 7.5px 15px 7.5px 36px;
+            padding: 9px calc(16px + var(--search-icon-size)) 9px 16px;
             width: 100%;
             color: #000000b2;
+
+            font-family: Pretendard;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 20px;
+
+            &::placeholder {
+                color: #B4B9B8;
+            }
 
             &:focus,
             &:active {
@@ -43,9 +64,29 @@
 article {
     width: 100%;
     padding-top: 80px;
+
+    * > h2 {
+        font-size: 18px;
+        font-weight: 700;
+        font-family: Pretendard;
+        padding: 20px 0px;
+        margin: 0px;
+    }
+
+    .result.post-section > h2 {
+        font-family: Pretendard;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 17px;
+        letter-spacing: -0.01em;
+        text-align: left;
+        color: #404544;
+    }
+
     .popularNow {
         user-select: None;
         width: 100%;
+        padding: 0px 0px 20px 0px;
 
         .columns {
             display: flex;
@@ -55,19 +96,31 @@ article {
             @include hide-scrollbar;
 
             .column {
-                display: block;
-                padding: 10px 30px;
-                border-right: 5px solid gray;
+                display: flex;
+                flex-direction: column;
+                gap: 14px;
+
                 width: 50%;
                 box-sizing: border-box;
-                &:last-child {
-                    border-right: 0px;
-                }
+                list-style-type: none;
+                margin: 0px;
+                padding: 0px;
                 li {
-                    list-style-position: inside;
+                    .marker {
+                        display: inline-block;
+                        font-size: 16px;
+                        line-height: 18.8px;
+                        letter-spacing: -0.01em;
+                        font-weight: 800;
+                        font-family: Pretendard;
+                        color: #1da1f2;
+                        width: 29px;
+                    }
+
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
+                    color: #14171a;
                 }
                 a {
                     text-decoration: none;
@@ -81,29 +134,75 @@ article {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 8px;
         a.bubble {
+            font-family: Pretendard;
+            font-size: 14px;
+            font-weight: 14px;
+            line-height: 17px;
+            letter-spacing: -0.01em;
+
             white-space: nowrap;
             display: block;
             text-decoration: none;
-            color: black;
-            background-color: #bababa;
-            font-size: 16px;
-            padding: 4px 8px;
-            border-radius: 8px;
+            color: #666867;
+            background-color: #ffffff;
+            padding: 8px 14px;
+            border-radius: 4px;
+            border: #dfdfdf 1px solid;
         }
     }
 
-    .no-results .request {
-        width: 100%;
-        font-size: 1.25em;
-        background-color: orange;
-        color: white;
-        padding: 1em 10px;
-        border: 0px;
-        border-radius: 20px;
-        &.requested {
-            background-color: gray;
+    .no-results {
+        display: flex;
+        flex-direction: column;
+        padding: 120px 0px;
+        gap: 20px;
+        align-items: center;
+        svg {
+            height: 72px;
+            width: auto;
+            color: #B4B9B880;
+        }
+        .text {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-align: center;
+            h2 {
+                margin: 0px;
+                padding: 0px;
+                color: #666867;
+                font-size: 16px;
+                font-weight: 700;
+                font-family: Pretendard;
+            }
+            p {
+                margin: 0px;
+                padding: 0px;
+                font-size: 16px;
+                font-weight: 700;
+                line-height: 22px;
+                letter-spacing: -0.01em;
+                font-family: Pretendard;
+                color: #898B8A;
+            }
+        }
+        .request {
+            font-family: Pretendard;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 17px;
+            letter-spacing: -0.01em;
+
+            color: #1DA1F2;
+            background-color: #ECF8FF;
+            padding: 8px 16px;
+            border: 0px;
+            border-radius: 4px;
+            &.requested {
+                background-color: #f8fcff;
+            }
         }
     }
 }

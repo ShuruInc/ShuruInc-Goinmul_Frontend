@@ -18,26 +18,40 @@
         position: absolute;
         left: 50%;
         top: 0px;
-        padding: 145px 0px 0px 0px;
         width: 100%;
         min-width: 100%;
         height: var(--columns-height);
         max-height: var(--columns-height);
         box-sizing: border-box;
-        overflow-y: scroll;
+        overflow-y: hidden;
 
         @include hide-scrollbar;
 
+        .scroll-content {
+            padding-top: 145px;   
+        }
+
         footer {
             margin-top: 90px;
-            padding: 1em 2em 90px 1em;
+            padding: 28px 16px;
             text-align: center;
-            padding: 30px 15px 30px 15px;
-            background-color: #e5f7ff;
-        }
-    }
+            color: #898B8A;
 
-    &.y-scroll-hidden > .column {
-        overflow-y: hidden;
+            border-top: 1px solid #DFDFDF;
+            background: #FAFAFA;
+
+            font-family: Pretendard;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 17px;
+            letter-spacing: -0.01em;
+            text-align: align;  
+            .icons {  
+                margin-top: 0.5em;
+                svg {
+                    color: #898B8A;
+                }
+            }
+        }
     }
 }

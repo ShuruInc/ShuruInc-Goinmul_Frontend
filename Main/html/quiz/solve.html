@@ -6,17 +6,14 @@
     <title>고인물테스트</title>
 </head>
 <body>
-    <div id="topFixedBar" class="top-fixed-bar gradient">
+    <div id="topFixedBar" class="top-fixed-bar">
         <nav>
-            <button class="ranking-icon">
-                <i class="fa-solid fa-ranking-star"></i>
-            </button>        
-            <a class="main-top-logo" href="/">
-                <img class="main-top-logo-image">
-            </a>
-            <button class="search-icon">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
+            <button class="go-back">
+                <i class="fa-solid fa-angle-left"></i>
+            </button>                
+            <div class="test-title">
+            </div>
+            <div></div>
         </nav>       
         <div class="progress-container">
             <div class="progress" style="width: 0%;"></div>
@@ -24,46 +21,49 @@
     </div>
     <div id="mainContainer" class="main-container">
         <article class="quiz-entry display-none">
-            <div class="introduction">
-                <h1 class="test-title">시험</h1>
-                <h2>수험자 정보 입력</h2>
-                <p>평점 기록 및 경품 수령을 위한 어쩌구입니다.</p>
-            </div>
-            <form class="entry">
-                <label>
-                    닉네임
-                    <input type="input" id="nickname" min="6" required>
-                    <a href="#" class="refresh-nickname">
-                        <i class="fa-solid fa-arrows-rotate"></i>
-                    </a>
-                </label>
-            </form>
-            <div class="statistics-header">
-                <h2>(선택)설문조사</h2>
-                <p>서비스 이용자 파악을 위한 설문조사입니다.</p>
-            </div>
-            <form class="statistics">
-                <label>
-                    연령대
-                </label>
-                    <select class="age">
-                        <option value="10대">10대</option>
-                        <option value="20대">20대</option>
-                        <option value="30대">30대</option>
-                        <option value="40대 이상">40대 이상</option>
-                        <option value="">응답하지 않음</option>
-                    </select>
-                <label>
-                    성별
-                </label>
-                <div class="radios gender-radios">
-                    <label><input type="radio" name="gender" value="F" id="female"> 여성</label>
-                    <label><input type="radio" name="gender" value="M" id="male"> 남성</label>
-                    <label><input type="radio" name="gender" value="other" id="specified"> 기타 <input type="input" class="small-padding specified-gender"></label>
+            <div class="entry-section">
+                <div class="introduction">
+                    <h1 class="test-title">시험</h1>
+                    <h2>수험자 정보 입력</h2>
+                    <p>랭킹 기록을 위해 닉네임을 입력해 주세요.</p>
                 </div>
-            </form>
+                <div class="entry-form-with-warning">
+                    <form class="entry">
+                        <input type="input" id="nickname" min="6" required>
+                        <a href="#" class="refresh-nickname">
+                            <i class="fa-solid fa-arrows-rotate"></i>
+                        </a>
+                    </form>
+                    <div class="warning disabled"></div>
+                </div>
+            </div>
+            <div class="statistics-section">
+                <div class="statistics-header">
+                    <h2>(선택)설문조사</h2>
+                    <p>서비스 이용자 파악을 위한 설문조사입니다.</p>
+                </div>
+                <form class="statistics">
+                    <label>
+                        연령대
+                    </label>
+                        <select class="age">
+                            <option value="10대">10대</option>
+                            <option value="20대">20대</option>
+                            <option value="30대">30대</option>
+                            <option value="40대 이상">40대 이상</option>
+                            <option value="">응답하지 않음</option>
+                        </select>
+                    <label>
+                        성별
+                    </label>
+                    <div class="radios gender-radios">
+                        <label><input type="radio" name="gender" value="F" id="female"><label for="female"><i class="fa-solid fa-check"></i></label> 여성</label>
+                        <label><input type="radio" name="gender" value="M" id="male"><label for="male"><i class="fa-solid fa-check"></i></label> 남성</label>
+                        <label><input type="radio" name="gender" value="other" id="specified"><label for="specified"><i class="fa-solid fa-check"></i></label> 기타 <input type="input" class="small-padding specified-gender" placeholder="입력해 주세요."></label>
+                    </div>
+                </form>
+            </div>
             <form class="start-button">
-                <div class="warning"></div>
                 <button type="submit">시작하기</button>
             </form>
         </article>

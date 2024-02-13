@@ -1,0 +1,43 @@
+@mixin share-button-common {
+    font-family: Pretendard;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 21px;
+    letter-spacing: -0.01em;
+    text-align: center;
+    text-decoration: none;
+
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 14px 20px;
+    color: #14171A;
+
+    .icon {
+        margin-right: 14px;
+    }
+}
+
+.share-web-share {
+    @include share-button-common();
+    border: 1px solid #DFDFDF;
+}
+
+.share-kakao {
+    @include share-button-common();
+    background-color: #FBE400;
+    img {
+        width: 1em;
+    }
+}
+
+.share-twitter {
+    @include share-button-common();
+    border: 1px solid #DFDFDF;
+    display: block;
+}
+
+.share-continue {
+    @include share-button-common();
+    background-color: #1DA1F2;
+    color: white;
+}

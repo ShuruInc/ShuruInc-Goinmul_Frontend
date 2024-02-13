@@ -49,7 +49,7 @@ module.exports = {
                 use: [MiniCssExtractPlugin.loader, "css-loader"],
             },
             {
-                test: /\.(png|jpe?g|gif|svg|webp)$/i,
+                test: /\.(png|jpe?g|gif|svg|webp|svg)$/i,
                 type: 'asset/resource'
             },
         ],
@@ -85,7 +85,7 @@ module.exports = {
                     template: path.join("Main/html", i),
                 }),
         ),
-        new webpack.EnvironmentPlugin(["KAKAO_API_KEY", "BACKEND_URL"]),
+        new webpack.EnvironmentPlugin(["KAKAO_API_KEY", "BACKEND_URL", "DEBUG_NERD_TEST_EXIT_FEAT", "DEBUG_RANDOM_MEDAL"]),
         new MiniCssExtractPlugin(),
     ],
     optimization: {
