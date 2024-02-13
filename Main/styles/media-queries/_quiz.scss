@@ -10,8 +10,8 @@
     }
 }
 .question .figure {
-    height: 300px;
+    height: 250px;
     @include mobile {
-        height: min(150px, 80vh);
+        height: min(150px, 75vh);
     }
 }

@@ -7,6 +7,8 @@ import {
     preparePlaceholderSection,
 } from "./post_board";
 import setHorizontalDragScrollOnDesktop from "./horizontal_drag_to_scroll_on_desktop";
+import SmoothScrollbar from "smooth-scrollbar";
+import "./smooth-scrollbar-scroll-lock-plugin";
 
 /**
  * 랭킹 아이템
@@ -65,13 +67,15 @@ export function createRankingSection(title: string, data: RankingItem[]) {
         const ol = document.createElement("ol");
         ol.start = start;
         three
-            .map((i) => {
+            .map((i, idx) => {
                 const li = document.createElement("li");
-                li.innerHTML = `${encode(
+                li.innerHTML = `<div class="marker">${
+                    start + idx
+                }</div><div>${encode(
                     i.nickname,
                 )}<span class="hashtag">#${encode(i.hashtag)}</span> (${
                     i.score
-                }점)`;
+                }점)</div>`;
                 return li;
             })
             .forEach((i) => ol.appendChild(i));
@@ -93,8 +97,19 @@ export function displayMainPostBoard(
     element: HTMLElement,
     data: MainPostBoardData,
 ) {
-    element.innerHTML = `<section class="post-section"></section>`;
-    preparePlaceholderSection(element.querySelector(".post-section")!, [
+    const columnScrollbar = document.createElement("div");
+    columnScrollbar.style.height = "100vh";
+    element.appendChild(columnScrollbar);
+
+    // Smooth-scrollbar를 쓴다.
+    const scrollbar = SmoothScrollbar.init(columnScrollbar, {
+        alwaysShowTracks: false,
+    });
+    scrollbar.track.yAxis.element.remove();
+    const column = scrollbar.contentEl;
+
+    column.innerHTML = `<section class="post-section"></section>`;
+    preparePlaceholderSection(column.querySelector(".post-section")!, [
         { landscape: true, count: 1 },
         { landscape: false, count: data.popularTests.length - 1 },
     ]);
@@ -104,12 +119,12 @@ export function displayMainPostBoard(
             landscape: data.popularTests[0],
             portraits: data.popularTests.slice(1),
         },
-        element.querySelector(".post-section")!,
+        column.querySelector(".post-section")!,
         true,
     );
     for (const i in data.rankings) {
         const rankingSection = createRankingSection(i, data.rankings[i]);
-        element.appendChild(rankingSection);
+        column.appendChild(rankingSection);
     }
-    element.appendChild(footer());
+    column.appendChild(footer());
 }

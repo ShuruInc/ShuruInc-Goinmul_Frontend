@@ -1,3 +1,4 @@
+import SmoothScrollbar from "smooth-scrollbar";
 import TouchVelocityCalculator from "./touch_snap_interpreter";
 
 /**
@@ -111,6 +112,20 @@ export class HorizontalInfinityScroller {
         window.requestAnimationFrame(this._render);
     }
 
+    toggleYAxisScroll(enabled: boolean) {
+        this._children()
+            .map((i) => i.querySelector("[data-scrollbar]"))
+            .filter((i) => i !== null)
+            .map((i) => SmoothScrollbar.get(i as HTMLElement))
+            .filter((i) => typeof i !== "undefined")
+            .forEach(
+                (i) =>
+                    i?.updatePluginOptions("scroll-lock", {
+                        y_locked: !enabled,
+                    }),
+            );
+    }
+
     /**
      * 모바일 터치 시작 이벤트 핸들러
      */
@@ -124,7 +139,7 @@ export class HorizontalInfinityScroller {
         this._dragging = true;
         this._origianlOffsetBeforeDragging = this._basisChildOffsetFromCenter;
         // 가로 스크롤중일 때는 세로 스크롤이 되지 않도록 한다.
-        this._rootElement.classList.add("y-scroll-hidden");
+        this.toggleYAxisScroll(false);
     }
 
     /**
@@ -181,7 +196,7 @@ export class HorizontalInfinityScroller {
         }
 
         // 세로 스크롤 활성화
-        this._rootElement.classList.remove("y-scroll-hidden");
+        this.toggleYAxisScroll(true);
     }
 
     /**
@@ -259,9 +274,9 @@ export class HorizontalInfinityScroller {
             let child = children[i] as HTMLElement;
             let translate = translates[i];
             if (translate === null) {
-                child.style.display = "none";
+                // display: none하면 smooth-scrollbar의 scrollTop이 초기화된다.
+                child.style.transform = "translateX(-1000vw)";
             } else {
-                child.style.display = "";
                 child.style.transform = `translateX(calc(${translate}px - 50%))`;
             }
         }

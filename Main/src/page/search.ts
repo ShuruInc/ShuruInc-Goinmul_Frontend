@@ -10,11 +10,14 @@ import {
     preparePlaceholderSection,
 } from "../post_board";
 import setHorizontalDragScrollOnDesktop from "../horizontal_drag_to_scroll_on_desktop";
+import { faFaceSadTear } from "@fortawesome/free-regular-svg-icons";
 
 // 아이콘 렌더링
 library.add(faSearch);
 library.add(faChevronLeft);
+library.add(faFaceSadTear);
 dom.i2svg({ node: document.querySelector("#topFixedBar")! });
+dom.i2svg({ node: document.querySelector(".no-results")! });
 document.body.style.setProperty(
     "--search-icon",
     `url("data:image/svg+xml;,${encodeURIComponent(
@@ -67,7 +70,8 @@ const renderPopularQueries = (queries: string[]) => {
             if (typeof query === "undefined") break;
 
             const li = document.createElement("li");
-            li.innerHTML = '<a href="#"></a>';
+            li.innerHTML =
+                '<div class="marker">' + start + '</div><a href="#"></a>';
 
             const a = li.querySelector("a")!;
             a.href = "?query=" + encodeURIComponent(query);
@@ -151,27 +155,6 @@ const render = async () => {
                 resultSection,
             );
             resultSection.classList.remove("display-none");
-
-            // 연관 모의고사
-            if (result.similar.length > 0) {
-                const similarSection = document.querySelector(
-                    ".similar",
-                )! as HTMLElement;
-                preparePlaceholderSection(similarSection, [
-                    {
-                        count: result.similar.length,
-                        landscape: false,
-                    },
-                ]);
-                fillPlaceholderSectionInto(
-                    {
-                        portraits: result.similar,
-                        title: "연간된 모의고사",
-                    },
-                    similarSection,
-                );
-                similarSection.classList.remove("display-none");
-            }
         } else {
             // 요청 버튼 활성화
             const requestBtn = document.querySelector(
@@ -183,6 +166,27 @@ const render = async () => {
             document
                 .querySelector(".no-results")
                 ?.classList.remove("display-none");
+        }
+
+        // 연관 모의고사
+        if (result.similar.length > 0) {
+            const similarSection = document.querySelector(
+                ".similar",
+            )! as HTMLElement;
+            preparePlaceholderSection(similarSection, [
+                {
+                    count: result.similar.length,
+                    landscape: false,
+                },
+            ]);
+            fillPlaceholderSectionInto(
+                {
+                    portraits: result.similar,
+                    title: "연관된 모의고사",
+                },
+                similarSection,
+            );
+            similarSection.classList.remove("display-none");
         }
 
         // 추천 모의고사

@@ -10,17 +10,17 @@
     justify-content: center;
     align-items: center;
 
-    font-size: 140px;
+    font-size: 220px;
     &.ok {
-        color: green;
-        background: linear-gradient(#00000000 60%, rgb(212, 255, 212));
+        color: #1DA1F2;
+        background: linear-gradient(#00000000 50%, #1DA1F2);
         .fail {
             display: none;
         }
     }
     &.fail {
-        color: rgb(128, 0, 0);
-        background: linear-gradient(#00000000 60%, rgb(255, 212, 212));
+        color: #EE4D4D;
+        background: linear-gradient(#00000000 50%, #EE4D4D);
         .ok {
             display: none;
         }

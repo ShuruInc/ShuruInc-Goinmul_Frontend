@@ -1,4 +1,4 @@
-import { backendUrl } from "../env";
+import { backendUrl, nerdTestExitFeatureEnabled } from "../env";
 import { QuizProblem } from "../quiz_solve_ui";
 import StopWatch from "../stopwatch";
 import { Api } from "./api_http_client/Api";
@@ -46,6 +46,7 @@ export type QuizInternalSessionData = {
     postedRank: boolean;
     hashtag: string;
     category: string;
+    forcedEnded: boolean;
     ranking: {
         comment: string;
         percentage: number;
@@ -87,8 +88,15 @@ export class QuizSession {
         return (
             this.getLocalSession().problemIndex >= this.problems().length ||
             (this.getLocalSession().nerdTest &&
-                this.stopwatch.elapsed() >= 1000 * 60 * 5)
+                this.stopwatch.elapsed() >= 1000 * 60 * 5) ||
+            (nerdTestExitFeatureEnabled && this.getLocalSession().forcedEnded)
         );
+    }
+    forcedEnd() {
+        this.saveLocalSession({
+            ...this.getLocalSession(),
+            forcedEnded: true,
+        });
     }
     async sessionInfo(): Promise<QuizSessionInfo> {
         return {
@@ -125,16 +133,20 @@ export class QuizSession {
                   index: this.getLocalSession().problemIndex + 1,
               };
     }
-    async submit(answer: string, subjective: boolean): Promise<boolean> {
+    async submit(
+        answer: string,
+        subjective: boolean,
+    ): Promise<{ combo?: number; correct?: boolean; score?: number }> {
         let correct = (
             await apiClient.getAnswers((await this.currentProblem())!.id!, {
                 answer,
                 problemType: subjective ? "SUBJECTIVE" : "MULTIPLE_CHOICE",
             })
-        ).data.result!.correct!;
+        ).data.result!;
 
         let newProblemIndex = this.getLocalSession().problemIndex + 1;
-        let newPoints = this.getLocalSession().points + (correct ? 10 : 0);
+        let newPoints =
+            this.getLocalSession().points + (correct.correct ? 10 : 0);
         this.saveLocalSession({
             ...this.getLocalSession(),
             problemIndex: newProblemIndex,
@@ -153,6 +165,10 @@ export class QuizSession {
             score: localSession.points,
         });
 
+        const points = this.getLocalSession().nerdTest
+            ? result.data.result!.score!
+            : this.getLocalSession().points;
+
         this.saveLocalSession({
             ...localSession,
             postedRank: true,
@@ -162,6 +178,7 @@ export class QuizSession {
                 percentage: result.data!.result!.percentile!,
                 rank: result.data!.result!.rank!,
             },
+            points,
         });
     }
     async getImageLinks(): Promise<string[]> {
