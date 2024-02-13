@@ -120,7 +120,7 @@ export default function initSolvePage(session: QuizSession) {
 
         const imageCache = new ImageCache();
         for (const i of await session.getImageLinks()) {
-            imageCache.fetch(i);
+            imageCache.pushUrl(i);
         }
 
         const renewProblem = async () => {
