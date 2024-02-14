@@ -4,7 +4,7 @@ import {
     faExclamationCircle,
     faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { isMobile } from "./is_mobile";
+import { isMobile } from "./util/is_mobile";
 
 // FontAwesome 렌더링
 library.add(faXmark);
