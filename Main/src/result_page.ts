@@ -18,6 +18,9 @@ import PostBoardApiClient from "./api/posts";
 import { dom, library } from "@fortawesome/fontawesome-svg-core";
 import { faRankingStar } from "@fortawesome/free-solid-svg-icons";
 
+/**
+ * 결과 페이지를 렌더링한다.
+ */
 export default function initializeResultPage() {
     if (!document.body.classList.contains("result-page-html-prepared")) {
         document.body.innerHTML = resultPageHtml;
@@ -28,7 +31,7 @@ export default function initializeResultPage() {
     const session = new QuizSession(sessionId);
     const loadTime = Date.now();
 
-    const removeLoading = (delay: number) =>
+    const removeLoadingAfter = (delay: number) =>
         new Promise<void>((resolve) => {
             setTimeout(() => {
                 (
@@ -76,10 +79,20 @@ export default function initializeResultPage() {
             topCategory.id,
         );
 
+        let isNerdTest = typeof result.ranking !== "undefined";
         createResultElement(
             document.querySelector(".result")!,
-            typeof result.ranking === "undefined"
+            isNerdTest
                 ? {
+                      nerd: true,
+                      date: new Date(),
+                      hashtag: result.hashtag!,
+                      nickname: result.nickname!,
+                      points: result.points!,
+                      ranking: result.ranking!,
+                      topCategory: topCategory.name,
+                  }
+                : {
                       nerd: false,
                       date: new Date(),
                       percentage: result.percentage!,
@@ -90,15 +103,6 @@ export default function initializeResultPage() {
                           href: nerdTest.href,
                           text: nerdTest.title,
                       },
-                  }
-                : {
-                      nerd: true,
-                      date: new Date(),
-                      hashtag: result.hashtag!,
-                      nickname: result.nickname!,
-                      points: result.points!,
-                      ranking: result.ranking!,
-                      topCategory: topCategory.name,
                   },
         );
 
@@ -112,13 +116,12 @@ export default function initializeResultPage() {
         const changeShareData = initShareButton();
 
         const url = "https://example.com";
-        await removeLoading(Math.max(1, 1000 - (Date.now() - loadTime)));
+        await removeLoadingAfter(Math.max(1, 1000 - (Date.now() - loadTime)));
         const blob = await addPadding(
             await html2canvas(document.querySelector(".result")!),
         );
         const imageFile = new File([blob], "result.png", { type: "image/png" });
 
-        let isNerdTest = typeof result.nickname !== "undefined";
         // 모의고사
         changeShareData({
             webShare: {
