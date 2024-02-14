@@ -11,7 +11,7 @@ import {
     updateShareProblem,
 } from "./quiz_solve_ui";
 import solveBody from "./solve_page.html";
-import { InitTopNav } from "./top_logo_navbar";
+import { InitTopNav } from "./top_navbar/top_navbar";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import html2canvas from "html2canvas";
 import addPadding from "./util/add_padding_to_canvas";

@@ -1,7 +1,7 @@
 import { dom, icon, library } from "@fortawesome/fontawesome-svg-core";
 import "../../../styles/quiz";
 import { QuizApiClient } from "../../api/quiz";
-import { InitTopNav } from "../../top_logo_navbar";
+import { InitTopNav } from "../../top_navbar/top_navbar";
 import {
     faArrowsRotate,
     faCheck,

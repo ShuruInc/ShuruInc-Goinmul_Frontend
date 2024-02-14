@@ -10,7 +10,7 @@ import {
     fillPlaceholderSectionInto,
     preparePlaceholderSection,
 } from "./post_board";
-import { InitTopNav } from "./top_logo_navbar";
+import { InitTopNav } from "./top_navbar/top_navbar";
 import addPadding from "./util/add_padding_to_canvas";
 import resultPageHtml from "./result_page.html";
 import createResultElement from "./create_result_element";
