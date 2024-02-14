@@ -80,8 +80,15 @@ article {
 
         img {
             max-width: 100%;
-            height: 100%;
             object-fit: contain;
+
+            &.min-height {
+                min-height: 100%;
+            }
+
+            &.min-width {
+                min-width: 100%;
+            }
         }
 
         .initials {

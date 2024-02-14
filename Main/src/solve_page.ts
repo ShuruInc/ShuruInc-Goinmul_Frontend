@@ -24,6 +24,10 @@ function confirmUnload(evt: Event) {
     return "정말로 나가시겠습니까?";
 }
 
+/**
+ * 문제 풀이 페이지를 렌더링한다.
+ * @param session 퀴즈 세션
+ */
 export default function initSolvePage(session: QuizSession) {
     // 페이지 나갈시 확인 대화상자 표시
     let timerInterval: NodeJS.Timeout | null = null;
@@ -97,6 +101,7 @@ export default function initSolvePage(session: QuizSession) {
 
         updateProgress(0);
         const goResult = () => {
+            // 타이머 표시를 중단한다.
             if (timerInterval !== null) clearInterval(timerInterval);
 
             // 결과 페이지로 갈 때는 페이지 나갈 시 뜨는 확인 대화상자가 뜨면 안 된다.
@@ -111,6 +116,8 @@ export default function initSolvePage(session: QuizSession) {
 
         const sessionInfo = await session.sessionInfo();
 
+        // 디버깅용 기능
+        // 개발자 도구 콘솔에서 exitNerdTest();를 치면 고인물 테스트가 남은 시간이나 남은 문제 갯수에 상관없이 강제 종료된다.
         if (nerdTestExitFeatureEnabled) {
             (window as any).exitNerdTest = () => {
                 session.forcedEnd();
@@ -118,17 +125,22 @@ export default function initSolvePage(session: QuizSession) {
             };
         }
 
+        // 이미지 캐시를 초기화한다.
         const imageCache = new ImageCache();
         for (const i of await session.getImageLinks()) {
+            // 참고: 나오는 순서대로 넣어야 한다. (순서 뒤섞이면 안 된다.)
             imageCache.pushUrl(i);
         }
 
         const renewProblem = async () => {
             const problem = await session.currentProblem();
+
+            // 문제가 다 떨어졌다면 결과 페이지를 표시한다.
             if (problem === null) {
                 return goResult();
             }
 
+            // 새로운 문제를 표시한다.
             displayProblem(
                 document.querySelector("article")!,
                 {
@@ -140,6 +152,8 @@ export default function initSolvePage(session: QuizSession) {
                 },
                 problem.index,
             );
+
+            // "친구들야, 도와줘!" 화면에 새로운 문제를 표시한다.
             updateShareProblem(
                 document.querySelector(".help-me .problem-box")!,
                 {
@@ -153,11 +167,13 @@ export default function initSolvePage(session: QuizSession) {
             );
 
             if (!sessionInfo.isNerdTest) {
+                // 고인물 테스트가 아닐시 문재 갯수를 기준으로 진행바를 갱신한다.
                 updateProgress(
                     ((problem.index - 1) / sessionInfo.totalProblemCount!) *
                         100,
                     `${problem.index}/${sessionInfo.totalProblemCount!}`,
                 );
+
                 setHelpMeFriendsEventHandler({
                     onEnabled: () => {
                         shared = false;
