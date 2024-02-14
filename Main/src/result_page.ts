@@ -11,7 +11,7 @@ import {
     preparePlaceholderSection,
 } from "./post_board";
 import { InitTopNav } from "./top_logo_navbar";
-import addPadding from "./canvas_padding";
+import addPadding from "./util/add_padding_to_canvas";
 import resultPageHtml from "./result_page.html";
 import createResultElement from "./create_result_element";
 import PostBoardApiClient from "./api/posts";

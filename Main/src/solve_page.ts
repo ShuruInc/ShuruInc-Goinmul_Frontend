@@ -14,7 +14,7 @@ import solveBody from "./solve_page.html";
 import { InitTopNav } from "./top_logo_navbar";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import html2canvas from "html2canvas";
-import addPadding from "./canvas_padding";
+import addPadding from "./util/add_padding_to_canvas";
 import ImageCache from "./image_cache";
 import initializeResultPage from "./result_page";
 import { nerdTestExitFeatureEnabled } from "./env";
