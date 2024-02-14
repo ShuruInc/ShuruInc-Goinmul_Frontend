@@ -117,6 +117,11 @@ export class TopCategoryButtonNav {
         });
     }
 
+    /**
+     * 스크롤이 진행되는 도중 아무 곳이나 클릭하면 스크롤이 멈추는 버그 (버튼 빠르게 여러번 누르면 생기는 버그)를
+     * 해결하기 위해 스크롤이 진행되는 동안 유저에 의한 x축 스크롤을 비활성화한다.
+     * @param element 스크롤 대상 요소
+     */
     createScrollToCenterBugfixFunction(element: HTMLElement) {
         const func = () => {
             const elementRect = element.getBoundingClientRect();
@@ -339,6 +344,10 @@ export class TopCategoryButtonNav {
         element.classList.add("active");
     }
 
+    /**
+     * 정가운데에 있거나, 정가운데에 가장 가까이 있는 버튼을 반환한다.
+     * @returns {HTMLButtonElement} 버튼 요소
+     */
     getButtonOnCenter() {
         const rootCenter =
             (this._root.getBoundingClientRect().left +
@@ -349,7 +358,7 @@ export class TopCategoryButtonNav {
                 element: i,
                 distance:
                     i.getBoundingClientRect().width === 0
-                        ? Infinity
+                        ? Infinity // 보이지 않는다면 Infinity로 한다. (추후 필터링용)
                         : Math.abs(
                               (i.getBoundingClientRect().left +
                                   i.getBoundingClientRect().right) /
@@ -357,11 +366,18 @@ export class TopCategoryButtonNav {
                                   rootCenter,
                           ),
             }))
-            .filter((i) => isFinite(i.distance))
+            .filter((i) => isFinite(i.distance)) // 보이지 않는 애들은 없앤다.
             .sort((a, b) => a.distance - b.distance)[0].element;
     }
 
+    /**
+     * 특정한 버튼을 정중앙에서 특정한 너비만큼 떨어진 곳에 위치시킨 후, 정중앙에 있는 버튼을 활성화한다.
+     * 특정한 버튼과 정중앙의 버튼이 항상 일치하지 않을 수 있습니다.
+     * @param basisKey 특정한 버튼의 식별자
+     * @param marginRatio 버튼의 너비를 단위로 하는, 특정한 버튼이 정중앙으로 떨어지는 거리
+     */
     activateWithMarginToBasis(basisKey: string, marginRatio: number) {
+        // 버튼 식별자가 basisKey이고 정중앙에 가장 가까이 있는 버튼
         let basis: HTMLButtonElement = this._getButtonElements()
             .map((i, idx) => ({ element: i, index: idx }))
             .filter((i) => i.element.dataset.key === basisKey)
@@ -379,10 +395,14 @@ export class TopCategoryButtonNav {
                 (i) => i.getBoundingClientRect().width,
             ),
         );
+
+        // 루트 컨테이너의 중앙 좌표
         const rootCenter =
             (this._root.getBoundingClientRect().left +
                 this._root.getBoundingClientRect().right) /
             2;
+
+        // 버튼의 중앙 좌표
         const elementCenter =
             (basis.getBoundingClientRect().left +
                 basis.getBoundingClientRect().right) /
@@ -391,7 +411,7 @@ export class TopCategoryButtonNav {
         // 스크롤 변화값 계산
         const delta = elementCenter - rootCenter - width * marginRatio;
 
-        // 스크롤
+        // basis 버튼을 중앙으로부터 (widht * maginRatio)만큼 떨어진 곳에 스크롤
         this._root.scrollLeft += delta;
 
         // 버튼 활성화

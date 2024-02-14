@@ -1,7 +1,11 @@
+/**
+ * 데스크톱에서 좌우 마우스 드래그시 좌우 스크롤이 되도록 한다.
+ * @param element HTML요소
+ */
 export default function setHorizontalDragScrollOnDesktop(element: HTMLElement) {
     let dragStarted = false,
         dragged = false,
-        preventClick = false,
+        preventClick = false, // 의도치 않게 클릭이 되는 버그 방지용
         lastClientX: number | null = null;
 
     element.addEventListener("mousedown", (evt) => {
