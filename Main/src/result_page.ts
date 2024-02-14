@@ -13,7 +13,7 @@ import {
 import { InitTopNav } from "./top_navbar/top_navbar";
 import addPadding from "./util/add_padding_to_canvas";
 import resultPageHtml from "./result_page.html";
-import createResultElement from "./create_result_element";
+import createResultElement from "./result_box";
 import PostBoardApiClient from "./api/posts";
 import { dom, library } from "@fortawesome/fontawesome-svg-core";
 import { faRankingStar } from "@fortawesome/free-solid-svg-icons";
