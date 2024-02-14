@@ -1,6 +1,6 @@
 @import "../mixins";
 
-.floating-btn {
+.floatingBtn {
     @include desktop {
         --floating-btn-width: 648px;
     }
