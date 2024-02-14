@@ -230,8 +230,16 @@ const createQuestionElement = (
     switch (question.figureType) {
         case "image":
             const img = document.createElement("img");
-            img.src = question.figure;
             img.crossOrigin = "anonymous";
+            img.addEventListener("load", () => {
+                if (img.naturalHeight > img.naturalWidth) {
+                    img.classList.add("min-height");
+                } else {
+                    img.classList.add("min-width");
+                }
+            });
+
+            img.src = question.figure;
             questionEl.querySelector(".figure")!.append(img);
             break;
         case "initials":
