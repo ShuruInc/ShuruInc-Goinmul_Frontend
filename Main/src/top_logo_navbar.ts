@@ -14,10 +14,18 @@ import SmoothScrollbar from "smooth-scrollbar";
 
 const images = [logoImage1, logoImage2, logoImage3, logoImage4];
 
+/**
+ * 0 이상 max 미만의 ( [0, max) ) 무작위 정수를 반환한다.
+ * @param max 최대값 (미만)
+ * @returns 0 이상 max 미만의 무작위 정수
+ */
 function getRandomInt(max: number) {
     return Math.floor(Math.random() * max);
 }
 
+/**
+ * 랭킹 버튼을 눌렀을 때 호출될 사용자 정의 이벤트 핸들러
+ */
 let customRankingHandler: (() => void) | null = null;
 
 /**
