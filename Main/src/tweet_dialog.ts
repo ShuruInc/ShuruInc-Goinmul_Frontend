@@ -1,6 +1,6 @@
 import urlJoin from "url-join";
 import { backendUrl } from "./env";
-import "../styles/common/_tweet-dialog.scss";
+import styles from "../styles/tweet-dialog.module.scss";
 
 /**
  * 트윗을 작성하는 Dialog를 열어 사용자로부터 입력을 받고, 사용자의 입력에 따라 트윗 작성 API를 호출합니다.
@@ -14,9 +14,9 @@ export default function tweetDialog(
 ): Promise<boolean> {
     return new Promise((resolve, _reject) => {
         const dialogWrapper = document.createElement("div");
-        dialogWrapper.className = "tweet-dialog-wrapper";
+        dialogWrapper.className = styles.tweetDialogWrapper;
         dialogWrapper.innerHTML = `
-        <div class="tweet-dialog">
+        <div class="${styles.tweetDialog}">
                 <h1>트윗 작성하기</h1>
                 <textarea></textarea>
             <div>
