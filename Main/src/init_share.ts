@@ -31,6 +31,7 @@ const importKakaoSdk = () => {
     script.integrity =
         "sha384-6MFdIr0zOira1CHQkedUqJVql0YtcZA1P0nbPrQYJXVJZUkTk/oX4U9GhUIs3/z8";
     script.crossOrigin = "anonymous";
+    script.id = "kakao-sdk";
     script.addEventListener("load", (_evt) => {
         (window as any).Kakao.init(kakaoApiKey);
     });
@@ -47,23 +48,21 @@ const uploadKakaoImage = async (image: File) =>
     (await (window as any).Kakao.Share.uploadImage({ file: [image] })).infos
         .original.url as string;
 
-type InitShareButtonOptions = Partial<{
+type InitShareButtonOptions = {
     /**
-     * 사용자가 공유를 취소하지 않았을 시의 동작 (단 사용자가 실제로 공유를 했는 지는 알 수 없다.)
+     * 곻유 데이터를 변형하는 함수
      */
-    onComplete: () => void;
+    shareDataTransformer?: (content: ShareDatas) => Promise<ShareDatas>;
     /**
-     * 공유 직전에 할 동작 (단 트위터는 해당되지 않음)
+     * 공유할 컨텐츠
      */
-    beforeShare: () => Promise<void>;
-}>;
+    content: ShareDatas;
+};
 
-export default function initShareButton(
-    options: InitShareButtonOptions = {},
-): (content: ShareDatas) => void {
+export default function initShare(options: InitShareButtonOptions) {
     importKakaoSdk();
 
-    let content: ShareDatas | null = null;
+    let content = options.content;
     let webShareButton = document.querySelector(".share-web-share"),
         twitterButton = document.querySelector(
             ".share-twitter",
@@ -81,42 +80,31 @@ export default function initShareButton(
         icon(faXTwitter).html[0]
     } ${twitterButton?.innerHTML}`;
 
-    webShareButton?.addEventListener("click", () => {
-        (options.beforeShare ? options.beforeShare : async () => {})()
-            .then(() => {
-                if (content === null) return;
-                navigator.share(content.webShare).then(() => {
-                    if (options.onComplete) options.onComplete();
-                });
-            })
-            .catch((err) => alert("오류가 발생했습니다: " + err));
-    });
-    twitterButton.addEventListener("click", (evt) => {
-        evt.preventDefault();
+    const doWebShare = async () => {
+        if (options.shareDataTransformer)
+            content = await options.shareDataTransformer(content);
 
-        (options.beforeShare ? options.beforeShare : async () => {})()
-            .then(async () => {
-                if (content === null) return;
+        if (content === null) return;
+        try {
+            await navigator.share(content.webShare);
+        } catch {
+            return false;
+        }
 
-                const tweeted = await tweetDialog(
-                    content.twitter.text,
-                    content.image,
-                );
+        return true;
+    };
 
-                if (options.onComplete && tweeted) options.onComplete();
-            })
-            .catch((err) => {
-                alert("오류가 발생했습니다!");
-                console.error(err);
-            });
-    });
-    kakaoButton?.addEventListener("click", async (_evt) => {
-        _evt.preventDefault();
-        await (options.beforeShare
-            ? options.beforeShare()
-            : new Promise<void>((resolve, _reject) => {
-                  resolve();
-              }));
+    const doTwitterShare = async () => {
+        if (options.shareDataTransformer)
+            content = await options.shareDataTransformer(content);
+
+        if (content === null) return;
+
+        return await tweetDialog(content.twitter.text, content.image);
+    };
+    const doKakaoShare = async () => {
+        if (options.shareDataTransformer)
+            content = await options.shareDataTransformer(content);
 
         if (content === null) return;
         (window as any).Kakao.Share.sendDefault({
@@ -140,22 +128,14 @@ export default function initShareButton(
                 },
             ],
         });
-        if (options.onComplete) options.onComplete();
-    });
+        return true;
+    };
 
-    return (newContent: ShareDatas) => {
-        content = newContent;
-        if ("canShare" in navigator && navigator.canShare(content.webShare)) {
-            webShareButton?.classList.remove("display-none");
-            twitterButton?.classList.add("display-none");
-            kakaoButton?.classList.add("display-none");
-        } else {
-            webShareButton?.classList.add("display-none");
-            twitterButton?.classList.remove("display-none");
-            kakaoButton?.classList.remove("display-none");
-        }
-        twitterButton.href =
-            "https://twitter.com/intent/tweet?text=" +
-            encodeURIComponent(content!.twitter.text);
+    return {
+        webShareAvailable:
+            "canShare" in navigator && navigator.canShare(content.webShare),
+        doWebShare,
+        doKakaoShare,
+        doTwitterShare,
     };
 }

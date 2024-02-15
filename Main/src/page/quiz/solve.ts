@@ -8,7 +8,7 @@ import {
     faCircleExclamation,
     faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
-import initSolvePage from "../../solve_page";
+import initSolvePage from "../../quiz_solve_ui/solve_page";
 import { QuizSession } from "../../api/quiz_session";
 import randomKoreanNickname from "../../random_korean_nickname";
 import PostBoardApiClient from "../../api/posts";

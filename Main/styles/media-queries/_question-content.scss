@@ -1,0 +1,8 @@
+@import "../mixins";
+
+.question .figure {
+    min-height: 250px;
+    @include mobile {
+        min-height: min(150px, 75vh);
+    }
+}

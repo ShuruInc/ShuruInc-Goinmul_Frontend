@@ -1,17 +1,11 @@
 @import "../mixins";
 
-.help-me .problem-box {
+.helpMe .problemBox {
     width: 400px;
     @include mobile {
         width: min(300px, 60vw);
     }
     @include tablet {
         width: 300px;
-    }
-}
-.question .figure {
-    min-height: 250px;
-    @include mobile {
-        min-height: min(150px, 75vh);
     }
 }

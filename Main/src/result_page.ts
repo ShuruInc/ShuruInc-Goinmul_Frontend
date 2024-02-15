@@ -5,7 +5,7 @@ import SearchApiClient from "./api/search";
 import createFloatingButton, {
     addFloatingButonListener,
 } from "./floating_button";
-import initShareButton from "./init_share";
+import initShare from "./init_share";
 import {
     fillPlaceholderSectionInto,
     preparePlaceholderSection,
@@ -113,7 +113,7 @@ export default function initializeResultPage() {
                 encodeURIComponent(result.quizId);
         });
 
-        const changeShareData = initShareButton();
+        const changeShareData = initShare();
 
         const url = "https://example.com";
         await removeLoadingAfter(Math.max(1, 1000 - (Date.now() - loadTime)));

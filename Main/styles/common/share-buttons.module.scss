@@ -17,12 +17,12 @@
     }
 }
 
-.share-web-share {
+.webShare {
     @include share-button-common();
     border: 1px solid #DFDFDF;
 }
 
-.share-kakao {
+.kakao {
     @include share-button-common();
     background-color: #FBE400;
     img {
@@ -30,13 +30,13 @@
     }
 }
 
-.share-twitter {
+.twitter {
     @include share-button-common();
     border: 1px solid #DFDFDF;
     display: block;
 }
 
-.share-continue {
+.continue {
     @include share-button-common();
     background-color: #1DA1F2;
     color: white;

@@ -1,12 +1,11 @@
-.help-me {
+@import "../media-queries/help-me";
+
+.helpMe {
     font-family: Pretendard;
-    display: none;
-    &.active {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        align-items: center;
-    }
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
 
     h1 {
         font-size: 18px;
@@ -18,7 +17,7 @@
         color: #14171A;
     }
 
-    .timer-paused {
+    .timerPaused {
         font-size: 14px;
         font-weight: 500;
         line-height: 17px;
@@ -28,20 +27,17 @@
         color: #898B8A;
     }
 
-    .problem-box {
+    .problemBox {
         margin-top: 20px;
         padding: 2em;
         background-repeat: repeat;
         background-image: url(../assets/paper.jpg);
         text-align: center;
-        .answer {
-            display: flex;
-        }
-        .answer-container {
+        .answerContainer {
             display: flex;
             flex-direction: row;
             justify-content: center;
-            .fill-in {
+            .fillIn {
                 width: 10em;
                 height: 1em;
                 border-bottom: 1px solid black;
