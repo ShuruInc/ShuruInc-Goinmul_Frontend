@@ -1,6 +1,6 @@
 import { encode } from "html-entities";
 import footer from "./footer";
-import { createPodium } from "./podium";
+import { createPodiumImageUrl } from "./podium";
 import {
     Post,
     fillPlaceholderSectionInto,
@@ -47,7 +47,7 @@ export function createRankingSection(title: string, data: RankingItem[]) {
     </div>
     `;
 
-    const podium = createPodium(
+    const podium = createPodiumImageUrl(
         data.length < 1 ? "" : nicknameAndHashtag(data[0]),
         data.length < 2 ? "" : nicknameAndHashtag(data[1]),
         data.length < 3 ? "" : nicknameAndHashtag(data[2]),

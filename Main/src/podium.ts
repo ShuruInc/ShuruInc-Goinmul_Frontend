@@ -1,4 +1,8 @@
-export function createPodium(first?: string, second?: string, third?: string) {
+export function createPodiumImageUrl(
+    first?: string,
+    second?: string,
+    third?: string,
+) {
     return URL.createObjectURL(
         new Blob(
             [
@@ -86,7 +90,7 @@ export function createPodium(first?: string, second?: string, third?: string) {
 </svg>
 `,
             ],
-            { type: "image/svg+xml" }
-        )
+            { type: "image/svg+xml" },
+        ),
     );
 }
