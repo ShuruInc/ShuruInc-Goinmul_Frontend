@@ -1,5 +1,5 @@
 import { backendUrl } from "../env";
-import { Post } from "../post_board";
+import { Post } from "../post_board/types";
 import { Api } from "./api_http_client/Api";
 import PostBoardApiClient from "./posts";
 import { transformArticleDtoToPost } from "./transform";

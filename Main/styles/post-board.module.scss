@@ -4,7 +4,7 @@
 
 /* 3*2 와 4*2 갤러리 테이블 */
 /* 세로형 Cell 이미지 비율은 1:0.572 */
-.post-section {
+.postSection {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
@@ -31,17 +31,17 @@
         text-align: left;
     }
 
-    .post-table {
+    .postContainer {
         width: 100%;
 
-        &.portfrait {
+        &.portrait {
             display: flex;
             flex-direction: row;
             gap: 4px;
             overflow-x: scroll;
             @include hide-scrollbar;
 
-            .table-cell .cell-info {
+            .post .cellInfo {
                 padding-bottom: 14px;
 
                 .title {
@@ -58,13 +58,7 @@
             margin-bottom: 4px;
         }
 
-        .no-cell-popularity-info {
-            .cell-info .popularity {
-                display: none !important;
-            }
-        }
-
-        .table-cell {
+        .post {
             display: block;
             padding: 2px 2px 2px 2px;
             position: relative;
@@ -85,7 +79,7 @@
             }
         }
 
-        .cell-info {
+        .cellInfo {
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
@@ -129,7 +123,7 @@
                 border-radius: 6px;
                 font-size: 12px;
 
-                .likes-link {
+                .likesLink {
                     text-decoration: none;
                     color: unset;
                 }

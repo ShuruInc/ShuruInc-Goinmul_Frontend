@@ -42,6 +42,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "smooth-scrollbar": "^8.8.4",
+    "smooth-scrollbar-react": "^2.4.1",
     "terser-webpack-plugin": "^5.3.10",
     "tippy.js": "^6.3.7",
     "url-join": "^5.0.0"

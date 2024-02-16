@@ -1,7 +1,7 @@
 @import "../mixins";
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
-.ranking-section {
+.rankingSection {
     img.podium {
         width: 100%;
         max-width: min(400px, 75vw);
@@ -29,7 +29,7 @@
 
         padding: 20px 0px;
         
-        .more-column {
+        .moreColumn {
             border-right: 1px solid #f0f0f0;
             padding: 0px 20px 0px 14px;
             &:last-child {

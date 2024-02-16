@@ -1,5 +1,5 @@
 import { backendUrl } from "../env";
-import { Post } from "../post_board";
+import { Post } from "../post_board/types";
 import { ArticleDto } from "./api_http_client/data-contracts";
 
 export function transformArticleDtoToPost(article: ArticleDto): Post {
