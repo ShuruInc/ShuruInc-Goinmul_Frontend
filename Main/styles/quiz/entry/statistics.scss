@@ -1,0 +1,99 @@
+
+.statisticsSection {
+    padding: 60px 0px;
+    text-align: center;
+
+    .statisticsHeader {
+        h2 {
+            font-family: Pretendard;
+            font-size: 24px;
+            font-weight: 800;
+            line-height: 28px;
+            letter-spacing: 0em;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        p {
+            font-family: Pretendard;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 17px;
+            letter-spacing: -0.01em;
+            text-align: center;
+            
+            color: #898B8A;
+        }
+    }
+
+    form.statistics {
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        grid-template-columns: max-content 220px;
+        gap: 30px 23px;
+        
+        margin: 40px 0px;
+        
+        text-align: left;
+
+        & > label {
+            font-family: Pretendard;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 20px;
+            letter-spacing: 0em;
+        }
+        .age {
+            width: 220px;
+            border-radius: 4px;
+            border: 1px solid #DFDFDF;
+            background: white;
+            padding: 9px 16px;
+        }
+        .genderRadios { 
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+
+            gap: 12px 40px;
+
+            label {
+                display: inline-block;
+                
+                input[type="radio"] {
+                    display: none;
+                }
+                input[type="radio"] + label {
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 4px;
+                    border: 1px solid #DFDFDF;
+                    color: transparent;
+                    text-align: center;
+                    svg {
+                        width: 10px;
+                        height: auto;
+    
+                        display: inline;
+                        vertical-align: baseline;
+                    }
+                }
+                input[type="radio"]:checked + label {
+                    background: #1DA1F2;
+                    color: white;
+                    border: 1px solid transparent;
+                }
+
+                .specifiedGender {
+                    padding: 9px 16px;
+                    border-radius: 4px;
+
+                    width: 120px;
+                    &::placeholder {
+                        color: #B4B9B8;
+                    }
+                }
+            }
+        }
+    } 
+}

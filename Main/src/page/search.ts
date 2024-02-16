@@ -8,8 +8,8 @@ import SearchApiClient from "../api/search";
 import {
     fillPlaceholderSectionInto,
     preparePlaceholderSection,
-} from "../post_board";
-import setHorizontalDragScrollOnDesktop from "../horizontal_drag_to_scroll_on_desktop";
+} from "../post_board/post_board";
+import setHorizontalDragScrollOnDesktop from "../util/horizontal_drag_to_scroll_on_desktop";
 import { faFaceSadTear } from "@fortawesome/free-regular-svg-icons";
 
 // 아이콘 렌더링

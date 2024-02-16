@@ -4,9 +4,9 @@ import createFloatingButton, {
     addFloatingButonListener,
 } from "../floating_button";
 
-import { displayMainPostBoard } from "../home_post_board";
+import { displayMainPostBoard } from "../post_board/home_post_board";
 import { HorizontalInfinityScroller } from "../lib/infinity_scroller";
-import { setupPostBoard } from "../post_board";
+import { setupPostBoard } from "../post_board/post_board";
 import { InitTopNav, SetCustomRankingHandler } from "../top_navbar/top_navbar";
 import { TopCategoryButtonNav } from "../top_category_button_nav";
 import handleOutsideScroll from "../handle_outside_scroll";

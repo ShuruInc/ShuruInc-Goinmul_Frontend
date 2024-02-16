@@ -9,7 +9,7 @@ import initShare from "./init_share";
 import {
     fillPlaceholderSectionInto,
     preparePlaceholderSection,
-} from "./post_board";
+} from "./post_board/post_board";
 import { InitTopNav } from "./top_navbar/top_navbar";
 import addPadding from "./util/add_padding_to_canvas";
 import resultPageHtml from "./result_page.html";
