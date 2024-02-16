@@ -8,11 +8,11 @@ export default function setHorizontalDragScrollOnDesktop(element: HTMLElement) {
         preventClick = false, // 의도치 않게 클릭이 되는 버그 방지용
         lastClientX: number | null = null;
 
-    element.addEventListener("mousedown", (evt) => {
+    const elemMouseDown = (evt: MouseEvent) => {
         dragStarted = true;
         lastClientX = evt.clientX;
-    });
-    window.addEventListener("mousemove", (evt) => {
+    };
+    const windowMouseMove = (evt: MouseEvent) => {
         evt.preventDefault();
         const newClientX = evt.clientX;
 
@@ -25,17 +25,29 @@ export default function setHorizontalDragScrollOnDesktop(element: HTMLElement) {
         lastClientX = newClientX;
         dragged = true;
         preventClick = true;
-    });
-    window.addEventListener("mouseup", (evt) => {
+    };
+    const windowMouseUp = (evt: MouseEvent) => {
         if (dragged) evt.preventDefault();
         else preventClick = false;
         dragStarted = false;
         dragged = false;
-    });
-    element.addEventListener("click", (evt) => {
+    };
+    const elemClick = (evt: MouseEvent) => {
         if (preventClick) {
             evt.preventDefault();
             preventClick = false;
         }
-    });
+    };
+
+    element.addEventListener("mousedown", elemMouseDown);
+    window.addEventListener("mousemove", windowMouseMove);
+    window.addEventListener("mouseup", windowMouseUp);
+    element.addEventListener("click", elemClick);
+
+    return () => {
+        element.removeEventListener("mousedown", elemMouseDown);
+        window.removeEventListener("mousemove", windowMouseMove);
+        window.removeEventListener("mouseup", windowMouseUp);
+        element.removeEventListener("click", elemClick);
+    };
 }
