@@ -19,7 +19,7 @@ function isIgnorable(elem: Element) {
             : elem.parentElement;
     while (now !== null) {
         if (
-            (now.classList.contains("portfrait") &&
+            (now.classList.contains("portrait") &&
                 now.classList.contains("post-table")) ||
             now.classList.contains("more")
         )
