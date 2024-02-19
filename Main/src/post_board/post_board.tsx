@@ -13,9 +13,10 @@ export type PostBoardSectionData = Partial<{
 
 type PostBoadProp = {
     getNextSection: () => Promise<PostBoardSectionData | null>;
+    key: string;
 };
 
-export default function PostBoard({ getNextSection }: PostBoadProp) {
+export default function PostBoard({ getNextSection, key }: PostBoadProp) {
     const [fetchedAll, setFetchedAll] = useState<boolean>(false);
     const [sections, setSections] = useState<PostBoardSectionData[]>([]);
     const scrollbarRef = useRef<Scrollbar>(null);
@@ -35,7 +36,11 @@ export default function PostBoard({ getNextSection }: PostBoadProp) {
     });
 
     return (
-        <ReactSmoothScrollbar ref={scrollbarRef} style={{ height: "100vh" }}>
+        <ReactSmoothScrollbar
+            ref={scrollbarRef}
+            style={{ height: "100vh" }}
+            data-key={key}
+        >
             {sections.map((i) => (
                 <PostSection
                     title={i.title}

@@ -23,7 +23,7 @@ export type TopCategoryButtonData = {
 export class TopCategoryButtonNav {
     _data: TopCategoryButtonData[] = [];
     _root: HTMLElement;
-    _scroller: HorizontalInfinityScroller;
+    _getScroller: () => HorizontalInfinityScroller;
     _scrollTimeout: NodeJS.Timeout | null = null;
     _scrollToCenterBugfixTimeout: NodeJS.Timeout | null = null;
 
@@ -31,16 +31,16 @@ export class TopCategoryButtonNav {
      * 상단 카테고리 버튼 네비게이션 클래스를 생성합니다.
      * @param data 상단 카테고리 버튼 데이터
      * @param root 상단 카테고리 버튼들이 있는 HTML 루트
-     * @param scroller 컨텐츠가 있는 영역의 무한 스크롤러
+     * @param getScroller 컨텐츠가 있는 영역의 무한 스크롤러
      */
     constructor(
         data: TopCategoryButtonData[],
         root: HTMLElement,
-        scroller: HorizontalInfinityScroller,
+        getScroller: () => HorizontalInfinityScroller,
     ) {
         this._data = data;
         this._root = root;
-        this._scroller = scroller;
+        this._getScroller = getScroller;
 
         // 초기화
         for (const isCenter of [false, false, true, false, false])
@@ -81,7 +81,7 @@ export class TopCategoryButtonNav {
                     changedTouches: [...(evt as TouchEvent).changedTouches],
                 });
 
-                scroller._rootElement.dispatchEvent(newEvt);
+                getScroller()._rootElement.dispatchEvent(newEvt);
             });
         }
 
@@ -425,8 +425,8 @@ export class TopCategoryButtonNav {
      */
     _handleTopButtonNavClick(evt: MouseEvent) {
         if (
-            typeof this._scroller === "undefined" ||
-            this._scroller.getCurrentlyMostVisibleChild(true) === null
+            typeof this._getScroller === "undefined" ||
+            this._getScroller().getCurrentlyMostVisibleChild(true) === null
         )
             return;
 
@@ -436,8 +436,8 @@ export class TopCategoryButtonNav {
         if (currentActive === target) return;
 
         //this.activateButton(target);
-        this._scroller.scrollIntoCenterView(
-            this._scroller
+        this._getScroller().scrollIntoCenterView(
+            this._getScroller()
                 ._children()
                 .filter((i) => i.dataset.key === target.dataset.key)[0],
             true,

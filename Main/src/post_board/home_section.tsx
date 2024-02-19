@@ -20,10 +20,7 @@ export type HomePostBoardProp = {
 /**
  * 홈 post board입니다.
  */
-export function displayMainPostBoard({
-    popularTests,
-    rankings,
-}: HomePostBoardProp) {
+export function HomePostBoard({ popularTests, rankings }: HomePostBoardProp) {
     const scrollbarRef = useRef<SmoothScrollbar>(null);
     useEffect(() => {
         if (scrollbarRef.current)
