@@ -5,7 +5,7 @@ import { Api } from "./api_http_client/Api";
 
 type QuizSessionId = string;
 
-type QuizResult = {
+export type QuizResult = {
     quizId: string;
     points: number;
     title: string;

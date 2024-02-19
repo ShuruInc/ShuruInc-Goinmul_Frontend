@@ -10,6 +10,7 @@ type PostSectionProp = {
     landscape?: PostType;
     portraits?: PostType[];
     noPopularityInfo?: boolean;
+    className?: string;
 };
 
 type PostProp = {
@@ -39,9 +40,10 @@ export default function PostSection({
     landscape,
     portraits,
     noPopularityInfo,
+    className,
 }: PostSectionProp) {
     return (
-        <div className={classNames(styles.postSection)}>
+        <div className={classNames(styles.postSection, className)}>
             {title && title !== "" && <h2>{title}</h2>}
             {landscape && (
                 <PostContainer landscape>
