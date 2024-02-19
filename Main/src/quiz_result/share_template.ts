@@ -1,4 +1,4 @@
-import { QuizResult, QuizSession } from "../api/quiz_session";
+import { QuizResult } from "../api/quiz_session";
 
 type GetResultShareDataParameters = {
     url: string;

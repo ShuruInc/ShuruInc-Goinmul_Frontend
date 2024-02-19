@@ -4,7 +4,7 @@ import {
     faArrowsRotate,
     faExclamationCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import randomKoreanNickname from "../random_korean_nickname";
 import hasBadWord from "../bad_words/has_bad_word";
 import classNames from "classnames";

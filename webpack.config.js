@@ -7,11 +7,11 @@ const path = require("path");
 const md5 = (text) => createHash("md5").update(text).digest("hex");
 const TerserPlugin = require("terser-webpack-plugin");
 
-let htmlFiles = readdirSync("Main/html", {
+let pageFiles = readdirSync("Main/src/page", {
     encoding: "utf8",
     recursive: true,
-}).filter((i) => i.toLowerCase().endsWith(".html"));
-let hashes = htmlFiles.map(md5);
+}).filter((i) => i.toLowerCase().endsWith(".tsx"));
+let hashes = pageFiles.map(md5);
 
 if (typeof process.env.KAKAO_API_KEY === "undefined")
     throw new Error("KAKAO_API_KEY NOT PROVIDED");
@@ -22,9 +22,9 @@ const dev = process.env.NODE_ENV === "development";
 module.exports = {
     mode: dev ? "development" : "production",
     entry: Object.fromEntries(
-        htmlFiles.map((i, idx) => [
+        pageFiles.map((i, idx) => [
             hashes[idx],
-            "./" + path.join("Main/src/page", i.replace(/\.html$/, ".ts")),
+            "./" + path.join("Main/src/page", i),
         ]),
     ),
     module: {
@@ -60,6 +60,7 @@ module.exports = {
     resolve: {
         extensions: [
             ".ts",
+            '.tsx',
             ".js",
             ".sass",
             ".css",
@@ -77,12 +78,12 @@ module.exports = {
         filename: "[name].js",
     },
     plugins: [
-        ...htmlFiles.map(
+        ...pageFiles.map(
             (i, idx) =>
                 new HtmlWebpackPlugin({
-                    filename: path.resolve(__dirname, "Main/dist", i),
+                    filename: path.resolve(__dirname, "Main/dist", i.replace(/\.tsx$/, '.html')),
                     chunks: [hashes[idx]],
-                    template: path.join("Main/html", i),
+                    template: 'Main/template.html',
                 }),
         ),
         new webpack.EnvironmentPlugin(["KAKAO_API_KEY", "BACKEND_URL", "DEBUG_NERD_TEST_EXIT_FEAT", "DEBUG_RANDOM_MEDAL"]),

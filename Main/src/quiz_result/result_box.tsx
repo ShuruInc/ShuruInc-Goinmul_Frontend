@@ -1,10 +1,10 @@
 import { faRankingStar } from "@fortawesome/free-solid-svg-icons";
 import { encode } from "html-entities";
-import goldMedal from "../assets/medal/gold.png";
-import silverMedal from "../assets/medal/silver.png";
-import cooperMedal from "../assets/medal/cooper.png";
+import goldMedal from "../../assets/medal/gold.png";
+import silverMedal from "../../assets/medal/silver.png";
+import cooperMedal from "../../assets/medal/cooper.png";
 import { randomMedalEnabled } from "../env";
-import styles from "../styles/quiz/result_box.module.scss";
+import styles from "../../styles/quiz/result_box.module.scss";
 import { ReactNode, forwardRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 

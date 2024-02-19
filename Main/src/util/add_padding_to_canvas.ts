@@ -1,4 +1,4 @@
-import backgroundUrl from "../assets/paper.jpg";
+import backgroundUrl from "../../assets/paper.jpg";
 
 /**
  * 이미지에 여백을 넣어 정사각형 형태로 만든다.

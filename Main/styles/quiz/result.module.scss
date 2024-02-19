@@ -1,9 +1,9 @@
-@use "../common/styled-inputs";
+@import "../common/styled-inputs";
 
 .loading {
     height: calc(100vh - 150px);
     width: 100%;
-    background: url("../assets/loading.gif");
+    background: url("../../assets/loading.gif");
     background-position-x: 50%;
     background-size: contain;
     background-repeat: no-repeat;

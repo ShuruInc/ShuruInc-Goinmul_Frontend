@@ -188,6 +188,7 @@ export default function ResultPage(props: ResultPage) {
                                 }}
                             ></ResultBox>
                         )}
+                        {shareButtons}
                         <button
                             className={styles.continue}
                             onClick={(evt) => {

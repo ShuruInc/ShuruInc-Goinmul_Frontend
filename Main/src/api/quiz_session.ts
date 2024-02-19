@@ -1,5 +1,5 @@
 import { backendUrl, nerdTestExitFeatureEnabled } from "../env";
-import { QuizProblem } from "../quiz_solve_ui/quiz_solve_ui";
+import { QuizProblem } from "../quiz_solve_ui/types";
 import StopWatch from "../util/stopwatch";
 import { Api } from "./api_http_client/Api";
 

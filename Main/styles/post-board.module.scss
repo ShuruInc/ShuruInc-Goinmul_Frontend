@@ -1,5 +1,5 @@
-@use "../media-queries/post-board";
-@import "../mixins";
+@use "media-queries/post-board";
+@import "./mixins";
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
 /* 3*2 와 4*2 갤러리 테이블 */

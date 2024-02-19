@@ -1,5 +1,4 @@
 import { kakaoApiKey } from "./env";
-import "../styles/common/_share-buttons.scss";
 import kakaoTalkIcon from "../assets/kakaotalk_bubble.svg";
 import { encode } from "html-entities";
 import { icon } from "@fortawesome/fontawesome-svg-core";

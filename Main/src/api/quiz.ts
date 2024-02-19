@@ -1,8 +1,8 @@
 import urlJoin from "url-join";
 import { backendUrl } from "../env";
-import { QuizProblem } from "../quiz_solve_ui/quiz_solve_ui";
 import { Api } from "./api_http_client/Api";
 import { QuizSession, QuizInternalSessionData } from "./quiz_session";
+import { QuizProblem } from "../quiz_solve_ui/types";
 
 const apiClient = new Api({ baseUrl: backendUrl });
 

@@ -23,7 +23,7 @@ function AgeInput({ onInput, value }: AgeInputProp) {
             value={value ?? undefined}
             onInput={(evt) => onInput((evt.target as HTMLInputElement).value)}
         >
-            {values.map((i, idx) => (
+            {values.map((i) => (
                 <option value={typeof i === "string" ? i : i[0]}>
                     {typeof i === "string" ? i : i[1]}
                 </option>

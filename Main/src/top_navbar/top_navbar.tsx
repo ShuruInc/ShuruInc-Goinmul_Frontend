@@ -1,12 +1,5 @@
 import "tippy.js/dist/tippy.css";
-import {
-    MouseEvent as ReactMouseEvent,
-    ReactNode,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from "react";
+import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import TopNavbarContent from "./top_navbar_content";
 import { createClickBugFixHandler } from "./top_navbar_click_bug_fix";
 import logoImages from "./logo_Images";
