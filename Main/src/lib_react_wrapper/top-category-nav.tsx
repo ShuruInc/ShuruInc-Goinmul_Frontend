@@ -1,10 +1,4 @@
-import {
-    forwardRef,
-    useEffect,
-    useImperativeHandle,
-    useRef,
-    useState,
-} from "react";
+import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
 import {
     TopCategoryButtonData,
     TopCategoryButtonNav as TopCategoryButtonNavCls,
@@ -12,7 +6,7 @@ import {
 import { HorizontalInfinityScroller } from "../lib/infinity_scroller";
 
 type TopCategoryButtonNavProp = {
-    getScroller: () => HorizontalInfinityScroller;
+    getScroller: () => HorizontalInfinityScroller | null;
     buttonData: TopCategoryButtonData[];
 };
 
@@ -20,28 +14,23 @@ const ReactTopCategoryButtonNav = forwardRef<
     TopCategoryButtonNavCls | null,
     TopCategoryButtonNavProp
 >(({ getScroller, buttonData }, ref) => {
-    const navRef = useRef<HTMLElement>(null);
-    const [instance, setInstance] = useState<TopCategoryButtonNavCls | null>(
-        null,
-    );
+    const instance = useRef<TopCategoryButtonNavCls | null>(null);
 
-    useEffect(() => {
-        if (navRef.current !== null)
-            setInstance(
-                new TopCategoryButtonNavCls(
-                    buttonData,
-                    navRef.current,
-                    getScroller,
-                ),
+    const createNavRef = useCallback((navEl: HTMLElement) => {
+        if (navEl !== null)
+            instance.current = new TopCategoryButtonNavCls(
+                buttonData,
+                navEl,
+                getScroller,
             );
-    }, [buttonData]);
+    }, []);
 
     useImperativeHandle<
         TopCategoryButtonNavCls | null,
         TopCategoryButtonNavCls | null
-    >(ref, () => instance);
+    >(ref, () => instance.current);
 
-    return <nav className="top-category-buttos" ref={navRef}></nav>;
+    return <nav className="top-category-buttons" ref={createNavRef}></nav>;
 });
 
 export default ReactTopCategoryButtonNav;

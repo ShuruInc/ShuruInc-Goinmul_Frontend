@@ -4,7 +4,7 @@ type PopularQueriesProp = {
 
 export default function PopularQueries({ queries }: PopularQueriesProp) {
     return (
-        <section className="popularNow display-none">
+        <section className="popularNow">
             <h2>실시간 인기 검색어</h2>
             <div className="columns">
                 {queries

@@ -1,7 +1,7 @@
 import TopNavbar from "../top_navbar/top_navbar";
 import NerdTestLogin from "./nerd_test_login";
 import Statistics, { Gender } from "./statistics";
-import styles from "../../styles/quiz/entry/container.scss";
+import styles from "../../styles/quiz/entry/container.module.scss";
 import { useState } from "react";
 
 type EntryPageProp = {
@@ -41,7 +41,7 @@ export default function NerdTestEntryPageView({
     };
 
     return (
-        <div>
+        <div className={styles.mainContainer}>
             <TopNavbar type="quiz" testTitle={title}></TopNavbar>
             <article className={styles.quizEntry}>
                 <NerdTestLogin
@@ -64,13 +64,19 @@ export default function NerdTestEntryPageView({
                         setSpecifiedGender(newSpecifiedGender);
                     }}
                 ></Statistics>
-                <form className={styles.startButton}>
+                <form
+                    className={styles.startButton}
+                    onSubmit={(evt) => {
+                        evt.preventDefault();
+                        callEnterButtonClickHandler();
+                    }}
+                >
                     <button
                         type="submit"
+                        disabled={invalidNickname}
                         className={
                             invalidNickname ? styles.disabled : undefined
                         }
-                        onClick={() => callEnterButtonClickHandler()}
                     >
                         시작하기
                     </button>

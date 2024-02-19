@@ -86,7 +86,7 @@ module.exports = {
                     template: 'Main/template.html',
                 }),
         ),
-        new webpack.EnvironmentPlugin(["KAKAO_API_KEY", "BACKEND_URL", "DEBUG_NERD_TEST_EXIT_FEAT", "DEBUG_RANDOM_MEDAL"]),
+        new webpack.EnvironmentPlugin(["KAKAO_API_KEY", "BACKEND_URL", "DEBUG_NERD_TEST_EXIT_FEAT", "DEBUG_RANDOM_MEDAL", "NODE_ENV"]),
         new MiniCssExtractPlugin(),
     ],
     optimization: {

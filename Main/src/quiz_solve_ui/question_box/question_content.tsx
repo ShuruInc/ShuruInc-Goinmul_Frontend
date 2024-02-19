@@ -32,7 +32,7 @@ export default function QuestionContent({
 }: QuestionContentProp) {
     let [imgClass, setImgClass] = useState<string>("");
 
-    let figure: ReactNode;
+    let figure: ReactNode = null;
     switch (question.figureType) {
         case "image":
             figure = (

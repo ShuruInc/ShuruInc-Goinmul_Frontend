@@ -37,14 +37,22 @@ function SearchPage() {
     }, [popularAndRecommendedQueries]);
 
     useEffect(() => {
-        (async () => {
-            const { result, similar } = await SearchApiClient.search(query);
-            return {
+        SearchApiClient.recommend(10).then((recommended) => {
+            setSearchResult((old) => ({
+                ...old,
+                recommenedPosts: recommended,
+            }));
+        });
+    }, []);
+
+    useEffect(() => {
+        SearchApiClient.search(query).then(({ result, similar }) => {
+            setSearchResult((old) => ({
+                ...old,
                 result,
                 similar,
-                recommendedPosts: await SearchApiClient.recommend(10),
-            };
-        })().then(setSearchResult);
+            }));
+        });
     }, [query]);
 
     const common = {
@@ -63,7 +71,11 @@ function SearchPage() {
     };
 
     return query === "" ? (
-        <SearchView {...popularAndRecommendedQueries} {...common}></SearchView>
+        <SearchView
+            noMissingResultMark
+            {...popularAndRecommendedQueries}
+            {...common}
+        ></SearchView>
     ) : (
         <SearchView {...result} {...common}></SearchView>
     );

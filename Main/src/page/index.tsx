@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "../../styles/index.scss";
 import PostBoardApiClient, { PostBoardData } from "../api/posts";
 import FloatingButton from "../floating_button";
@@ -9,7 +9,7 @@ import { TopCategoryButtonNav } from "../top_category_button_nav";
 import { HorizontalInfinityScroller } from "../lib/infinity_scroller";
 import ReactTopCategoryButtonNav from "../lib_react_wrapper/top-category-nav";
 import SmoothScrollbar from "smooth-scrollbar";
-import { rankingSection as rankingSectionClassName } from "../../styles/index_page/ranking-section.module.scss";
+import rankingSectionClassNames from "../../styles/index_page/ranking-section.module.scss";
 import handleOutsideScroll from "../handle_outside_scroll";
 import { createRoot } from "react-dom/client";
 
@@ -19,13 +19,10 @@ function MainPage() {
         boards: PostBoardData[];
     } | null>(null);
     const topCategoryNavRef = useRef<TopCategoryButtonNav>(null);
-    const scrollerDivRef = useRef<HTMLDivElement>(null);
     const [floatingButtonType, setFloatingButtonType] = useState<"home" | "up">(
         "home",
     );
-    const [scroller, setScroller] = useState<HorizontalInfinityScroller | null>(
-        null,
-    );
+    const scroller = useRef<HorizontalInfinityScroller | null>(null);
     const mainColumnRef = useRef<HTMLDivElement>(null);
 
     const menuData = useMemo(
@@ -54,20 +51,17 @@ function MainPage() {
             })().then(setData);
     }, [data]);
 
-    useEffect(() => {
-        if (scrollerDivRef.current !== null) {
-            setScroller(new HorizontalInfinityScroller(scrollerDivRef.current));
+    const createScroller = useCallback((node: HTMLElement | null) => {
+        if (node !== null) {
+            scroller.current = new HorizontalInfinityScroller(node);
+            init();
         }
     }, []);
 
-    useEffect(() => {
-        if (
-            scroller !== null &&
-            topCategoryNavRef.current !== null &&
-            data !== null
-        ) {
+    const init = () => {
+        if (scroller.current !== null) {
             // 상하 스크롤시 플로팅버튼을 변경한다.
-            scroller.addEventListenerToChildren("scroll", (evt) => {
+            scroller.current.addEventListenerToChildren("scroll", (evt) => {
                 const target = evt.target as HTMLElement;
                 if (target.scrollTop !== 0) setFloatingButtonType("up");
                 else setFloatingButtonType("home");
@@ -75,10 +69,10 @@ function MainPage() {
 
             //let _contentScrollerScrollingByUserDrag = false;
             // 좌우 스크롤시 플로팅버튼을 변경한다.
-            scroller.addScrollEventListener(() => {
+            scroller.current.addScrollEventListener(() => {
                 if (
-                    scroller.getCurrentlyMostVisibleChild(false)?.dataset
-                        ?.key !== "home"
+                    scroller.current!.getCurrentlyMostVisibleChild(false)
+                        ?.dataset?.key !== "home"
                 ) {
                     setFloatingButtonType("home");
                 } else {
@@ -88,37 +82,39 @@ function MainPage() {
                 }
 
                 //_contentScrollerScrollingByUserDrag = byUserDrag;
-                const basis = scroller.centerEnsuredBasis();
+                const basis = scroller.current!.centerEnsuredBasis();
                 topCategoryNavRef.current?.activateWithMarginToBasis(
-                    scroller._children()[basis.basisIndex].dataset
+                    scroller.current!._children()[basis.basisIndex].dataset
                         .key as string,
-                    basis.offset! / scroller._rootWidth(),
+                    basis.offset! / scroller.current!._rootWidth(),
                 );
             });
 
             // Post board column이 좌우 스크롤됐다면 상단 카테고리 버튼도 변경하낟.
-            scroller.addTouchDragScrollEventListener((key, direction) => {
-                if (
-                    topCategoryNavRef.current?._getActiveButton().dataset
-                        .key !== key
-                )
-                    /**
-                     * 방향(direction)을 주는 이유:
-                     * Post board column의 스크롤 방향과 상단 카테고리 버튼의 스크롤 방향을
-                     * 동일하게 하려고
-                     */
-                    topCategoryNavRef.current?.activateButtonByKey(
-                        key,
-                        true,
-                        direction,
-                    );
-            });
+            scroller.current.addTouchDragScrollEventListener(
+                (key, direction) => {
+                    if (
+                        topCategoryNavRef.current?._getActiveButton().dataset
+                            .key !== key
+                    )
+                        /**
+                         * 방향(direction)을 주는 이유:
+                         * Post board column의 스크롤 방향과 상단 카테고리 버튼의 스크롤 방향을
+                         * 동일하게 하려고
+                         */
+                        topCategoryNavRef.current?.activateButtonByKey(
+                            key,
+                            true,
+                            direction,
+                        );
+                },
+            );
 
             handleOutsideScroll(
                 (delta, wheel) => {
                     const scrollBar = SmoothScrollbar.get(
                         scroller
-                            .getCurrentlyMostVisibleChild()!
+                            .current!.getCurrentlyMostVisibleChild()!
                             .querySelector("[data-scrollbar]")!,
                     )!;
                     if (wheel) {
@@ -129,32 +125,35 @@ function MainPage() {
                 },
                 () =>
                     scroller
-                        .getCurrentlyMostVisibleChild()
+                        .current!.getCurrentlyMostVisibleChild()
                         ?.querySelector("[data-scrollbar]") ?? null,
             );
         }
-    }, [scroller, data]);
+    };
 
     // 플로팅 버튼 동작 설정
     const floatingButtonClickHandler = () => {
-        if (scroller === null) return;
+        if (scroller.current === null) return;
 
-        const currentVisibleChild = scroller.getCurrentlyMostVisibleChild(true);
+        const currentVisibleChild =
+            scroller.current.getCurrentlyMostVisibleChild(true);
         if (currentVisibleChild === null) return;
 
         if (currentVisibleChild.scrollTop !== 0)
             currentVisibleChild.scrollTo({ top: 0, behavior: "smooth" });
         else if (currentVisibleChild.dataset.key !== "home")
-            scroller.scrollIntoCenterView(mainColumnRef.current!, true);
+            scroller.current.scrollIntoCenterView(mainColumnRef.current!, true);
     };
 
     const goToRankings = () => {
-        if (scroller === null || topCategoryNavRef.current === null) return;
+        if (scroller.current === null || topCategoryNavRef.current === null)
+            return;
 
         if (
-            scroller.getCurrentlyMostVisibleChild(true)?.dataset?.key !== "home"
+            scroller.current.getCurrentlyMostVisibleChild(true)?.dataset
+                ?.key !== "home"
         ) {
-            let sign = scroller.scrollIntoCenterView(
+            let sign = scroller.current.scrollIntoCenterView(
                 mainColumnRef.current!,
                 true,
             );
@@ -166,7 +165,7 @@ function MainPage() {
             );
 
             const h2 = document.querySelector(
-                `${rankingSectionClassName} h2`,
+                `.${rankingSectionClassNames.rankingSection} h2`,
             ) as HTMLElement;
             const rect = h2?.getBoundingClientRect()!;
             if (rect.width === 0 || rect.height === 0)
@@ -186,27 +185,42 @@ function MainPage() {
 
     return (
         <>
-            <TopNavbar type="normal" onRankingClick={goToRankings}></TopNavbar>
-            <ReactTopCategoryButtonNav
-                buttonData={menuData}
-                getScroller={() => scroller!}
-            ></ReactTopCategoryButtonNav>
-            <div id="mainContainer" className="main-container">
-                <div className="post-board-columns" ref={scrollerDivRef}>
-                    <div className="column">
-                        <HomePostBoard
-                            popularTests={data!.home.popularTests}
-                            rankings={data!.home.rankings}
-                        ></HomePostBoard>
+            <TopNavbar
+                type="normal"
+                onRankingClick={goToRankings}
+                animated
+            ></TopNavbar>
+            {menuData.length > 1 && (
+                <ReactTopCategoryButtonNav
+                    buttonData={menuData}
+                    getScroller={() => scroller.current}
+                    ref={topCategoryNavRef}
+                ></ReactTopCategoryButtonNav>
+            )}
+            {data && (
+                <div id="mainContainer" className="main-container">
+                    <div className="post-board-columns" ref={createScroller}>
+                        <div
+                            className="column"
+                            ref={mainColumnRef}
+                            data-key="home"
+                        >
+                            <HomePostBoard
+                                popularTests={data!.home.popularTests}
+                                rankings={data!.home.rankings}
+                            ></HomePostBoard>
+                        </div>
+                        {data?.boards.map((i) => (
+                            <div className="column" data-key={i.id}>
+                                <PostBoard
+                                    getNextSection={i.fetchNextSection}
+                                    key={i.id}
+                                ></PostBoard>
+                            </div>
+                        ))}
                     </div>
-                    {data?.boards.map((i) => (
-                        <PostBoard
-                            getNextSection={i.fetchNextSection}
-                            key={i.id}
-                        ></PostBoard>
-                    ))}
                 </div>
-            </div>
+            )}
             <FloatingButton
                 type={floatingButtonType}
                 onClick={floatingButtonClickHandler}

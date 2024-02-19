@@ -8,6 +8,7 @@ import createShareData from "./share_data";
 import { QuizSessionInfo } from "../api/quiz_session";
 import styles from "../../styles/quiz/help-me.module.scss";
 import shareStyles from "../../styles/common/share-buttons.module.scss";
+import { useRef } from "react";
 
 type HelpMeProp = {
     question: QuizProblem & { index: number };
@@ -22,6 +23,8 @@ export default function HelpMe({
     timerPaused,
     onHelpMeExitRequest: exitHelpMe,
 }: HelpMeProp) {
+    const problemBoxRef = useRef(null);
+
     const { doKakaoShare, doTwitterShare, doWebShare, webShareAvailable } =
         initShare({
             content: createShareData(sessionInfo),
@@ -32,13 +35,10 @@ export default function HelpMe({
                  * .problem-box가 보이지 않으면 svg 렌더링이 되지 않으므로
                  * .problem-box가 보일 때 svg 렌더링을 한다.
                  */
-                const canvas = await html2canvas(
-                    document.querySelector(".help-me .problem-box")!,
-                    {
-                        // 이미지가 안 보이는 버그 수정
-                        useCORS: true,
-                    },
-                );
+                const canvas = await html2canvas(problemBoxRef.current!, {
+                    // 이미지가 안 보이는 버그 수정
+                    useCORS: true,
+                });
                 const blob = await addPadding(canvas);
 
                 // 이미지에 여백을 추가한다.
@@ -70,7 +70,7 @@ export default function HelpMe({
                     타이머가 일시정지 되었습니다.
                 </div>
             )}
-            <div className={styles.problemBox}>
+            <div className={styles.problemBox} ref={problemBoxRef}>
                 <QuestionContent
                     question={question}
                     index={question.index}

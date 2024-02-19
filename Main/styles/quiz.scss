@@ -1,8 +1,6 @@
 @use "common/reset";
 @use "common/container";
-@use "common/top-logo-nav";
 @use "common/utils";
-@use "media-queries/quiz";
 @import "common/styled-inputs";
 
 .main-container {
@@ -13,8 +11,3 @@
 article {
     width: 80%;
 }
-
-@import "quiz/result";
-@import "quiz/solve";
-@import "quiz/entry";
-@import "quiz/correctness-animation";

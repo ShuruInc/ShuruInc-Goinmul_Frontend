@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styles from "../../styles/quiz/entry/login.scss";
+import styles from "../../styles/quiz/entry/login.module.scss";
 import {
     faArrowsRotate,
     faExclamationCircle,
@@ -37,6 +37,7 @@ export default function NerdTestLogin({
     onFormSubmit,
 }: NerdTestLoginProp) {
     const inputRef = useRef<HTMLInputElement>(null);
+    const [passedPlaceholder, setPassedPlaceholder] = useState<boolean>(false);
     const [placeholder] = useState<string>(() => {
         let defaultNickname = randomKoreanNickname(NICKNAME_MAX_LEN);
 
@@ -59,6 +60,12 @@ export default function NerdTestLogin({
         }
     }, [value]);
 
+    // Pass placeholder
+    if (!passedPlaceholder) {
+        onInput(value, placeholder, warningText !== null);
+        setPassedPlaceholder(true);
+    }
+
     return (
         <div className={styles.entrySection}>
             <div className={styles.introduction}>
@@ -67,7 +74,13 @@ export default function NerdTestLogin({
                 <p>랭킹 기록을 위해 닉네임을 입력해 주세요.</p>
             </div>
             <div className={styles.entryFormWithWarning}>
-                <form className={styles.entry} onSubmit={onFormSubmit}>
+                <form
+                    className={styles.entry}
+                    onSubmit={(evt) => {
+                        evt.preventDefault();
+                        if (onFormSubmit) onFormSubmit();
+                    }}
+                >
                     <input
                         type="input"
                         id="nickname"

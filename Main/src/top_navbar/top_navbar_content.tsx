@@ -84,13 +84,13 @@ function QuizTopNavbarContent(props: QuizTopNavbarContentProp) {
     if (props.progress.color) colorClass = props.progress.color;
 
     return (
-        <>
+        <nav>
             <button className="go-back" onClick={props.onGoBackClick}>
                 <FontAwesomeIcon icon={faAngleLeft}></FontAwesomeIcon>
             </button>
             <div className="test-title">{props.title}</div>
-            <div className={colorClass}></div>
-        </>
+            <div className={colorClass}>{props.progress?.text}</div>
+        </nav>
     );
 }
 function SearchTopNavbarContent(props: SearchTopNavbarContentProp) {

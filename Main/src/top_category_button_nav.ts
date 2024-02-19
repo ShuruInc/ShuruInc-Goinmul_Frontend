@@ -1,3 +1,4 @@
+import "../styles/index_page/_top-category-buttons.scss";
 import { HorizontalInfinityScroller } from "./lib/infinity_scroller";
 
 // x를 [0, max) 내의 정수로 정규화한다.
@@ -23,7 +24,7 @@ export type TopCategoryButtonData = {
 export class TopCategoryButtonNav {
     _data: TopCategoryButtonData[] = [];
     _root: HTMLElement;
-    _getScroller: () => HorizontalInfinityScroller;
+    _getScroller: () => HorizontalInfinityScroller | null;
     _scrollTimeout: NodeJS.Timeout | null = null;
     _scrollToCenterBugfixTimeout: NodeJS.Timeout | null = null;
 
@@ -36,7 +37,7 @@ export class TopCategoryButtonNav {
     constructor(
         data: TopCategoryButtonData[],
         root: HTMLElement,
-        getScroller: () => HorizontalInfinityScroller,
+        getScroller: () => HorizontalInfinityScroller | null,
     ) {
         this._data = data;
         this._root = root;
@@ -52,8 +53,8 @@ export class TopCategoryButtonNav {
 
         // 함수 bind (setInterval이나 setTimeout으로 호출할 때의 버그 해결)
         this.scrollToCenter = this.scrollToCenter.bind(this);
-        this._handleTopButtonNavClick =
-            this._handleTopButtonNavClick.bind(this);
+        this._createTopButtonNavClickHandler =
+            this._createTopButtonNavClickHandler.bind(this);
         this._createButtonByKey = this._createButtonByKey.bind(this);
         this._getIndexOfButtonKey = this._getIndexOfButtonKey.bind(this);
         this._keyIndexToKey = this._keyIndexToKey.bind(this);
@@ -81,14 +82,9 @@ export class TopCategoryButtonNav {
                     changedTouches: [...(evt as TouchEvent).changedTouches],
                 });
 
-                getScroller()._rootElement.dispatchEvent(newEvt);
+                getScroller()?._rootElement.dispatchEvent(newEvt);
             });
         }
-
-        // 이벤트 핸들러 추가
-        this._getButtonElements().forEach((i) =>
-            i.addEventListener("click", this._handleTopButtonNavClick),
-        );
     }
 
     /**
@@ -151,7 +147,10 @@ export class TopCategoryButtonNav {
         const button = document.createElement("button");
         button.dataset.key = data.key;
         button.innerHTML = data.label;
-        button.addEventListener("click", this._handleTopButtonNavClick);
+        button.addEventListener(
+            "click",
+            this._createTopButtonNavClickHandler(this._getScroller),
+        );
 
         return button;
     }
@@ -423,27 +422,30 @@ export class TopCategoryButtonNav {
      * 상단 카테고리 버튼의 click 이벤트를 처리합니다.
      * @param evt 이벤트 매개변수
      */
-    _handleTopButtonNavClick(evt: MouseEvent) {
-        if (
-            typeof this._getScroller === "undefined" ||
-            this._getScroller().getCurrentlyMostVisibleChild(true) === null
-        )
-            return;
+    _createTopButtonNavClickHandler(
+        getScroller: () => HorizontalInfinityScroller | null,
+    ) {
+        return (evt: MouseEvent) => {
+            const scroller = getScroller();
+            if (scroller === null) return;
 
-        const buttons = this._getButtonElements();
-        const currentActive = this._getActiveButton();
-        const target = evt.target as HTMLButtonElement;
-        if (currentActive === target) return;
+            if (scroller.getCurrentlyMostVisibleChild(true) === null) return;
 
-        //this.activateButton(target);
-        this._getScroller().scrollIntoCenterView(
-            this._getScroller()
-                ._children()
-                .filter((i) => i.dataset.key === target.dataset.key)[0],
-            true,
-            Math.sign(
-                buttons.indexOf(currentActive) - buttons.indexOf(target),
-            ) as 1 | -1,
-        );
+            const buttons = this._getButtonElements();
+            const currentActive = this._getActiveButton();
+            const target = evt.target as HTMLButtonElement;
+            if (currentActive === target) return;
+
+            //this.activateButton(target);
+            scroller.scrollIntoCenterView(
+                scroller
+                    ._children()
+                    .filter((i) => i.dataset.key === target.dataset.key)[0],
+                true,
+                Math.sign(
+                    buttons.indexOf(currentActive) - buttons.indexOf(target),
+                ) as 1 | -1,
+            );
+        };
     }
 }

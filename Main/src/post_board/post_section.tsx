@@ -31,6 +31,9 @@ function Post({ post, landscape, noPopularityInfo }: PostProp) {
             onThumbnailVisible={() => {
                 PostBoardApiClient.hit(post.id.toString());
             }}
+            backgroundImageUrl={post.imgUrl}
+            lazyBackground={!landscape}
+            href={post.href}
         ></PostView>
     );
 }

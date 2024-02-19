@@ -18,6 +18,7 @@ type SearchViewProp = {
     onSearchInputValueChanged: (newInput: string) => void;
     onRequestClick: () => void;
     searchInputValue: string;
+    noMissingResultMark?: boolean;
 };
 
 export default function SearchView({
@@ -29,6 +30,7 @@ export default function SearchView({
     onSearchInputValueChanged,
     onRequestClick,
     searchInputValue,
+    noMissingResultMark,
 }: SearchViewProp) {
     const [requested, setRequested] = useState<boolean>(false);
     const searchIcon = useMemo(
@@ -57,7 +59,13 @@ export default function SearchView({
                 } as CSSProperties
             }
         >
-            <TopNavbar type="search"></TopNavbar>
+            <TopNavbar
+                type="search"
+                search={{
+                    onInput: onSearchInputValueChanged,
+                    value: searchInputValue,
+                }}
+            ></TopNavbar>
             <div className="main-container">
                 <article>
                     {popularQueries && (
@@ -78,8 +86,8 @@ export default function SearchView({
                             title={`총 ${result.length}건의 검색 결과가 있습니다.`}
                             portraits={result}
                         ></PostSection>
-                    ) : (
-                        <section className="no-results display-none">
+                    ) : noMissingResultMark ? null : (
+                        <section className="no-results">
                             <FontAwesomeIcon
                                 icon={faFaceSadTear}
                             ></FontAwesomeIcon>
@@ -93,17 +101,16 @@ export default function SearchView({
                                 </p>
                             </div>
                             {requested ? (
-                                <button
-                                    className="request requested"
-                                    disabled
-                                    onClick={onRequestClick}
-                                >
+                                <button className="request requested" disabled>
                                     요청되었습니다.
                                 </button>
                             ) : (
                                 <button
                                     className="request"
-                                    onClick={onRequestClick}
+                                    onClick={() => {
+                                        setRequested(true);
+                                        onRequestClick();
+                                    }}
                                 >
                                     출제 요청하기
                                 </button>

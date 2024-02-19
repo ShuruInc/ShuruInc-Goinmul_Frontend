@@ -154,8 +154,8 @@ const ResultBox = forwardRef<HTMLDivElement, ResultBoxContent>(
                         tableData.slice(tableColumnCount),
                     )}
                     <time>
-                        ${data.date.getFullYear()}. ${data.date.getMonth() + 1}.
-                        ${data.date.getDate()}.
+                        {data.date.getFullYear()}. {data.date.getMonth() + 1}.
+                        {data.date.getDate()}.
                     </time>
                     <p className={styles.comment}>{comment}</p>
                 </div>

@@ -1,6 +1,6 @@
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styles from "../../styles/quiz/entry/statistics.scss";
+import styles from "../../styles/quiz/entry/statistics.module.scss";
 
 type AgeInputProp = {
     onInput: (value: string) => void;
@@ -41,7 +41,7 @@ function GenderInput({ onInput, value, specifiedGender }: GenderInputProp) {
                     name="gender"
                     value="F"
                     id="female"
-                    checked={value === "F" && !specifiedGender}
+                    checked={value === "F"}
                     onClick={(_) => onInput("F", specifiedGender)}
                 />
                 <label htmlFor="female">
@@ -55,7 +55,7 @@ function GenderInput({ onInput, value, specifiedGender }: GenderInputProp) {
                     name="gender"
                     value="M"
                     id="male"
-                    checked={value === "M" && !specifiedGender}
+                    checked={value === "M"}
                     onClick={(_) => onInput("M", specifiedGender)}
                 />
                 <label htmlFor="male">
@@ -80,8 +80,10 @@ function GenderInput({ onInput, value, specifiedGender }: GenderInputProp) {
                     type="input"
                     className={styles.specifiedGender}
                     placeholder="입력해 주세요."
-                    disabled={value === "other"}
                     value={specifiedGender}
+                    onInput={(evt) =>
+                        onInput("other", (evt.target as HTMLInputElement).value)
+                    }
                 />
             </label>
         </div>

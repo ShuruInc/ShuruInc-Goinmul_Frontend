@@ -1,7 +1,7 @@
 import TopNavbar from "../top_navbar/top_navbar";
 import styles from "../../styles/quiz/result.module.scss";
 import shareBtnStyles from "../../styles/common/share-buttons.module.scss";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import ResultBox from "./result_box";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRankingStar } from "@fortawesome/free-solid-svg-icons";
@@ -16,8 +16,9 @@ import initShare, { ShareDatas } from "../init_share";
 import html2canvas from "html2canvas";
 import addPadding from "../util/add_padding_to_canvas";
 import getResultShareData from "./share_template";
+import "../../styles/quiz.scss";
 
-type ResultPage = {
+type ResultPageProp = {
     sessionId?: string;
 };
 
@@ -28,14 +29,14 @@ type CombinedResultData = {
     sessionInfo: QuizSessionInfo | null;
 };
 
-export default function ResultPage(props: ResultPage) {
+export default function ResultPage(props: ResultPageProp) {
     const sessionId =
         props.sessionId ??
         new URLSearchParams(location.search).get("session") ??
         "";
-    const session = new QuizSession(sessionId);
+    const session = useMemo(() => new QuizSession(sessionId), [sessionId]);
 
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
     const [{ result, nerdTest, topCategory, sessionInfo }, setResult] =
         useState<CombinedResultData>({
             result: null,
@@ -83,11 +84,7 @@ export default function ResultPage(props: ResultPage) {
     }, []);
 
     useEffect(() => {
-        if (
-            result !== null &&
-            shareData === null &&
-            resultBoxRef.current !== null
-        ) {
+        if (!loading && shareData === null && resultBoxRef.current !== null) {
             html2canvas(resultBoxRef.current)
                 .then(addPadding)
                 .then(
@@ -99,13 +96,13 @@ export default function ResultPage(props: ResultPage) {
                         getResultShareData({
                             url,
                             isNerdTest,
-                            result,
+                            result: result!,
                             imageFile,
                         }),
                     ),
                 );
         }
-    }, [result]);
+    }, [loading]);
 
     let shareButtons: ReactNode = null;
     if (shareData !== null) {
@@ -148,7 +145,7 @@ export default function ResultPage(props: ResultPage) {
                 type="normal"
                 progress={{ value: 100, text: "" }}
             ></TopNavbar>
-            <div>
+            <div className="main-container">
                 {loading ? (
                     <article className={styles.loading}></article>
                 ) : (
@@ -190,7 +187,10 @@ export default function ResultPage(props: ResultPage) {
                         )}
                         {shareButtons}
                         <button
-                            className={styles.continue}
+                            className={classNames(
+                                styles.shareBtn,
+                                shareBtnStyles.continue,
+                            )}
                             onClick={(evt) => {
                                 evt.preventDefault();
 

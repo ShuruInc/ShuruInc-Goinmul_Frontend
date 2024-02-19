@@ -1,0 +1,50 @@
+@import '../common/styled-inputs';
+
+nav {
+    align-items: center;
+    gap: 10px;
+    font-size: 24px;
+    @include styled-inputs;
+    button.go-back {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: transparent !important;
+
+        font-size: inherit;
+        width: 24px;
+
+        padding: 0px !important;
+
+        svg {
+            height: 12px;
+            width: auto;
+        }
+    }
+
+    input.search {
+        --search-icon-size: 24px;
+        background-image: var(--search-icon);
+        background-position: right 16px center;
+        background-size: auto var(--search-icon-size);
+        background-repeat: no-repeat;
+        padding: 9px calc(16px + var(--search-icon-size)) 9px 16px;
+        width: 100%;
+        color: #000000b2;
+
+        font-family: Pretendard;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+
+        &::placeholder {
+            color: #B4B9B8;
+        }
+
+        &:focus,
+        &:active {
+            background-image: var(--search-icon-active);
+            color: black;
+        }
+    }
+}

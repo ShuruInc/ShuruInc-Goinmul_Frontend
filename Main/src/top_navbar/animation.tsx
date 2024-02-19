@@ -9,21 +9,20 @@ export function setupTopNavbarAnimationOnScroll(
     [logoIndex, setLogoIndex]: UseStateReturnType<number>,
     [isHidden, setIsHidden]: UseStateReturnType<boolean>,
     [logoChangeAllowed, setLogoChangeAllowed]: UseStateReturnType<boolean>,
+    [firstLoad, setFirstLoad]: UseStateReturnType<boolean>,
+    [lastScrollTop, setLastScrollTop]: UseStateReturnType<number>,
 ) {
-    var firstLoad = true;
-
     function setupScrollEventHandlerForSmoothScrollbar(
         scrollbar: SmoothScrollbar,
     ) {
-        let lastScrollTop = 0;
         const listener = (status: ScrollStatus) => {
             // column별로 스크롤이 따로 논다!
             var scrollTop = status.offset.y;
 
             //페이지가 로딩되거나 column이 바뀐 경우에는 상단바를 가리지 않음
             if (firstLoad) {
-                firstLoad = false;
-                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+                setFirstLoad(true);
+                setLastScrollTop(scrollTop <= 0 ? 0 : scrollTop);
                 return;
             }
 
@@ -40,7 +39,7 @@ export function setupTopNavbarAnimationOnScroll(
                 }
             }
 
-            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+            setLastScrollTop(scrollTop <= 0 ? 0 : scrollTop);
         };
 
         scrollbar?.addListener(listener);
@@ -58,10 +57,14 @@ export function setupTopNavbarAnimationOnScroll(
         }
     }
 
-    const smoothScrollbars = [...SmoothScrollbar.getAll()];
-    const clearListeners = smoothScrollbars.map(
-        setupScrollEventHandlerForSmoothScrollbar,
-    );
+    let smoothScrollbars = [...SmoothScrollbar.getAll()];
+    const clearListeners = () =>
+        smoothScrollbars.forEach(setupScrollEventHandlerForSmoothScrollbar);
 
-    return () => clearListeners.forEach((i) => i());
+    if (smoothScrollbars.length === 0)
+        setTimeout(() => {
+            smoothScrollbars = [...SmoothScrollbar.getAll()];
+        }, 100);
+
+    return clearListeners;
 }

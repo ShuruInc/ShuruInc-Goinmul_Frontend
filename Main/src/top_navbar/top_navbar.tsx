@@ -89,20 +89,35 @@ export default function TopNavbar(props: TopNavbarProp) {
 
     let isHiddenState = useState<boolean>(false);
     let logoChangeAllowedState = useState<boolean>(true);
+    let firstLoadState = useState<boolean>(true);
+    let lastScrollTopState = useState<number>(0);
     useEffect(() => {
-        return setupTopNavbarAnimationOnScroll(
-            [logoImgIndex, setLogoImgIndex],
-            isHiddenState,
-            logoChangeAllowedState,
-        );
-    }, [props.animated, navbarRef.current === null]);
+        if (props.animated) {
+            console.log(`${firstLoadState[0]} ${lastScrollTopState[0]}`);
+            return setupTopNavbarAnimationOnScroll(
+                [logoImgIndex, setLogoImgIndex],
+                isHiddenState,
+                logoChangeAllowedState,
+                firstLoadState,
+                lastScrollTopState,
+            );
+        }
+    }, [
+        props.animated,
+        logoImgIndex,
+        isHiddenState[0],
+        logoChangeAllowedState[0],
+        firstLoadState[0],
+        lastScrollTopState[0],
+    ]);
 
     return (
         <div
             id="topFixedBar"
             className={classNames(
                 "top-fixed-bar",
-                isHiddenState && "is-hidden",
+                isHiddenState[0] && "is-hidden",
+                props.type === "search" && "search",
             )}
             ref={navbarRef}
             onClick={createClickBugFixHandler(navbarRef)}
@@ -114,7 +129,10 @@ export default function TopNavbar(props: TopNavbarProp) {
         >
             {content}
             <div className="progress-container">
-                <div className="progress" style={{ width: "0%" }}></div>
+                <div
+                    className="progress"
+                    style={{ width: `${props.progress?.value ?? 0}%` }}
+                ></div>
             </div>
         </div>
     );

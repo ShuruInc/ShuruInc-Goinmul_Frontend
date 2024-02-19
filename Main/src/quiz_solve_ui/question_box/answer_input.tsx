@@ -70,16 +70,19 @@ export default function AnswerInput({
         );
     } else {
         input = question.choices.map((i) => (
-            <input
-                type="radio"
-                name="answer"
-                value={i.value}
-                disabled={disabled}
-                checked={inputValue === i.value}
-                onClick={() => setInputValue(i.value)}
-            >
+            <label>
+                <input
+                    type="radio"
+                    name="answer"
+                    value={i.value}
+                    disabled={disabled}
+                    checked={inputValue === i.value}
+                    onClick={() => setInputValue(i.value)}
+                    key={i.value}
+                ></input>
+
                 {i.label}
-            </input>
+            </label>
         ));
     }
 

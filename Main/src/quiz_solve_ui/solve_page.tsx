@@ -12,6 +12,7 @@ import AnswerInput from "./question_box/answer_input";
 import QuestionContent from "./question_box/question_content";
 import { QuizProblem } from "./types";
 import styles from "../../styles/quiz/solve.module.scss";
+import "../../styles/common/_container.scss";
 
 function confirmUnload(evt: Event) {
     evt.preventDefault();
@@ -99,18 +100,16 @@ export default function SolvePage({
     }, [sessionInfo, problem]);
 
     // 모의고사는 새로고침이 되도 계속 풀 수 있게 주소에 세션 id를 넣는다.
-    if (sessionInfo?.isNerdTest === false) {
-        useEffect(() => {
-            const quizId = new URLSearchParams(
-                location.search.substring(1),
-            ).get("id");
+    useEffect(() => {
+        if (sessionInfo?.isNerdTest === false) {
+            const quizId = new URLSearchParams(location.search).get("id");
             history.replaceState(
                 null,
                 "",
                 `/quiz/solve.html?session=${session.getSessionId()}&id=${quizId}`,
             );
-        }, []);
-    }
+        }
+    }, []);
 
     // 디버깅용 기능
     // 개발자 도구 콘솔에서 exitNerdTest();를 치면 고인물 테스트가 남은 시간이나 남은 문제 갯수에 상관없이 강제 종료된다.
@@ -175,6 +174,8 @@ export default function SolvePage({
 
     // 정답 제출하고 문제 교체하는 함수
     const submitAnswer = async (answer: string) => {
+        if (answer === "") return;
+
         const correct = await session.submit(answer, problem?.choices === null);
         setInputDisabled(true);
 
@@ -223,6 +224,7 @@ export default function SolvePage({
                         }}
                     ></QuestionContent>
                     <AnswerInput
+                        key={problem.index}
                         question={problem}
                         onSubmit={submitAnswer}
                         disabled={inputDisabled}

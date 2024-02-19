@@ -2,7 +2,7 @@
 
 /*데스크탑*/
 @include desktop {
-    .table-cell {
+    .post {
         &.portrait {
             width: calc(
                 var(--main-container-width) * (1 / 3.2)
@@ -20,7 +20,7 @@
 
 /*태블릿*/
 @include tablet {
-    .table-cell {
+    .post {
         &.portrait {
             width: calc(
                 var(--main-container-width) * (1 / 3.2)
@@ -38,13 +38,13 @@
 
 /*스마트폰*/
 @include mobile {
-    .table-cell {
+    .post {
         &.portrait {
             padding: 0.5vw !important;
             width: 28.57% !important; /* 3.5 posts visible in a row */
             height: calc(49.02vw - 40px) !important;
 
-            .cell-info {
+            .cellInfo {
                 .popularity {
                     padding: 4px 8px !important;
                     font-size: 9px !important;

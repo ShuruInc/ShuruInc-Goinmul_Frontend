@@ -8,7 +8,7 @@ export default function KeywordBubbles({
     onBubbleClick,
 }: KeywordBubblesProp) {
     return (
-        <section className="keywords display-none">
+        <section className="keywords">
             <h2>이런 키워드는 어때요?</h2>
             <div className="bubbles">
                 {bubbles.map((i) => (

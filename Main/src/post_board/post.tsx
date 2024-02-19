@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import styles from "../../styles/post-board.module.scss";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import millify from "../util/millify";
 
 type PostProp = {
@@ -32,41 +32,43 @@ export default function PostView({
         lazyBackground ? false : true,
     );
     const [liked, setLiked] = useState<boolean>(false);
-    const postRef = useRef<HTMLAnchorElement>(null);
 
     // 배경 이미지 lazy-loading
-    useEffect(() => {
-        if (lazyBackground && postRef.current) {
-            const observer = new IntersectionObserver(
-                (entries) => {
-                    if (entries.some((i) => i.isIntersecting))
-                        setLoadBackgroundImage(true);
-                },
-                {
-                    root: postRef.current,
-                    rootMargin: "10% 10% 10% 10%",
-                },
-            );
+    const setupLazyloadAndHit = useCallback((node: HTMLElement | null) => {
+        if (node) {
+            if (lazyBackground) {
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        if (
+                            entries.some((i) => i.isIntersecting) &&
+                            !loadBackgroundImage
+                        )
+                            setLoadBackgroundImage(true);
+                    },
+                    {
+                        rootMargin: "10% 10% 10% 10%",
+                    },
+                );
+                observer.observe(node);
+            }
 
-            return () => observer.disconnect();
+            if (onThumbnailVisible) {
+                let hitted = false;
+                const observer = new IntersectionObserver((entries) => {
+                    const intersecting =
+                        entries.length > 0 &&
+                        entries.some((i) => i.isIntersecting);
+                    if (intersecting && !hitted) {
+                        setTimeout(onThumbnailVisible, 1);
+                        hitted = true;
+                    } else if (!intersecting) {
+                        hitted = false;
+                    }
+                });
+                observer.observe(node);
+            }
         }
-    }, [lazyBackground]);
-
-    useEffect(() => {
-        if (onThumbnailVisible) {
-            const observer = new IntersectionObserver(
-                (entries) => {
-                    if (entries.some((i) => i.isIntersecting))
-                        onThumbnailVisible();
-                },
-                {
-                    root: postRef.current,
-                },
-            );
-
-            return () => observer.disconnect();
-        }
-    }, [onThumbnailVisible]);
+    }, []);
 
     return (
         <a
@@ -75,6 +77,7 @@ export default function PostView({
                 styles.post,
                 landscape ? styles.landscape : styles.portrait,
             )}
+            ref={setupLazyloadAndHit}
             style={{
                 backgroundImage:
                     loadBackgroundImage || !lazyBackground
@@ -106,7 +109,7 @@ export default function PostView({
                                         ? ":D"
                                         : likes
                                         ? millify(likes)
-                                        : "?"}
+                                        : likes ?? 0}
                                 </span>
                             </div>
                         </a>

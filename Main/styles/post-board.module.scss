@@ -1,4 +1,3 @@
-@use "media-queries/post-board";
 @import "./mixins";
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
@@ -148,3 +147,5 @@
         }
     }
 }
+
+@import "media-queries/post-board";

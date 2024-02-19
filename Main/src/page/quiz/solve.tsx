@@ -5,6 +5,7 @@ import { QuizSession } from "../../api/quiz_session";
 import NerdTestEntryPageView from "../../nerd_test_entry_ui/page";
 import SolvePage from "../../quiz_solve_ui/solve_page";
 import { createRoot } from "react-dom/client";
+import "../../../styles/quiz.scss";
 
 const params = new URLSearchParams(location.search);
 const quizId = params.get("id");
@@ -67,7 +68,7 @@ const initSolvePage = (session: QuizSession) => {
             session={session}
             onResultPageRequest={() => {
                 location.href =
-                    "/quiz/solve.html?session=" + session.getSessionId();
+                    "/quiz/result.html?session=" + session.getSessionId();
             }}
         ></SolvePage>,
     );

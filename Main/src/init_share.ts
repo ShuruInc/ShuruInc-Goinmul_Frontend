@@ -1,8 +1,4 @@
 import { kakaoApiKey } from "./env";
-import kakaoTalkIcon from "../assets/kakaotalk_bubble.svg";
-import { encode } from "html-entities";
-import { icon } from "@fortawesome/fontawesome-svg-core";
-import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import tweetDialog from "./tweet_dialog";
 
 export type ShareDatas = {
@@ -62,23 +58,6 @@ export default function initShare(options: InitShareButtonOptions) {
     importKakaoSdk();
 
     let content = options.content;
-    let webShareButton = document.querySelector(".share-web-share"),
-        twitterButton = document.querySelector(
-            ".share-twitter",
-        ) as HTMLAnchorElement,
-        kakaoButton = document.querySelector(".share-kakao");
-
-    webShareButton?.classList.add("display-none");
-    twitterButton?.classList.add("display-none");
-    kakaoButton?.classList.add("display-none");
-
-    kakaoButton!.innerHTML = `<img src="${encode(
-        kakaoTalkIcon,
-    )}"> ${kakaoButton?.innerHTML}`;
-    twitterButton!.innerHTML = `${
-        icon(faXTwitter).html[0]
-    } ${twitterButton?.innerHTML}`;
-
     const doWebShare = async () => {
         if (options.shareDataTransformer)
             content = await options.shareDataTransformer(content);
