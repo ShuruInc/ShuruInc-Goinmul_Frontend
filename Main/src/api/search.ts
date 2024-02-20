@@ -55,8 +55,6 @@ export default class SearchApiClient {
     }
 
     static async search(query: string): Promise<SearchResult> {
-        apiClient.addKeyword({ keyword: query });
-
         if (query.length > 30) query = query.substring(0, 30);
         return {
             result: (
