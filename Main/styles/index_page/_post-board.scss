@@ -13,7 +13,7 @@
     align-items: flex-start;
     width: 100%;
     padding: 14px 0px;
-    --representing-color: 0, 138, 225;
+    --representing-color: 60, 60, 60;
 
     &:first-child h2 {
         margin-top: 0px;
@@ -60,6 +60,14 @@
 
         &.landscape {
             margin-bottom: 4px;
+
+            .cell-info {
+                background: none;
+
+                .title {
+                    display: none;
+                }
+            }
         }
 
         .no-cell-popularity-info {
