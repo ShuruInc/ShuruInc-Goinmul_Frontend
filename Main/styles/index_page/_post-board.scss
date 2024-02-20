@@ -41,7 +41,7 @@
         &.portfrait {
             display: flex;
             flex-direction: row;
-            gap: 4px;
+            gap: 16px;
             overflow-x: scroll;
             @include hide-scrollbar;
 
@@ -59,7 +59,7 @@
         }
 
         &.landscape {
-            margin-bottom: 4px;
+            margin-bottom: 21px;
 
             .cell-info {
                 background: none;
@@ -77,8 +77,39 @@
         }
 
         .chalk-bordered {
-            @include chalk-border(2px);
+            @include chalk-border(6px);
             border-radius: 14px;
+        }
+
+
+        .wrapper {
+            position: relative;
+            padding-bottom: 3px;
+
+            .shadow {
+                @include chalk-border(2px);
+                position: absolute;
+                left: 2px;
+                top: 2px;
+                width: 100%;
+                height: calc(100% - 5px);
+                z-index: -1;
+                border-radius: 14px;
+
+                display: none;
+            }
+
+            &.landscape {
+                padding-bottom: 0px;
+                .shadow {
+                    @include chalk-border-background();
+                    top: 25px;
+                    left: 10px;
+                    width: calc(100% - 20px);
+                    height: calc(100% - 20px);
+                    opacity: 30%;
+                }
+            }
         }
 
         .table-cell {
@@ -95,10 +126,19 @@
             background-repeat: repeat;
             background-size: cover;
             background-position: 50% 50%;
-            border-radius: 14px;
+            border-radius: 8px;
+            position: relative;
+
+            &.portrait {
+                width: var(--portrait-table-cell-width) !important;
+                aspect-ratio: 1 / 1.728;
+            }
 
             &.landscape {
                 width: 100%;
+                aspect-ratio: 1 / 1;
+
+                background-size: auto;
             }
         }
 
