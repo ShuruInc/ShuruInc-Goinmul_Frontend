@@ -248,9 +248,7 @@ const createQuestionElement = (
 
             [
                 ...question.figure.split("").map((i) => {
-                    const initial = document.createElement("div");
-                    initial.textContent = i == "$" ? "　" : i;
-                    initial.className =
+                    const type =
                         i === "$" ||
                         "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ"
                             .split("")
@@ -259,9 +257,52 @@ const createQuestionElement = (
                             : i === " "
                             ? "whitespace"
                             : "normal";
-                    return initial;
+
+                    if (type === "initial") {
+                        const initial = document.createElement("div");
+                        initial.textContent = i == "$" ? "　" : i;
+                        initial.className =
+                            i === "$" ||
+                            "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ"
+                                .split("")
+                                .includes(i)
+                                ? "initial"
+                                : i === " "
+                                ? "whitespace"
+                                : "normal";
+                        return initial;
+                    } else {
+                        return i === " " ? "　" : i;
+                    }
                 }),
-            ].forEach((i) => initials.appendChild(i));
+            ]
+                .reduce((pv, cv) => {
+                    if (typeof cv === "string") {
+                        if (
+                            pv.length === 0 ||
+                            !pv[pv.length - 1].classList.contains("normal")
+                        ) {
+                            pv.push(document.createElement("div"));
+                            pv[pv.length - 1].className = "normal";
+                        }
+
+                        pv[pv.length - 1].textContent += cv;
+                    } else {
+                        if (
+                            pv.length === 0 ||
+                            !pv[pv.length - 1].classList.contains(
+                                "initial-group",
+                            )
+                        ) {
+                            pv.push(document.createElement("div"));
+                            pv[pv.length - 1].className = "initial-group";
+                        }
+                        pv[pv.length - 1].appendChild(cv);
+                    }
+
+                    return pv;
+                }, [] as HTMLElement[])
+                .forEach((i) => initials.appendChild(i));
 
             questionEl.querySelector(".figure")!.appendChild(initials);
     }
