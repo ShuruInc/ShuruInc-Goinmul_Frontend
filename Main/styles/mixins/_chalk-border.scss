@@ -1,0 +1,10 @@
+@import "../colors";
+
+@mixin chalk-border($width) {
+    background-image: linear-gradient($secondary-color-01, $secondary-color-01),
+     url(../assets/chalk-border.png);
+    background-repeat: repeat;
+    background-origin:border-box; 
+    background-clip:padding-box, border-box;
+    border: solid $width transparent;
+}

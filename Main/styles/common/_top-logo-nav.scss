@@ -1,4 +1,5 @@
 @use "../media-queries/top-logo-nav";
+@import "../includes/tenada";
 
 .top-fixed-bar {
     position: fixed;
@@ -9,10 +10,6 @@
 
     height: calc(var(--top-fixed-bar-height) * 0.63);
     width: var(--top-fixed-bar-width);
-    background: linear-gradient(
-        white 63%,
-        #00000000 63%
-    );
 
     z-index: 99;
 
@@ -32,10 +29,21 @@
 
         button {
             border: 0px;
+            &.circle {
+                border: 1px solid white;
+                border-radius: 40px;
+            }
+
             background-color: transparent;
-            padding: 8px 10px;
-            font-size: 18px;
+            width: 34px;
+            height: 34px;
+            padding: 6px 3px;
             cursor: pointer;
+
+            svg {
+                width: 12px;
+                color: white;
+            }
         }
 
         .test-title {
@@ -48,12 +56,21 @@
         }
 
         .main-top-logo {
+            font-family: Tenada;
+            font-size: 24px;
+            font-weight: 800;
+            line-height: 24px;
+            letter-spacing: 0em;
+            
             display: block;
-            width: 90px;
+            width: max-content;
             opacity: 1;
             background-color: rgba(255, 255, 255, 0);
             transition: opacity 0.1s ease-in-out;
             text-align: center;
+
+            text-decoration: none;
+            color: white;
 
             &.is-hidden {
                 opacity: 0;
@@ -99,11 +116,6 @@
 
     &.gradient {
         /*투명해지기 전 컬러*/
-        background: linear-gradient(
-            180deg,
-            rgba(255, 255, 255, 1) 63%,
-            rgba(255, 255, 255, 0) 100%
-        );
         color: rgba(255, 255, 255, 1);
         height: var(--top-fixed-bar-height);
 

@@ -1,6 +1,8 @@
 @use "../media-queries/post-board";
 @import "../mixins";
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+@import "../includes/leeseoyun";
+@import "../mixins/chalk-border";
 
 /* 3*2 와 4*2 갤러리 테이블 */
 /* 세로형 Cell 이미지 비율은 1:0.572 */
@@ -23,12 +25,14 @@
         margin: 0px 0px 14px 0px;
         user-select: none;
         
-        font-family: Pretendard;
+        font-family: LeeSeoyun;
         font-size: 18px;
-        font-weight: 700;
-        line-height: 21px;
+        font-weight: 400;
+        line-height: 18px;
         letter-spacing: -0.01em;
         text-align: left;
+        
+        color: white;
     }
 
     .post-table {
@@ -64,6 +68,11 @@
             }
         }
 
+        .chalk-bordered {
+            @include chalk-border(2px);
+            border-radius: 14px;
+        }
+
         .table-cell {
             display: block;
             padding: 2px 2px 2px 2px;
@@ -78,7 +87,7 @@
             background-repeat: repeat;
             background-size: cover;
             background-position: 50% 50%;
-            border-radius: 6px;
+            border-radius: 14px;
 
             &.landscape {
                 width: 100%;

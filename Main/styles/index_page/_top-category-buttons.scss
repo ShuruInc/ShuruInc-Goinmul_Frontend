@@ -1,4 +1,5 @@
 @use "../media-queries/top-category-buttons";
+@import "../colors";
 
 /* 상단 로고 애니메이션시 버튼 네브도 애니메이션 */
 .top-fixed-bar.is-hidden ~ nav {
@@ -9,7 +10,7 @@
 /* top-category-buttons 버튼 스타일링 */
 nav.top-category-buttons {
     /* 사이즈 */
-    --button-gap: 10px;
+    --button-gap: 6px;
     --button-width: 200px;
 
     /* flexbox랑*/
@@ -32,14 +33,13 @@ nav.top-category-buttons {
     transition: top 0.3s ease;
 
     & > button {
-        border: #f0f0f0 1px solid;
+        border: white 1px solid;
         border-radius: 4px;
         padding: 8px 16px;
         width: 100px;
         white-space: nowrap;
         word-break: keep-all;
         cursor: pointer;
-        background-color: #fbfbfb;
         scroll-snap-align: center;
         text-align: center;
         width: var(--button-width);
@@ -51,16 +51,12 @@ nav.top-category-buttons {
         font-size: 14px;
         line-height: 17px;
         letter-spacing: -0.01em;
-        color: #666867;
-
-        &:hover {
-            background-color: #d6d6d6;
-        }
+        color: white;
+        background: transparent;
 
         &.active {
-            background-color: #1da1f2;
-            border-color: #1da1f2;
-            color: white;
+            background-color: white;
+            color: $secondary-color-01;
         }
     }
 }
