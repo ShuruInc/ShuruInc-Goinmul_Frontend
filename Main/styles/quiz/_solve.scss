@@ -1,10 +1,31 @@
 @import "help-me";
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+@import "../mixins/chalk-border";
+@import "../mixins/masked-chalk-border";
 
 article {
     width: 80%;
 }
+
 .question {
+    .current-score {
+        font-family: LeeSeoyun;
+        font-size: 32px;
+        font-weight: normal;
+        text-align: center;
+
+        color: white;
+        padding: 12px 33px;
+
+        width: fit-content;
+        margin: 0 auto;
+
+        @include masked-chalk-border(0px 0px 4px 0px);
+        border-style: solid;
+        border-width: 0px 0px 2px 0px;
+        border-color: transparent;
+    }
+
     .idk-row {
         text-align: right;
         margin-bottom: 10px;
@@ -107,7 +128,7 @@ article {
             }
             .initial-group {
                 display: inline-block;
-                
+
                 .initial {
                     display: inline-block;
                     padding: 10px 10px;
