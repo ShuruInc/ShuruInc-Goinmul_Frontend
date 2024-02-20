@@ -1,6 +1,6 @@
 @import "../colors";
 
-@mixin chalk-border-background($background-color: $secondary-color-01) {
+@mixin chalk-background() {
     background-image: url(../assets/chalk-border.png);
 }
 
