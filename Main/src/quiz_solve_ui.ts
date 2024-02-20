@@ -188,10 +188,18 @@ const createQuestionElement = (
     question: QuizProblem,
     index: number,
     forShare = false,
+    options: Partial<{ currnetScore: number }> = {},
 ) => {
     const questionEl = document.createElement("div");
     questionEl.className = "question";
     questionEl.innerHTML = `
+        ${
+            typeof options.currnetScore !== "undefined"
+                ? `<div class="current-score">
+                    ${options.currnetScore}점
+        </div>`
+                : ""
+        }
         <div class="idk-row">
             <button class="idk">친구찬스!</button>
         </div>
@@ -322,7 +330,9 @@ export function displayProblem(
 ) {
     root.innerHTML = ``;
 
-    root.appendChild(createQuestionElement(question, index));
+    root.appendChild(
+        createQuestionElement(question, index, false, { currnetScore: 100 }),
+    );
     root.appendChild(createAnswerElement(question));
     if (!isMobile)
         (root.querySelector(".answer input") as HTMLInputElement).focus();
