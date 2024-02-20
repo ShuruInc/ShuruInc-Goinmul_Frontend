@@ -102,7 +102,7 @@
             &.landscape {
                 padding-bottom: 0px;
                 .shadow {
-                    @include chalk-border-background();
+                    @include chalk-background();
                     top: 25px;
                     left: 10px;
                     width: calc(100% - 20px);

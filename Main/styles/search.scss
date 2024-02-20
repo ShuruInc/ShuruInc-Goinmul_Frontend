@@ -10,7 +10,7 @@
 @import "./colors";
 
 body {
-    @include chalk-background;
+    @include chalkboard-background;
 }
 
 .top-fixed-bar .container {
