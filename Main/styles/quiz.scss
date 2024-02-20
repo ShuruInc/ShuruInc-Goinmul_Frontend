@@ -4,6 +4,11 @@
 @use "common/utils";
 @use "media-queries/quiz";
 @import "common/styled-inputs";
+@import "mixins/chalk-background";
+
+body {
+    @include chalk-background();
+}
 
 .main-container {
     padding-top: 90px;
