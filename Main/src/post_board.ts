@@ -106,7 +106,18 @@ export function preparePlaceholderSection(
             info.innerHTML =
                 '<div class="title"></div><div class="popularity"><a href="#" class="likes-link"><div class="likes"><span class="like-count" /></div></a><div class="views"><span class="view-count" /></div></div>';
 
-            postTable.appendChild(chalkBordered);
+            // 그림자 추가
+            const shadow = document.createElement("div");
+            shadow.className = "shadow";
+
+            // wrapper
+            const wrapper = document.createElement("div");
+            wrapper.className =
+                "wrapper " + (rowInfo.landscape ? "landscape" : "");
+            wrapper.appendChild(chalkBordered);
+            wrapper.appendChild(shadow);
+
+            postTable.appendChild(wrapper);
             chalkBordered.appendChild(cell);
             cell.appendChild(info);
         }

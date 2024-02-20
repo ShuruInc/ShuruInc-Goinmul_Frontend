@@ -2,47 +2,32 @@
 
 /*데스크탑*/
 @include desktop {
-    .table-cell {
-        &.portrait {
-            width: calc(
-                var(--main-container-width) * (1 / 3.2)
-            ) !important; /* 3.2 posts visible in a row */
-            height: calc(
-                var(--main-container-width) * (1 / 3.2) * 1.728
-            ) !important;
-        }
-
-        &.landscape {
-            aspect-ratio: 1 / 1;
-        }
+    .main-container {
+        --portrait-table-cell-width: calc(
+            var(--main-container-width) * (1 / 3.2)
+        );
     }
 }
 
 /*태블릿*/
 @include tablet {
-    .table-cell {
-        &.portrait {
-            width: calc(
-                var(--main-container-width) * (1 / 3.2)
-            ) !important; /* 4.5 posts visible in a row */
-            height: calc(
-                var(--main-container-width) * (1 / 3.5) * 1.728
-            ) !important;
-        }
-
-        &.landscape {
-            aspect-ratio: 1 / 1;
-        }
+    .main-container {
+        --portrait-table-cell-width: calc(
+            var(--main-container-width) * (1 / 3.5)
+        );
     }
 }
 
 /*스마트폰*/
 @include mobile {
+    .main-container {
+        --portrait-table-cell-width: calc(
+            var(--main-container-width) * (1 / 3.5)
+        );
+    }
     .table-cell {
         &.portrait {
             padding: 0.5vw !important;
-            width: 28.57% !important; /* 3.5 posts visible in a row */
-            height: calc(49.02vw - 40px) !important;
 
             .cell-info {
                 .popularity {
@@ -56,12 +41,6 @@
                     line-height: 16px !important;
                 }
             }
-
-            margin: 0.55vw;
-        }
-
-        &.landscape {
-            aspect-ratio: 1 / 1;
         }
     }
 }
