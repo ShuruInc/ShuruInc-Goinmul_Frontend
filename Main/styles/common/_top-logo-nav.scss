@@ -100,20 +100,18 @@
         width: 100%;
         height: 6px;
         background: #ffffff50;
+        background-size: contain;
         &.red {
-            .progress {
-                background-color: #EE4D4D;
-            }
+            background: #EE4D4D50;
         }
         &.yellow {
-            .progress {
-                background-color: #FFB800;
-            }
+            background: #FFB80050;
+               
         }
         .progress {
             width: 0%;
             height: 6px;
-            background-color: white;
+            background-image: url(../assets/chalk-border.png);
         }
     }
 
