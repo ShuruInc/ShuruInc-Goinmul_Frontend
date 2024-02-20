@@ -83,6 +83,12 @@ export function preparePlaceholderSection(
         }
 
         for (let i = 0; i < rowInfo.count; i++) {
+            // 분필 border 생성
+            const chalkBordered = document.createElement("div");
+            chalkBordered.className =
+                "chalk-bordered " +
+                (rowInfo.landscape ? "landscape" : "portrait");
+
             // 요소 생성 후 이미지 소스 설정
             const cell = document.createElement("a");
             cell.href = "quiz.html";
@@ -100,7 +106,8 @@ export function preparePlaceholderSection(
             info.innerHTML =
                 '<div class="title"></div><div class="popularity"><a href="#" class="likes-link"><div class="likes"><span class="like-count" /></div></a><div class="views"><span class="view-count" /></div></div>';
 
-            postTable.appendChild(cell);
+            postTable.appendChild(chalkBordered);
+            chalkBordered.appendChild(cell);
             cell.appendChild(info);
         }
 

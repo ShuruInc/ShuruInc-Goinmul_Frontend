@@ -6,8 +6,11 @@
 @use "index_page/top-category-buttons";
 @use "index_page/post-board-columns";
 @use "index_page/post-board";
+@import "./mixins/chalk-background";
 
 body {
     font-size: 16px;
     overscroll-behavior: none;
+
+    @include chalk-background;
 }
