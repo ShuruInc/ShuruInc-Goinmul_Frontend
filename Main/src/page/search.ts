@@ -21,12 +21,14 @@ dom.i2svg({ node: document.querySelector(".no-results")! });
 document.body.style.setProperty(
     "--search-icon",
     `url("data:image/svg+xml;,${encodeURIComponent(
-        icon(faSearch, { styles: { opacity: "0.5" } }).html[0],
+        icon(faSearch, { styles: { opacity: "0.5", color: "white" } }).html[0],
     )}")`,
 );
 document.body.style.setProperty(
     "--search-icon-active",
-    `url("data:image/svg+xml;,${encodeURIComponent(icon(faSearch).html[0])}")`,
+    `url("data:image/svg+xml;,${encodeURIComponent(
+        icon(faSearch, { styles: { color: "white" } }).html[0],
+    )}")`,
 );
 
 // 뒤로 가기 버튼
