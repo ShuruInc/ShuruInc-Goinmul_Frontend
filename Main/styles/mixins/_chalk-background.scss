@@ -2,3 +2,9 @@
     background: #004125;
     background-image: url(../assets/chalk-background.png);
 }
+
+@mixin chalk-grid-background {
+    background: url(../assets/white-grid.png),
+     url(../assets/chalk-background.png),
+     #004125;
+}

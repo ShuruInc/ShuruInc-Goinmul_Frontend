@@ -12,5 +12,5 @@ body {
     font-size: 16px;
     overscroll-behavior: none;
 
-    @include chalk-background;
+    @include chalk-grid-background;
 }
