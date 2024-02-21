@@ -145,12 +145,18 @@ article {
                         font-family: Pretendard;
                         font-size: 12px;
                         font-weight: 700;
-                        line-height: 14px;
+                        line-height: 24px;
                         letter-spacing: -0.01em;
+                        text-align: center;
+                        
+                        background-color: white;
                         color: $secondary-color-01;
-                        width: 29px;
+                        border-radius: 34px;
 
                         margin-right: 14px;
+                        
+                        width: 24px;
+                        height: 24px;
                     }
 
                     white-space: nowrap;
@@ -201,7 +207,7 @@ article {
         padding: 120px 0px;
         gap: 30px;
         align-items: center;
-        
+
         .icon {
             height: 72px;
             width: auto;
