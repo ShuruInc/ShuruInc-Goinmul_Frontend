@@ -10,14 +10,14 @@ import {
     preparePlaceholderSection,
 } from "../post_board";
 import setHorizontalDragScrollOnDesktop from "../horizontal_drag_to_scroll_on_desktop";
-import { faFaceSadTear } from "@fortawesome/free-regular-svg-icons";
+import paperPlane from "../../assets/paperplane.svg";
 
 // 아이콘 렌더링
 library.add(faSearch);
 library.add(faChevronLeft);
-library.add(faFaceSadTear);
 dom.i2svg({ node: document.querySelector("#topFixedBar")! });
-dom.i2svg({ node: document.querySelector(".no-results")! });
+(document.querySelector(".no-results .icon") as HTMLImageElement).src =
+    paperPlane;
 document.body.style.setProperty(
     "--search-icon",
     `url("data:image/svg+xml;,${encodeURIComponent(
