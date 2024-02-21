@@ -8,6 +8,18 @@
     transform: translateX(-50%);
 }
 
+/* 네비게이션바 부분의 배경 투과 */
+.top-fixed-bar {
+    & ~ .main-container .column {
+        transition: clip-path 0.3s ease;           
+        clip-path: inset(
+            calc(var(--top-fixed-bar-height) / 1.95) 0px 0px 0px);
+    }
+    &.is-hidden ~ .main-container article {
+        clip-path: inset(0px 0px 0px 0px);
+    }
+}
+
 /* top-category-buttons 버튼 스타일링 */
 nav.top-category-buttons {
     /* 사이즈 */
