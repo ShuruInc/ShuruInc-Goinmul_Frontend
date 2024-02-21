@@ -1,6 +1,6 @@
 @import "../includes/leeseoyun";
 
-@mixin handdrawn-btn($primary: true) {
+@mixin handdrawn-btn($type: "") {
     background-color: transparent;
     background-repeat: no-repeat;
     background-size: 100% 100%;
@@ -15,9 +15,11 @@
     letter-spacing: 0em;
     text-align: center;
     color: white;
-    
-    @if $primary {
+
+    @if $type == "primary" {
         background-image: url(../assets/primary-submit-btn-bg.svg);
+    } @else if $type == "white" {
+        background-image: url(../assets/white-submit-btn-bg.svg);
     } @else {
         background-image: url(../assets/secondary-submit-btn-bg.svg);
     }

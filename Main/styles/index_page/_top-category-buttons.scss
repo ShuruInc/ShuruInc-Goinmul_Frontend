@@ -1,5 +1,6 @@
 @use "../media-queries/top-category-buttons";
 @import "../colors";
+@import "../mixins/handdrawn-btn";
 
 /* 상단 로고 애니메이션시 버튼 네브도 애니메이션 */
 .top-fixed-bar.is-hidden ~ nav {
@@ -33,10 +34,9 @@ nav.top-category-buttons {
     transition: top 0.3s ease;
 
     & > button {
-        border: white 1px solid;
-        border-radius: 4px;
-        padding: 8px 16px;
-        width: 100px;
+        @include handdrawn-btn();
+
+        padding: 12px 16px;
         white-space: nowrap;
         word-break: keep-all;
         cursor: pointer;
@@ -45,17 +45,9 @@ nav.top-category-buttons {
         width: var(--button-width);
         min-width: var(--button-width);
         touch-action: manipulation;
-        
-        font-family: Pretendard;
-        font-weight: 500;
-        font-size: 14px;
-        line-height: 17px;
-        letter-spacing: -0.01em;
-        color: white;
-        background: transparent;
 
         &.active {
-            background-color: white;
+            @include handdrawn-btn("white");
             color: $secondary-color-01;
         }
     }

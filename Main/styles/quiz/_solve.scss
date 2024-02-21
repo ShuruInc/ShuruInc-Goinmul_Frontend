@@ -36,7 +36,7 @@ article {
             width: 80px;
             height: 40px;
 
-            @include handdrawn-btn(false);
+            @include handdrawn-btn();
         }
     }
 
@@ -229,7 +229,7 @@ article {
             height: 50px;
             width: 120px;
 
-            @include handdrawn-btn(true);
+            @include handdrawn-btn("primary");
         }
     }
 
