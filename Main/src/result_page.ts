@@ -15,6 +15,7 @@ import addPadding from "./canvas_padding";
 import resultPageHtml from "./result_page.html";
 import createResultElement from "./create_result_element";
 import PostBoardApiClient from "./api/posts";
+import pushpin from "../assets/pushpin.svg";
 
 /**
  * 결과 페이지를 렌더링한다.
@@ -24,6 +25,8 @@ export default function initializeResultPage() {
         document.body.innerHTML = resultPageHtml;
     }
     document.body.classList.add("result-body");
+    (document.body.querySelector(".pushpin img") as HTMLImageElement).src =
+        pushpin;
 
     const sessionId =
         new URLSearchParams(location.search.substring(1)).get("session") ?? "";

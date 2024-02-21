@@ -6,11 +6,11 @@ import logoImage4 from "../assets/logo/MainLogo_1_alpha.png";
 import {
     faAngleLeft,
     faMagnifyingGlass,
-    faRankingStar,
 } from "@fortawesome/free-solid-svg-icons";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import SmoothScrollbar from "smooth-scrollbar";
+import rankingIcon from "../assets/ranking-icon.svg";
 
 const images = [logoImage1, logoImage2, logoImage3, logoImage4];
 
@@ -44,8 +44,11 @@ export function SetCustomRankingHandler(handler: () => void) {
 export function InitTopNav(animated = false) {
     const topFixedBar = document.getElementById("topFixedBar")!;
     // 아이콘 렌더링
-    library.add(faMagnifyingGlass, faRankingStar, faAngleLeft);
+    library.add(faMagnifyingGlass, faAngleLeft);
     dom.i2svg({ node: topFixedBar });
+    [...document.querySelectorAll(".ranking-icon")].forEach(
+        (i) => ((i as HTMLImageElement).src = rankingIcon),
+    );
 
     // 로고 이미지 랜덤 설정
     const mainTopLogo = document.querySelector(

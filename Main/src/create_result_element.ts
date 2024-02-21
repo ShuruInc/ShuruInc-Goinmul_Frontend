@@ -1,10 +1,10 @@
-import { icon } from "@fortawesome/fontawesome-svg-core";
-import { faRankingStar } from "@fortawesome/free-solid-svg-icons";
 import { encode } from "html-entities";
 import goldMedal from "../assets/medal/gold.png";
 import silverMedal from "../assets/medal/silver.png";
 import cooperMedal from "../assets/medal/cooper.png";
 import { randomMedalEnabled } from "./env";
+import paperCorner from "../assets/paper-corner.svg";
+import rankingIcon from "../assets/ranking-icon.svg";
 
 type NerdTestResultElementContent = {
     nerd: true;
@@ -60,9 +60,13 @@ export default function createResultElement(
                     data.date.getMonth() + 1
                 }. ${data.date.getDate()}.</time>
                 <p class="comment"></p>
-            </div>`;
+            </div>
+            <img class="paper-corner">
+            `;
 
     let medal = null;
+    (element.querySelector("img.paper-corner") as HTMLImageElement).src =
+        paperCorner;
     switch (
         randomMedalEnabled
             ? Math.floor(Math.random() * 3) + 1
@@ -119,8 +123,7 @@ export default function createResultElement(
 
     const comment = element.querySelector(".comment")!;
     if (data.nerd) {
-        const iconHtml = icon(faRankingStar, { styles: { width: "1em" } })
-            .html[0];
+        const iconHtml = `<img src="${rankingIcon}" class="ranking-icon"></img>`;
         comment.innerHTML = `왼족 상단의 ${iconHtml} 버튼을 누르면 실시간 랭킹을 확인할 수 있습니다.`;
     } else if (data.points === 100) {
         comment.innerHTML = `완벽합니다! <a class="nerd-test-link"></a>에 도전해 보시겠어요?`;
