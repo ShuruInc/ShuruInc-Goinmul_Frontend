@@ -12,7 +12,7 @@
     }
 }
 
-#topFixedBar {
+#topFixedBar, html {
     @include desktop {
         --top-fixed-bar-height: 200px;
         --top-fixed-bar-width: 700px;
