@@ -33,6 +33,7 @@ function setWarningText(newText: string) {
     const warning = document.querySelector(".entry-section .warning")!;
     warning.textContent = newText;
     if (newText === "") {
+        warning.innerHTML = "&nbsp;";
         document
             .querySelector(".start-button button")
             ?.classList.remove("disabled");
@@ -146,13 +147,7 @@ const initByQuizId = async () => {
 
                 if (age === "") age = null;
                 gender = (
-                    (
-                        [
-                            ...document.querySelectorAll(
-                                ".gender-radios input",
-                            ),
-                        ] as HTMLInputElement[]
-                    ).filter((i) => i.checked)[0] ?? { value: null }
+                    document.querySelector("select.gender") as HTMLInputElement
                 ).value;
                 if (gender === "other")
                     gender = (

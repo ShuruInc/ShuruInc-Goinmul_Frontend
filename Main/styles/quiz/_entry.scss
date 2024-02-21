@@ -1,9 +1,13 @@
 @use "../common/styled-inputs";
 @import "../mixins";
+@import "../includes/noto-serif";
+@import "../colors";
 
 article.quiz-entry {
     margin: 0 auto;
     width: fit-content;
+    background: url("../assets/paper.png");
+    padding: 38px 30px;
 
     .refresh-nickname {
         text-decoration: none;
@@ -13,8 +17,7 @@ article.quiz-entry {
     
     .entry-section {
         text-align: center;
-        padding: 60px 0px;
-        border-bottom: 1px solid #DFDFDF;
+        margin-bottom: 20px;
 
         .entry-form-with-warning {
             display: inline-block;
@@ -23,14 +26,13 @@ article.quiz-entry {
         }
 
         .warning {
-            margin: 8px 0px 30px 0px;
             font-family: Pretendard;
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 17px;
-            letter-spacing: -0.01em;
+            font-size: 12px;
+            font-weight: normal;
+            line-height: 20px;
+            letter-spacing: -0.02em;
             
-            color: #EE4D4D;
+            color: #E80000;
             &.shaking {
                 animation: 0.1s ease-out 0s shake;
                 animation-iteration-count: 3;
@@ -42,22 +44,21 @@ article.quiz-entry {
                 display: none;
             }
             h2 {
-                font-family: RixDongnimGothic_Pro;
-                font-size: 24px;
-                font-weight: 800;
-                line-height: 28px;
-                letter-spacing: 0em;
-                margin-bottom: 5px;
+                font-family: "Noto Serif KR";
+                font-weight: 600;
+                font-size: 32px;
+                line-height: 42px;
+                letter-spacing: -0.025em;
+                color: $black-color-01;
             }
             p {
                 font-family: Pretendard;
                 font-size: 14px;
-                font-weight: 500;
-                line-height: 17px;
-                letter-spacing: -0.01em;
+                font-weight: normal;
+                letter-spacing: -0.025em;
                 text-align: center;
                 
-                color: #898B8A;
+                color: #666867;
             }
         }
 
@@ -68,135 +69,116 @@ article.quiz-entry {
             justify-content: center;
             flex-wrap: nowrap;
             gap: 0px;
-            input {
-                width: 270px;
-                max-width: 60vw;
-
-                border: 1px solid #dfdfdf;
+            label {
                 border-radius: 4px 0px 0px 4px;
+                border: 1px solid black;
+                border-right-width: 0px;
+
+                font-family: "Pretendard", sans-serif;
+                font-size: 16px;
+                line-height: 140%;
+                font-weight: 600;
+                color: black;
+
+                padding: 13px 12px;
+
+                word-break: keep-all;
+            }
+            input {
+                width: 170px;
+                max-width: 40vw;
+
+                border: 1px solid black;
                 border-right: none;
                 padding: 9px 16px;
+                border-radius: 0px;
+                background-color: transparent;
 
                 font-family: Pretendard;
-                font-size: 14px;
-                font-weight: 400;
-                line-height: 20px;
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 140%;
                 letter-spacing: 0em;
                 text-align: left;
+                color: black;
 
                 &::placeholder {
                    color: #B4B9B8;
                 }
             }
             .refresh-nickname {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
                 padding: 9px 16px;
-                border: 1px solid #dfdfdf;
+                border: 1px solid black;
                 border-left: 0px;
                 border-radius: 0px 4px 4px 0px;
             
-                height: 20px;
                 svg {
+                    color: #666867;
                     display: inline;
-                    vertical-align: baseline;
+                    vertical-align: bottom;
                 }
             }
         }
     }
 
     .statistics-section {
-        padding: 60px 0px;
         text-align: center;
+        border: 1px solid black;
+        border-radius: 4px;
 
-        .statistics-header {
-            h2 {
-                font-family: Pretendard;
-                font-size: 24px;
-                font-weight: 800;
-                line-height: 28px;
-                letter-spacing: 0em;
-                text-align: center;
-                margin-bottom: 5px;
-            }
-            p {
-                font-family: Pretendard;
-                font-size: 14px;
-                font-weight: 500;
-                line-height: 17px;
-                letter-spacing: -0.01em;
-                text-align: center;
-                
-                color: #898B8A;
-            }
+        h2 {
+            font-family: Pretendard;
+            font-size: 16px;
+            font-weight: normal;
+            line-height: 28px;
+            letter-spacing: -0.02em;
+            text-align: center;
+            color: black;
+
+            margin-bottom: 5px;
+            padding: 10px 0px;
+
+            border-bottom: 1px solid black;
         }
     
         form.statistics {
-            display: grid;
-            justify-content: center;
-            align-items: center;
-            grid-template-columns: max-content 220px;
-            gap: 30px 23px;
-            
-            margin: 40px 0px;
+            padding: 16px 14px;
             
             text-align: left;
+            color: black;
 
-            & > label {
-                font-family: Pretendard;
-                font-size: 14px;
-                font-weight: 600;
-                line-height: 20px;
-                letter-spacing: 0em;
-            }
-            .age {
-                width: 220px;
-                border-radius: 4px;
-                border: 1px solid #DFDFDF;
-                background: white;
-                padding: 9px 16px;
-            }
-            .gender-radios { 
-                display: flex;
-                flex-direction: row;
-                flex-wrap: wrap;
+            font-family: 'Pretendard', sans-serif;
+            font-weight: normal;
+            font-size: 14px;
+            letter-spacing: -0.02em;
+            line-height: 20px;
 
-                gap: 12px 40px;
+            ul {
+                padding-left: 20px;
+                list-style-image: url(../assets/entry-form-ul-ballet.svg);
+                
+                li + li {
+                    margin-top: 10px;
+                }
 
                 label {
-                    display: inline-block;
+                    display: block;
+                }
+                
+                select {
+                    display: block;
                     
-                    input[type="radio"] {
-                        display: none;
-                    }
-                    input[type="radio"] + label {
-                        width: 20px;
-                        height: 20px;
-                        border-radius: 4px;
-                        border: 1px solid #DFDFDF;
-                        color: transparent;
-                        text-align: center;
-                        svg {
-                            width: 10px;
-                            height: auto;
-        
-                            display: inline;
-                            vertical-align: baseline;
-                        }
-                    }
-                    input[type="radio"]:checked + label {
-                        background: #1DA1F2;
-                        color: white;
-                        border: 1px solid transparent;
-                    }
-
-                    .specified-gender {
-                        padding: 9px 16px;
-                        border-radius: 4px;
-
-                        width: 120px;
-                        &::placeholder {
-                            color: #B4B9B8;
-                        }
-                    }
+                    width: 220px;
+                    border-radius: 4px;
+                    border: 1px solid #DFDFDF;
+                    background: white;
+                    
+                    padding: 9px 16px;
+                    margin-top: 10px;
                 }
             }
         } 
@@ -206,24 +188,26 @@ article.quiz-entry {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 5px;
+
+        margin-top: 26px;
+
         button {
             border-radius: 4px;
-            background: #1DA1F2;
+            background: #AB7100;
     
             color: white;
-            padding: 10px 20px;
-            width: 250px;
+            padding: 12px;
+            width: 100%;
             
             font-family: Pretendard;
             font-size: 16px;
             font-weight: 600;
-            line-height: 19px;
-            letter-spacing: -0.01em;
+            line-height: 24px;
+            letter-spacing: -0.025em;
             text-align: center;
             
             &.disabled {
-                background-color: #cfcfcf;
+                background-color: #ababab;
             }
         }
     }
