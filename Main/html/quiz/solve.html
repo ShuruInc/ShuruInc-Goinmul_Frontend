@@ -40,27 +40,35 @@
             <div class="statistics-section">
                 <div class="statistics-header">
                     <h2>(선택)설문조사</h2>
-                    <p>서비스 이용자 파악을 위한 설문조사입니다.</p>
                 </div>
                 <form class="statistics">
-                    <label>
-                        연령대
-                    </label>
-                        <select class="age">
-                            <option value="10대">10대</option>
-                            <option value="20대">20대</option>
-                            <option value="30대">30대</option>
-                            <option value="40대 이상">40대 이상</option>
-                            <option value="">응답하지 않음</option>
-                        </select>
-                    <label>
-                        성별
-                    </label>
-                    <div class="radios gender-radios">
-                        <label><input type="radio" name="gender" value="F" id="female"><label for="female"><i class="fa-solid fa-check"></i></label> 여성</label>
-                        <label><input type="radio" name="gender" value="M" id="male"><label for="male"><i class="fa-solid fa-check"></i></label> 남성</label>
-                        <label><input type="radio" name="gender" value="other" id="specified"><label for="specified"><i class="fa-solid fa-check"></i></label> 기타 <input type="input" class="small-padding specified-gender" placeholder="입력해 주세요."></label>
-                    </div>
+                    <ul>
+                        <li>서비스 이용자 파악을 위한 설문조사입니다.</li>
+                        <li>
+                            <label>
+                                연령대
+                            </label>
+                                <select class="age">
+                                    <option value="10대">10대</option>
+                                    <option value="20대">20대</option>
+                                    <option value="30대">30대</option>
+                                    <option value="40대 이상">40대 이상</option>
+                                    <option value="">응답하지 않음</option>
+                                </select>
+                            </li>
+                            <li>
+                            <label>
+                                성별
+                            </label>
+                            <div class="radios gender-radios">
+                                <select class="gender">
+                                    <option value="female">여성</option>
+                                    <option value="male">남성</option>
+                                    <option value="other">기타</option>
+                                    <option value="">응답하지 않음</option>
+                                </select></div>
+                        </li>
+                    </ul>
                 </form>
             </div>
             <form class="start-button">
