@@ -2,6 +2,9 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 @import "../mixins/chalk-border";
 @import "../mixins/masked-chalk-border";
+@import "../mixins/handdrawn-btn";
+@import "../colors";
+@import "../includes/noto-serif";
 
 article {
     width: 80%;
@@ -30,18 +33,33 @@ article {
         text-align: right;
         margin-bottom: 10px;
         .idk {
-            border: 0px;
-            font-family: Pretendard;
-            font-weight: 400;
-            font-size: 14px;
+            width: 80px;
+            height: 40px;
 
-            padding: 4px 12px;
-            border-radius: 4px;
-
-            background: #ffc956;
-            color: white;
-            cursor: pointer;
+            @include handdrawn-btn(false);
         }
+    }
+
+    .problem-paper-box {
+        background: url(../assets/paper.png);
+        padding: 20px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+        
+        .correctness-effect {
+            display: none;
+        }
+
+        &.with-correctness-effect {
+            position: relative;
+        
+            .correctness-effect {
+                display: block;
+                position: absolute;
+                top: 10px;
+                left: 10px;
+            }
+        }
+        
     }
 
     .category {
@@ -55,39 +73,32 @@ article {
     }
 
     .text {
-        font-family: Pretendard;
-        font-size: 18px;
+        color: $black-color-01;
+        font-family: "Noto Serif KR", serif;
         font-weight: 600;
-        line-height: 21px;
+        font-size: 14px;
         letter-spacing: -0.01em;
-        
+
         .id-number {
-            font-size: 24px;
-            font-weight: 800;
-            line-height: 23px;
+            font-weight: bold;
+            font-size: 16px;
             letter-spacing: -0.01em;
             text-align: left;
-            color: #1DA1F2;
 
             margin-right: 11px;
         }
 
+        .points {
+            display: inline;
+        }
+
         .condition {
-            color: gray;
+            font-weight: normal;
+            font-size: 12px;
+            color: $black-color-03;
             font-size: 0.6em;
         }
         margin-bottom: 6px;
-    }
-
-    .points {
-        font-family: Pretendard;
-        font-size: 14px;
-        font-weight: 600;
-        line-height: 17px;
-        letter-spacing: -0.01em;
-        text-align: right;
-
-        color: #666867;
     }
 
     .figure {
@@ -103,6 +114,9 @@ article {
             max-width: 100%;
             object-fit: contain;
 
+            border: 1px solid $black-color-01;
+            border-radius: 14px;
+
             &.min-height {
                 min-height: 100%;
             }
@@ -113,6 +127,7 @@ article {
         }
 
         .initials {
+            color: black;
             display: inline-flex;
             flex-direction: row;
             align-items: center;
@@ -130,9 +145,10 @@ article {
                 display: inline-block;
 
                 .initial {
+                    color: white;
                     display: inline-block;
                     padding: 10px 10px;
-                    background: #e1e1e1;
+                    background: #c4c4c4;
                     border-radius: 10px;
                     margin: 0px 2.5px;
 
@@ -153,6 +169,7 @@ article {
     flex-direction: column;
     gap: 0.5em;
     text-align: center;
+    margin-top: 24px;
     .row {
         display: flex;
         flex-direction: row;
@@ -176,9 +193,25 @@ article {
 
         &.with-input {
             margin: 0px;
+            .input-wrapper {
+                @include masked-chalk-border(0px 0px 3px 0px);
+                cursor: text;
+            }
+
             input[type="input"] {
-                border-radius: 4px;
+                background: transparent;
+                border: 0px;
+                padding: 16px 12px;
                 width: 100%;
+
+                font-family: 'LeeSeoyun';
+                font-size: 20px;
+                font-weight: normal;
+                color: white;
+
+                &:hover, &:active {
+                    outline: none;
+                }
             }
 
             &.radios {
@@ -193,18 +226,10 @@ article {
         }
 
         button[type="submit"] {
-            height: 49px;
+            height: 50px;
             width: 120px;
 
-            font-family: Pretendard;
-            font-size: 16px;
-            font-weight: 600;
-            line-height: 19px;
-            letter-spacing: -0.01em;
-            text-align: center;
-            color: white;
-
-            background: #1DA1F2;
+            @include handdrawn-btn(true);
         }
     }
 

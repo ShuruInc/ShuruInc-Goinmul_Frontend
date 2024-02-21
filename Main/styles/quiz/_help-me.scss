@@ -1,3 +1,5 @@
+@import "../colors";
+
 .help-me {
     font-family: Pretendard;
     display: none;
@@ -9,35 +11,32 @@
     }
 
     h1 {
-        font-size: 18px;
-        font-weight: 600;
-        line-height: 21px;
-        letter-spacing: -0.01em;
+        font-family: LeeSeoyun;
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 24px;
+        letter-spacing: 0em;
         text-align: center;
+        
 
-        color: #14171A;
+        color: #ffffff;
     }
 
     .timer-paused {
+        font-family: LeeSeoyun;
         font-size: 14px;
-        font-weight: 500;
-        line-height: 17px;
-        letter-spacing: -0.01em;
-        text-align: center;        
-
-        color: #898B8A;
+        font-weight: 400;
+        line-height: 14px;
+        letter-spacing: 0em;
+        text-align: center;
+     
+        color: #ffffff80;
     }
 
-    .problem-box {
-        margin-top: 20px;
-        padding: 2em;
-        background-repeat: repeat;
-        background-image: url(../assets/paper.jpg);
-        text-align: center;
-        .answer {
-            display: flex;
-        }
+    .problem-paper-box {
         .answer-container {
+            margin-top: 1em;
+
             display: flex;
             flex-direction: row;
             justify-content: center;
@@ -56,6 +55,10 @@
                 li {
                     list-style-position: inside;
                     text-align: left;
+                    color: $black-color-01;
+
+                    font-family: 'LeeSeoyun', cursive;
+                    font-weight: normal;
                 }
             }
         }

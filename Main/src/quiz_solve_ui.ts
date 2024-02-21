@@ -5,6 +5,8 @@ import {
     faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { isMobile } from "./is_mobile";
+import correctMark from "../assets/correct_or_wrong/correct.svg";
+import wrongMark from "../assets/correct_or_wrong/wrong.svg";
 
 // FontAwesome 렌더링
 library.add(faXmark);
@@ -127,7 +129,16 @@ const createAnswerElement = (question: QuizProblem) => {
 
     const rowWithInput = answerEl.querySelector(".row.with-input")!;
     if (question.choices === null) {
-        rowWithInput.innerHTML = `<input autofocus class="with-animation" type="input" placeholder="답을 입력하세요">`;
+        rowWithInput.innerHTML = `
+        <div class="input-wrapper">
+            <input autofocus class="with-animation" type="input" placeholder="답을 입력하세요">
+        </div>`;
+        rowWithInput
+            .querySelector(".input-wrapper")
+            ?.addEventListener("click", (evt) => {
+                evt.preventDefault();
+                rowWithInput.querySelector("input")?.focus();
+            });
         const input = rowWithInput.querySelector("input")!;
         input.addEventListener("input", (evt) => {
             validateAnswer((evt.target as HTMLInputElement).value);
@@ -203,15 +214,17 @@ const createQuestionElement = (
         <div class="idk-row">
             <button class="idk">친구찬스!</button>
         </div>
+        <div class="problem-paper-box">
+        <div class="correctness-effect"><img></img></div>
         <div class="category"></div>
         <div class="text">
             <span class="id-number">${index}.</span>
-            <span class="problem-text"></span><br>
+            <span class="problem-text"></span>
+            <div class="points"></div><br>
             <span class="condition"></span>
         </div>
-        <div class="points"></div>
         <div class="figure">
-        </div>`;
+        </div></div>`;
 
     questionEl.querySelector(".category")!.textContent =
         question.secondCategoryName === ""
@@ -350,8 +363,11 @@ export function updateShareProblem(
     index: number,
 ) {
     root.innerHTML = "";
-    root.appendChild(createQuestionElement(question, index, true));
-    root.appendChild(createAnswerElementForShare(question));
+    const questionEl = createQuestionElement(question, index, true);
+    questionEl
+        ?.querySelector(".problem-paper-box")
+        ?.appendChild(createAnswerElementForShare(question));
+    root.appendChild(questionEl);
 }
 
 /**
@@ -429,19 +445,16 @@ export function setHelpMeFriendsEventHandler(
  */
 export function displayCorrectnessAnimation(correct: boolean) {
     return new Promise<void>((resolve, _reject) => {
-        const element = document.querySelector(".correctness-effect");
-        if (element === null) return;
+        const paperBox = document.querySelector(".problem-paper-box");
+        const effectImg = paperBox?.querySelector(
+            ".correctness-effect img",
+        ) as HTMLImageElement | null;
+        if (paperBox === null || effectImg === null) return;
 
-        if (correct) {
-            element.classList.remove("fail");
-            element.classList.add("ok");
-        } else {
-            element.classList.remove("ok");
-            element.classList.add("fail");
-        }
-        element.classList.remove("display-none");
+        effectImg.src = correct ? correctMark : wrongMark;
+        paperBox.classList.add("with-correctness-effect");
         setTimeout(() => {
-            element.classList.add("display-none");
+            paperBox.classList.remove("with-correctness-effect");
             resolve();
         }, 600);
     });

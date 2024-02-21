@@ -7,7 +7,7 @@
 @import "mixins/chalk-background";
 
 body {
-    @include chalkboard-background();
+    @include grid-chalkboard-background();
 }
 
 .main-container {
@@ -26,4 +26,3 @@ button {
 @import "quiz/result";
 @import "quiz/solve";
 @import "quiz/entry";
-@import "quiz/correctness-animation";
