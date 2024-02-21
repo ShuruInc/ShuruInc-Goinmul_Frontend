@@ -32,6 +32,7 @@
 
 .share-twitter {
     @include share-button-common();
+    background-color: white;
     border: 1px solid #DFDFDF;
     display: block;
 }
