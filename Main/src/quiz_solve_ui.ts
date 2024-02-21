@@ -411,9 +411,6 @@ let helpMeFriendEnabledHandler: () => void = () => {
     },
     helpMeFriendDisabledHandler: () => void = () => {
         return;
-    },
-    helpMeFriendBeforeDisableHandler: () => boolean = () => {
-        return true;
     };
 export function initQuizSolveUI() {
     // 이어서 풀기 버튼 이벤트 핸들러 추가
@@ -421,8 +418,7 @@ export function initQuizSolveUI() {
         .querySelector("button.continue")!
         .addEventListener("click", (evt) => {
             evt.preventDefault();
-            if (helpMeFriendBeforeDisableHandler()) toggleHelpMe(false);
-            else alert("공유를 하셔야 이어서 푸실 수 있습니다!");
+            toggleHelpMe(false);
         });
 }
 
@@ -435,8 +431,6 @@ export function setHelpMeFriendsEventHandler(
 ) {
     if (options.onDisabled) helpMeFriendDisabledHandler = options.onDisabled;
     if (options.onEnabled) helpMeFriendEnabledHandler = options.onEnabled;
-    if (options.beforeDisable)
-        helpMeFriendBeforeDisableHandler = options.beforeDisable;
 }
 
 /**
