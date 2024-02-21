@@ -59,21 +59,6 @@ export default function initializeResultPage() {
         if (result === null)
             return alert("오류가 발생했습니다: 퀴즈가 아직 안 끝났습니다!");
 
-        if (result.nickname && result.hashtag) {
-            library.add(faRankingStar);
-            dom.i2svg({
-                node: document.querySelector(".rankings-ad")!,
-            });
-
-            document.querySelector(
-                ".rankings-ad .nickname",
-            )!.textContent = `${result.nickname}#${result.hashtag}`;
-        } else {
-            document
-                .querySelector(".rankings-ad")
-                ?.classList.add("display-none");
-        }
-
         const topCategory = await session.firstCategory();
         const nerdTest = await await PostBoardApiClient.getNerdTestOf(
             topCategory.id,
