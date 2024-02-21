@@ -1,5 +1,10 @@
 @use "../common/styled-inputs";
 @import "../index_page/post-board";
+@import "../mixins/cork-board-background";
+
+body.result-body {
+    @include cork-board-background;
+}
 
 .main-container {
     .loading {

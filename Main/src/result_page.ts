@@ -15,8 +15,6 @@ import addPadding from "./canvas_padding";
 import resultPageHtml from "./result_page.html";
 import createResultElement from "./create_result_element";
 import PostBoardApiClient from "./api/posts";
-import { dom, library } from "@fortawesome/fontawesome-svg-core";
-import { faRankingStar } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * 결과 페이지를 렌더링한다.
@@ -25,6 +23,7 @@ export default function initializeResultPage() {
     if (!document.body.classList.contains("result-page-html-prepared")) {
         document.body.innerHTML = resultPageHtml;
     }
+    document.body.classList.add("result-body");
 
     const sessionId =
         new URLSearchParams(location.search.substring(1)).get("session") ?? "";
