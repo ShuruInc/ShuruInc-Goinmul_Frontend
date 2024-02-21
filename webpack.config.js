@@ -6,6 +6,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 const md5 = (text) => createHash("md5").update(text).digest("hex");
 const TerserPlugin = require("terser-webpack-plugin");
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 
 let htmlFiles = readdirSync("Main/html", {
     encoding: "utf8",
@@ -95,6 +96,19 @@ module.exports = {
                 terserOptions: {
                     safari10: true,
                 },
+            }),
+            new ImageMinimizerPlugin({
+              minimizer: {
+                implementation: ImageMinimizerPlugin.svgoMinify,
+                options: {
+                    encodeOptions: {
+                        multipass: true,
+                        plugins: [
+                            'preset-default'
+                        ]
+                    }
+                },
+              },
             }),
         ],
         splitChunks: {
