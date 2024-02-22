@@ -40,9 +40,14 @@
             padding: 6px 3px;
             cursor: pointer;
 
-            svg, .ranking-icon {
-                width: 12px;
+            &.search-icon svg, .ranking-icon {
                 color: white;
+            }
+            &.search-icon svg {
+                width: 18px;
+            }
+            img.ranking-icon {
+                width: 22px;
             }
         }
 
