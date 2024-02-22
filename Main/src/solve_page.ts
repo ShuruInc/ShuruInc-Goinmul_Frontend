@@ -18,6 +18,7 @@ import addPadding from "./canvas_padding";
 import ImageCache from "./image_cache";
 import initializeResultPage from "./result_page";
 import { nerdTestExitFeatureEnabled } from "./env";
+import whitePaper from "../assets/paper.png";
 
 function confirmUnload(evt: Event) {
     evt.preventDefault();
@@ -62,6 +63,7 @@ export default function initSolvePage(session: QuizSession) {
             return html2canvas(
                 document.querySelector(".help-me .problem-box")!,
                 {
+                    backgroundColor: "transparent",
                     // 이미지가 안 보이는 버그 수정
                     useCORS: true,
                     onclone(document) {
@@ -69,14 +71,14 @@ export default function initSolvePage(session: QuizSession) {
                             document.querySelector(
                                 ".help-me .problem-paper-box",
                             ) as HTMLElement
-                        ).style.boxShadow = "none";
+                        ).classList.add("html2canvas");
                     },
                 },
             ).then(
                 (canvas) =>
                     // 이미지를 렌더링 한다.
                     new Promise<void>((resolve, reject) => {
-                        addPadding(canvas).then((blob) => {
+                        addPadding(canvas, whitePaper).then((blob) => {
                             // 이미지에 여백을 추가한다.
                             if (shareData && blob) {
                                 const file = new File([blob], "problem.png", {
