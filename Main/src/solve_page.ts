@@ -262,7 +262,7 @@ export default function initSolvePage(session: QuizSession) {
         if (sessionInfo.isNerdTest) {
             timerInterval = setInterval(() => {
                 const elapsed = session.getStopWatch().elapsed();
-                const totalTime = 1000 * 60 * 5;
+                const totalTime = 1000 * 60 * 1;
                 const percentage = (elapsed / totalTime) * 100;
                 if (percentage >= 100) return goResult();
 
