@@ -11,6 +11,7 @@ body.result-body {
         display: none;
         height: calc(100vh - 150px);
         width: 100%;
+        padding-top: 150px;
         background: url("../assets/loading.gif");
         background-position-x: 50%;
         background-size: contain;
