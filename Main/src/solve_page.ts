@@ -64,6 +64,13 @@ export default function initSolvePage(session: QuizSession) {
                 {
                     // 이미지가 안 보이는 버그 수정
                     useCORS: true,
+                    onclone(document) {
+                        (
+                            document.querySelector(
+                                ".help-me .problem-paper-box",
+                            ) as HTMLElement
+                        ).style.boxShadow = "none";
+                    },
                 },
             ).then(
                 (canvas) =>

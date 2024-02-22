@@ -105,7 +105,16 @@ export default function initializeResultPage() {
         const url = "https://example.com";
         await removeLoadingAfter(Math.max(1, 1000 - (Date.now() - loadTime)));
         const blob = await addPadding(
-            await html2canvas(document.querySelector(".result")!),
+            await html2canvas(document.querySelector(".result-container")!, {
+                backgroundColor: "transparent",
+                onclone(document) {
+                    (
+                        document.querySelector(
+                            ".result-container",
+                        ) as HTMLElement
+                    ).classList.add("html2canvas");
+                },
+            }),
         );
         const imageFile = new File([blob], "result.png", { type: "image/png" });
 
