@@ -27,6 +27,7 @@ export default function tweetDialog(
         </div>
         `;
 
+        // 트윗에 포함될 이미지 표시
         dialogWrapper.querySelector("img")!.src = URL.createObjectURL(file);
 
         // 반투명 검은 배경 클릭시 닫기

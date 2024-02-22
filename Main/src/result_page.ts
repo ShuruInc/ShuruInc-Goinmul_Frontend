@@ -86,7 +86,7 @@ export default function initializeResultPage() {
                       points: result.points!,
                       lowCategory: (await session.sessionInfo()).title,
                       middleCategory: (await session.sessionInfo()).category,
-                      link: {
+                      nerdTestLink: {
                           href: nerdTest.href,
                           text: nerdTest.title,
                       },
