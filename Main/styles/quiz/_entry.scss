@@ -71,14 +71,14 @@ article.quiz-entry {
             gap: 0px;
             label {
                 border-radius: 4px 0px 0px 4px;
-                border: 1px solid black;
+                border: 1px solid $black-color-01;
                 border-right-width: 0px;
 
                 font-family: "Pretendard", sans-serif;
                 font-size: 16px;
                 line-height: 140%;
                 font-weight: 600;
-                color: black;
+                color: $black-color-01;
 
                 padding: 13px 12px;
 
@@ -88,7 +88,7 @@ article.quiz-entry {
                 width: 170px;
                 max-width: 40vw;
 
-                border: 1px solid black;
+                border: 1px solid $black-color-01;
                 border-right: none;
                 padding: 9px 16px;
                 border-radius: 0px;
@@ -100,7 +100,7 @@ article.quiz-entry {
                 line-height: 140%;
                 letter-spacing: 0em;
                 text-align: left;
-                color: black;
+                color: $black-color-01;
 
                 &::placeholder {
                    color: #B4B9B8;
@@ -112,7 +112,7 @@ article.quiz-entry {
                 align-items: center;
 
                 padding: 9px 16px;
-                border: 1px solid black;
+                border: 1px solid $black-color-01;
                 border-left: 0px;
                 border-radius: 0px 4px 4px 0px;
             
@@ -127,7 +127,7 @@ article.quiz-entry {
 
     .statistics-section {
         text-align: center;
-        border: 1px solid black;
+        border: 1px solid $black-color-01;
         border-radius: 4px;
 
         h2 {
@@ -137,19 +137,19 @@ article.quiz-entry {
             line-height: 28px;
             letter-spacing: -0.02em;
             text-align: center;
-            color: black;
+            color: $black-color-01;
 
             margin-bottom: 5px;
             padding: 10px 0px;
 
-            border-bottom: 1px solid black;
+            border-bottom: 1px solid $black-color-01;
         }
     
         form.statistics {
             padding: 16px 14px;
             
             text-align: left;
-            color: black;
+            color: $black-color-01;
 
             font-family: 'Pretendard', sans-serif;
             font-weight: normal;

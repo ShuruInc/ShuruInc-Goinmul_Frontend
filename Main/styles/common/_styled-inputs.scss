@@ -1,3 +1,5 @@
+@import "../colors";
+
 @mixin styled-inputs {
     button, a.button {
         background-color: #efefef;
@@ -19,7 +21,7 @@
         text-decoration: none;
         font-size: inherit;
         max-width: 100%;
-        color: black; /* Safari default color is not black */
+        color: $black-color-01; /* Safari default color is not black */
 
         padding: 7.5px 15px;
         border: 0px;
