@@ -1,66 +1,44 @@
-import "../../styles/index.scss";
 import PostBoardApiClient from "../api/posts";
 import createFloatingButton, {
     addFloatingButonListener,
 } from "../floating_button";
-
 import { displayMainPostBoard } from "../home_post_board";
-import { HorizontalInfinityScroller } from "../lib/infinity_scroller";
 import { setupPostBoard } from "../post_board";
 import { InitTopNav, SetCustomRankingHandler } from "../top_logo_navbar";
-import { TopCategoryButtonNav } from "../top_category_button_nav";
-import handleOutsideScroll from "../handle_outside_scroll";
 import SmoothScrollbar from "smooth-scrollbar";
+import PrepareHorizontalInfiniteScrollLayout from "../prepare_horizontal_infinite_scroll_layout";
 
 createFloatingButton("home");
 
-PostBoardApiClient.getMainBoard()
-    .then((mainBoardData) => {
-        // HOME을 렌더링한다.
-        displayMainPostBoard(
-            document.querySelector(".post-board-columns .column.main")!,
-            mainBoardData,
-        );
-    })
-    .then(PostBoardApiClient.getPostBoards)
-    .then((postBoards) => {
-        // 상단 카테고리 버튼에 HOME을 추가한다.
-        let buttonData = [
+(async () => {
+    return {
+        mainBoard: await PostBoardApiClient.getMainBoard(),
+        postBoards: await PostBoardApiClient.getPostBoards(),
+    };
+})()
+    .then((data) => {
+        return [
             {
                 label: "HOME",
-                key: "home",
+                id: "home",
+                prepare(element: HTMLElement) {
+                    element.classList.add("main");
+
+                    displayMainPostBoard(element, data.mainBoard);
+                },
             },
+            ...data.postBoards.map((i) => ({
+                label: i.title,
+                id: i.id,
+                prepare(element: HTMLElement) {
+                    setupPostBoard(element, i.fetchNextSection);
+                },
+            })),
         ];
-        // HOME이 아닌 다른 것들을 렌더링한다.
-        for (const postBoard of postBoards) {
-            const article = document.createElement("article");
-            article.className = "column";
-            article.dataset.key = postBoard.id;
-            document.querySelector(".post-board-columns")?.appendChild(article);
-
-            buttonData.push({
-                label: postBoard.title,
-                key: postBoard.id,
-            });
-
-            setupPostBoard(article, postBoard.fetchNextSection);
-        }
-
-        return buttonData;
     })
-    .then((buttonData) => {
+    .then(PrepareHorizontalInfiniteScrollLayout)
+    .then(({ scroller, categoryNav }) => {
         // Post board column의 좌우 스크롤
-        const scroller = new HorizontalInfinityScroller(
-            document.querySelector(".post-board-columns")!,
-        );
-
-        // 상단 카테고리 버튼 nav의 좌우 스크롤
-        const categoryNav = new TopCategoryButtonNav(
-            buttonData,
-            document.querySelector("nav.top-category-buttons")!,
-            scroller,
-        );
-
         // 상하 스크롤시 플로팅버튼을 변경한다.
         scroller.addEventListenerToChildren("scroll", (evt) => {
             const target = evt.target as HTMLElement;
@@ -83,24 +61,6 @@ PostBoardApiClient.getMainBoard()
                         : "up",
                 );
             }
-
-            //_contentScrollerScrollingByUserDrag = byUserDrag;
-            const basis = scroller.centerEnsuredBasis();
-            categoryNav.activateWithMarginToBasis(
-                scroller._children()[basis.basisIndex].dataset.key as string,
-                basis.offset! / scroller._rootWidth(),
-            );
-        });
-
-        // Post board column이 좌우 스크롤됐다면 상단 카테고리 버튼도 변경하낟.
-        scroller.addTouchDragScrollEventListener((key, direction) => {
-            if (categoryNav._getActiveButton().dataset.key !== key)
-                /**
-                 * 방향(direction)을 주는 이유:
-                 * Post board column의 스크롤 방향과 상단 카테고리 버튼의 스크롤 방향을
-                 * 동일하게 하려고
-                 */
-                categoryNav.activateButtonByKey(key, true, direction);
         });
 
         // 플로팅 버튼 동작 설정
@@ -153,24 +113,4 @@ PostBoardApiClient.getMainBoard()
         if (location.hash.includes("ranking")) goToRankings();
 
         InitTopNav(true);
-
-        // container 밖에서 스크롤해도 container가 스크롤되도록 설정
-        handleOutsideScroll(
-            (delta, wheel) => {
-                const scrollBar = SmoothScrollbar.get(
-                    scroller
-                        .getCurrentlyMostVisibleChild()!
-                        .querySelector("[data-scrollbar]")!,
-                )!;
-                if (wheel) {
-                    scrollBar.addMomentum(0, delta);
-                } else {
-                    scrollBar.setMomentum(0, delta * 1.5);
-                }
-            },
-            () =>
-                scroller
-                    .getCurrentlyMostVisibleChild()
-                    ?.querySelector("[data-scrollbar]") ?? null,
-        );
     });
