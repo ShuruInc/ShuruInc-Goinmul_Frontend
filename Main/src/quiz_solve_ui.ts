@@ -349,6 +349,11 @@ export function displayProblem(
     root.appendChild(createAnswerElement(question));
     if (!isMobile)
         (root.querySelector(".answer input") as HTMLInputElement).focus();
+
+    window.scrollTo({
+        top: 0,
+        behavior: "instant",
+    });
 }
 
 /**
