@@ -88,7 +88,7 @@ export class QuizSession {
         return (
             this.getLocalSession().problemIndex >= this.problems().length ||
             (this.getLocalSession().nerdTest &&
-                this.stopwatch.elapsed() >= 1000 * 60 * 5) ||
+                this.stopwatch.elapsed() >= 1000 * 60 * 1) ||
             (nerdTestExitFeatureEnabled && this.getLocalSession().forcedEnded)
         );
     }
