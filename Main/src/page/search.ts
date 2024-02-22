@@ -51,8 +51,8 @@ const searchInput = document.querySelector("input.search") as HTMLInputElement;
 searchInput.value = query;
 
 /**
- * 인기 검색어를 렌더링하는 함수
- * @param queries 인기 검색어들
+ * 인기 출제 요청를 렌더링하는 함수
+ * @param queries 인기 출제 요청들
  */
 const renderPopularQueries = (queries: string[]) => {
     const columns = document.querySelector(
@@ -133,7 +133,7 @@ const render = async () => {
                 : i.classList.add("display-none"),
         );
         renderKeywords(await SearchApiClient.recommendKeyword(15));
-        renderPopularQueries(await SearchApiClient.hotQueries(10));
+        renderPopularQueries(await SearchApiClient.hotMakeTestRequests(10));
     } else {
         // 검색
         const result = await SearchApiClient.search(query);
