@@ -120,6 +120,29 @@ export function InitTopNav(animated = false) {
 
     // 애니메이션이 필요하다면 애니메이션을 추가한다.
     if (animated) InitTopBottomAnimation(topFixedBar);
+
+    // clip-path를 이용하여 네비게이션 배경을 투과한다.
+    if (topFixedBar.classList.contains("clip-path-bugfix"))
+        initClipPathBugfix(topFixedBar);
+}
+
+export function initClipPathBugfix(topFixedBar: HTMLElement) {
+    const loop = () => {
+        const container = document.querySelector(
+            ".main-container",
+        ) as HTMLElement | null;
+        if (container === null) return window.requestAnimationFrame(loop);
+
+        const nav = topFixedBar.querySelector("nav") as HTMLElement;
+        const top =
+            document.documentElement.scrollTop +
+            nav.getBoundingClientRect().height +
+            25;
+        container.style.clipPath = `xywh(0px ${top}px 100% 100%)`;
+
+        window.requestAnimationFrame(loop);
+    };
+    window.requestAnimationFrame(loop);
 }
 
 /**
