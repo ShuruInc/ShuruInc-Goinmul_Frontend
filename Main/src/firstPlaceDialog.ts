@@ -1,5 +1,5 @@
 import styles from "../styles/first-place-dialog.module.scss";
-import effectImage from "../assets/confetti-explosion.gif";
+import effectImage from "../assets/confetti-explosion.png";
 
 export default function createFirstPlaceDialog(
     due: Date,
