@@ -222,7 +222,7 @@ article {
                 font-weight: normal;
                 color: white;
 
-                &:hover, &:active {
+                &:hover, &:active, &:focus {
                     outline: none;
                 }
             }
