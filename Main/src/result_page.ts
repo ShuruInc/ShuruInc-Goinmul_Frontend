@@ -16,7 +16,7 @@ import resultPageHtml from "./result_page.html";
 import createResultElement from "./create_result_element";
 import PostBoardApiClient from "./api/posts";
 import pushpin from "../assets/pushpin.svg";
-// import createFirstPlaceDialog from "./firstPlaceDialog";
+import createFirstPlaceDialog from "./firstPlaceDialog";
 
 /**
  * 결과 페이지를 렌더링한다.
@@ -157,5 +157,5 @@ export default function initializeResultPage() {
         });
     })();
 
-    // createFirstPlaceDialog(new Date(), alert);
+    createFirstPlaceDialog(new Date(), alert);
 }

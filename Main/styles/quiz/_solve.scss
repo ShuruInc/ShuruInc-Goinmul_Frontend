@@ -202,11 +202,20 @@ article {
                 cursor: text;
             }
 
+            *.with-animation, *.with-animation input {
+                transition: transform 50ms ease-out;
+                &.animated, &.animated input {
+                    transform: scaleX(105%);
+                }
+            }
+
             input[type="input"] {
                 background: transparent;
                 border: 0px;
                 padding: 16px 12px;
                 width: 100%;
+
+                box-sizing: border-box;
 
                 font-family: 'LeeSeoyun';
                 font-size: 20px;
