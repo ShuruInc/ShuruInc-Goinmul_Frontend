@@ -229,7 +229,7 @@ const createQuestionElement = (
     questionEl.querySelector(".category")!.textContent =
         question.secondCategoryName === ""
             ? ""
-            : question.secondCategoryName + " 모의고사";
+            : "<" + question.secondCategoryName + " 모의고사>";
     questionEl.querySelector(".condition")!.textContent =
         question.condition === null ? "" : `(${question.condition})`;
     questionEl.querySelector(".text .problem-text")!.textContent =
