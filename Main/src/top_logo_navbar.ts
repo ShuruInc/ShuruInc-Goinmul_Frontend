@@ -14,12 +14,26 @@ import rankingIcon from "../assets/ranking-icon.svg";
 let customRankingHandler: (() => void) | null = null;
 
 /**
+ * 뒤로 가기 버튼을 눌렀을 때 호출될 사용자 정의 이벤트 핸들러
+ */
+let customGoBackHandler: (() => void) | null = null;
+
+/**
  * 랭킹 아이콘 버튼이 클릭됐을 때의 동작을 설정한다.
  * 미설정시의 기본 동작은 /#ranking으로의 이동이다.
  * @param handler 랭킹 아이콘 배튼이 클릭됐을 때 실행될 이벤트 핸들러 함수
  */
 export function SetCustomRankingHandler(handler: () => void) {
     customRankingHandler = handler;
+}
+
+/**
+ * 뒤로 가기 버튼이 클릭됐을 때의 동작을 설정한다.
+ * 미설정시의 기본 동작은 history.back()이다.
+ * @param handler 뒤로 가기 배튼이 클릭됐을 때 실행될 이벤트 핸들러 함수
+ */
+export function SetCustomGoBackHandler(handler: (() => void) | null) {
+    customGoBackHandler = handler;
 }
 
 /**
@@ -56,6 +70,8 @@ export function InitTopNav(animated = false) {
         });
     topFixedBar.querySelector(".go-back")?.addEventListener("click", (evt) => {
         evt.preventDefault();
+        if (customGoBackHandler !== null) return customGoBackHandler();
+
         history.back();
     });
 
