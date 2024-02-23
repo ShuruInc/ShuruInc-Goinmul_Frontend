@@ -1,5 +1,5 @@
 import { backendUrl } from "../env";
-import { MainPostBoardData } from "../home_post_board";
+import { MainPostBoardData, RankingItem } from "../home_post_board";
 import { PostBoardSectionData } from "../post_board";
 import { Api } from "./api_http_client/Api";
 import { transformArticleDtoToPost } from "./transform";
@@ -13,6 +13,22 @@ export type PostBoardData = {
 const apiClient = new Api({ baseUrl: backendUrl });
 
 export default class PostBoardApiClient {
+    static async getRankings(
+        size?: number,
+        page?: number,
+    ): Promise<{ [key: string]: RankingItem[] }> {
+        return Object.fromEntries(
+            (await apiClient.getRanks({ size, page })).data.result!.map((i) => [
+                i.categoryNm!,
+                i.rankDtoList!.map((j) => ({
+                    nickname: j.nickname!,
+                    hashtag: "1234",
+                    score: j.score!,
+                })),
+            ]),
+        );
+    }
+
     static async getMainBoard(): Promise<MainPostBoardData> {
         return {
             popularTests: await Promise.all(
@@ -22,16 +38,6 @@ export default class PostBoardApiClient {
                     .map(async (i) =>
                         transformArticleDtoToPost((await i).result!),
                     ),
-            ),
-            rankings: Object.fromEntries(
-                (await apiClient.getRanks()).data.result!.map((i) => [
-                    i.categoryNm + " 모의고사",
-                    i.rankDtoList!.map((i) => ({
-                        nickname: i.nickname!,
-                        score: i.score!,
-                        hashtag: "1234",
-                    })),
-                ]),
             ),
         };
     }

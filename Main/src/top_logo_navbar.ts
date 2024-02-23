@@ -46,7 +46,7 @@ export function InitTopNav(animated = false) {
                 return customRankingHandler();
             }
 
-            location.href = "/#ranking";
+            location.href = "/rankings.html";
         });
     topFixedBar
         .querySelector(".search-icon")
