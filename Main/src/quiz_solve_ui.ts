@@ -7,6 +7,7 @@ import {
 import { isMobile } from "./is_mobile";
 import correctMark from "../assets/correct_or_wrong/correct.svg";
 import wrongMark from "../assets/correct_or_wrong/wrong.svg";
+import { SetCustomGoBackHandler } from "./top_logo_navbar";
 
 // FontAwesome 렌더링
 library.add(faXmark);
@@ -82,10 +83,14 @@ const toggleHelpMe = (toggle: boolean) => {
         document.querySelector("article")!.classList.add("display-none");
         helpMe.classList.add("active");
         helpMeFriendEnabledHandler();
+        SetCustomGoBackHandler(() => {
+            toggleHelpMe(false);
+        });
     } else {
         document.querySelector("article")!.classList.remove("display-none");
         helpMe.classList.remove("active");
         helpMeFriendDisabledHandler();
+        SetCustomGoBackHandler(null);
     }
 };
 
