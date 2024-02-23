@@ -1,4 +1,5 @@
 @import "../includes/leeseoyun";
+@import "../colors";
 
 @mixin handdrawn-btn($type: "") {
     background-color: transparent;
@@ -20,6 +21,9 @@
         background-image: url(../assets/primary-submit-btn-bg.svg);
     } @else if $type == "white" {
         background-image: url(../assets/white-submit-btn-bg.svg);
+    } @else if $type == "transparent" {
+        background-image: url(../assets/transparent-secondary-submit-btn-bg.svg);
+        color: $secondary-color-01;
     } @else {
         background-image: url(../assets/secondary-submit-btn-bg.svg);
     }

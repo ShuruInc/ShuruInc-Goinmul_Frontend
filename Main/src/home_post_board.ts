@@ -25,8 +25,6 @@ export type RankingItem = {
 export type MainPostBoardData = {
     /** 인기 BEST 테스트 데이터 */
     popularTests: Post[];
-    /** 명예의 전당 데이터 */
-    rankings: { [key: string]: RankingItem[] };
 };
 
 /**
@@ -122,9 +120,6 @@ export function displayMainPostBoard(
         column.querySelector(".post-section")!,
         true,
     );
-    for (const i in data.rankings) {
-        const rankingSection = createRankingSection(i, data.rankings[i]);
-        column.appendChild(rankingSection);
-    }
+
     column.appendChild(footer());
 }
