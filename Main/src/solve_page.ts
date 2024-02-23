@@ -162,7 +162,7 @@ export default function initSolvePage(session: QuizSession) {
                 problem.index,
             );
 
-            // "친구들야, 도와줘!" 화면에 새로운 문제를 표시한다.
+            // "친구들아, 도와줘!" 화면에 새로운 문제를 표시한다.
             updateShareProblem(
                 document.querySelector(".help-me .problem-box")!,
                 {
