@@ -36,12 +36,6 @@
         &[type="input"],
         &[type="email"] {
             border: 1px solid #dddddd;
-            &.with-animation {
-                transition: transform 50ms ease-out;
-                &.animated {
-                    transform: scaleX(105%);
-                }
-            }
         }
     }
 }

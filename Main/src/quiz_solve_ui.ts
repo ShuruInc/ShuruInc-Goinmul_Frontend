@@ -130,22 +130,21 @@ const createAnswerElement = (question: QuizProblem) => {
     const rowWithInput = answerEl.querySelector(".row.with-input")!;
     if (question.choices === null) {
         rowWithInput.innerHTML = `
-        <div class="input-wrapper">
-            <input autofocus class="with-animation" type="input" placeholder="답을 입력하세요">
+        <div class="input-wrapper with-animation">
+            <input autofocus type="input" placeholder="답을 입력하세요">
         </div>`;
-        rowWithInput
-            .querySelector(".input-wrapper")
-            ?.addEventListener("click", (evt) => {
-                evt.preventDefault();
-                rowWithInput.querySelector("input")?.focus();
-            });
+        const inputWrapper = rowWithInput.querySelector(".input-wrapper");
+        inputWrapper?.addEventListener("click", (evt) => {
+            evt.preventDefault();
+            rowWithInput.querySelector("input")?.focus();
+        });
         const input = rowWithInput.querySelector("input")!;
         input.addEventListener("input", (evt) => {
             validateAnswer((evt.target as HTMLInputElement).value);
-            input.classList.remove("animated");
-            input.classList.add("animated");
+            inputWrapper?.classList.remove("animated");
+            inputWrapper?.classList.add("animated");
             setTimeout(() => {
-                input.classList.remove("animated");
+                inputWrapper?.classList.remove("animated");
             }, 100);
         });
     } else {
