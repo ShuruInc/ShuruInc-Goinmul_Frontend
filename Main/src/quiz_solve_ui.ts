@@ -71,7 +71,7 @@ const createAnswerElementForShare = (question: QuizProblem) => {
 };
 
 /**
- * "친구들야, 도와줘!"를 활성화하거나 비활성화합니다.
+ * "친구들아, 도와줘!"를 활성화하거나 비활성화합니다.
  * @param toggle 활성화 여부
  */
 const toggleHelpMe = (toggle: boolean) => {
