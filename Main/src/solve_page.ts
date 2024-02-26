@@ -141,6 +141,9 @@ export default function initSolvePage(session: QuizSession) {
             imageCache.pushUrl(i);
         }
 
+        // 현재 점수를 저장한다.
+        let currentScore = 0;
+
         const renewProblem = async () => {
             const problem = await session.currentProblem();
 
@@ -160,6 +163,11 @@ export default function initSolvePage(session: QuizSession) {
                             : problem.figure,
                 },
                 problem.index,
+                sessionInfo.isNerdTest
+                    ? {
+                          currentScore,
+                      }
+                    : {},
             );
 
             // "친구들아, 도와줘!" 화면에 새로운 문제를 표시한다.
@@ -255,6 +263,7 @@ export default function initSolvePage(session: QuizSession) {
             ].forEach((i) => ((i as HTMLInputElement).disabled = true));
 
             await displayCorrectnessAnimation(correct.correct!);
+            currentScore = correct.score ?? currentScore;
 
             renewProblem();
         });

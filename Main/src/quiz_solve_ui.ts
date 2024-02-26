@@ -203,15 +203,15 @@ const createQuestionElement = (
     question: QuizProblem,
     index: number,
     forShare = false,
-    options: Partial<{ currnetScore: number }> = {},
+    options: Partial<{ currentScore: number }> = {},
 ) => {
     const questionEl = document.createElement("div");
     questionEl.className = "question";
     questionEl.innerHTML = `
         ${
-            typeof options.currnetScore !== "undefined"
+            typeof options.currentScore !== "undefined"
                 ? `<div class="current-score">
-                    ${options.currnetScore}점
+                    ${options.currentScore}점
         </div>`
                 : ""
         }
@@ -344,12 +344,11 @@ export function displayProblem(
     root: HTMLElement,
     question: QuizProblem,
     index: number,
+    options: Partial<{ currentScore: number }> = {},
 ) {
     root.innerHTML = ``;
 
-    root.appendChild(
-        createQuestionElement(question, index, false, { currnetScore: 100 }),
-    );
+    root.appendChild(createQuestionElement(question, index, false, options));
     root.appendChild(createAnswerElement(question));
     if (!isMobile)
         (root.querySelector(".answer input") as HTMLInputElement).focus();
