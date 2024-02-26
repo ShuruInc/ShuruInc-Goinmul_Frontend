@@ -18,6 +18,7 @@ import PostBoardApiClient from "./api/posts";
 import pushpin from "../assets/pushpin.svg";
 import createFirstPlaceDialog from "./firstPlaceDialog";
 import getMedalData from "./get_medal_image";
+import displayLoadingSplash from "./loadingSplash";
 
 /**
  * 결과 페이지를 렌더링한다.
@@ -110,7 +111,15 @@ export default function initializeResultPage() {
                 encodeURIComponent(result.quizId);
         });
 
-        const changeShareData = initShareButton();
+        let removeLoadingSplash: (() => void) | null = null;
+        const changeShareData = initShareButton({
+            beforeShare: async () => {
+                removeLoadingSplash = displayLoadingSplash();
+            },
+            onComplete: () => {
+                if (removeLoadingSplash) removeLoadingSplash();
+            },
+        });
 
         const url = "https://example.com";
         document
