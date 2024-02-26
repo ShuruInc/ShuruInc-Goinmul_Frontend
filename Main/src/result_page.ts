@@ -185,7 +185,7 @@ export default function initializeResultPage() {
             },
             image: imageFile,
         });
-    })();
 
-    createFirstPlaceDialog(new Date(), alert);
+        createFirstPlaceDialog(new Date(), alert);
+    })();
 }
