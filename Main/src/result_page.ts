@@ -33,6 +33,9 @@ export default function initializeResultPage() {
 
     const sessionId =
         new URLSearchParams(location.search.substring(1)).get("session") ?? "";
+    if (!QuizSession.hasSession(sessionId)) {
+        location.href = "/quiz/solve.html?id=" + encodeURIComponent(sessionId);
+    }
     const session = new QuizSession(sessionId);
     const loadTime = Date.now();
 

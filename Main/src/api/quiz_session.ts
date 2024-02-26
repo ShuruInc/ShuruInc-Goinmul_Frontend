@@ -67,6 +67,9 @@ export class QuizSession {
     getStopWatch() {
         return this.stopwatch;
     }
+    static hasSession(sessionId: string): boolean {
+        return localStorage.getItem(`session-${sessionId}`) !== null;
+    }
     private getLocalSession(): QuizInternalSessionData {
         return JSON.parse(
             localStorage.getItem(`session-${this.sessionId}`) ?? "{}",
