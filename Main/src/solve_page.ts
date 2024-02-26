@@ -19,6 +19,7 @@ import ImageCache from "./image_cache";
 import initializeResultPage from "./result_page";
 import { nerdTestExitFeatureEnabled } from "./env";
 import whitePaper from "../assets/paper.png";
+import displayLoadingSplash from "./loadingSplash";
 
 function confirmUnload(evt: Event) {
     evt.preventDefault();
@@ -51,9 +52,15 @@ export default function initSolvePage(session: QuizSession) {
     let shared = false;
     const sessionId = session.getSessionId();
     let shareData: Omit<ShareDatas, "image"> | null = null;
+    let removeLoadingSplash: (() => void) | null = null;
     const setShareData = initShareButton({
-        onComplete: () => (shared = true),
+        onComplete: () => {
+            shared = true;
+            if (removeLoadingSplash) removeLoadingSplash();
+        },
         beforeShare: () => {
+            removeLoadingSplash = displayLoadingSplash();
+
             // 공유 버튼을 눌렀을 때 공유 직전에 이미지를 설정한다.
 
             /**
