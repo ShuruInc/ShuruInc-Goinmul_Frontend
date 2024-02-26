@@ -17,6 +17,7 @@ import createResultElement from "./create_result_element";
 import PostBoardApiClient from "./api/posts";
 import pushpin from "../assets/pushpin.svg";
 import createFirstPlaceDialog from "./firstPlaceDialog";
+import getMedalData from "./get_medal_image";
 
 /**
  * 결과 페이지를 렌더링한다.
@@ -94,6 +95,14 @@ export default function initializeResultPage() {
                   },
         );
 
+        const medalImage = getMedalData(isNerdTest ? result.ranking! : 0);
+        if (medalImage !== null) {
+            (document.querySelector(".medal img") as HTMLImageElement).src =
+                medalImage;
+        } else {
+            document.querySelector(".medal")?.remove();
+        }
+
         document.querySelector(".retry")?.addEventListener("click", (evt) => {
             evt.preventDefault();
             location.href =
@@ -104,6 +113,18 @@ export default function initializeResultPage() {
         const changeShareData = initShareButton();
 
         const url = "https://example.com";
+        document
+            .querySelector(".copy-link")
+            ?.addEventListener("click", (evt) => {
+                evt.preventDefault();
+                (async () => {
+                    if ("clipboard" in navigator)
+                        return navigator.clipboard.writeText(url);
+                    else throw new Error();
+                })().catch((_) => {
+                    prompt("다음 주소를 복사해주세요!", url);
+                });
+            });
         await removeLoadingAfter(Math.max(1, 1000 - (Date.now() - loadTime)));
         const blob = await addPadding(
             await html2canvas(document.querySelector(".result-container")!, {
