@@ -253,6 +253,9 @@ const createQuestionElement = (
             });
 
     switch (question.figureType) {
+        case "empty":
+            questionEl.querySelector(".figure")!.classList.add("empty");
+            break;
         case "image":
             const img = document.createElement("img");
             img.crossOrigin = "anonymous";
