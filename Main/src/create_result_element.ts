@@ -1,8 +1,4 @@
 import { encode } from "html-entities";
-import goldMedal from "../assets/medal/gold.png";
-import silverMedal from "../assets/medal/silver.png";
-import cooperMedal from "../assets/medal/cooper.png";
-import { randomMedalEnabled } from "./env";
 import paperCorner from "../assets/paper-corner.svg";
 import rankingIcon from "../assets/ranking-icon.svg";
 
@@ -46,7 +42,7 @@ type NonNerdTestResultElementContent = {
 /**
  * 성적결과표 데이터
  */
-type ResultElementContent = {
+export type ResultElementContent = {
     /** 고인물테스트 여부 */
     nerd: boolean;
     /** 시험 응시날짜 */
@@ -64,13 +60,13 @@ export default function createResultElement(
 ) {
     element.innerHTML = `
             <h1 class="title">
-                <div class="subtitle">${encode(
-                    data.nerd
-                        ? data.topCategory + " 고인물 테스트"
-                        : data.middleCategory + " 모의고사",
-                )}</div>
                 성적통지표
             </h1>
+            <h2 class="subtitle">${encode(
+                data.nerd
+                    ? data.topCategory + " 고인물 테스트"
+                    : data.middleCategory + " 모의고사",
+            )}</h2>
             <div class="content">
                 <table>
                     <thead>
@@ -82,41 +78,17 @@ export default function createResultElement(
                         </tr>
                     </tbody>
                 </table>
+                <p class="comment"></p>
                 <time>${data.date.getFullYear()}. ${
                     data.date.getMonth() + 1
                 }. ${data.date.getDate()}.</time>
-                <p class="comment"></p>
+                <div class="logo">고인물테스트<div class="stamp"></div></div>
             </div>
             <img class="paper-corner">
             `;
 
-    let medal = null;
     (element.querySelector("img.paper-corner") as HTMLImageElement).src =
         paperCorner;
-    switch (
-        randomMedalEnabled // 디버그용 기능
-            ? Math.floor(Math.random() * 3) + 1
-            : data.nerd
-            ? data.ranking
-            : 0 // 모의고사는 메달이 없다
-    ) {
-        case 1:
-            medal = goldMedal;
-            break;
-        case 2:
-            medal = silverMedal;
-            break;
-        case 3:
-            medal = cooperMedal;
-            break;
-    }
-
-    // 메달 이미지 설정
-    if (medal !== null) {
-        element.querySelector(
-            ".title",
-        )!.innerHTML += `<div class="medal"><img src="${encode(medal)}"></div>`;
-    }
 
     // 표 데이터 ([1행 1열, 1행 2열, 1행 3,열 2행 1열, 2행 2열, 2행 3열])
     const tableData = data.nerd
