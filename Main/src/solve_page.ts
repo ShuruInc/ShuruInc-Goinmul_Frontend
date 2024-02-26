@@ -115,6 +115,8 @@ export default function initSolvePage(session: QuizSession) {
             await session.sessionInfo()
         ).title;
 
+        const sessionInfo = await session.sessionInfo();
+
         updateProgress(0);
         const goResult = () => {
             // 타이머 표시를 중단한다.
@@ -125,12 +127,12 @@ export default function initSolvePage(session: QuizSession) {
             history.replaceState(
                 null,
                 "",
-                "/quiz/result.html?session=" + encodeURIComponent(sessionId),
+                `/quiz/result.html` +
+                    `?quizId=${encodeURIComponent(sessionInfo.quizId)}` +
+                    `&session=${encodeURIComponent(sessionId)}`,
             );
             initializeResultPage();
         };
-
-        const sessionInfo = await session.sessionInfo();
 
         // 디버깅용 기능
         // 개발자 도구 콘솔에서 exitNerdTest();를 치면 고인물 테스트가 남은 시간이나 남은 문제 갯수에 상관없이 강제 종료된다.

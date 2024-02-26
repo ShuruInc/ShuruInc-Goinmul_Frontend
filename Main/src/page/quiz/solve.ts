@@ -201,7 +201,7 @@ const initByQuizId = async () => {
 };
 
 // (모의고사) 세션 id가 주어졌다면 바로 퀴즈를 시작한다.
-if (sessionId !== null) {
+if (sessionId !== null && QuizSession.hasSession(sessionId)) {
     const session = new QuizSession(sessionId);
     session.sessionInfo().then((info) => {
         if (info.isNerdTest) {
