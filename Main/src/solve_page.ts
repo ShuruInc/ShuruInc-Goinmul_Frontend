@@ -218,7 +218,7 @@ export default function initSolvePage(session: QuizSession) {
                     ?.classList.remove("display-none");
             }
 
-            const quizUrl = `https://example.com/quiz/solve.html?id=${sessionInfo.quizId}`;
+            const quizUrl = `https://goinmultest.pro/quiz/solve.html?id=${sessionInfo.quizId}`;
             shareData = {
                 twitter: {
                     text: `[${sessionInfo.category}] ${

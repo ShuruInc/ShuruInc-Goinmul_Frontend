@@ -121,7 +121,10 @@ export default function initializeResultPage() {
             },
         });
 
-        const url = "https://example.com";
+        const url =
+            "https://goinmultest.pro/quiz/solve.html?id=" +
+            encodeURIComponent((await session.sessionInfo()).quizId);
+
         document
             .querySelector(".copy-link")
             ?.addEventListener("click", (evt) => {
