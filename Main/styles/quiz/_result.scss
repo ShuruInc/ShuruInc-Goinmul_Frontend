@@ -36,6 +36,10 @@ article.with-result {
 
     @import "./result_box";
 
+    .result-container {
+        margin-bottom: 32px;
+    }
+
     .post-section > h2 {
         margin: 0.25em 0em 1em 0em !important;
     }
