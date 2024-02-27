@@ -132,6 +132,10 @@
             &.portrait {
                 width: var(--portrait-table-cell-width) !important;
                 aspect-ratio: 1 / 1.728;
+
+                &.non-nerd-test {
+                    background-size: contain;
+                }
             }
 
             &.landscape {
@@ -145,11 +149,12 @@
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
-            background: linear-gradient(180deg, 
+            /* background: linear-gradient(180deg, 
                 rgba(var(--representing-color), 0) 50%,
                 rgba(var(--representing-color), 0.9) 77.15%,
                 rgb(var(--representing-color)) 94.26%);
-
+            */
+            
             position: absolute;
             top: 0;
             left: 0;
@@ -160,6 +165,8 @@
             gap: 10px;
 
             .title {
+                display: none;
+
                 font-family: 'Pretendard';
                 font-style: normal;
                 font-weight: 800;
