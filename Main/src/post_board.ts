@@ -3,6 +3,7 @@ import PostBoardApiClient from "./api/posts";
 import footer from "./footer";
 import setHorizontalDragScrollOnDesktop from "./horizontal_drag_to_scroll_on_desktop";
 import "./smooth-scrollbar-scroll-lock-plugin";
+// import Color from "color";
 
 type RowInfo = { landscape: boolean; count: number };
 export type Post = {
@@ -129,6 +130,44 @@ export function preparePlaceholderSection(
     placeholderSection.dataset.rowInfos = JSON.stringify(rowInfos);
 }
 
+function getImageDataFromImageElement(url: string) {
+    return new Promise<ImageData>((resolve, _) => {
+        const img = new Image();
+        img.addEventListener("load", (_) => {
+            const canvas = new OffscreenCanvas(img.width, img.height);
+            const context = canvas.getContext("2d");
+            if (context === null) throw new Error("null canvas context");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            context.drawImage(img, 0, 0);
+            resolve(context.getImageData(0, 0, img.width, img.height));
+        });
+        img.src = url;
+    });
+}
+
+async function getAverageColor(url: string) {
+    const data = await getImageDataFromImageElement(url);
+    let resultColor = [0, 0, 0];
+    for (let i = 0; i < data.data.length; i += 4) {
+        // RGBA
+        for (let j = 0; j < 3; j++) {
+            resultColor[j] += data.data[i * 4 + j] ?? 0;
+        }
+    }
+
+    return resultColor.map((i) =>
+        Math.floor(i / Math.floor(data.data.length / 4)),
+    );
+}
+
+/*
+function manipulateRepresentingColor([r, g, b]: number[]) {
+    const color = Color.rgb(r, g, b);
+    return [color.red(), color.green(), color.blue()].map(Math.floor);
+}
+*/
+
 // section을 posts로 채운다.
 export function fillPlaceholderSectionInto(
     posts: Partial<PostBoardSectionData>,
@@ -172,6 +211,14 @@ export function fillPlaceholderSectionInto(
         landscapeCell.style.backgroundImage = `url("${
             posts.landscape!.imgUrl
         }")`;
+        getAverageColor(posts.landscape!.imgUrl)
+            /* .then(manipulateRepresentingColor) */
+            .then(([r, g, b]) => {
+                landscapeCell.style.setProperty(
+                    "--representing-color",
+                    `${r}, ${g}, ${b}`,
+                );
+            });
         landscapeCell.href = posts.landscape!.href;
         landscapeCell.dataset.id = posts.landscape!.id.toString();
         landscapeCell
@@ -257,6 +304,16 @@ export function fillPlaceholderSectionInto(
                         i.classList.remove("lazy-bg");
                         i.style.backgroundImage =
                             i.style.getPropertyValue("--background-img");
+                        getAverageColor(
+                            /url\("(.+)"\)/.exec(i.style.backgroundImage)![1],
+                        )
+                            /* .then(manipulateRepresentingColor) */
+                            .then(([r, g, b]) => {
+                                i.style.setProperty(
+                                    "--representing-color",
+                                    `${r}, ${g}, ${b}`,
+                                );
+                            });
                     });
             },
             {
