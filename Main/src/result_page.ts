@@ -73,6 +73,10 @@ export default function initializeResultPage() {
         );
 
         let isNerdTest = typeof result.ranking !== "undefined";
+        if (isNerdTest && result.ranking! <= 3) {
+            document.querySelector(".pushpin")?.classList.add("hidden");
+        }
+
         createResultElement(
             document.querySelector(".result")!,
             isNerdTest
