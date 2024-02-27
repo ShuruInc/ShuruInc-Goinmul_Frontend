@@ -212,8 +212,17 @@ const createQuestionElement = (
     question: QuizProblem,
     index: number,
     forShare = false,
-    options: Partial<{ currentScore: number }> = {},
+    options: Partial<{ currentScore: number; combo: number }> = {},
 ) => {
+    const comboColorClass =
+        (options.combo ?? 0) < 20
+            ? comboStyles.to19
+            : (options.combo ?? 0) < 50
+            ? comboStyles.to49
+            : (options.combo ?? 0) < 200
+            ? comboStyles.to199
+            : comboStyles.from200;
+
     const questionEl = document.createElement("div");
     questionEl.className = "question";
     questionEl.innerHTML = `
@@ -227,7 +236,7 @@ const createQuestionElement = (
         <div class="idk-row">
             <button class="idk">친구찬스!</button>
         </div>
-        <div class="problem-paper-box with-combo">
+        <div class="problem-paper-box">
         <div class="correctness-effect"><img></img></div>
         <div class="category"></div>
         <div class="text">
@@ -243,7 +252,11 @@ const createQuestionElement = (
                 comboStyles.combo
             }" version="1.1" xmlns="//www.w3.org/2000/svg" xmlns:xlink="//www.w3.org/1999/xlink" width="10" height="10">
                 <text class="${comboStyles.green}" x="100" y="100">COMBO</text>
-                <text class="${comboStyles.count}" x="200" y="140">x1234</text>
+                <text class="${
+                    comboStyles.count
+                } ${comboColorClass}" x="200" y="140">x${
+                    options.combo ?? 0
+                }</text>
             </svg>
         </div>
         </div>`;
@@ -374,7 +387,7 @@ export function displayProblem(
     root: HTMLElement,
     question: QuizProblem,
     index: number,
-    options: Partial<{ currentScore: number }> = {},
+    options: Partial<{ currentScore: number; combo: number }> = {},
 ) {
     root.innerHTML = ``;
 
@@ -470,10 +483,10 @@ export function setHelpMeFriendsEventHandler(
 }
 
 /**
- * 틀림/맞음 애니메이션을 표시합니다.
+ * 틀림/맞음 애니메이션과 콤보를 표시합니다.
  * @param correct 정답 여부
  */
-export function displayCorrectnessAnimation(correct: boolean) {
+export function displayCorrectnessAndComboAnimation(correct: boolean) {
     return new Promise<void>((resolve, _reject) => {
         const paperBox = document.querySelector(".problem-paper-box");
         const effectImg = paperBox?.querySelector(
@@ -483,8 +496,10 @@ export function displayCorrectnessAnimation(correct: boolean) {
 
         effectImg.src = correct ? correctMark : wrongMark;
         paperBox.classList.add("with-correctness-effect");
+        paperBox.classList.add("with-combo");
         setTimeout(() => {
             paperBox.classList.remove("with-correctness-effect");
+            paperBox.classList.remove("with-combo");
             resolve();
         }, 600);
     });

@@ -3,7 +3,7 @@ import { QuizSession } from "./api/quiz_session";
 import initShareButton, { ShareDatas } from "./init_share";
 import {
     addAnswerSubmitListener,
-    displayCorrectnessAnimation,
+    displayCorrectnessAndComboAnimation,
     displayProblem,
     initQuizSolveUI,
     setHelpMeFriendsEventHandler,
@@ -150,8 +150,9 @@ export default function initSolvePage(session: QuizSession) {
             imageCache.pushUrl(i);
         }
 
-        // 현재 점수를 저장한다.
+        // 현재 점수와 콤보를 저장한다.
         let currentScore = 0;
+        let combo = 0;
 
         const renewProblem = async () => {
             const problem = await session.currentProblem();
@@ -175,6 +176,7 @@ export default function initSolvePage(session: QuizSession) {
                 sessionInfo.isNerdTest
                     ? {
                           currentScore,
+                          combo,
                       }
                     : {},
             );
@@ -271,8 +273,9 @@ export default function initSolvePage(session: QuizSession) {
                 ...document.querySelectorAll(".answer input, .answer button"),
             ].forEach((i) => ((i as HTMLInputElement).disabled = true));
 
-            await displayCorrectnessAnimation(correct.correct!);
+            await displayCorrectnessAndComboAnimation(correct.correct!);
             currentScore = correct.score ?? currentScore;
+            combo = correct.combo ?? combo;
 
             renewProblem();
         });

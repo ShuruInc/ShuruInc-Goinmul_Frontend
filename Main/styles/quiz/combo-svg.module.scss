@@ -21,9 +21,20 @@ svg.combo {
         }
 
         &.count {
-            fill: #FFB800;
             text-align: end;
             text-anchor: end;
+            &.to19 {
+                fill: #FFB800;
+            }
+            &.to49 {
+                fill: #FF96CF;
+            }
+            &.to199 {
+                fill: #0094FF;
+            }
+            &.from200 {
+                fill: #B34CF3;
+            }
         }
     }
 }
