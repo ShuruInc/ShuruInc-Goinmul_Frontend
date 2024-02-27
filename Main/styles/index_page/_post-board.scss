@@ -3,6 +3,7 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 @import "../includes/leeseoyun";
 @import "../mixins/chalk-border";
+@import "../colors";
 
 /* 3*2 와 4*2 갤러리 테이블 */
 /* 세로형 Cell 이미지 비율은 1:0.572 */
@@ -71,7 +72,7 @@
         }
 
         .no-cell-popularity-info {
-            .cell-info .popularity {
+            .cell-info .popularity, .cell-info .like-button {
                 display: none !important;
             }
         }
@@ -131,7 +132,7 @@
 
             &.portrait {
                 width: var(--portrait-table-cell-width) !important;
-                aspect-ratio: 1 / 1.728;
+                aspect-ratio: 464 / 714;
 
                 &.non-nerd-test {
                     background-size: contain;
@@ -182,35 +183,48 @@
                 width: min(155px, 80%);
             }
 
+            .popularity-and-like-button {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                align-items: baseline;
+                gap: 9px;
+                width: fit-content;
+                flex-wrap: nowrap;
+
+                .like-button {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 15px;
+
+                    background-color: #EE4D4D;
+                    svg {
+                        width: 14px;
+                        height: auto;
+                    }
+                }
+            }
+
             .popularity {
                 display: flex;
-                gap: 20px;
-                background: #00000063;
+                gap: 8px;
+                background: $black-color-03;
                 color: white;
-                padding: 5px 10px;
-                border-radius: 6px;
+                padding: 5px 11px;
+                border-radius: 15px;
+
+                font-family: 'Pretendard', sans-serif;
                 font-size: 12px;
+                font-weight: normal;
+                line-height: 16px;
+                letter-spacing: 0.025em;
 
-                .likes-link {
-                    text-decoration: none;
-                    color: unset;
-                }
-
-                .likes::before {
-                    content: "❤";
-                    color: #979797;
-                    margin-right: 0.15em;
-                }
-
-                .likes.liked::before {
-                    content: "❤";
-                    color: #e04343;
-                    margin-right: 0.15em;
-                }
-
-                .views::before {
-                    content: "👁️";
-                    margin-right: 0.15em;
+                .icon {
+                    margin-right: 4px;
                 }
             }
         }

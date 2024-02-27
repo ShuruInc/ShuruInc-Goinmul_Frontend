@@ -3,6 +3,9 @@ import PostBoardApiClient from "./api/posts";
 import footer from "./footer";
 import setHorizontalDragScrollOnDesktop from "./horizontal_drag_to_scroll_on_desktop";
 import "./smooth-scrollbar-scroll-lock-plugin";
+import eyeIcon from "../assets/post-cell-popularity-icons/eye.svg";
+import heartIcon from "../assets/post-cell-popularity-icons/heart.svg";
+import heartSolidIcon from "../assets/post-cell-popularity-icons/heart-solid.svg";
 // import Color from "color";
 
 type RowInfo = { landscape: boolean; count: number };
@@ -106,7 +109,14 @@ export function preparePlaceholderSection(
             const info = document.createElement("div");
             info.className = "cell-info";
             info.innerHTML =
-                '<div class="title"></div><div class="popularity"><a href="#" class="likes-link"><div class="likes"><span class="like-count" /></div></a><div class="views"><span class="view-count" /></div></div>';
+                '<div class="title"></div>' +
+                '<div class="popularity-and-like-button">' +
+                '<div class="popularity">' +
+                `<div class="likes"><img class="icon" src="${heartIcon}"><span class="like-count" /></div>` +
+                `<div class="views"><img class="icon" src="${eyeIcon}"><span class="view-count" /></div>` +
+                "</div>" +
+                `<a href="#" class="like-button"><img class="icon" src="${heartSolidIcon}"></a>` +
+                "</div>";
 
             // 그림자 추가
             const shadow = document.createElement("div");
@@ -223,14 +233,13 @@ export function fillPlaceholderSectionInto(
         landscapeCell.href = posts.landscape!.href;
         landscapeCell.dataset.id = posts.landscape!.id.toString();
         landscapeCell
-            .querySelector(".likes-link")
+            .querySelector(".like-button")
             ?.addEventListener("click", (evt) => {
                 evt.preventDefault();
                 PostBoardApiClient.like(posts.landscape!.id!).then(() => {
                     const likes = landscapeCell.querySelector(
-                        ".likes",
+                        ".likes .like-count",
                     ) as HTMLElement;
-                    likes.classList.add("liked");
                     likes.textContent = ":D";
                 });
             });
@@ -268,14 +277,13 @@ export function fillPlaceholderSectionInto(
             portraitCell.querySelector(".cell-info .title")!.innerHTML =
                 post.title;
             portraitCell
-                .querySelector(".likes-link")
+                .querySelector(".like-button")
                 ?.addEventListener("click", (evt) => {
                     evt.preventDefault();
                     PostBoardApiClient.like(post.id!).then(() => {
                         const likes = portraitCell.querySelector(
-                            ".likes",
+                            ".likes .like-count",
                         ) as HTMLElement;
-                        likes.classList.add("liked");
                         likes.textContent = ":D";
                     });
                 });
