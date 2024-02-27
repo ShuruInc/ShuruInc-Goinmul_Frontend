@@ -127,7 +127,7 @@ export default function createResultElement(
     const comment = element.querySelector(".comment")!;
     if (data.nerd) {
         const iconHtml = `<img src="${rankingIcon}" class="ranking-icon"></img>`;
-        comment.innerHTML = `왼족 상단의 ${iconHtml} 버튼을 누르면 실시간 랭킹을 확인할 수 있습니다.`;
+        comment.innerHTML = `왼쪽 상단의 ${iconHtml} 버튼을 누르면 실시간 랭킹을 확인할 수 있습니다.`;
     } else if (data.points === 100) {
         comment.innerHTML = `완벽합니다! <a class="nerd-test-link"></a>에 도전해 보시겠어요?`;
     } else if (data.points >= 70) {
