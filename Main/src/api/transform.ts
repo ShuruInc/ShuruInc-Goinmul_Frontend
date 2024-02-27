@@ -10,5 +10,6 @@ export function transformArticleDtoToPost(article: ArticleDto): Post {
         likes: article.likes!,
         views: article.views!,
         id: article.id!,
+        nerdTest: article.articleType === "NERD",
     };
 }

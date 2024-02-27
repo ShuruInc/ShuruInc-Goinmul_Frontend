@@ -13,6 +13,7 @@ export type Post = {
     views: number;
     href: string;
     id: number;
+    nerdTest: boolean;
 };
 export type PostBoardSectionData = Partial<{
     title: string;
@@ -261,6 +262,9 @@ export function fillPlaceholderSectionInto(
                 `url("${post.imgUrl}")`,
             );
             portraitCell.classList.add("lazy-bg");
+            if (!post.nerdTest) {
+                portraitCell.classList.add("non-nerd-test");
+            }
             portraitCell.querySelector(".cell-info .title")!.innerHTML =
                 post.title;
             portraitCell
