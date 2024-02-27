@@ -18,6 +18,14 @@
     }
 }
 
+@include touch {
+    .table-cell.portrait .popularity-and-like-button {
+        flex-direction: column-reverse !important;
+        justify-content: center !important;
+        align-items: flex-end !important;
+    }
+}
+
 /*스마트폰*/
 @include mobile {
     .main-container {
