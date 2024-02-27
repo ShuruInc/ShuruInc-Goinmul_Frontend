@@ -29,10 +29,6 @@
 
         button {
             border: 0px;
-            &.circle {
-                border: 1px solid white;
-                border-radius: 40px;
-            }
 
             background-color: transparent;
             width: 34px;
@@ -40,14 +36,15 @@
             padding: 6px 3px;
             cursor: pointer;
 
-            svg, .ranking-icon {
+            svg, img.ranking-icon {
                 color: white;
+                width: 20px;
+                height: auto;
             }
-            &.search-icon svg {
-                width: 18px;
-            }
-            img.ranking-icon {
-                width: 22px;
+
+            &.go-back svg, &.go-back img {
+                width: 10px;
+                height: 20px;
             }
         }
 
