@@ -80,6 +80,10 @@
         .chalk-bordered {
             @include chalk-border(6px);
             border-radius: 14px;
+
+            @include mobile {
+                @include chalk-border(3px);
+            }
         }
 
 
