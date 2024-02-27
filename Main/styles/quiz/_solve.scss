@@ -5,6 +5,7 @@
 @import "../mixins/handdrawn-btn";
 @import "../colors";
 @import "../includes/noto-serif";
+@import "../includes/thick-chalkboard";
 
 article {
     width: 100%;
@@ -64,6 +65,25 @@ article {
             }
         }
         
+        .combo {
+            display: none;
+        }
+
+        &.with-combo {
+            position: relative;
+            
+            .combo {
+                display: block;
+
+                position: absolute;
+                bottom: 17px;
+                right: 26px;
+
+                &.active {
+                    display: block;
+                }
+            }
+        }
     }
 
     .category {
