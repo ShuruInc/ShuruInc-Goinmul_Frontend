@@ -18,16 +18,20 @@
         left: 50%;
         top: 0px;
         transform: translateX(-50%);
+
+        &.hidden {
+            display: none;
+        }
     }
 
     .medal {
         position: absolute;
         left: 10px;
         top: 0px;
-        width: 50px;
-
+        
         img {
-            width: 100%;
+            width: 79px;
+            height: 104px;
         }
     }
 
