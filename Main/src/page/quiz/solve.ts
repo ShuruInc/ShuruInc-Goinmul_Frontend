@@ -77,12 +77,6 @@ const initByQuizId = async () => {
                 // 새로고침
                 trickyReload();
             });
-        document
-            .querySelector("article.loading")
-            ?.classList.add("display-none");
-        document
-            .querySelector("article.display-none")
-            ?.classList.remove("display-none");
 
         // 닉네임 랜덤 생성
         let defaultNickname = randomKoreanNickname();
@@ -102,6 +96,12 @@ const initByQuizId = async () => {
             (
                 document.querySelector("#nickname") as HTMLInputElement
             ).placeholder = defaultNickname;
+            document
+                .querySelector("article.loading")
+                ?.classList.add("display-none");
+            document
+                .querySelector("article.display-none")
+                ?.classList.remove("display-none");
         }
 
         // 닉네임 유효성 검증
