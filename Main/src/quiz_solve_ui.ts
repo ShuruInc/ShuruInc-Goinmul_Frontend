@@ -8,6 +8,7 @@ import { isMobile } from "./is_mobile";
 import correctMark from "../assets/correct_or_wrong/correct.svg";
 import wrongMark from "../assets/correct_or_wrong/wrong.svg";
 import { SetCustomGoBackHandler } from "./top_logo_navbar";
+import comboStyles from "../styles/quiz/combo-svg.module.scss";
 
 // FontAwesome 렌더링
 library.add(faXmark);
@@ -194,6 +195,14 @@ const createAnswerElement = (question: QuizProblem) => {
     return answerEl;
 };
 
+function getBBoxOf(svg: SVGSVGElement) {
+    document.body.appendChild(svg);
+    const reuslt = svg.getBBox();
+    document.body.removeChild(svg);
+
+    return reuslt;
+}
+
 /**
  * 문제를 나타내는 요소를 생성합니다.
  * @param question 퀴즈 문제 데이터
@@ -218,7 +227,7 @@ const createQuestionElement = (
         <div class="idk-row">
             <button class="idk">친구찬스!</button>
         </div>
-        <div class="problem-paper-box">
+        <div class="problem-paper-box with-combo">
         <div class="correctness-effect"><img></img></div>
         <div class="category"></div>
         <div class="text">
@@ -228,7 +237,25 @@ const createQuestionElement = (
             <span class="condition"></span>
         </div>
         <div class="figure">
-        </div></div>`;
+        </div>
+        <div class="combo">
+            <svg class="${
+                comboStyles.combo
+            }" version="1.1" xmlns="//www.w3.org/2000/svg" xmlns:xlink="//www.w3.org/1999/xlink" width="10" height="10">
+                <text class="${comboStyles.green}" x="100" y="100">COMBO</text>
+                <text class="${comboStyles.count}" x="200" y="140">x1234</text>
+            </svg>
+        </div>
+        </div>`;
+
+    const comboSvg = questionEl.querySelector(".combo svg") as SVGSVGElement;
+    const svgBbox = getBBoxOf(comboSvg.cloneNode(true) as SVGSVGElement);
+    comboSvg.setAttribute("width", svgBbox.width.toString());
+    comboSvg.setAttribute("height", svgBbox.height.toString());
+    comboSvg.setAttribute(
+        "viewBox",
+        `${svgBbox.x} ${svgBbox.y} ${svgBbox.width} ${svgBbox.height}`,
+    );
 
     questionEl.querySelector(".category")!.textContent =
         question.secondCategoryName === ""
@@ -417,9 +444,7 @@ export function updateProgress(
     if (textElement && text) textElement.textContent = text;
 }
 
-let helpMeFriendEnabledHandler: () => void = () => {
-        return;
-    },
+let helpMeFriendEnabledHandler: () => void = () => {},
     helpMeFriendDisabledHandler: () => void = () => {
         return;
     };
