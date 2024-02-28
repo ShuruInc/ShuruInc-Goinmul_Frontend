@@ -4,7 +4,6 @@ import footer from "./footer";
 import setHorizontalDragScrollOnDesktop from "./horizontal_drag_to_scroll_on_desktop";
 import "./smooth-scrollbar-scroll-lock-plugin";
 import eyeIcon from "../assets/post-cell-popularity-icons/eye.svg";
-import heartIcon from "../assets/post-cell-popularity-icons/heart.svg";
 import heartSolidIcon from "../assets/post-cell-popularity-icons/heart-solid.svg";
 // import Color from "color";
 
@@ -112,7 +111,6 @@ export function preparePlaceholderSection(
                 '<div class="title"></div>' +
                 '<div class="popularity-and-like-button">' +
                 '<div class="popularity">' +
-                `<div class="likes"><img class="icon" src="${heartIcon}"><span class="like-count" /></div>` +
                 `<div class="views"><img class="icon" src="${eyeIcon}"><span class="view-count" /></div>` +
                 "</div>" +
                 `<a href="#" class="like-button"><img class="icon" src="${heartSolidIcon}"></a>` +
@@ -205,6 +203,14 @@ export function fillPlaceholderSectionInto(
         });
     preparePlaceholderSection(section, rowInfos, false);
 
+    // 애니메이션 효과
+    const animateHeart = (element: HTMLElement) => {
+        element.classList.add("liked");
+        setTimeout(() => {
+            element.classList.remove("liked");
+        }, 200);
+    };
+
     // 제목 설정
     if (
         posts.title === null ||
@@ -237,10 +243,7 @@ export function fillPlaceholderSectionInto(
             ?.addEventListener("click", (evt) => {
                 evt.preventDefault();
                 PostBoardApiClient.like(posts.landscape!.id!).then(() => {
-                    const likes = landscapeCell.querySelector(
-                        ".likes .like-count",
-                    ) as HTMLElement;
-                    likes.textContent = ":D";
+                    animateHeart(landscapeCell.querySelector(".like-button")!);
                 });
             });
         landscapeCell.querySelector(".cell-info .title")!.innerHTML =
@@ -248,8 +251,6 @@ export function fillPlaceholderSectionInto(
         if (noCellInfo) {
             landscapeCell.classList.add("no-cell-popularity-info");
         } else {
-            landscapeCell.querySelector(".cell-info .like-count")!.innerHTML =
-                millify(posts.landscape!.likes).toString();
             landscapeCell.querySelector(".cell-info .view-count")!.innerHTML =
                 millify(posts.landscape!.views).toString();
         }
@@ -281,18 +282,14 @@ export function fillPlaceholderSectionInto(
                 ?.addEventListener("click", (evt) => {
                     evt.preventDefault();
                     PostBoardApiClient.like(post.id!).then(() => {
-                        const likes = portraitCell.querySelector(
-                            ".likes .like-count",
-                        ) as HTMLElement;
-                        likes.textContent = ":D";
+                        animateHeart(
+                            portraitCell.querySelector(".like-button")!,
+                        );
                     });
                 });
             if (noCellInfo) {
                 portraitCell.classList.add("no-cell-popularity-info");
             } else {
-                portraitCell.querySelector(
-                    ".cell-info .like-count",
-                )!.innerHTML = millify(post.likes).toString();
                 portraitCell.querySelector(
                     ".cell-info .view-count",
                 )!.innerHTML = millify(post.views).toString();
