@@ -18,7 +18,9 @@ export default function createNoticeFloatingButton(contentHtml: string) {
         let now = evt.target as Node | null;
         while (now != null) {
             if (now === button) {
-                button.classList.add("active");
+                if (button.classList.contains("active"))
+                    button.classList.remove("active");
+                else button.classList.add("active");
                 return;
             }
 
