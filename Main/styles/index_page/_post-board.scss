@@ -148,6 +148,11 @@
             &.landscape {
                 width: 100%;
                 aspect-ratio: 1 / 1;
+
+                .cell-info .popularity-and-like-button .like-button img {
+                    width: 26px;
+                    height: 24px;
+                }
             }
         }
 
@@ -199,8 +204,8 @@
                     }
 
                     img {
-                        width: 22px;
-                        height: auto;
+                        width: 24px;
+                        height: 22px;
                         transition: transform 0.2s cubic-bezier(0.33, 1, 0.68, 1);
                     }
                 }
