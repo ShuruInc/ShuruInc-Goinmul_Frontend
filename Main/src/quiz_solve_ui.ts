@@ -335,7 +335,7 @@ const createQuestionElement = (
                                 : "normal";
                         return initial;
                     } else {
-                        return i === " " ? "　" : i;
+                        return i;
                     }
                 }),
             ]
