@@ -27,6 +27,7 @@
         box-sizing: border-box;
         border-radius: 4px;
         text-align: center;
+        overflow-y: auto;
 
         $medal-gold: #FFD73B;
         h1 {
@@ -71,6 +72,8 @@
             border: 1px solid #fff;
             border-radius: 20px;
             padding: 8px 16px;
+
+            box-sizing: border-box;
 
             font-family: 'LeeSeoyun';
             font-style: normal;
