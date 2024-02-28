@@ -69,7 +69,12 @@ const displayRanking = (query?: string, allowEmpty?: boolean) => {
                 `<td class="score">${i.score}</td>`;
             return row;
         })
-        .forEach((i) => tbody.appendChild(i));
+        .forEach((i, idx, arr) => {
+            const padding = document.createElement("tr");
+            padding.className = "padding";
+            tbody.appendChild(i);
+            if (idx !== arr.length - 1) tbody.appendChild(padding);
+        });
 
     if (allowEmpty || filtered.length > 0)
         document
