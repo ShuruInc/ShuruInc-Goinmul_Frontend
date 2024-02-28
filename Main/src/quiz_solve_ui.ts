@@ -481,7 +481,10 @@ export function setHelpMeFriendsEventHandler(
  * 틀림/맞음 애니메이션과 콤보를 표시합니다.
  * @param correct 정답 여부
  */
-export function displayCorrectnessAndComboAnimation(correct: boolean) {
+export function displayCorrectnessAndComboAnimation(
+    correct: boolean,
+    displayCombo?: boolean,
+) {
     return new Promise<void>((resolve, _reject) => {
         const paperBox = document.querySelector(".problem-paper-box");
         const effectImg = paperBox?.querySelector(
@@ -491,7 +494,7 @@ export function displayCorrectnessAndComboAnimation(correct: boolean) {
 
         effectImg.src = correct ? correctMark : wrongMark;
         paperBox.classList.add("with-correctness-effect");
-        paperBox.classList.add("with-combo");
+        if (displayCombo ?? true) paperBox.classList.add("with-combo");
         setTimeout(() => {
             paperBox.classList.remove("with-correctness-effect");
             paperBox.classList.remove("with-combo");
