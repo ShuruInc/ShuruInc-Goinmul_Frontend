@@ -181,6 +181,8 @@ const initByQuizId = async () => {
                                 shakeTimeout = null;
                             }, 1000);
                         }
+
+                        submitting = false;
                         return;
                     }
 
