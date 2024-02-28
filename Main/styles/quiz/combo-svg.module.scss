@@ -12,7 +12,7 @@ svg.combo {
         stroke-width: 12px;
         
         // drop-shadow
-        text-shadow: 0px 7px 10px rgba(0, 0, 0, 0.7);
+        filter: drop-shadow(0px 1px 3px #000000b3);
         
         &.green {
             fill: #004125;
