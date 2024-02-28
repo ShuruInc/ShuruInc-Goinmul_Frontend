@@ -155,6 +155,8 @@
                 color: $black-color-03;
                 .ranking-icon {
                     height: 1em;
+                    // to make the color similar to $black-color-03....
+                    filter: brightness(45%);
                 }
 
                 font-family: 'Pretendard';
