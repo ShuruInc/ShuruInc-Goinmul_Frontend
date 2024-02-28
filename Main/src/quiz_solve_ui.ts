@@ -125,6 +125,7 @@ const createAnswerElement = (question: QuizProblem) => {
         <div class="row warning">
         </div>
         <div class="row">
+            <button class="idk" type="button">도와줘!</button>
             <button class="submit" type="submit">제출</button>
         </div>`;
     const warningEl = answerEl.querySelector(".row.warning") as HTMLElement;
@@ -164,6 +165,11 @@ const createAnswerElement = (question: QuizProblem) => {
             rowWithInput.appendChild(label);
         }
     }
+
+    answerEl.querySelector("button.idk")!.addEventListener("click", (evt) => {
+        evt.preventDefault();
+        toggleHelpMe(true);
+    });
 
     answerEl.addEventListener("submit", (evt) => {
         evt.preventDefault();
@@ -211,7 +217,6 @@ function getBBoxOf(svg: SVGSVGElement) {
 const createQuestionElement = (
     question: QuizProblem,
     index: number,
-    forShare = false,
     options: Partial<{ currentScore: number; combo: number }> = {},
 ) => {
     const comboColorClass =
@@ -233,9 +238,6 @@ const createQuestionElement = (
         </div>`
                 : ""
         }
-        <div class="idk-row">
-            <button class="idk">친구찬스!</button>
-        </div>
         <div class="problem-paper-box">
         <div class="correctness-effect"><img></img></div>
         <div class="category"></div>
@@ -284,16 +286,6 @@ const createQuestionElement = (
     questionEl.querySelector(".text .condition")!.textContent =
         question.condition === null ? "" : `(${question.condition})`;
     questionEl.querySelector(".points")!.textContent = `[${question.points}점]`;
-
-    if (forShare) {
-        questionEl.removeChild(questionEl.querySelector(".idk-row")!);
-    } else
-        questionEl
-            .querySelector("button.idk")!
-            .addEventListener("click", (evt) => {
-                evt.preventDefault();
-                toggleHelpMe(true);
-            });
 
     switch (question.figureType) {
         case "empty":
@@ -394,7 +386,7 @@ export function displayProblem(
 ) {
     root.innerHTML = ``;
 
-    root.appendChild(createQuestionElement(question, index, false, options));
+    root.appendChild(createQuestionElement(question, index, options));
     root.appendChild(createAnswerElement(question));
     if (!isMobile)
         (root.querySelector(".answer input") as HTMLInputElement).focus();
@@ -417,7 +409,7 @@ export function updateShareProblem(
     index: number,
 ) {
     root.innerHTML = "";
-    const questionEl = createQuestionElement(question, index, true);
+    const questionEl = createQuestionElement(question, index);
     questionEl
         ?.querySelector(".problem-paper-box")
         ?.appendChild(createAnswerElementForShare(question));
