@@ -1,8 +1,12 @@
 @import "../colors";
 @import "../includes/tenada";
+@import "../mixins/";
 
 .result-container {
     position: relative;
+    @include mobile {
+        width: 100%;
+    }
 
     &.html2canvas {
         .paper-corner {
@@ -36,6 +40,10 @@
     }
 
     .result {
+        @include mobile {
+            width: 100%;
+            box-sizing: border-box;
+        }
         display: flex;
         flex-direction: column;
         gap: 20px;
