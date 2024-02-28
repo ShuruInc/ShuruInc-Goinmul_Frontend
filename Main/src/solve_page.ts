@@ -272,10 +272,13 @@ export default function initSolvePage(session: QuizSession) {
             [
                 ...document.querySelectorAll(".answer input, .answer button"),
             ].forEach((i) => ((i as HTMLInputElement).disabled = true));
-
-            await displayCorrectnessAndComboAnimation(correct.correct!);
             currentScore = correct.score ?? currentScore;
             combo = correct.combo ?? combo;
+
+            await displayCorrectnessAndComboAnimation(
+                correct.correct!,
+                combo !== 0,
+            );
 
             renewProblem();
         });
