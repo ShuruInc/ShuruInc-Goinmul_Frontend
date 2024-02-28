@@ -30,17 +30,6 @@ article {
         border-color: transparent;
     }
 
-    .idk-row {
-        text-align: right;
-        margin-bottom: 10px;
-        .idk {
-            width: 80px;
-            height: 40px;
-
-            @include handdrawn-btn();
-        }
-    }
-
     .problem-paper-box {
         background: url(../assets/paper.png);
         padding: 20px;
@@ -260,10 +249,17 @@ article {
 
         button[type="submit"] {
             height: 50px;
-            width: 120px;
+            width: 130px;
 
             @include handdrawn-btn("primary");
         }
+
+        button.idk {
+            height: 50px;
+            width: 96px;
+            @include handdrawn-btn();
+        }
+    
     }
 
     @include styled-inputs;
