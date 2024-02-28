@@ -78,13 +78,13 @@ export default function createFirstPlaceDialog(
 
         const padding = 0;
         const dialogXy = [
-            bgXY[0] + 90 * (bgSize[0] / bgOriginalSize[0]) + padding,
-            bgXY[1] + 285 * (bgSize[1] / bgOriginalSize[1]) + padding,
+            bgXY[0] + 70 * (bgSize[0] / bgOriginalSize[0]) + padding,
+            bgXY[1] + 232 * (bgSize[1] / bgOriginalSize[1]) + padding,
         ];
 
         const dialogSize = [
-            (470 - 90) * (bgSize[0] / bgOriginalSize[0]) - padding * 2,
-            (650 - 285) * (bgSize[1] / bgOriginalSize[1]) - padding * 2,
+            (493 - 70) * (bgSize[0] / bgOriginalSize[0]) - padding * 2,
+            (703 - 232) * (bgSize[1] / bgOriginalSize[1]) - padding * 2,
         ];
 
         dialog.style.left = `${Math.round(dialogXy[0])}px`;
