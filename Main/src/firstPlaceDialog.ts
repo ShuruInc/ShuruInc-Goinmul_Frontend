@@ -25,7 +25,7 @@ export default function createFirstPlaceDialog(
     </p>
     <form>
         <input type="email" placeholder="example@example.com"><br>
-        <button type="submit">가록</button>
+        <button type="submit">전송</button>
     </form>
     </div>
     <img class="${styles.effect}"></img>`;
