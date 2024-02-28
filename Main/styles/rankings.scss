@@ -149,16 +149,46 @@ body {
                     color: $black-color-02;
 
                     &:nth-child(1) {
-                        font-size: 18px;
+                        font-size: 16px;
+                        font-weight: 600;
+                        color: $black-color-01;
+                        td.ranking {
+                            background-image: url(../assets/ranking-medal-icon/gold.svg);
+                            background-size: 46px 51.5px;
+                            height: 50px;
+                        }
                     }
 
                     &:nth-child(3), &:nth-child(5) {
-                        font-size: 16px;
+                        font-weight: 600;
+
+                        td.ranking {
+                            background-size: 41px 45.9px;
+                        }
+
+                        &:nth-child(3) {   
+                            color: $black-color-01;
+                            td.ranking {
+                                background-image: url(../assets/ranking-medal-icon/silver.svg);
+                            }
+                        }
+
+                        &:nth-child(5) {
+                            color: $black-color-02;
+                            td.ranking {
+                                background-image: url(../assets/ranking-medal-icon/cooper.svg);
+                            }
+                        }
                     }
 
                     td.ranking {
+                        height: 41px;
+                        box-sizing: border-box;
                         width: 62px;
                         text-align: center;
+                        background-repeat: no-repeat;
+                        background-position-x: 50%;
+                        background-position-y: top -11px;
                     }
 
                     td.nickname {
