@@ -195,13 +195,13 @@
                     
                     
                     &.liked img {
-                        width: 26px;
+                        transform: scale(118%);
                     }
 
                     img {
                         width: 22px;
                         height: auto;
-                        transition: width 0.2s cubic-bezier(0.33, 1, 0.68, 1);
+                        transition: transform 0.2s cubic-bezier(0.33, 1, 0.68, 1);
                     }
                 }
             }
