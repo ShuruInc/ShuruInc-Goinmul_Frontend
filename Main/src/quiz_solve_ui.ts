@@ -263,11 +263,14 @@ const createQuestionElement = (
 
     const comboSvg = questionEl.querySelector(".combo svg") as SVGSVGElement;
     const svgBbox = getBBoxOf(comboSvg.cloneNode(true) as SVGSVGElement);
-    comboSvg.setAttribute("width", svgBbox.width.toString());
-    comboSvg.setAttribute("height", svgBbox.height.toString());
+    const padding = 5;
+    comboSvg.setAttribute("width", (svgBbox.width + padding * 2).toString());
+    comboSvg.setAttribute("height", (svgBbox.height + padding * 2).toString());
     comboSvg.setAttribute(
         "viewBox",
-        `${svgBbox.x} ${svgBbox.y} ${svgBbox.width} ${svgBbox.height}`,
+        `${svgBbox.x - padding} ${svgBbox.y - padding} ${
+            svgBbox.width + padding * 2
+        } ${svgBbox.height + padding * 2}`,
     );
 
     questionEl.querySelector(".category")!.textContent =
