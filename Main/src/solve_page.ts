@@ -234,7 +234,6 @@ export default function initSolvePage(session: QuizSession) {
 모르겠어요... 도와주세요 🚨
 모르겠어요... 도와주세요 🚨
 모르겠어요... 도와주세요 🚨
-모르겠어요... 도와주세요 🚨
 
 🔗 ${quizUrl}
 #고인물테스트 #슈르네`,
