@@ -24,7 +24,7 @@ export default function tweetDialog(
            </div>
             <div class="buttons">
                 <button class="cancel">닫기</button>
-                <button class="submit">트윗하기</button>
+                <button class="submit">게시하기</button>
             </div>
         </div>
         `;
