@@ -51,6 +51,10 @@ type InitShareButtonOptions = Partial<{
     /**
      * 사용자가 공유를 취소하지 않았을 시의 동작 (단 사용자가 실제로 공유를 했는 지는 알 수 없다.)
      */
+    onShared: () => void;
+    /**
+     * 공유 창을 닫은 이후의 동작
+     */
     onComplete: () => void;
     /**
      * 공유 직전에 할 동작 (단 트위터는 해당되지 않음)
@@ -85,9 +89,14 @@ export default function initShareButton(
         (options.beforeShare ? options.beforeShare : async () => {})()
             .then(() => {
                 if (content === null) return;
-                navigator.share(content.webShare).then(() => {
-                    if (options.onComplete) options.onComplete();
-                });
+                navigator
+                    .share(content.webShare)
+                    .then(() => {
+                        if (options.onShared) options.onShared();
+                    })
+                    .finally(() => {
+                        if (options.onComplete) options.onComplete();
+                    });
             })
             .catch((err) => alert("오류가 발생했습니다: " + err));
     });
@@ -103,11 +112,14 @@ export default function initShareButton(
                     content.image,
                 );
 
-                if (options.onComplete && tweeted) options.onComplete();
+                if (options.onShared && tweeted) options.onShared();
             })
             .catch((err) => {
                 alert("오류가 발생했습니다!");
                 console.error(err);
+            })
+            .finally(() => {
+                if (options.onComplete) options.onComplete();
             });
     });
     kakaoButton?.addEventListener("click", async (_evt) => {
@@ -140,6 +152,7 @@ export default function initShareButton(
                 },
             ],
         });
+        if (options.onShared) options.onShared();
         if (options.onComplete) options.onComplete();
     });
 
