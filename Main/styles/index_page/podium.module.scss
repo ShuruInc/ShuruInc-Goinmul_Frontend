@@ -1,0 +1,135 @@
+@import "../colors";
+@import "../includes/pretendard";
+
+.podium {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: end;
+    width: 350px;
+    max-width: 90vw;
+
+    .side, .center {
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        align-items: center;
+
+        .nicknameAndScore {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nickname, .score {
+            font-family: 'LeeSeoyun';
+            font-style: normal;
+            font-weight: 400;
+            text-align: center;
+            letter-spacing: -0.025em;
+
+            color: $secondary-color-01;
+
+            &.nickname {
+                line-height: 16px;
+            }
+
+            &.score {
+                line-height: 18px;
+            }
+        }
+
+        .line {
+            position: relative;
+
+            border: 2px solid $secondary-color-01;
+            padding: 27px 12px 12px 12px;
+            width: 100%;
+            box-sizing: border-box;
+
+            .circle {
+                position: absolute;
+                top: -16px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 31px;
+                height: 31px;
+    
+                border-radius: 16px;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+    
+                background-color: white;
+                border: 2px solid $secondary-color-01;
+    
+                
+                font-family: 'Pretendard';
+                font-style: normal;
+                font-weight: 600;
+                font-size: 18px;
+                line-height: 18px;
+                letter-spacing: -0.025em;
+                
+                /* green 01 */
+                color: $secondary-color-01;            
+            }
+        }
+
+        &.side {
+            gap: 26px;
+            flex: 107;
+
+            img {
+                width: 50px;
+                height: auto;
+            }
+
+            .line {
+                height: 107px;
+
+                &, .circle {
+                    background-color: white;
+                }
+            }
+
+            &:first-child .line {
+                border-radius: 10px 0px 0px 0px;
+            }
+
+            &:last-child .line {
+                border-radius: 0px 10px 0px 0px;
+            }
+
+            .nicknameAndScore {
+                height: 56px;
+            }
+        }
+
+        &.center {
+            gap: 28px;
+            flex: 136;
+
+            img {
+                width: 130px;
+                height: auto;
+            }
+
+            .line {
+                border-radius: 10px 10px 0px 0px;
+                padding: 33px 18px 19px 18px;
+                height: 136px;
+
+                &, .circle {
+                    background-color: #FFDA00;
+                }                
+            }
+
+            .nicknameAndScore {
+                height: 71px;
+            }
+        }
+    }
+}
