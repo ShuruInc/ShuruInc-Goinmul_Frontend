@@ -1,6 +1,6 @@
 import { dom, library } from "@fortawesome/fontawesome-svg-core";
 import {
-    faAngleLeft,
+    faChevronLeft,
     faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import tippy from "tippy.js";
@@ -44,7 +44,7 @@ export function InitTopNav(animated = false) {
     const topFixedBar = document.getElementById("topFixedBar")!;
 
     // 아이콘 렌더링
-    library.add(faMagnifyingGlass, faAngleLeft);
+    library.add(faMagnifyingGlass, faChevronLeft);
     dom.i2svg({ node: topFixedBar });
     [...document.querySelectorAll(".ranking-icon")].forEach(
         (i) => ((i as HTMLImageElement).src = rankingIcon),
