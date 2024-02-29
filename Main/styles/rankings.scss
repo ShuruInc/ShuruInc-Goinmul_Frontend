@@ -6,7 +6,7 @@
 @import "./colors";
 @import "./includes/noto-serif";
 @import "./mixins/handdrawn-btn";
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+@import "./includes/pretendard";
 
 body {
     @include grid-chalkboard-background;
