@@ -31,7 +31,10 @@ export default function createPodium([first, second, third]: RankingItem[]) {
             </div>
         </div>
         <div class="${styles.center}">
-            <img src="${GoldMedal}">
+            <div class="${styles.lightingMedal}">
+                <div class="${styles.light}"></div>
+                <img src="${GoldMedal}">
+            </div>
             <div class="${styles.line}">
                 <div class="${styles.circle}">
                     1

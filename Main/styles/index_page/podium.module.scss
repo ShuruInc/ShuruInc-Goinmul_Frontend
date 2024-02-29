@@ -112,9 +112,22 @@
             gap: 28px;
             flex: 136;
 
-            img {
-                width: 130px;
-                height: auto;
+            .lightingMedal {
+                position: relative;
+                img {
+                    width: 130px;
+                }
+                .light {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    filter: blur(30px);
+                    background-color: #fff0962c;
+
+                    width: 172px;
+                    height: 172px;
+                }
             }
 
             .line {
