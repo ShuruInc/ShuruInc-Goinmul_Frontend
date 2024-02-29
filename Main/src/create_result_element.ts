@@ -82,7 +82,7 @@ export default function createResultElement(
                 <time>${data.date.getFullYear()}. ${
                     data.date.getMonth() + 1
                 }. ${data.date.getDate()}.</time>
-                <div class="logo">고인물테스트<div class="stamp"></div></div>
+                <div class="logo">슈르네 고인물테스트 (인)<div class="stamp"></div></div>
             </div>
             <img class="paper-corner">
             `;
