@@ -198,6 +198,8 @@ export default function initializeResultPage() {
         });
 
         if (result.ranking === 1 || alwaysDisplayEmailInputModal)
-            createFirstPlaceDialog(new Date(), alert);
+            createFirstPlaceDialog(new Date(), (email) => {
+                session.submitEmail(email);
+            });
     })();
 }
