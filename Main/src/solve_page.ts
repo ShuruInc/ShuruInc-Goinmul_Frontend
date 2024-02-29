@@ -176,7 +176,7 @@ export default function initSolvePage(session: QuizSession) {
                 sessionInfo.isNerdTest
                     ? {
                           currentScore,
-                          combo,
+                          combo: combo + 1,
                       }
                     : {},
             );
