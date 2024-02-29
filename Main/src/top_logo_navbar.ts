@@ -154,7 +154,7 @@ export function initClipPathBugfix(topFixedBar: HTMLElement) {
             document.documentElement.scrollTop +
             nav.getBoundingClientRect().height +
             25;
-        container.style.clipPath = `xywh(0px ${top}px 100% 100%)`;
+        container.style.clipPath = `xywh(0px ${top}px 200% 200%)`;
 
         window.requestAnimationFrame(loop);
     };
