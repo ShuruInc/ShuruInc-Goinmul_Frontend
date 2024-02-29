@@ -39,6 +39,7 @@ export default class PostBoardApiClient {
                         transformArticleDtoToPost((await i).result!),
                     ),
             ),
+            rankings: await this.getRankings(),
         };
     }
 

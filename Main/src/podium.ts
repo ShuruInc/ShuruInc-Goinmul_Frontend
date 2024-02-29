@@ -1,92 +1,63 @@
-export function createPodium(first?: string, second?: string, third?: string) {
-    return URL.createObjectURL(
-        new Blob(
-            [
-                `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
+import styles from "../styles/index_page/podium.module.scss";
+import { RankingItem } from "./home_post_board";
+import CooperMedal from "../assets/ranking-section-medal/cooper.svg";
+import SilverMedal from "../assets/ranking-section-medal/silver.svg";
+import GoldMedal from "../assets/ranking-section-medal/gold.svg";
+import commaNumber from "comma-number";
 
-<svg
-   width="147.30461mm"
-   height="138.2034mm"
-   viewBox="0 0 147.30461 138.2034"
-   version="1.1"
-   id="svg1"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs1" />
-  <g
-     id="layer1"
-     transform="translate(-37.109408,-70.363143)">
-    <path
-       id="rect1"
-       style="fill:#ffd439;fill-opacity:1;stroke:#000000;stroke-width:0.503237;stroke-dasharray:none;stroke-opacity:1"
-       d="M 83.794368,87.190544 V 130.57446 H 37.361027 v 29.43593 32.8321 15.47244 H 184.1624 V 160.01039 H 134.33289 V 87.190544 Z" />
-    <text
-       xml:space="preserve"
-       style="font-size:12.7px;line-height:1.2;fill:#ffd439;fill-opacity:1;stroke:none;stroke-width:0.503237;stroke-dasharray:none;stroke-opacity:1"
-       x="60.238586"
-       y="145.66963"
-       id="text3"><tspan
-         id="tspan3"
-         style="text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.503237"
-         x="60.238586"
-         y="145.66963">2</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:12.7px;line-height:1.2;fill:#ffd439;fill-opacity:1;stroke:none;stroke-width:0.503237;stroke-dasharray:none;stroke-opacity:1"
-       x="106.98486"
-       y="102.85008"
-       id="text3-9"><tspan
-         id="tspan3-2"
-         style="text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.503237"
-         x="106.98486"
-         y="102.85008">1</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:12.7px;line-height:1.2;fill:#ffd439;fill-opacity:1;stroke:none;stroke-width:0.503237;stroke-dasharray:none;stroke-opacity:1"
-       x="159.32922"
-       y="174.40828"
-       id="text3-6"><tspan
-         id="tspan3-4"
-         style="text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.503237"
-         x="159.32922"
-         y="174.40828">3</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:12.7px;line-height:1.2;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.503237;stroke-dasharray:none;stroke-opacity:1"
-       x="107.554"
-       y="79.627693"
-       id="text4"><tspan
-         id="tspan4"
-         style="stroke-width:0.503237"
-         x="107.554"
-         y="79.627693">${first ?? ""}</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:12.7px;line-height:1.2;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.503237;stroke-dasharray:none;stroke-opacity:1"
-       x="61.135956"
-       y="118.12071"
-       id="text5"><tspan
-         id="tspan5"
-         style="stroke-width:0.503237"
-         x="61.135956"
-         y="118.12071">${second ?? ""}</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:12.7px;line-height:1.2;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.503237;stroke-dasharray:none;stroke-opacity:1"
-       x="160.76492"
-       y="152.83989"
-       id="text6"><tspan
-         id="tspan6"
-         style="stroke-width:0.503237"
-         x="160.76492"
-         y="152.83989">${third ?? ""}</tspan></text>
-  </g>
-</svg>
-`,
-            ],
-            { type: "image/svg+xml" }
-        )
-    );
+export default function createPodium([first, second, third]: RankingItem[]) {
+    const nicknameAndHashtag = (data: RankingItem) =>
+        typeof data === "undefined" ? "" : `${data.nickname}#${data.hashtag}`;
+    const formatScore = (data?: RankingItem) =>
+        typeof data?.score === "undefined"
+            ? ""
+            : commaNumber(data.score) + "점";
+
+    const podium = document.createElement("div");
+    podium.className = styles.podium;
+    podium.innerHTML = `
+        <div class="${styles.side}">
+            <img src="${SilverMedal}">
+            <div class="${styles.line}">
+                <div class="${styles.circle}">
+                    2
+                </div>
+                <div class="${styles.nicknameAndScore}">
+                    <div class="${styles.nickname}">${nicknameAndHashtag(
+                        second,
+                    )}</div>
+                    <div class="${styles.score}">${formatScore(second)}</div>
+                </div>
+            </div>
+        </div>
+        <div class="${styles.center}">
+            <img src="${GoldMedal}">
+            <div class="${styles.line}">
+                <div class="${styles.circle}">
+                    1
+                </div>
+                <div class="${styles.nicknameAndScore}">
+                    <div class="${styles.nickname}">${nicknameAndHashtag(
+                        first,
+                    )}</div>
+                    <div class="${styles.score}">${formatScore(first)}</div>
+                </div>
+            </div>
+        </div>
+        <div class="${styles.side}">
+            <img src="${CooperMedal}">
+            <div class="${styles.line}">
+                <div class="${styles.circle}">
+                    3
+                </div>
+                <div class="${styles.nicknameAndScore}">
+                    <div class="${styles.nickname}">${nicknameAndHashtag(
+                        third,
+                    )}</div>
+                    <div class="${styles.score}">${formatScore(third)}</div>
+                </div>
+            </div>
+        </div>`;
+
+    return podium;
 }

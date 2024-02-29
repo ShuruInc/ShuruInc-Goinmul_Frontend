@@ -13,6 +13,7 @@
   "license": "UNLICENSED",
   "devDependencies": {
     "@types/color": "^3.0.6",
+    "@types/comma-number": "^2.1.2",
     "@types/josa": "^3.0.5",
     "css-loader": "^6.8.1",
     "dotenv-cli": "^7.3.0",
@@ -36,6 +37,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "color": "^4.2.3",
+    "comma-number": "^2.1.0",
     "html-entities": "^2.4.0",
     "html2canvas": "^1.4.1",
     "josa": "^3.0.1",
