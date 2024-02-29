@@ -18,6 +18,10 @@ article.quiz-entry {
         text-decoration: none;
     }
 
+    & > * {
+        width: 100%;
+    }
+
     @include styled-inputs;
     
     .entry-section {
