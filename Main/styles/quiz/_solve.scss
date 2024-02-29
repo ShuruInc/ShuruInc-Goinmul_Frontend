@@ -258,7 +258,9 @@ article {
         button.idk {
             height: 50px;
             width: 96px;
+            
             @include handdrawn-btn();
+            background-image: url(../assets/help-me-btn-bg.svg);
         }
     
     }
