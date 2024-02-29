@@ -34,9 +34,13 @@ export default function createFirstPlaceDialog(
         effectImage + "?dummy=" + Date.now();
     wrapper.querySelector("form")?.addEventListener("submit", (evt) => {
         evt.preventDefault();
-        onEmailInput(
-            (wrapper.querySelector("form input") as HTMLInputElement).value,
-        );
+        const email = (wrapper.querySelector("form input") as HTMLInputElement)
+            .value;
+        if (!/.+@.+\..+/.test(email)) {
+            return alert("이메일이 유효하지 않습니다!");
+        }
+
+        onEmailInput(email);
         wrapper.remove();
     });
 
