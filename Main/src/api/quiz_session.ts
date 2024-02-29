@@ -158,6 +158,9 @@ export class QuizSession {
 
         return correct;
     }
+    async submitEmail(email: string) {
+        await apiClient.saveTempEmail({ email });
+    }
     async postRank(): Promise<void> {
         const localSession = this.getLocalSession();
         if (localSession.postedRank) return;
