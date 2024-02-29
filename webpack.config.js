@@ -86,7 +86,7 @@ module.exports = {
                     template: path.join("Main/html", i),
                 }),
         ),
-        new webpack.EnvironmentPlugin(["KAKAO_API_KEY", "BACKEND_URL", "DEBUG_NERD_TEST_EXIT_FEAT", "DEBUG_RANDOM_MEDAL"]),
+        new webpack.EnvironmentPlugin(["KAKAO_API_KEY", "BACKEND_URL", "DEBUG_NERD_TEST_EXIT_FEAT", "DEBUG_RANDOM_MEDAL", "DEBUG_ALWAYS_DISPLAY_1ST_WINNER_EMAIL_INPUT_MODAL" ,"DEBUG_ALWAYS_DISPLAY_COMBO"]),
         new MiniCssExtractPlugin(),
     ],
     optimization: {

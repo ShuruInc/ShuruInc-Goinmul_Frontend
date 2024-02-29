@@ -17,7 +17,7 @@ import html2canvas from "html2canvas";
 import addPadding from "./canvas_padding";
 import ImageCache from "./image_cache";
 import initializeResultPage from "./result_page";
-import { nerdTestExitFeatureEnabled } from "./env";
+import { alwaysDisplaycombo, nerdTestExitFeatureEnabled } from "./env";
 import whitePaper from "../assets/paper.png";
 import displayLoadingSplash from "./loadingSplash";
 
@@ -276,7 +276,7 @@ export default function initSolvePage(session: QuizSession) {
 
             await displayCorrectnessAndComboAnimation(
                 correct.correct!,
-                combo !== 0,
+                combo !== 0 || alwaysDisplaycombo,
             );
 
             renewProblem();
