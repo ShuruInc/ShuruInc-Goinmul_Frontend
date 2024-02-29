@@ -17,12 +17,14 @@ export default function tweetDialog(
         dialogWrapper.className = "tweet-dialog-wrapper";
         dialogWrapper.innerHTML = `
         <div class="tweet-dialog">
+            <div class="content">
                 <h1>트윗 작성하기</h1>
-                <img>
                 <textarea></textarea>
-            <div>
-                <button class="submit">트윗하기</button>
+                <img>
+           </div>
+            <div class="buttons">
                 <button class="cancel">닫기</button>
+                <button class="submit">트윗하기</button>
             </div>
         </div>
         `;
