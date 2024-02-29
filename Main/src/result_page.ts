@@ -19,6 +19,7 @@ import pushpin from "../assets/pushpin.svg";
 import createFirstPlaceDialog from "./firstPlaceDialog";
 import getMedalData from "./get_medal_image";
 import displayLoadingSplash from "./loadingSplash";
+import { alwaysDisplayEmailInputModal } from "./env";
 
 /**
  * 결과 페이지를 렌더링한다.
@@ -196,6 +197,7 @@ export default function initializeResultPage() {
             image: imageFile,
         });
 
-        createFirstPlaceDialog(new Date(), alert);
+        if (result.ranking === 1 || alwaysDisplayEmailInputModal)
+            createFirstPlaceDialog(new Date(), alert);
     })();
 }
