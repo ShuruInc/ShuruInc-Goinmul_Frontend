@@ -30,7 +30,8 @@ export default function createFirstPlaceDialog(
     </div>
     <img class="${styles.effect}"></img>`;
 
-    (wrapper.querySelector("img") as HTMLImageElement).src = effectImage;
+    (wrapper.querySelector("img") as HTMLImageElement).src =
+        effectImage + "?dummy=" + Date.now();
     wrapper.querySelector("form")?.addEventListener("submit", (evt) => {
         evt.preventDefault();
         onEmailInput(
