@@ -2,7 +2,7 @@
 <svg data-name="레이어 2" version="1.1" viewBox="0 0 79 104.76" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
  <defs>
   <style>.cls-1 {
-        fill: url(#_은-8);
+        fill: url(#_silver-8);
       }
 
       .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9, .cls-10, .cls-11, .cls-12, .cls-13, .cls-14, .cls-15, .cls-16, .cls-17, .cls-18, .cls-19, .cls-20, .cls-21, .cls-22, .cls-23, .cls-24, .cls-25, .cls-26, .cls-27, .cls-28, .cls-29, .cls-30, .cls-31, .cls-32, .cls-33, .cls-34, .cls-35, .cls-36, .cls-37, .cls-38, .cls-39, .cls-40, .cls-41, .cls-42, .cls-43, .cls-44, .cls-45, .cls-46, .cls-47, .cls-48, .cls-49, .cls-50, .cls-51, .cls-52, .cls-53, .cls-54, .cls-55, .cls-56, .cls-57, .cls-58, .cls-59, .cls-60, .cls-61, .cls-62, .cls-63, .cls-64, .cls-65, .cls-66, .cls-67, .cls-68, .cls-69, .cls-70, .cls-71, .cls-72, .cls-73, .cls-74, .cls-75, .cls-76, .cls-77, .cls-78, .cls-79, .cls-80, .cls-81, .cls-82, .cls-83, .cls-84, .cls-85, .cls-86, .cls-87, .cls-88, .cls-89, .cls-90, .cls-91, .cls-92, .cls-93, .cls-94, .cls-95, .cls-96, .cls-97, .cls-98, .cls-99, .cls-100, .cls-101, .cls-102, .cls-103, .cls-104, .cls-105, .cls-106, .cls-107, .cls-108, .cls-109, .cls-110, .cls-111, .cls-112, .cls-113, .cls-114, .cls-115, .cls-116, .cls-117, .cls-118, .cls-119, .cls-120, .cls-121, .cls-122, .cls-123, .cls-124, .cls-125, .cls-126, .cls-127, .cls-128, .cls-129, .cls-130, .cls-131, .cls-132, .cls-133, .cls-134, .cls-135, .cls-136, .cls-137, .cls-138, .cls-139, .cls-140, .cls-141, .cls-142, .cls-143, .cls-144, .cls-145, .cls-146, .cls-147, .cls-148, .cls-149, .cls-150, .cls-151, .cls-152, .cls-153 {
@@ -14,7 +14,7 @@
       }
 
       .cls-154 {
-        fill: url(#_은-10);
+        fill: url(#_silver-10);
       }
 
       .cls-154, .cls-155, .cls-156, .cls-157, .cls-158, .cls-159, .cls-160, .cls-161, .cls-162, .cls-163, .cls-164, .cls-165 {
@@ -24,23 +24,23 @@
       }
 
       .cls-155 {
-        fill: url(#_은-13);
+        fill: url(#_silver-13);
       }
 
       .cls-156 {
-        fill: url(#_은-11);
+        fill: url(#_silver-11);
       }
 
       .cls-157 {
-        fill: url(#_은-12);
+        fill: url(#_silver-12);
       }
 
       .cls-158 {
-        fill: url(#_은-14);
+        fill: url(#_silver-14);
       }
 
       .cls-3 {
-        fill: url(#_은);
+        fill: url(#_silver);
       }
 
       .cls-4 {
@@ -244,31 +244,31 @@
       }
 
       .cls-159 {
-        fill: url(#_은-7);
+        fill: url(#_silver-7);
       }
 
       .cls-160 {
-        fill: url(#_은-2);
+        fill: url(#_silver-2);
       }
 
       .cls-161 {
-        fill: url(#_은-3);
+        fill: url(#_silver-3);
       }
 
       .cls-162 {
-        fill: url(#_은-9);
+        fill: url(#_silver-9);
       }
 
       .cls-163 {
-        fill: url(#_은-6);
+        fill: url(#_silver-6);
       }
 
       .cls-164 {
-        fill: url(#_은-4);
+        fill: url(#_silver-4);
       }
 
       .cls-165 {
-        fill: url(#_은-5);
+        fill: url(#_silver-5);
       }
 
       .cls-54 {
@@ -692,7 +692,7 @@
   <linearGradient id="linear-gradient-2" x1="14.91" x2="36.31" y1="97.56" y2="60.49" gradientTransform="translate(45.25) rotate(180) scale(1 -1)" xlink:href="#linear-gradient"/>
   <linearGradient id="_untitled_gradient_128-3" x1="27.48" x2="39.63" y1="84.93" y2="63.89" data-name="무제 그라디언트 128" gradientTransform="translate(45.25) rotate(180) scale(1 -1)" xlink:href="#_untitled_gradient_128"/>
   <linearGradient id="_untitled_gradient_128-4" x1="11.72" x2="25.5" y1="92.98" y2="69.12" data-name="무제 그라디언트 128" gradientTransform="translate(45.25) rotate(180) scale(1 -1)" xlink:href="#_untitled_gradient_128"/>
-  <linearGradient id="_은" x1="9.57" x2="68.91" y1="-620.54" y2="-575.82" data-name="은" gradientTransform="translate(0 -561.03) scale(1 -1)" gradientUnits="userSpaceOnUse">
+  <linearGradient id="_silver" x1="9.57" x2="68.91" y1="-620.54" y2="-575.82" data-name="은" gradientTransform="translate(0 -561.03) scale(1 -1)" gradientUnits="userSpaceOnUse">
    <stop stop-color="#f0eeeb" offset="0"/>
    <stop stop-color="#e9e7e3" offset="0"/>
    <stop stop-color="#dad8d5" offset=".06"/>
@@ -753,12 +753,12 @@
    <stop stop-color="#c5c3c4" offset=".65"/>
    <stop stop-color="#969194" offset=".95"/>
   </linearGradient>
-  <linearGradient id="_은-2" x1="16.79" x2="146.03" y1="37.67" y2="37.34" data-name="은" xlink:href="#_은"/>
-  <linearGradient id="_은-3" x1="16.8" x2="146.03" y1="38.01" y2="37.68" data-name="은" xlink:href="#_은"/>
-  <linearGradient id="_은-4" x1="16.8" x2="146.03" y1="38.08" y2="37.74" data-name="은" xlink:href="#_은"/>
-  <linearGradient id="_은-5" x1="16.8" x2="146.03" y1="38.09" y2="37.75" data-name="은" xlink:href="#_은"/>
-  <linearGradient id="_은-6" x1="16.8" x2="146.03" y1="37.92" y2="37.59" data-name="은" xlink:href="#_은"/>
-  <linearGradient id="_은-7" x1="16.8" x2="146.03" y1="37.9" y2="37.57" data-name="은" xlink:href="#_은"/>
+  <linearGradient id="_silver-2" x1="16.79" x2="146.03" y1="37.67" y2="37.34" data-name="은" xlink:href="#_silver"/>
+  <linearGradient id="_silver-3" x1="16.8" x2="146.03" y1="38.01" y2="37.68" data-name="은" xlink:href="#_silver"/>
+  <linearGradient id="_silver-4" x1="16.8" x2="146.03" y1="38.08" y2="37.74" data-name="은" xlink:href="#_silver"/>
+  <linearGradient id="_silver-5" x1="16.8" x2="146.03" y1="38.09" y2="37.75" data-name="은" xlink:href="#_silver"/>
+  <linearGradient id="_silver-6" x1="16.8" x2="146.03" y1="37.92" y2="37.59" data-name="은" xlink:href="#_silver"/>
+  <linearGradient id="_silver-7" x1="16.8" x2="146.03" y1="37.9" y2="37.57" data-name="은" xlink:href="#_silver"/>
   <linearGradient id="_untitled_gradient_272" x1="31.76" x2="46.72" y1="-582.71" y2="-582.71" data-name="무제 그라디언트 272" gradientTransform="translate(0 -561.03) scale(1 -1)" gradientUnits="userSpaceOnUse">
    <stop stop-color="#f0eeeb" offset="0"/>
    <stop stop-color="#e9e7e3" offset="0"/>
@@ -842,7 +842,7 @@
   <linearGradient id="_untitled_gradient_250-53" x1="20.73" x2="21.59" y1="-593.36" y2="-593.36" data-name="무제 그라디언트 250" gradientTransform="translate(0 -561.03) scale(1 -1)" xlink:href="#_untitled_gradient_250"/>
   <linearGradient id="_untitled_gradient_250-54" x1="19.1" x2="19.96" y1="-593.36" y2="-593.36" data-name="무제 그라디언트 250" gradientTransform="translate(0 -561.03) scale(1 -1)" xlink:href="#_untitled_gradient_250"/>
   <linearGradient id="_untitled_gradient_250-55" x1="17.47" x2="18.33" y1="-593.36" y2="-593.36" data-name="무제 그라디언트 250" gradientTransform="translate(0 -561.03) scale(1 -1)" xlink:href="#_untitled_gradient_250"/>
-  <linearGradient id="_은-8" x1="9.69" x2="69.03" y1="-620.66" y2="-575.94" data-name="은" xlink:href="#_은"/>
+  <linearGradient id="_silver-8" x1="9.69" x2="69.03" y1="-620.66" y2="-575.94" data-name="은" xlink:href="#_silver"/>
   <linearGradient id="_untitled_gradient_250-56" x1="6.34" x2="72.37" y1="37.27" y2="37.27" data-name="무제 그라디언트 250" xlink:href="#_untitled_gradient_250"/>
   <linearGradient id="_untitled_gradient_212-2" x1="14.07" x2="64.65" y1="-618.78" y2="-577.82" data-name="무제 그라디언트 212" xlink:href="#_untitled_gradient_212"/>
   <linearGradient id="_untitled_gradient_207-2" x1="31.59" x2="47.13" y1="-629.46" y2="-567.14" data-name="무제 그라디언트 207" xlink:href="#_untitled_gradient_207"/>
@@ -862,12 +862,12 @@
    <stop stop-color="#dcdddd" offset="1"/>
    <stop stop-color="#b5b5b6" offset="1"/>
   </linearGradient>
-  <linearGradient id="_은-9" x1="14.91" x2="155.18" y1="37.97" y2="37.61" data-name="은" xlink:href="#_은"/>
-  <linearGradient id="_은-10" x1="14.91" x2="155.18" y1="38.34" y2="37.98" data-name="은" xlink:href="#_은"/>
-  <linearGradient id="_은-11" x1="14.91" x2="155.18" y1="38.41" y2="38.05" data-name="은" xlink:href="#_은"/>
-  <linearGradient id="_은-12" x1="14.91" x2="155.18" y1="38.42" y2="38.06" data-name="은" xlink:href="#_은"/>
-  <linearGradient id="_은-13" x1="14.91" x2="155.18" y1="38.24" y2="37.88" data-name="은" xlink:href="#_은"/>
-  <linearGradient id="_은-14" x1="14.91" x2="155.18" y1="38.22" y2="37.86" data-name="은" xlink:href="#_은"/>
+  <linearGradient id="_silver-9" x1="14.91" x2="155.18" y1="37.97" y2="37.61" data-name="은" xlink:href="#_silver"/>
+  <linearGradient id="_silver-10" x1="14.91" x2="155.18" y1="38.34" y2="37.98" data-name="은" xlink:href="#_silver"/>
+  <linearGradient id="_silver-11" x1="14.91" x2="155.18" y1="38.41" y2="38.05" data-name="은" xlink:href="#_silver"/>
+  <linearGradient id="_silver-12" x1="14.91" x2="155.18" y1="38.42" y2="38.06" data-name="은" xlink:href="#_silver"/>
+  <linearGradient id="_silver-13" x1="14.91" x2="155.18" y1="38.24" y2="37.88" data-name="은" xlink:href="#_silver"/>
+  <linearGradient id="_silver-14" x1="14.91" x2="155.18" y1="38.22" y2="37.86" data-name="은" xlink:href="#_silver"/>
   <linearGradient id="_untitled_gradient_272-7" x1="31.15" x2="47.39" y1="-581.65" y2="-581.65" data-name="무제 그라디언트 272" xlink:href="#_untitled_gradient_272"/>
   <linearGradient id="_untitled_gradient_279-7" x1="31.15" x2="47.39" y1="-581.65" y2="-581.65" data-name="무제 그라디언트 279" xlink:href="#_untitled_gradient_279"/>
   <linearGradient id="_untitled_gradient_272-8" x1="32.61" x2="45.93" y1="-613.25" y2="-613.25" data-name="무제 그라디언트 272" xlink:href="#_untitled_gradient_272"/>
