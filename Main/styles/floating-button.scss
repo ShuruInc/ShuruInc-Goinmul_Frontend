@@ -13,8 +13,8 @@
     margin: 0px calc((100vw - var(--floating-btn-width)) / 2);
 
     svg {
-        width: 20px;
-        height: auto;
+        width: 24px;
+        height: 24px;
     }
 
     &.notice {
@@ -29,7 +29,7 @@
         padding: 0px 19px;
 
         .icon img {
-            width: 26px;
+            width: 24px;
             height: auto;
         }
         .content {
