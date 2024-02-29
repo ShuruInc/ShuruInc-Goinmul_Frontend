@@ -14,6 +14,7 @@
 
     /* 스크롤바를 숨긴다 */
     @include hide-scrollbar;
+
     & > .column {
         position: absolute;
         left: 50%;
@@ -26,6 +27,10 @@
         overflow-y: hidden;
 
         @include hide-scrollbar;
+
+        &.main .scroll-content {
+            padding-top: 112px;
+        }
 
         .scroll-content {
             padding-top: 145px;   
