@@ -26,6 +26,7 @@ article {
 
         width: fit-content;
         margin: 0 auto;
+        margin-bottom: 30px;
 
         @include masked-chalk-border(0px 0px 4px 0px);
         border-style: solid;
