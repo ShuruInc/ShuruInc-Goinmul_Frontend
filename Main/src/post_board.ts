@@ -3,6 +3,9 @@ import PostBoardApiClient from "./api/posts";
 import footer from "./footer";
 import setHorizontalDragScrollOnDesktop from "./horizontal_drag_to_scroll_on_desktop";
 import "./smooth-scrollbar-scroll-lock-plugin";
+import eyeIcon from "../assets/post-cell-popularity-icons/eye.svg";
+import heartSolidIcon from "../assets/post-cell-popularity-icons/heart-solid.svg";
+// import Color from "color";
 
 type RowInfo = { landscape: boolean; count: number };
 export type Post = {
@@ -12,6 +15,7 @@ export type Post = {
     views: number;
     href: string;
     id: number;
+    nerdTest: boolean;
 };
 export type PostBoardSectionData = Partial<{
     title: string;
@@ -83,6 +87,12 @@ export function preparePlaceholderSection(
         }
 
         for (let i = 0; i < rowInfo.count; i++) {
+            // 분필 border 생성
+            const chalkBordered = document.createElement("div");
+            chalkBordered.className =
+                "chalk-bordered " +
+                (rowInfo.landscape ? "landscape" : "portrait");
+
             // 요소 생성 후 이미지 소스 설정
             const cell = document.createElement("a");
             cell.href = "quiz.html";
@@ -98,9 +108,27 @@ export function preparePlaceholderSection(
             const info = document.createElement("div");
             info.className = "cell-info";
             info.innerHTML =
-                '<div class="title"></div><div class="popularity"><a href="#" class="likes-link"><div class="likes"><span class="like-count" /></div></a><div class="views"><span class="view-count" /></div></div>';
+                '<div class="title"></div>' +
+                '<div class="popularity-and-like-button">' +
+                '<div class="popularity">' +
+                `<div class="views"><img class="icon" src="${eyeIcon}"><span class="view-count" /></div>` +
+                "</div>" +
+                `<a href="#" class="like-button"><img class="icon" src="${heartSolidIcon}"></a>` +
+                "</div>";
 
-            postTable.appendChild(cell);
+            // 그림자 추가
+            const shadow = document.createElement("div");
+            shadow.className = "shadow";
+
+            // wrapper
+            const wrapper = document.createElement("div");
+            wrapper.className =
+                "wrapper " + (rowInfo.landscape ? "landscape" : "");
+            wrapper.appendChild(chalkBordered);
+            wrapper.appendChild(shadow);
+
+            postTable.appendChild(wrapper);
+            chalkBordered.appendChild(cell);
             cell.appendChild(info);
         }
 
@@ -110,6 +138,44 @@ export function preparePlaceholderSection(
     if (placeholder) placeholderSection.classList.add("placeholder");
     placeholderSection.dataset.rowInfos = JSON.stringify(rowInfos);
 }
+
+function getImageDataFromImageElement(url: string) {
+    return new Promise<ImageData>((resolve, _) => {
+        const img = new Image();
+        img.addEventListener("load", (_) => {
+            const canvas = new OffscreenCanvas(img.width, img.height);
+            const context = canvas.getContext("2d");
+            if (context === null) throw new Error("null canvas context");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            context.drawImage(img, 0, 0);
+            resolve(context.getImageData(0, 0, img.width, img.height));
+        });
+        img.src = url;
+    });
+}
+
+async function getAverageColor(url: string) {
+    const data = await getImageDataFromImageElement(url);
+    let resultColor = [0, 0, 0];
+    for (let i = 0; i < data.data.length; i += 4) {
+        // RGBA
+        for (let j = 0; j < 3; j++) {
+            resultColor[j] += data.data[i * 4 + j] ?? 0;
+        }
+    }
+
+    return resultColor.map((i) =>
+        Math.floor(i / Math.floor(data.data.length / 4)),
+    );
+}
+
+/*
+function manipulateRepresentingColor([r, g, b]: number[]) {
+    const color = Color.rgb(r, g, b);
+    return [color.red(), color.green(), color.blue()].map(Math.floor);
+}
+*/
 
 // section을 posts로 채운다.
 export function fillPlaceholderSectionInto(
@@ -137,6 +203,14 @@ export function fillPlaceholderSectionInto(
         });
     preparePlaceholderSection(section, rowInfos, false);
 
+    // 애니메이션 효과
+    const animateHeart = (element: HTMLElement) => {
+        element.classList.add("liked");
+        setTimeout(() => {
+            element.classList.remove("liked");
+        }, 200);
+    };
+
     // 제목 설정
     if (
         posts.title === null ||
@@ -154,18 +228,22 @@ export function fillPlaceholderSectionInto(
         landscapeCell.style.backgroundImage = `url("${
             posts.landscape!.imgUrl
         }")`;
+        getAverageColor(posts.landscape!.imgUrl)
+            /* .then(manipulateRepresentingColor) */
+            .then(([r, g, b]) => {
+                landscapeCell.style.setProperty(
+                    "--representing-color",
+                    `${r}, ${g}, ${b}`,
+                );
+            });
         landscapeCell.href = posts.landscape!.href;
         landscapeCell.dataset.id = posts.landscape!.id.toString();
         landscapeCell
-            .querySelector(".likes-link")
+            .querySelector(".like-button")
             ?.addEventListener("click", (evt) => {
                 evt.preventDefault();
                 PostBoardApiClient.like(posts.landscape!.id!).then(() => {
-                    const likes = landscapeCell.querySelector(
-                        ".likes",
-                    ) as HTMLElement;
-                    likes.classList.add("liked");
-                    likes.textContent = ":D";
+                    animateHeart(landscapeCell.querySelector(".like-button")!);
                 });
             });
         landscapeCell.querySelector(".cell-info .title")!.innerHTML =
@@ -173,8 +251,6 @@ export function fillPlaceholderSectionInto(
         if (noCellInfo) {
             landscapeCell.classList.add("no-cell-popularity-info");
         } else {
-            landscapeCell.querySelector(".cell-info .like-count")!.innerHTML =
-                millify(posts.landscape!.likes).toString();
             landscapeCell.querySelector(".cell-info .view-count")!.innerHTML =
                 millify(posts.landscape!.views).toString();
         }
@@ -196,26 +272,24 @@ export function fillPlaceholderSectionInto(
                 `url("${post.imgUrl}")`,
             );
             portraitCell.classList.add("lazy-bg");
+            if (!post.nerdTest) {
+                portraitCell.classList.add("non-nerd-test");
+            }
             portraitCell.querySelector(".cell-info .title")!.innerHTML =
                 post.title;
             portraitCell
-                .querySelector(".likes-link")
+                .querySelector(".like-button")
                 ?.addEventListener("click", (evt) => {
                     evt.preventDefault();
                     PostBoardApiClient.like(post.id!).then(() => {
-                        const likes = portraitCell.querySelector(
-                            ".likes",
-                        ) as HTMLElement;
-                        likes.classList.add("liked");
-                        likes.textContent = ":D";
+                        animateHeart(
+                            portraitCell.querySelector(".like-button")!,
+                        );
                     });
                 });
             if (noCellInfo) {
                 portraitCell.classList.add("no-cell-popularity-info");
             } else {
-                portraitCell.querySelector(
-                    ".cell-info .like-count",
-                )!.innerHTML = millify(post.likes).toString();
                 portraitCell.querySelector(
                     ".cell-info .view-count",
                 )!.innerHTML = millify(post.views).toString();
@@ -239,6 +313,16 @@ export function fillPlaceholderSectionInto(
                         i.classList.remove("lazy-bg");
                         i.style.backgroundImage =
                             i.style.getPropertyValue("--background-img");
+                        getAverageColor(
+                            /url\("(.+)"\)/.exec(i.style.backgroundImage)![1],
+                        )
+                            /* .then(manipulateRepresentingColor) */
+                            .then(([r, g, b]) => {
+                                i.style.setProperty(
+                                    "--representing-color",
+                                    `${r}, ${g}, ${b}`,
+                                );
+                            });
                     });
             },
             {

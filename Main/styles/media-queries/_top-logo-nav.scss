@@ -12,19 +12,7 @@
     }
 }
 
-.main-top-logo {
-    @include desktop {
-        width: 90px !important;
-    }
-    @include tablet {
-        width: 80px !important;
-    }
-    @include mobile {
-        width: 70px !important;
-    }
-}
-
-#topFixedBar {
+#topFixedBar, html {
     @include desktop {
         --top-fixed-bar-height: 200px;
         --top-fixed-bar-width: 700px;

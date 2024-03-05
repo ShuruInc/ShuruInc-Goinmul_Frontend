@@ -6,6 +6,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 const md5 = (text) => createHash("md5").update(text).digest("hex");
 const TerserPlugin = require("terser-webpack-plugin");
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 
 let htmlFiles = readdirSync("Main/html", {
     encoding: "utf8",
@@ -85,7 +86,7 @@ module.exports = {
                     template: path.join("Main/html", i),
                 }),
         ),
-        new webpack.EnvironmentPlugin(["KAKAO_API_KEY", "BACKEND_URL", "DEBUG_NERD_TEST_EXIT_FEAT", "DEBUG_RANDOM_MEDAL"]),
+        new webpack.EnvironmentPlugin(["KAKAO_API_KEY", "BACKEND_URL", "DEBUG_NERD_TEST_EXIT_FEAT", "DEBUG_RANDOM_MEDAL", "DEBUG_ALWAYS_DISPLAY_1ST_WINNER_EMAIL_INPUT_MODAL" ,"DEBUG_ALWAYS_DISPLAY_COMBO"]),
         new MiniCssExtractPlugin(),
     ],
     optimization: {
@@ -95,6 +96,19 @@ module.exports = {
                 terserOptions: {
                     safari10: true,
                 },
+            }),
+            new ImageMinimizerPlugin({
+              minimizer: {
+                implementation: ImageMinimizerPlugin.svgoMinify,
+                options: {
+                    encodeOptions: {
+                        multipass: true,
+                        plugins: [
+                            'preset-default'
+                        ]
+                    }
+                },
+              },
             }),
         ],
         splitChunks: {

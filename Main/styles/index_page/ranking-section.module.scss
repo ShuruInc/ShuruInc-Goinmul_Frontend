@@ -1,0 +1,27 @@
+@import "../mixins";
+@import "../includes/pretendard";
+@import "../includes/leeseoyun";
+
+.rankingSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 26px 0px;
+
+    h2 {
+        font-family: 'LeeSeoyun';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 32px;
+        line-height: 40px;
+        letter-spacing: -0.025em;
+
+        color: #FFFFFF;
+    }
+
+    .separator {
+        display: block;
+        margin: 3px 0px 35px 0px;
+        filter: brightness(100);
+    }
+}

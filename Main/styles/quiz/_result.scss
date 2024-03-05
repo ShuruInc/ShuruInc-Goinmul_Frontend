@@ -1,10 +1,17 @@
 @use "../common/styled-inputs";
+@import "../index_page/post-board";
+@import "../mixins/cork-board-background";
+
+body.result-body {
+    @include cork-board-background;
+}
 
 .main-container {
     .loading {
         display: none;
         height: calc(100vh - 150px);
         width: 100%;
+        padding-top: 150px;
         background: url("../assets/loading.gif");
         background-position-x: 50%;
         background-size: contain;
@@ -27,35 +34,41 @@ article.with-result {
     align-items: center;
     gap: 10px;
 
-    .rankings-ad {
-        font-family: Pretendard;
-        font-size: 18px;
-        font-weight: 600;
-        line-height: 21px;
-        letter-spacing: -0.01em;
-        text-align: center;
-    
-        padding: 14px 20px;
-        border: 1px solid #DFDFDF;
-        background-color: white;
-        color: black;
-        border-radius: 4px;
-        margin-bottom: 10px;
-    
-        width: 100%;
-        box-sizing: border-box;
-    }
-    
     @import "./result_box";
+
+    .result-container {
+        margin-bottom: 32px;
+    }
 
     .post-section > h2 {
         margin: 0.25em 0em 1em 0em !important;
     }
 
-    .share-web-share, .share-twitter, .share-kakao, .share-continue {
+    .share-web-share, .share-twitter, .share-kakao, .share-continue.retry, .continue-button-row {
         width: 100%;
         box-sizing: border-box;
     }
+
+    .continue-button-row {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        
+        .share-continue.retry {
+            background-color: $secondary-color-01;
+        }
+
+        .copy-link {
+            background-image: url(../assets/link-anchor.svg);
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+
+            background-color: transparent;
+            border: 2px white solid;
+            width: 50px;
+        }
+    }
+
 
     @import "../index_page/post-board";
 }

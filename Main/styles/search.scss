@@ -4,7 +4,16 @@
 @import "common/styled-inputs";
 @import "index_page/post-board";
 @import "mixins";
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+@import "./includes/pretendard";
+@import "./mixins/chalk-background";
+@import "./mixins/chalk-border";
+@import "./mixins/handdrawn-btn";
+@import "./colors";
+@import "./mixins/handdrawn-btn";
+
+body {
+    @include chalkboard-background;
+}
 
 .top-fixed-bar .container {
     width: 100%;
@@ -28,34 +37,38 @@
             padding: 0px !important;
 
             svg {
-                height: 12px;
-                width: auto;
+                width: 12px;
+                height: auto;
             }
         }
 
         input.search {
-            --search-icon-size: 24px;
+            --search-icon-size: 14px;
+            background-color: $secondary-color-01;
             background-image: var(--search-icon);
             background-position: right 16px center;
             background-size: auto var(--search-icon-size);
             background-repeat: no-repeat;
             padding: 9px calc(16px + var(--search-icon-size)) 9px 16px;
             width: 100%;
-            color: #000000b2;
+            color: #ffffff;
 
             font-family: Pretendard;
             font-size: 14px;
             font-weight: 400;
             line-height: 20px;
+            letter-spacing: 0em;
+
+            border-radius: 16px;
 
             &::placeholder {
-                color: #B4B9B8;
+                color: #ffffff80;
             }
 
             &:focus,
             &:active {
                 background-image: var(--search-icon-active);
-                color: black;
+                outline: none;
             }
         }
     }
@@ -66,11 +79,11 @@ article {
     padding-top: 80px;
 
     * > h2 {
+        font-family: LeeSeoyun;
         font-size: 18px;
-        font-weight: 700;
-        font-family: Pretendard;
-        padding: 20px 0px;
-        margin: 0px;
+        font-weight: 400;
+        line-height: 18px;
+        letter-spacing: -0.01em;
     }
 
     .result.post-section > h2 {
@@ -83,11 +96,15 @@ article {
         color: #404544;
     }
 
+    .chalk-bordered {
+        @include chalk-border(2px);
+    }
+
     .popularNow {
         user-select: None;
         width: 100%;
         padding: 0px 0px 20px 0px;
-
+        
         .columns {
             display: flex;
             flex-direction: row;
@@ -95,10 +112,17 @@ article {
             overflow-x: auto;
             @include hide-scrollbar;
 
+            border-radius: 14px;
+            padding: 12px;
+            border: 1px solid white;
+            gap: 8px;
+
+            box-sizing: border-box;
+
             .column {
                 display: flex;
                 flex-direction: column;
-                gap: 14px;
+                gap: 6px;
 
                 width: 50%;
                 box-sizing: border-box;
@@ -106,25 +130,43 @@ article {
                 margin: 0px;
                 padding: 0px;
                 li {
+                    padding: 6px 7px;
+                    border: 1px solid white;
+                    border-radius: 14px;
+                    
+                    font-family: LeeSeoyun;
+                    font-size: 14px;
+                    font-weight: 400;
+                    line-height: 14px;
+                    letter-spacing: -0.01em;
+
                     .marker {
                         display: inline-block;
-                        font-size: 16px;
-                        line-height: 18.8px;
-                        letter-spacing: -0.01em;
-                        font-weight: 800;
                         font-family: Pretendard;
-                        color: #1da1f2;
-                        width: 29px;
+                        font-size: 12px;
+                        font-weight: 700;
+                        line-height: 24px;
+                        letter-spacing: -0.01em;
+                        text-align: center;
+                        
+                        background-color: white;
+                        color: $secondary-color-01;
+                        border-radius: 34px;
+
+                        margin-right: 14px;
+                        
+                        width: 24px;
+                        height: 24px;
                     }
 
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
-                    color: #14171a;
+                    color: white;
                 }
                 a {
                     text-decoration: none;
-                    color: black;
+                    color: white;
                 }
             }
         }
@@ -134,22 +176,28 @@ article {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        gap: 8px;
+        gap: 6px;
+
+        padding: 14px;
+        border: 1px solid white;
+        border-radius: 14px;
+
         a.bubble {
-            font-family: Pretendard;
+            font-family: LeeSeoyun;
             font-size: 14px;
-            font-weight: 14px;
-            line-height: 17px;
+            font-weight: 400;
+            line-height: 14px;
             letter-spacing: -0.01em;
+            text-align: left;
 
             white-space: nowrap;
             display: block;
             text-decoration: none;
-            color: #666867;
-            background-color: #ffffff;
+            color: white;
+            background-color: transparent;
             padding: 8px 14px;
-            border-radius: 4px;
-            border: #dfdfdf 1px solid;
+            border-radius: 14px;
+            border: white 1px solid;
         }
     }
 
@@ -157,9 +205,10 @@ article {
         display: flex;
         flex-direction: column;
         padding: 120px 0px;
-        gap: 20px;
+        gap: 30px;
         align-items: center;
-        svg {
+
+        .icon {
             height: 72px;
             width: auto;
             color: #B4B9B880;
@@ -173,35 +222,34 @@ article {
                 margin: 0px;
                 padding: 0px;
                 color: #666867;
-                font-size: 16px;
-                font-weight: 700;
-                font-family: Pretendard;
+                font-size: 16px;font-family: LeeSeoyun;
+                font-size: 24px;
+                font-weight: 400;
+                line-height: 24px;
+                letter-spacing: -0.01em;
+                text-align: center;
+                color: white;
+                
             }
             p {
                 margin: 0px;
                 padding: 0px;
-                font-size: 16px;
-                font-weight: 700;
-                line-height: 22px;
-                letter-spacing: -0.01em;
                 font-family: Pretendard;
-                color: #898B8A;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 20px;
+                letter-spacing: -0.01em;
+                text-align: center;
+                color: #ffffff80;
             }
         }
         .request {
-            font-family: Pretendard;
-            font-weight: 600;
-            font-size: 14px;
-            line-height: 17px;
-            letter-spacing: -0.01em;
+            @include handdrawn-btn("primary");
+            height: 50px;
+            width: 120px;
 
-            color: #1DA1F2;
-            background-color: #ECF8FF;
-            padding: 8px 16px;
-            border: 0px;
-            border-radius: 4px;
             &.requested {
-                background-color: #f8fcff;
+                @include handdrawn-btn();
             }
         }
     }

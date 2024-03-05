@@ -2,12 +2,14 @@
 @use "common/container";
 @use "common/top-logo-nav";
 @use "common/utils";
-@use "index_page/ranking-section";
 @use "index_page/top-category-buttons";
 @use "index_page/post-board-columns";
 @use "index_page/post-board";
+@import "./mixins/chalk-background";
 
 body {
     font-size: 16px;
     overscroll-behavior: none;
+
+    @include grid-chalkboard-background;
 }

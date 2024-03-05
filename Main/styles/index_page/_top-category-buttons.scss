@@ -1,4 +1,6 @@
 @use "../media-queries/top-category-buttons";
+@import "../colors";
+@import "../mixins/handdrawn-btn";
 
 /* 상단 로고 애니메이션시 버튼 네브도 애니메이션 */
 .top-fixed-bar.is-hidden ~ nav {
@@ -6,10 +8,22 @@
     transform: translateX(-50%);
 }
 
+/* 네비게이션바 부분의 배경 투과 */
+.top-fixed-bar {
+    & ~ .main-container .column {
+        transition: clip-path 0.3s ease;           
+        clip-path: inset(
+            calc(var(--top-fixed-bar-height) / 1.95) 0px 0px 0px);
+    }
+    &.is-hidden ~ .main-container article {
+        clip-path: inset(0px 0px 0px 0px);
+    }
+}
+
 /* top-category-buttons 버튼 스타일링 */
 nav.top-category-buttons {
     /* 사이즈 */
-    --button-gap: 10px;
+    --button-gap: 6px;
     --button-width: 200px;
 
     /* flexbox랑*/
@@ -32,35 +46,21 @@ nav.top-category-buttons {
     transition: top 0.3s ease;
 
     & > button {
-        border: #f0f0f0 1px solid;
-        border-radius: 4px;
-        padding: 8px 16px;
-        width: 100px;
+        @include handdrawn-btn();
+
+        padding: 12px 16px;
         white-space: nowrap;
         word-break: keep-all;
         cursor: pointer;
-        background-color: #fbfbfb;
         scroll-snap-align: center;
         text-align: center;
         width: var(--button-width);
         min-width: var(--button-width);
         touch-action: manipulation;
-        
-        font-family: Pretendard;
-        font-weight: 500;
-        font-size: 14px;
-        line-height: 17px;
-        letter-spacing: -0.01em;
-        color: #666867;
-
-        &:hover {
-            background-color: #d6d6d6;
-        }
 
         &.active {
-            background-color: #1da1f2;
-            border-color: #1da1f2;
-            color: white;
+            @include handdrawn-btn("white");
+            color: $secondary-color-01;
         }
     }
 }

@@ -29,6 +29,9 @@ watch를 하면 파일 내용이 바뀔 때 자동으로 재컴파일되므로 �
 - `BACKEND_URL`: 백엔드 서버 주소 (예시: `http://api.example.com`)
 - `DEBUG_NERD_TEST_EXIT_FEAT`: `true` 혹은 `false` 값, 디버깅을 위해 존재하는 옵션으로, 프로덕션에서는 `false`로 하면 된다. `true`일 시 고인물 테스트 중 `exitNerdTest` 함수를 브라우저 내에서 호출하여 남은 시간 및 남은 문제의 갯수와 상관없이 고인물 테스트를 종료할 수 있다.
 - `DEBUG_RANDOM_MEDAL`: `true` 혹은 `false` 값, `true`일시 고인물 테스트 결과에서 메달이 무작위로 뜹니다.
+- `DEBUG_ALWAYS_DISPLAY_1ST_WINNER_EMAIL_INPUT_MODAL`: `true` 혹은 `false` 값, `true`일시 고인물 테스트 결과에서 1등 이메일 입력 모달창이 표시됩니다.
+- `DEBUG_ALWAYS_DISPLAY_COMBO`: `true` 혹은 `false` 값, `true`일시 0연속 콤보도 표시됩니다.
+- `NODE_ENV`: 배포면 `production`, 개발이면 `development`입니다.
 
 ### 예시
 ```
@@ -36,6 +39,9 @@ KAKAO_API_KEY=abcd0123abcd0123abcd0123abcd0123
 BACKEND_URL=http://backend.example.com
 DEBUG_NERD_TEST_EXIT_FEAT=false
 DEBUG_RANDOM_MEDAL=false
+DEBUG_ALWAYS_DISPLAY_1ST_WINNER_EMAIL_INPUT_MODAL=false
+DEBUG_ALWAYS_DISPLAY_COMBO=false
+NODE_ENV=production
 ```
 
 ## 빌드 결과

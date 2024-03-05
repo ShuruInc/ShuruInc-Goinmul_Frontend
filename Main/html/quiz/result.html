@@ -6,19 +6,17 @@
     <title>고인물테스트</title>
 </head>
 <body class="result-page-html-prepared">
-    <div id="topFixedBar" class="top-fixed-bar">
+    <div id="topFixedBar" class="top-fixed-bar clip-path-bugfix">
         <nav>
+            <button class="ranking-icon">
+                <img class="ranking-icon">
+            </button>        
             <a class="main-top-logo" href="/">
-                <img class="main-top-logo-image">
+                고인물테스트
             </a>
-            <div class="buttons">
-                <button class="ranking-icon">
-                    <i class="fa-solid fa-ranking-star"></i>
-                </button>        
-                <button class="search-icon">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-            </div>
+            <button class="search-icon">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
         </nav>       
         <div class="progress-container">
             <div class="progress" style="width: 100%;"></div>
@@ -29,16 +27,20 @@
             
         </article>
         <article class="with-result">
-            <button class="rankings-ad">
-                <i class="fa-solid fa-ranking-star"></i> <span class="nickname"></span> 랭킹 보러 가기
-            </button>
-            <div class="result">
-                
+            <div class="result-container">
+                <div class="result">
+                    
+                </div>
+                <div class="medal"><img></div>
+                <div class="pushpin"><img></div>
             </div>
             <button class="share-web-share">친구한테 자랑하기</button>
             <a class="share-twitter button" href="#" target="_blank">트친한테 자랑하기</a>
             <button class="share-kakao">실친한테 자랑하기</button>
-            <button class="retry share-continue">재응시</button>
+            <div class="continue-button-row">
+                <button class="copy-link share-continue"></button>
+                <button class="retry share-continue">다시 풀기</button>
+            </div>
             <div class="post-section">
                 
             </div>

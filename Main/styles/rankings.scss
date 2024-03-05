@@ -1,0 +1,237 @@
+@use "common/reset";
+@use "common/container";
+@use "common/top-logo-nav";
+@use "common/utils";
+@import "./mixins/chalk-background";
+@import "./colors";
+@import "./includes/noto-serif";
+@import "./mixins/handdrawn-btn";
+@import "./includes/pretendard";
+
+body {
+    @include grid-chalkboard-background;
+
+    margin-top: 50px;
+    .pushpined-paper-container {
+        position: relative;
+
+        .paper {
+            margin-top: 20px;
+            padding: 46px 0px;
+            background-image: url(../assets/paper.png);
+
+            .side-padded {
+                padding: 0px 18px;
+            }
+
+            h1 {
+                font-family: 'Noto Serif KR';
+                font-style: normal;
+                font-weight: 700;
+                font-size: 32px;
+                line-height: 40px;
+                text-align: center;
+                letter-spacing: -0.025em;
+
+                color: $black-color-01;
+                padding: 0px;
+            }
+            
+            .h1-border {
+                margin: 12px auto 45px auto;
+                display: block;
+            }
+
+            nav.categories {
+                display: flex;
+                flex-direction: row;
+                gap: 10px;
+                padding: 10px 0px;
+                
+                button {
+                    width: 100px;
+                    height: 35px;
+                    cursor: pointer;
+
+                    @include handdrawn-btn("transparent");
+                    &.active {
+                        @include handdrawn-btn("secondary");
+                    }
+                }
+            }
+
+            .search {
+                margin: 14px 0px 30px 0px;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+
+                & > * {
+                    padding: 10.5px 16px;
+                    border: 1px solid #50504F;
+                    background: transparent;
+                }
+                input {
+                    border-right-width: 0px;
+                    border-radius: 14px 0px 0px 14px;
+                    width: 100%;
+                    color: #50504F;
+
+                    font-family: 'Pretendard', serif;
+                    font-size: 12px;
+                    line-height: 140%;
+                    letter-spacing: -0.025em;
+
+                    &:active, &:hover, &:focus {
+                        outline: none;
+                    }
+
+                    &::placeholder {
+                        color: #898B8A
+                    }
+                }
+                .search-icon {
+                    border-left-width: 0px;
+                    border-radius: 0px 14px 14px 0px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    svg {
+                        width: 14px;
+                        height: auto;
+                        color: #50504F;
+                    }
+                }
+            }
+
+            table.rankings {
+                border-collapse: collapse;
+                width: 100%;
+
+                tr {
+                    border-style: solid;
+                    border-color: $black-color-06;
+                    border-width: 1px 0px 1px 0px;
+                }
+
+                thead tr {
+                    border-top-width: 0px;
+                    th {
+                        font-family: 'Pretendard';
+                        font-size: 14px;
+                        line-height: 18px;
+                        letter-spacing: -0.02em;
+                        font-weight: normal;
+                        color: #666867;
+                        padding: 5px 0px;
+
+                        &.ranking {
+                            text-align: center;
+                            width: 62px;
+                        }
+                        &.nickname {
+                            text-align: left;
+                            padding-left: 12px;
+                        }
+                        &.score {
+                            text-align: right;
+                            padding-right: 22px;
+                        }
+                    }
+                }
+
+                tbody tr {
+                    font-family: 'Pretendard', sans-serif;
+                    font-weight: normal;
+                    line-height: 20px;
+                    letter-spacing: -0.02em;
+                    font-size: 14px;
+                    color: $black-color-02;
+
+                    &:nth-child(1) {
+                        font-size: 16px;
+                        font-weight: 600;
+                        color: $black-color-01;
+                        td.ranking {
+                            background-image: url(../assets/ranking-medal-icon/gold.svg);
+                            background-size: 46px 51.5px;
+                            height: 50px;
+                        }
+                    }
+
+                    &:nth-child(3), &:nth-child(5) {
+                        font-weight: 600;
+
+                        td.ranking {
+                            background-size: 41px 45.9px;
+                        }
+
+                        &:nth-child(3) {   
+                            color: $black-color-01;
+                            td.ranking {
+                                background-image: url(../assets/ranking-medal-icon/silver.svg);
+                            }
+                        }
+
+                        &:nth-child(5) {
+                            color: $black-color-02;
+                            td.ranking {
+                                background-image: url(../assets/ranking-medal-icon/cooper.svg);
+                            }
+                        }
+                    }
+
+                    td.ranking {
+                        height: 41px;
+                        box-sizing: border-box;
+                        width: 62px;
+                        text-align: center;
+                        background-repeat: no-repeat;
+                        background-position-x: 50%;
+                        background-position-y: top -11px;
+                    }
+
+                    td.nickname {
+                        padding: 6px 0px 6px 12px;
+                        text-align: left;
+                    }
+
+                    td.score {
+                        padding: 6px 22px 6px 0px;
+                        text-align: right;
+                    }
+
+                    &.padding {
+                        height: 6px;
+                    }
+                }
+            }
+
+            p.note {
+                letter-spacing: -0.01em;
+                font-family: 'Pretendard', sans-serif;
+                font-weight: normal;
+                font-size: 14px;
+            
+                color: $black-color-04;
+
+                margin: 10px 21px;
+            }
+        }
+
+        .pushpin {
+            position: absolute;
+            top: 0px;
+            left: 50%;
+            transform: translate(-50%);
+        }
+    }
+
+    footer {
+        margin-top: 65px;
+        
+        font-family: 'Tenada', serif;
+        font-weight: 800;
+        font-size: 24px;
+    }
+}

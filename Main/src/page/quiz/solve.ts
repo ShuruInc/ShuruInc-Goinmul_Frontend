@@ -33,6 +33,7 @@ function setWarningText(newText: string) {
     const warning = document.querySelector(".entry-section .warning")!;
     warning.textContent = newText;
     if (newText === "") {
+        warning.innerHTML = "&nbsp;";
         document
             .querySelector(".start-button button")
             ?.classList.remove("disabled");
@@ -76,12 +77,6 @@ const initByQuizId = async () => {
                 // 새로고침
                 trickyReload();
             });
-        document
-            .querySelector("article.loading")
-            ?.classList.add("display-none");
-        document
-            .querySelector("article.display-none")
-            ?.classList.remove("display-none");
 
         // 닉네임 랜덤 생성
         let defaultNickname = randomKoreanNickname();
@@ -101,6 +96,12 @@ const initByQuizId = async () => {
             (
                 document.querySelector("#nickname") as HTMLInputElement
             ).placeholder = defaultNickname;
+            document
+                .querySelector("article.loading")
+                ?.classList.add("display-none");
+            document
+                .querySelector("article.display-none")
+                ?.classList.remove("display-none");
         }
 
         // 닉네임 유효성 검증
@@ -110,8 +111,10 @@ const initByQuizId = async () => {
                 setWarningText("닉네임에 부적절한 단어가 있습니다: " + badWord);
             } else if (nickname.length > 0 && nickname.trim().length === 0) {
                 setWarningText("공백만으로 이루어진 닉네임은 불가능합니다.");
-            } else if (nickname.length > 8) {
-                setWarningText("닉네임은 최대 8자입니다.");
+            } else if (nickname.length > 0 && nickname.length < 3) {
+                setWarningText("닉네임은 최소 3자입니다.");
+            } else if (nickname.length > 10) {
+                setWarningText("닉네임은 최대 10자입니다.");
             } else {
                 setWarningText("");
             }
@@ -146,13 +149,7 @@ const initByQuizId = async () => {
 
                 if (age === "") age = null;
                 gender = (
-                    (
-                        [
-                            ...document.querySelectorAll(
-                                ".gender-radios input",
-                            ),
-                        ] as HTMLInputElement[]
-                    ).filter((i) => i.checked)[0] ?? { value: null }
+                    document.querySelector("select.gender") as HTMLInputElement
                 ).value;
                 if (gender === "other")
                     gender = (
@@ -184,6 +181,8 @@ const initByQuizId = async () => {
                                 shakeTimeout = null;
                             }, 1000);
                         }
+
+                        submitting = false;
                         return;
                     }
 
@@ -206,7 +205,7 @@ const initByQuizId = async () => {
 };
 
 // (모의고사) 세션 id가 주어졌다면 바로 퀴즈를 시작한다.
-if (sessionId !== null) {
+if (sessionId !== null && QuizSession.hasSession(sessionId)) {
     const session = new QuizSession(sessionId);
     session.sessionInfo().then((info) => {
         if (info.isNerdTest) {

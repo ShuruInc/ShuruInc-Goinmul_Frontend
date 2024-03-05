@@ -1,0 +1,40 @@
+svg.combo {
+    text {
+        paint-order: stroke;
+        font-family: 'Thick Chalkboard';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 45px;
+        line-height: 47px;
+        letter-spacing: -0.025em;
+        transform: rotate(-15.5deg);
+        stroke: white;
+        stroke-width: 12px;
+        
+        // drop-shadow
+        filter: drop-shadow(0px 1px 3px #000000b3);
+        
+        &.green {
+            fill: #004125;
+            text-align: center;
+            text-anchor: middle;
+        }
+
+        &.count {
+            text-align: end;
+            text-anchor: end;
+            &.to19 {
+                fill: #FFB800;
+            }
+            &.to49 {
+                fill: #FF96CF;
+            }
+            &.to199 {
+                fill: #0094FF;
+            }
+            &.from200 {
+                fill: #B34CF3;
+            }
+        }
+    }
+}
