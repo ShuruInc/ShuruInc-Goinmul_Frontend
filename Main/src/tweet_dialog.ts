@@ -17,14 +17,20 @@ export default function tweetDialog(
         dialogWrapper.className = "tweet-dialog-wrapper";
         dialogWrapper.innerHTML = `
         <div class="tweet-dialog">
+            <div class="content">
                 <h1>트윗 작성하기</h1>
                 <textarea></textarea>
-            <div>
-                <button class="submit">트윗하기</button>
+                <img>
+           </div>
+            <div class="buttons">
                 <button class="cancel">닫기</button>
+                <button class="submit">게시하기</button>
             </div>
         </div>
         `;
+
+        // 트윗에 포함될 이미지 표시
+        dialogWrapper.querySelector("img")!.src = URL.createObjectURL(file);
 
         // 반투명 검은 배경 클릭시 닫기
         dialogWrapper.addEventListener("click", (evt) => {

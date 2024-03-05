@@ -10,23 +10,25 @@ import {
     preparePlaceholderSection,
 } from "../post_board";
 import setHorizontalDragScrollOnDesktop from "../horizontal_drag_to_scroll_on_desktop";
-import { faFaceSadTear } from "@fortawesome/free-regular-svg-icons";
+import paperPlane from "../../assets/paperplane.svg";
 
 // 아이콘 렌더링
 library.add(faSearch);
 library.add(faChevronLeft);
-library.add(faFaceSadTear);
 dom.i2svg({ node: document.querySelector("#topFixedBar")! });
-dom.i2svg({ node: document.querySelector(".no-results")! });
+(document.querySelector(".no-results .icon") as HTMLImageElement).src =
+    paperPlane;
 document.body.style.setProperty(
     "--search-icon",
     `url("data:image/svg+xml;,${encodeURIComponent(
-        icon(faSearch, { styles: { opacity: "0.5" } }).html[0],
+        icon(faSearch, { styles: { opacity: "0.5", color: "white" } }).html[0],
     )}")`,
 );
 document.body.style.setProperty(
     "--search-icon-active",
-    `url("data:image/svg+xml;,${encodeURIComponent(icon(faSearch).html[0])}")`,
+    `url("data:image/svg+xml;,${encodeURIComponent(
+        icon(faSearch, { styles: { color: "white" } }).html[0],
+    )}")`,
 );
 
 // 뒤로 가기 버튼
@@ -49,8 +51,8 @@ const searchInput = document.querySelector("input.search") as HTMLInputElement;
 searchInput.value = query;
 
 /**
- * 인기 검색어를 렌더링하는 함수
- * @param queries 인기 검색어들
+ * 인기 출제 요청를 렌더링하는 함수
+ * @param queries 인기 출제 요청들
  */
 const renderPopularQueries = (queries: string[]) => {
     const columns = document.querySelector(
@@ -131,7 +133,7 @@ const render = async () => {
                 : i.classList.add("display-none"),
         );
         renderKeywords(await SearchApiClient.recommendKeyword(15));
-        renderPopularQueries(await SearchApiClient.hotQueries(10));
+        renderPopularQueries(await SearchApiClient.hotMakeTestRequests(10));
     } else {
         // 검색
         const result = await SearchApiClient.search(query);

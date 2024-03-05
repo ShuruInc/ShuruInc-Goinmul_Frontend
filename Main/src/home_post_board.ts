@@ -1,14 +1,14 @@
-import { encode } from "html-entities";
 import footer from "./footer";
-import { createPodium } from "./podium";
+import createPodium from "./podium";
 import {
     Post,
     fillPlaceholderSectionInto,
     preparePlaceholderSection,
 } from "./post_board";
-import setHorizontalDragScrollOnDesktop from "./horizontal_drag_to_scroll_on_desktop";
 import SmoothScrollbar from "smooth-scrollbar";
 import "./smooth-scrollbar-scroll-lock-plugin";
+import rankingSectionHeaderImg from "../assets/rankings-heading-bottom-line.svg";
+import rankingSectionStyles from "../styles/index_page/ranking-section.module.scss";
 
 /**
  * 랭킹 아이템
@@ -35,55 +35,21 @@ export type MainPostBoardData = {
  * @param data 랭킹
  */
 export function createRankingSection(title: string, data: RankingItem[]) {
-    const nicknameAndHashtag = (data: RankingItem) =>
-        `${data.nickname}#${data.hashtag}`;
     const section = document.createElement("section");
     console.log(data);
 
-    section.className = "ranking-section";
+    section.className = rankingSectionStyles.rankingSection;
     section.innerHTML = `<h2></h2>
-    <img class="podium">
-    <div class="more">
-    </div>
+    <img src="${rankingSectionHeaderImg}" class="${rankingSectionStyles.separator}">
+    <div class="podium"></div>
     `;
-
-    const podium = createPodium(
-        data.length < 1 ? "" : nicknameAndHashtag(data[0]),
-        data.length < 2 ? "" : nicknameAndHashtag(data[1]),
-        data.length < 3 ? "" : nicknameAndHashtag(data[2]),
+    section.replaceChild(
+        createPodium(data.slice(0, 3)),
+        section.querySelector(".podium")!,
     );
+
     data.splice(0, 3);
-    (section.querySelector("img.podium") as HTMLImageElement).src = podium;
     section.querySelector("h2")!.textContent = title;
-    const more = section.querySelector(".more") as HTMLElement;
-    setHorizontalDragScrollOnDesktop(more);
-
-    let start = 4;
-    while (data.length > 0) {
-        const three = data.splice(0, 3);
-        const column = document.createElement("div");
-        column.className = "more-column";
-
-        const ol = document.createElement("ol");
-        ol.start = start;
-        three
-            .map((i, idx) => {
-                const li = document.createElement("li");
-                li.innerHTML = `<div class="marker">${
-                    start + idx
-                }</div><div>${encode(
-                    i.nickname,
-                )}<span class="hashtag">#${encode(i.hashtag)}</span> (${
-                    i.score
-                }점)</div>`;
-                return li;
-            })
-            .forEach((i) => ol.appendChild(i));
-
-        column.appendChild(ol);
-        more.appendChild(column);
-        start += 3;
-    }
 
     return section;
 }
@@ -122,6 +88,7 @@ export function displayMainPostBoard(
         column.querySelector(".post-section")!,
         true,
     );
+
     for (const i in data.rankings) {
         const rankingSection = createRankingSection(i, data.rankings[i]);
         column.appendChild(rankingSection);

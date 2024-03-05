@@ -1,0 +1,30 @@
+@import "../includes/leeseoyun";
+@import "../colors";
+
+@mixin handdrawn-btn($type: "") {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    padding: 5px 10px;
+
+    border: 0px;
+
+    font-family: LeeSeoyun;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: white;
+
+    @if $type == "primary" {
+        background-image: url(../assets/primary-submit-btn-bg.svg);
+    } @else if $type == "white" {
+        background-image: url(../assets/white-submit-btn-bg.svg);
+    } @else if $type == "transparent" {
+        background-image: url(../assets/transparent-secondary-submit-btn-bg.svg);
+        color: $secondary-color-01;
+    } @else {
+        background-image: url(../assets/secondary-submit-btn-bg.svg);
+    }
+}

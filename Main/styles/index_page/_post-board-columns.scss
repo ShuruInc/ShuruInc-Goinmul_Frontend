@@ -14,6 +14,7 @@
 
     /* 스크롤바를 숨긴다 */
     @include hide-scrollbar;
+
     & > .column {
         position: absolute;
         left: 50%;
@@ -27,6 +28,10 @@
 
         @include hide-scrollbar;
 
+        &.main .scroll-content {
+            padding-top: 112px;
+        }
+
         .scroll-content {
             padding-top: 145px;   
         }
@@ -38,14 +43,14 @@
             color: #898B8A;
 
             border-top: 1px solid #DFDFDF;
-            background: #FAFAFA;
+            background: #00000027;
 
-            font-family: Pretendard;
+            font-family: LeeSeoyun;
             font-size: 14px;
             font-weight: 500;
             line-height: 17px;
             letter-spacing: -0.01em;
-            text-align: align;  
+            text-align: align;
             .icons {  
                 margin-top: 0.5em;
                 svg {

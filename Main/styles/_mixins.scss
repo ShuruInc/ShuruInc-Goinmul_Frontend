@@ -19,6 +19,15 @@
     }
 }
 
+@mixin touch {
+    @include tablet {
+        @content;
+    }
+    @include mobile {
+        @content;
+    }
+}
+
 @mixin hide-scrollbar {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */

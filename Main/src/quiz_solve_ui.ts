@@ -5,6 +5,10 @@ import {
     faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { isMobile } from "./is_mobile";
+import correctMark from "../assets/correct_or_wrong/correct.svg";
+import wrongMark from "../assets/correct_or_wrong/wrong.svg";
+import { SetCustomGoBackHandler } from "./top_logo_navbar";
+import comboStyles from "../styles/quiz/combo-svg.module.scss";
 
 // FontAwesome 렌더링
 library.add(faXmark);
@@ -69,7 +73,7 @@ const createAnswerElementForShare = (question: QuizProblem) => {
 };
 
 /**
- * "친구들야, 도와줘!"를 활성화하거나 비활성화합니다.
+ * "친구들아, 도와줘!"를 활성화하거나 비활성화합니다.
  * @param toggle 활성화 여부
  */
 const toggleHelpMe = (toggle: boolean) => {
@@ -80,10 +84,14 @@ const toggleHelpMe = (toggle: boolean) => {
         document.querySelector("article")!.classList.add("display-none");
         helpMe.classList.add("active");
         helpMeFriendEnabledHandler();
+        SetCustomGoBackHandler(() => {
+            toggleHelpMe(false);
+        });
     } else {
         document.querySelector("article")!.classList.remove("display-none");
         helpMe.classList.remove("active");
         helpMeFriendDisabledHandler();
+        SetCustomGoBackHandler(null);
     }
 };
 
@@ -117,6 +125,7 @@ const createAnswerElement = (question: QuizProblem) => {
         <div class="row warning">
         </div>
         <div class="row">
+            <button class="idk" type="button">도와줘!</button>
             <button class="submit" type="submit">제출</button>
         </div>`;
     const warningEl = answerEl.querySelector(".row.warning") as HTMLElement;
@@ -127,14 +136,22 @@ const createAnswerElement = (question: QuizProblem) => {
 
     const rowWithInput = answerEl.querySelector(".row.with-input")!;
     if (question.choices === null) {
-        rowWithInput.innerHTML = `<input autofocus class="with-animation" type="input" placeholder="답을 입력하세요">`;
+        rowWithInput.innerHTML = `
+        <div class="input-wrapper with-animation">
+            <input autofocus type="input" placeholder="답을 입력하세요">
+        </div>`;
+        const inputWrapper = rowWithInput.querySelector(".input-wrapper");
+        inputWrapper?.addEventListener("click", (evt) => {
+            evt.preventDefault();
+            rowWithInput.querySelector("input")?.focus();
+        });
         const input = rowWithInput.querySelector("input")!;
         input.addEventListener("input", (evt) => {
             validateAnswer((evt.target as HTMLInputElement).value);
-            input.classList.remove("animated");
-            input.classList.add("animated");
+            inputWrapper?.classList.remove("animated");
+            inputWrapper?.classList.add("animated");
             setTimeout(() => {
-                input.classList.remove("animated");
+                inputWrapper?.classList.remove("animated");
             }, 100);
         });
     } else {
@@ -148,6 +165,11 @@ const createAnswerElement = (question: QuizProblem) => {
             rowWithInput.appendChild(label);
         }
     }
+
+    answerEl.querySelector("button.idk")!.addEventListener("click", (evt) => {
+        evt.preventDefault();
+        toggleHelpMe(true);
+    });
 
     answerEl.addEventListener("submit", (evt) => {
         evt.preventDefault();
@@ -179,6 +201,14 @@ const createAnswerElement = (question: QuizProblem) => {
     return answerEl;
 };
 
+function getBBoxOf(svg: SVGSVGElement) {
+    document.body.appendChild(svg);
+    const reuslt = svg.getBBox();
+    document.body.removeChild(svg);
+
+    return reuslt;
+}
+
 /**
  * 문제를 나타내는 요소를 생성합니다.
  * @param question 퀴즈 문제 데이터
@@ -187,28 +217,68 @@ const createAnswerElement = (question: QuizProblem) => {
 const createQuestionElement = (
     question: QuizProblem,
     index: number,
-    forShare = false,
+    options: Partial<{ currentScore: number; combo: number }> = {},
 ) => {
+    const comboColorClass =
+        (options.combo ?? 0) < 20
+            ? comboStyles.to19
+            : (options.combo ?? 0) < 50
+            ? comboStyles.to49
+            : (options.combo ?? 0) < 200
+            ? comboStyles.to199
+            : comboStyles.from200;
+
     const questionEl = document.createElement("div");
     questionEl.className = "question";
     questionEl.innerHTML = `
-        <div class="idk-row">
-            <button class="idk">친구찬스!</button>
-        </div>
+        ${
+            typeof options.currentScore !== "undefined"
+                ? `<div class="current-score">
+                    ${options.currentScore}점
+        </div>`
+                : ""
+        }
+        <div class="problem-paper-box">
+        <div class="correctness-effect"><img></img></div>
         <div class="category"></div>
         <div class="text">
             <span class="id-number">${index}.</span>
-            <span class="problem-text"></span><br>
+            <span class="problem-text"></span>
+            <div class="points"></div><br>
             <span class="condition"></span>
         </div>
-        <div class="points"></div>
         <div class="figure">
+        </div>
+        <div class="combo">
+            <svg class="${
+                comboStyles.combo
+            }" version="1.1" xmlns="//www.w3.org/2000/svg" xmlns:xlink="//www.w3.org/1999/xlink" width="10" height="10">
+                <text class="${comboStyles.green}" x="100" y="100">COMBO</text>
+                <text class="${
+                    comboStyles.count
+                } ${comboColorClass}" x="200" y="140">x${
+                    options.combo ?? 0
+                }</text>
+            </svg>
+        </div>
         </div>`;
+
+    const comboSvg = questionEl.querySelector(".combo svg") as SVGSVGElement;
+    const svgBbox = getBBoxOf(comboSvg.cloneNode(true) as SVGSVGElement);
+    const padding = 5;
+    comboSvg.setAttribute("width", (svgBbox.width + padding * 2).toString());
+    comboSvg.setAttribute("height", (svgBbox.height + padding * 2).toString());
+    comboSvg.setAttribute(
+        "viewBox",
+        `${svgBbox.x - padding} ${svgBbox.y - padding} ${
+            svgBbox.width + padding * 2
+        } ${svgBbox.height + padding * 2}`,
+    );
 
     questionEl.querySelector(".category")!.textContent =
         question.secondCategoryName === ""
             ? ""
-            : question.secondCategoryName + " 모의고사";
+            : "<" + question.secondCategoryName + " 모의고사>";
     questionEl.querySelector(".condition")!.textContent =
         question.condition === null ? "" : `(${question.condition})`;
     questionEl.querySelector(".text .problem-text")!.textContent =
@@ -217,17 +287,10 @@ const createQuestionElement = (
         question.condition === null ? "" : `(${question.condition})`;
     questionEl.querySelector(".points")!.textContent = `[${question.points}점]`;
 
-    if (forShare) {
-        questionEl.removeChild(questionEl.querySelector(".idk-row")!);
-    } else
-        questionEl
-            .querySelector("button.idk")!
-            .addEventListener("click", (evt) => {
-                evt.preventDefault();
-                toggleHelpMe(true);
-            });
-
     switch (question.figureType) {
+        case "empty":
+            questionEl.querySelector(".figure")!.classList.add("empty");
+            break;
         case "image":
             const img = document.createElement("img");
             img.crossOrigin = "anonymous";
@@ -248,9 +311,7 @@ const createQuestionElement = (
 
             [
                 ...question.figure.split("").map((i) => {
-                    const initial = document.createElement("div");
-                    initial.textContent = i == "$" ? "　" : i;
-                    initial.className =
+                    const type =
                         i === "$" ||
                         "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ"
                             .split("")
@@ -259,9 +320,52 @@ const createQuestionElement = (
                             : i === " "
                             ? "whitespace"
                             : "normal";
-                    return initial;
+
+                    if (type === "initial") {
+                        const initial = document.createElement("div");
+                        initial.textContent = i == "$" ? "　" : i;
+                        initial.className =
+                            i === "$" ||
+                            "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ"
+                                .split("")
+                                .includes(i)
+                                ? "initial"
+                                : i === " "
+                                ? "whitespace"
+                                : "normal";
+                        return initial;
+                    } else {
+                        return i;
+                    }
                 }),
-            ].forEach((i) => initials.appendChild(i));
+            ]
+                .reduce((pv, cv) => {
+                    if (typeof cv === "string") {
+                        if (
+                            pv.length === 0 ||
+                            !pv[pv.length - 1].classList.contains("normal")
+                        ) {
+                            pv.push(document.createElement("div"));
+                            pv[pv.length - 1].className = "normal";
+                        }
+
+                        pv[pv.length - 1].textContent += cv;
+                    } else {
+                        if (
+                            pv.length === 0 ||
+                            !pv[pv.length - 1].classList.contains(
+                                "initial-group",
+                            )
+                        ) {
+                            pv.push(document.createElement("div"));
+                            pv[pv.length - 1].className = "initial-group";
+                        }
+                        pv[pv.length - 1].appendChild(cv);
+                    }
+
+                    return pv;
+                }, [] as HTMLElement[])
+                .forEach((i) => initials.appendChild(i));
 
             questionEl.querySelector(".figure")!.appendChild(initials);
     }
@@ -278,13 +382,19 @@ export function displayProblem(
     root: HTMLElement,
     question: QuizProblem,
     index: number,
+    options: Partial<{ currentScore: number; combo: number }> = {},
 ) {
     root.innerHTML = ``;
 
-    root.appendChild(createQuestionElement(question, index));
+    root.appendChild(createQuestionElement(question, index, options));
     root.appendChild(createAnswerElement(question));
     if (!isMobile)
         (root.querySelector(".answer input") as HTMLInputElement).focus();
+
+    window.scrollTo({
+        top: 0,
+        behavior: "instant",
+    });
 }
 
 /**
@@ -299,8 +409,11 @@ export function updateShareProblem(
     index: number,
 ) {
     root.innerHTML = "";
-    root.appendChild(createQuestionElement(question, index, true));
-    root.appendChild(createAnswerElementForShare(question));
+    const questionEl = createQuestionElement(question, index);
+    questionEl
+        ?.querySelector(".problem-paper-box")
+        ?.appendChild(createAnswerElementForShare(question));
+    root.appendChild(questionEl);
 }
 
 /**
@@ -339,14 +452,9 @@ export function updateProgress(
     if (textElement && text) textElement.textContent = text;
 }
 
-let helpMeFriendEnabledHandler: () => void = () => {
-        return;
-    },
+let helpMeFriendEnabledHandler: () => void = () => {},
     helpMeFriendDisabledHandler: () => void = () => {
         return;
-    },
-    helpMeFriendBeforeDisableHandler: () => boolean = () => {
-        return true;
     };
 export function initQuizSolveUI() {
     // 이어서 풀기 버튼 이벤트 핸들러 추가
@@ -354,8 +462,7 @@ export function initQuizSolveUI() {
         .querySelector("button.continue")!
         .addEventListener("click", (evt) => {
             evt.preventDefault();
-            if (helpMeFriendBeforeDisableHandler()) toggleHelpMe(false);
-            else alert("공유를 하셔야 이어서 푸실 수 있습니다!");
+            toggleHelpMe(false);
         });
 }
 
@@ -368,29 +475,29 @@ export function setHelpMeFriendsEventHandler(
 ) {
     if (options.onDisabled) helpMeFriendDisabledHandler = options.onDisabled;
     if (options.onEnabled) helpMeFriendEnabledHandler = options.onEnabled;
-    if (options.beforeDisable)
-        helpMeFriendBeforeDisableHandler = options.beforeDisable;
 }
 
 /**
- * 틀림/맞음 애니메이션을 표시합니다.
+ * 틀림/맞음 애니메이션과 콤보를 표시합니다.
  * @param correct 정답 여부
  */
-export function displayCorrectnessAnimation(correct: boolean) {
+export function displayCorrectnessAndComboAnimation(
+    correct: boolean,
+    displayCombo?: boolean,
+) {
     return new Promise<void>((resolve, _reject) => {
-        const element = document.querySelector(".correctness-effect");
-        if (element === null) return;
+        const paperBox = document.querySelector(".problem-paper-box");
+        const effectImg = paperBox?.querySelector(
+            ".correctness-effect img",
+        ) as HTMLImageElement | null;
+        if (paperBox === null || effectImg === null) return;
 
-        if (correct) {
-            element.classList.remove("fail");
-            element.classList.add("ok");
-        } else {
-            element.classList.remove("ok");
-            element.classList.add("fail");
-        }
-        element.classList.remove("display-none");
+        effectImg.src = correct ? correctMark : wrongMark;
+        paperBox.classList.add("with-correctness-effect");
+        if (displayCombo ?? true) paperBox.classList.add("with-combo");
         setTimeout(() => {
-            element.classList.add("display-none");
+            paperBox.classList.remove("with-correctness-effect");
+            paperBox.classList.remove("with-combo");
             resolve();
         }, 600);
     });

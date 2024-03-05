@@ -15,8 +15,11 @@ import addPadding from "./canvas_padding";
 import resultPageHtml from "./result_page.html";
 import createResultElement from "./create_result_element";
 import PostBoardApiClient from "./api/posts";
-import { dom, library } from "@fortawesome/fontawesome-svg-core";
-import { faRankingStar } from "@fortawesome/free-solid-svg-icons";
+import pushpin from "../assets/pushpin.svg";
+import createFirstPlaceDialog from "./firstPlaceDialog";
+import getMedalData from "./get_medal_image";
+import displayLoadingSplash from "./loadingSplash";
+import { alwaysDisplayEmailInputModal } from "./env";
 
 /**
  * 결과 페이지를 렌더링한다.
@@ -25,9 +28,15 @@ export default function initializeResultPage() {
     if (!document.body.classList.contains("result-page-html-prepared")) {
         document.body.innerHTML = resultPageHtml;
     }
+    document.body.classList.add("result-body");
+    (document.body.querySelector(".pushpin img") as HTMLImageElement).src =
+        pushpin;
 
     const sessionId =
         new URLSearchParams(location.search.substring(1)).get("session") ?? "";
+    if (!QuizSession.hasSession(sessionId)) {
+        location.href = "/quiz/solve.html?id=" + encodeURIComponent(sessionId);
+    }
     const session = new QuizSession(sessionId);
     const loadTime = Date.now();
 
@@ -59,27 +68,16 @@ export default function initializeResultPage() {
         if (result === null)
             return alert("오류가 발생했습니다: 퀴즈가 아직 안 끝났습니다!");
 
-        if (result.nickname && result.hashtag) {
-            library.add(faRankingStar);
-            dom.i2svg({
-                node: document.querySelector(".rankings-ad")!,
-            });
-
-            document.querySelector(
-                ".rankings-ad .nickname",
-            )!.textContent = `${result.nickname}#${result.hashtag}`;
-        } else {
-            document
-                .querySelector(".rankings-ad")
-                ?.classList.add("display-none");
-        }
-
         const topCategory = await session.firstCategory();
         const nerdTest = await await PostBoardApiClient.getNerdTestOf(
             topCategory.id,
         );
 
         let isNerdTest = typeof result.ranking !== "undefined";
+        if (isNerdTest && result.ranking! <= 3) {
+            document.querySelector(".pushpin")?.classList.add("hidden");
+        }
+
         createResultElement(
             document.querySelector(".result")!,
             isNerdTest
@@ -99,12 +97,20 @@ export default function initializeResultPage() {
                       points: result.points!,
                       lowCategory: (await session.sessionInfo()).title,
                       middleCategory: (await session.sessionInfo()).category,
-                      link: {
+                      nerdTestLink: {
                           href: nerdTest.href,
                           text: nerdTest.title,
                       },
                   },
         );
+
+        const medalImage = getMedalData(isNerdTest ? result.ranking! : 0);
+        if (medalImage !== null) {
+            (document.querySelector(".medal img") as HTMLImageElement).src =
+                medalImage;
+        } else {
+            document.querySelector(".medal")?.remove();
+        }
 
         document.querySelector(".retry")?.addEventListener("click", (evt) => {
             evt.preventDefault();
@@ -113,12 +119,44 @@ export default function initializeResultPage() {
                 encodeURIComponent(result.quizId);
         });
 
-        const changeShareData = initShareButton();
+        let removeLoadingSplash: (() => void) | null = null;
+        const changeShareData = initShareButton({
+            beforeShare: async () => {
+                removeLoadingSplash = displayLoadingSplash();
+            },
+            onComplete: () => {
+                if (removeLoadingSplash) removeLoadingSplash();
+            },
+        });
 
-        const url = "https://example.com";
+        const url =
+            "https://goinmultest.pro/quiz/solve.html?id=" +
+            encodeURIComponent((await session.sessionInfo()).quizId);
+
+        document
+            .querySelector(".copy-link")
+            ?.addEventListener("click", (evt) => {
+                evt.preventDefault();
+                (async () => {
+                    if ("clipboard" in navigator)
+                        return navigator.clipboard.writeText(url);
+                    else throw new Error();
+                })().catch((_) => {
+                    prompt("다음 주소를 복사해주세요!", url);
+                });
+            });
         await removeLoadingAfter(Math.max(1, 1000 - (Date.now() - loadTime)));
         const blob = await addPadding(
-            await html2canvas(document.querySelector(".result")!),
+            await html2canvas(document.querySelector(".result-container")!, {
+                backgroundColor: "transparent",
+                onclone(document) {
+                    (
+                        document.querySelector(
+                            ".result-container",
+                        ) as HTMLElement
+                    ).classList.add("html2canvas");
+                },
+            }),
         );
         const imageFile = new File([blob], "result.png", { type: "image/png" });
 
@@ -158,5 +196,10 @@ export default function initializeResultPage() {
             },
             image: imageFile,
         });
+
+        if (result.ranking === 1 || alwaysDisplayEmailInputModal)
+            createFirstPlaceDialog(new Date(), (email) => {
+                session.submitEmail(email);
+            });
     })();
 }

@@ -35,8 +35,8 @@ export default class SearchApiClient {
         return randomPick(articles, count);
     }
 
-    static async hotQueries(count: number): Promise<string[]> {
-        return (await apiClient.getPopularSearchList()).data.result!.slice(
+    static async hotMakeTestRequests(count: number): Promise<string[]> {
+        return (await apiClient.getPopularRequestsList()).data.result!.slice(
             0,
             count,
         );
@@ -55,8 +55,6 @@ export default class SearchApiClient {
     }
 
     static async search(query: string): Promise<SearchResult> {
-        apiClient.addKeyword({ keyword: query });
-
         if (query.length > 30) query = query.substring(0, 30);
         return {
             result: (

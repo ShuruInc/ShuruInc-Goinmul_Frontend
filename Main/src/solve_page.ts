@@ -3,7 +3,7 @@ import { QuizSession } from "./api/quiz_session";
 import initShareButton, { ShareDatas } from "./init_share";
 import {
     addAnswerSubmitListener,
-    displayCorrectnessAnimation,
+    displayCorrectnessAndComboAnimation,
     displayProblem,
     initQuizSolveUI,
     setHelpMeFriendsEventHandler,
@@ -17,7 +17,9 @@ import html2canvas from "html2canvas";
 import addPadding from "./canvas_padding";
 import ImageCache from "./image_cache";
 import initializeResultPage from "./result_page";
-import { nerdTestExitFeatureEnabled } from "./env";
+import { alwaysDisplaycombo, nerdTestExitFeatureEnabled } from "./env";
+import whitePaper from "../assets/paper.png";
+import displayLoadingSplash from "./loadingSplash";
 
 function confirmUnload(evt: Event) {
     evt.preventDefault();
@@ -50,9 +52,15 @@ export default function initSolvePage(session: QuizSession) {
     let shared = false;
     const sessionId = session.getSessionId();
     let shareData: Omit<ShareDatas, "image"> | null = null;
+    let removeLoadingSplash: (() => void) | null = null;
     const setShareData = initShareButton({
-        onComplete: () => (shared = true),
+        onComplete: () => {
+            shared = true;
+            if (removeLoadingSplash) removeLoadingSplash();
+        },
         beforeShare: () => {
+            removeLoadingSplash = displayLoadingSplash();
+
             // 공유 버튼을 눌렀을 때 공유 직전에 이미지를 설정한다.
 
             /**
@@ -62,14 +70,22 @@ export default function initSolvePage(session: QuizSession) {
             return html2canvas(
                 document.querySelector(".help-me .problem-box")!,
                 {
+                    backgroundColor: "transparent",
                     // 이미지가 안 보이는 버그 수정
                     useCORS: true,
+                    onclone(document) {
+                        (
+                            document.querySelector(
+                                ".help-me .problem-paper-box",
+                            ) as HTMLElement
+                        ).classList.add("html2canvas");
+                    },
                 },
             ).then(
                 (canvas) =>
                     // 이미지를 렌더링 한다.
                     new Promise<void>((resolve, reject) => {
-                        addPadding(canvas).then((blob) => {
+                        addPadding(canvas, whitePaper).then((blob) => {
                             // 이미지에 여백을 추가한다.
                             if (shareData && blob) {
                                 const file = new File([blob], "problem.png", {
@@ -99,6 +115,8 @@ export default function initSolvePage(session: QuizSession) {
             await session.sessionInfo()
         ).title;
 
+        const sessionInfo = await session.sessionInfo();
+
         updateProgress(0);
         const goResult = () => {
             // 타이머 표시를 중단한다.
@@ -109,12 +127,12 @@ export default function initSolvePage(session: QuizSession) {
             history.replaceState(
                 null,
                 "",
-                "/quiz/result.html?session=" + encodeURIComponent(sessionId),
+                `/quiz/result.html` +
+                    `?quizId=${encodeURIComponent(sessionInfo.quizId)}` +
+                    `&session=${encodeURIComponent(sessionId)}`,
             );
             initializeResultPage();
         };
-
-        const sessionInfo = await session.sessionInfo();
 
         // 디버깅용 기능
         // 개발자 도구 콘솔에서 exitNerdTest();를 치면 고인물 테스트가 남은 시간이나 남은 문제 갯수에 상관없이 강제 종료된다.
@@ -131,6 +149,10 @@ export default function initSolvePage(session: QuizSession) {
             // 참고: 나오는 순서대로 넣어야 한다. (순서 뒤섞이면 안 된다.)
             imageCache.pushUrl(i);
         }
+
+        // 현재 점수와 콤보를 저장한다.
+        let currentScore = 0;
+        let combo = 0;
 
         const renewProblem = async () => {
             const problem = await session.currentProblem();
@@ -151,9 +173,15 @@ export default function initSolvePage(session: QuizSession) {
                             : problem.figure,
                 },
                 problem.index,
+                sessionInfo.isNerdTest
+                    ? {
+                          currentScore,
+                          combo: combo + 1,
+                      }
+                    : {},
             );
 
-            // "친구들야, 도와줘!" 화면에 새로운 문제를 표시한다.
+            // "친구들아, 도와줘!" 화면에 새로운 문제를 표시한다.
             updateShareProblem(
                 document.querySelector(".help-me .problem-box")!,
                 {
@@ -194,14 +222,13 @@ export default function initSolvePage(session: QuizSession) {
                     ?.classList.remove("display-none");
             }
 
-            const quizUrl = `https://example.com/quiz/solve.html?id=${sessionInfo.quizId}`;
+            const quizUrl = `https://goinmultest.pro/quiz/solve.html?id=${sessionInfo.quizId}`;
             shareData = {
                 twitter: {
                     text: `[${sessionInfo.category}] ${
                         sessionInfo.isNerdTest ? "고인물 테스트" : "모의고사"
                     }
 
-모르겠어요... 도와주세요 🚨
 모르겠어요... 도와주세요 🚨
 모르겠어요... 도와주세요 🚨
 모르겠어요... 도와주세요 🚨
@@ -244,8 +271,13 @@ export default function initSolvePage(session: QuizSession) {
             [
                 ...document.querySelectorAll(".answer input, .answer button"),
             ].forEach((i) => ((i as HTMLInputElement).disabled = true));
+            currentScore = correct.score ?? currentScore;
+            combo = correct.combo ?? combo;
 
-            await displayCorrectnessAnimation(correct.correct!);
+            await displayCorrectnessAndComboAnimation(
+                correct.correct!,
+                combo !== 0 || alwaysDisplaycombo,
+            );
 
             renewProblem();
         });
@@ -253,7 +285,7 @@ export default function initSolvePage(session: QuizSession) {
         if (sessionInfo.isNerdTest) {
             timerInterval = setInterval(() => {
                 const elapsed = session.getStopWatch().elapsed();
-                const totalTime = 1000 * 60 * 5;
+                const totalTime = 1000 * 60 * 1;
                 const percentage = (elapsed / totalTime) * 100;
                 if (percentage >= 100) return goResult();
 

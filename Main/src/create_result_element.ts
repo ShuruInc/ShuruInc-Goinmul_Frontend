@@ -1,50 +1,72 @@
-import { icon } from "@fortawesome/fontawesome-svg-core";
-import { faRankingStar } from "@fortawesome/free-solid-svg-icons";
 import { encode } from "html-entities";
-import goldMedal from "../assets/medal/gold.png";
-import silverMedal from "../assets/medal/silver.png";
-import cooperMedal from "../assets/medal/cooper.png";
-import { randomMedalEnabled } from "./env";
+import paperCorner from "../assets/paper-corner.svg";
+import rankingIcon from "../assets/ranking-icon.svg";
 
+/**
+ * 고인물테스트 성적결과표 데이터
+ */
 type NerdTestResultElementContent = {
     nerd: true;
+    /** 해시태그 */
     hashtag: string;
+    /** 닉네임 */
     nickname: string;
+    /** 점수 */
     points: number;
+    /** 순위 */
     ranking: number;
+    /** 대분류 이름 */
     topCategory: string;
 };
 
+/**
+ * 모의고사 성적결과표 데이터
+ */
 type NonNerdTestResultElementContent = {
     nerd: false;
+    /** 점수 */
     points: number;
+    /** 상위 퍼센테이지 */
     percentage: number;
+    /** 중분류 이름 */
     middleCategory: string;
+    /** 모의고사 이름 */
     lowCategory: string;
-    link: {
+    /** 모의고사가 포함되는 고인물 테스트의 링크 */
+    nerdTestLink: {
         text: string;
         href: string;
     };
 };
 
-type ResultElementContent = {
+/**
+ * 성적결과표 데이터
+ */
+export type ResultElementContent = {
+    /** 고인물테스트 여부 */
     nerd: boolean;
+    /** 시험 응시날짜 */
     date: Date;
 } & (NerdTestResultElementContent | NonNerdTestResultElementContent);
 
+/**
+ * 성적결과표를 주어진 element에 만듭니다.
+ * @param element 성적결과표가 만들어지는 요소
+ * @param data 성적데이터
+ */
 export default function createResultElement(
     element: HTMLElement,
     data: ResultElementContent,
 ) {
     element.innerHTML = `
             <h1 class="title">
-                <div class="subtitle">${encode(
-                    data.nerd
-                        ? data.topCategory + " 고인물 테스트"
-                        : data.middleCategory + " 모의고사",
-                )}</div>
                 성적통지표
             </h1>
+            <h2 class="subtitle">${encode(
+                data.nerd
+                    ? data.topCategory + " 고인물 테스트"
+                    : data.middleCategory + " 모의고사",
+            )}</h2>
             <div class="content">
                 <table>
                     <thead>
@@ -56,37 +78,19 @@ export default function createResultElement(
                         </tr>
                     </tbody>
                 </table>
+                <p class="comment"></p>
                 <time>${data.date.getFullYear()}. ${
                     data.date.getMonth() + 1
                 }. ${data.date.getDate()}.</time>
-                <p class="comment"></p>
-            </div>`;
+                <div class="logo">슈르네 고인물테스트 (인)<div class="stamp"></div></div>
+            </div>
+            <img class="paper-corner">
+            `;
 
-    let medal = null;
-    switch (
-        randomMedalEnabled
-            ? Math.floor(Math.random() * 3) + 1
-            : data.nerd
-            ? data.ranking
-            : 0
-    ) {
-        case 1:
-            medal = goldMedal;
-            break;
-        case 2:
-            medal = silverMedal;
-            break;
-        case 3:
-            medal = cooperMedal;
-            break;
-    }
-    if (medal !== null) {
-        element.querySelector(
-            ".title",
-        )!.innerHTML += `<div class="medal"><img src="${encode(medal)}"></div>`;
-    }
+    (element.querySelector("img.paper-corner") as HTMLImageElement).src =
+        paperCorner;
 
-    const table = element.querySelector("table")!;
+    // 표 데이터 ([1행 1열, 1행 2열, 1행 3,열 2행 1열, 2행 2열, 2행 3열])
     const tableData = data.nerd
         ? [
               "수험번호",
@@ -108,6 +112,8 @@ export default function createResultElement(
           ];
     const tableColumnCount = tableData.length / 2;
 
+    // 표 생성
+    const table = element.querySelector("table")!;
     for (let i = 0; i < tableColumnCount; i++) {
         table.querySelector("thead tr")!.innerHTML += `<td>${encode(
             tableData[i],
@@ -117,11 +123,11 @@ export default function createResultElement(
         )}</td>`;
     }
 
+    // 문구설정
     const comment = element.querySelector(".comment")!;
     if (data.nerd) {
-        const iconHtml = icon(faRankingStar, { styles: { width: "1em" } })
-            .html[0];
-        comment.innerHTML = `왼족 상단의 ${iconHtml} 버튼을 누르면 실시간 랭킹을 확인할 수 있습니다.`;
+        const iconHtml = `<img src="${rankingIcon}" class="ranking-icon"></img>`;
+        comment.innerHTML = `왼쪽 상단의 ${iconHtml} 버튼을 누르면 실시간 랭킹을 확인할 수 있습니다.`;
     } else if (data.points === 100) {
         comment.innerHTML = `완벽합니다! <a class="nerd-test-link"></a>에 도전해 보시겠어요?`;
     } else if (data.points >= 70) {
@@ -132,11 +138,13 @@ export default function createResultElement(
         comment.innerHTML = `아쉽습니다! 다시 도전해 보시겠어요?`;
     }
 
+    // 고인물 테스트 링크 설정
     const nerdTestLink = comment.querySelector(
         "a.nerd-test-link",
     ) as HTMLAnchorElement;
     if (nerdTestLink !== null) {
-        const { text, href } = (data as NonNerdTestResultElementContent).link;
+        const { text, href } = (data as NonNerdTestResultElementContent)
+            .nerdTestLink;
         nerdTestLink.textContent = text;
         nerdTestLink.href = href;
     }

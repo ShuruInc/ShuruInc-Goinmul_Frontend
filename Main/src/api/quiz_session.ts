@@ -67,6 +67,9 @@ export class QuizSession {
     getStopWatch() {
         return this.stopwatch;
     }
+    static hasSession(sessionId: string): boolean {
+        return localStorage.getItem(`session-${sessionId}`) !== null;
+    }
     private getLocalSession(): QuizInternalSessionData {
         return JSON.parse(
             localStorage.getItem(`session-${this.sessionId}`) ?? "{}",
@@ -88,7 +91,7 @@ export class QuizSession {
         return (
             this.getLocalSession().problemIndex >= this.problems().length ||
             (this.getLocalSession().nerdTest &&
-                this.stopwatch.elapsed() >= 1000 * 60 * 5) ||
+                this.stopwatch.elapsed() >= 1000 * 60 * 1) ||
             (nerdTestExitFeatureEnabled && this.getLocalSession().forcedEnded)
         );
     }
@@ -154,6 +157,9 @@ export class QuizSession {
         });
 
         return correct;
+    }
+    async submitEmail(email: string) {
+        await apiClient.saveTempEmail({ email });
     }
     async postRank(): Promise<void> {
         const localSession = this.getLocalSession();
