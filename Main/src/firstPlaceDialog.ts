@@ -20,7 +20,7 @@ export default function createFirstPlaceDialog(
     이벤트 선물로 드립니다!
     </p>
     <p class="${styles.gimmeEmail}">
-    이메일 주소를 기록해주세요.<br>
+    이메일 주소를 기록해주세요<br>
     </p>
     <form>
         <input type="email" placeholder="example@example.com"><br>
