@@ -64,7 +64,7 @@ const displayRanking = (query?: string, allowEmpty?: boolean) => {
         .map((i, idx) => {
             const row = document.createElement("tr");
             row.innerHTML =
-                `<td class="ranking">${idx + 1}</td>` +
+                `<td class="ranking">${(idx + 1) == 1||2||3?'':(idx + 1)}</td>` +
                 `<td class="nickname">${encode(i.nickname)}#${i.hashtag}</td>` +
                 `<td class="score">${i.score}</td>`;
             return row;

@@ -24,7 +24,7 @@
 
     .dialog {
         position: fixed;
-        padding: 35px;
+        padding: 15px 0px 40px 0px;
         box-sizing: border-box;
         border-radius: 4px;
         text-align: center;
@@ -35,11 +35,10 @@
             font-family: 'LeeSeoyun';
             font-style: normal;
             font-weight: 400;
-            font-size: 37px;
-            line-height: 24px;
+            font-size: 35px;
+            line-height: 15px;
             text-align: center;
             letter-spacing: -0.025em;
-
             color: $medal-gold;
             margin: 0px 0px 18px 0px;
         }
@@ -49,7 +48,7 @@
             font-weight: 400;
             letter-spacing: -0.025em; 
             &.congratulations {
-                font-size: 20px;
+                font-size: 17px;
                 line-height: 24px;      
                 color: white;
                 
@@ -58,7 +57,7 @@
                 }
             }
             &.gimmeEmail {
-                margin: 46px 0px 13px 0px;
+                margin: 26px 0px 13px 0px;
                 font-size: 14px;
                 line-height: 16px;
 
