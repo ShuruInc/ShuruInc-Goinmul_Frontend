@@ -149,12 +149,13 @@ body {
                     color: $black-color-02;
 
                     &:nth-child(1) {
-                        font-size: 16px;
+                        font-size: 14px;
                         font-weight: 600;
                         color: $black-color-01;
                         td.ranking {
-                            background-image: url(../assets/ranking-medal-icon/gold.svg);
-                            background-size: 46px 51.5px;
+                            background-image: url(../assets/ranking-medal-icon/gold.png);
+                            background-size: 46px 48px;
+                            background-position: left 50% top 0%;
                             height: 50px;
                         }
                     }
@@ -163,20 +164,21 @@ body {
                         font-weight: 600;
 
                         td.ranking {
-                            background-size: 41px 45.9px;
+                            background-size: 41px 36px;
+                            background-position: left 53% top 0%;
                         }
 
                         &:nth-child(3) {   
                             color: $black-color-01;
                             td.ranking {
-                                background-image: url(../assets/ranking-medal-icon/silver.svg);
+                                background-image: url(../assets/ranking-medal-icon/silver.png);
                             }
                         }
 
                         &:nth-child(5) {
                             color: $black-color-02;
                             td.ranking {
-                                background-image: url(../assets/ranking-medal-icon/cooper.svg);
+                                background-image: url(../assets/ranking-medal-icon/cooper.png);
                             }
                         }
                     }
@@ -221,6 +223,8 @@ body {
 
         .pushpin {
             position: absolute;
+            width: 50px;
+            height: 50px;
             top: 0px;
             left: 50%;
             transform: translate(-50%);

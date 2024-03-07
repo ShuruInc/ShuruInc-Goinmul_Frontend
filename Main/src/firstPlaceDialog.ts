@@ -21,7 +21,6 @@ export default function createFirstPlaceDialog(
     </p>
     <p class="${styles.gimmeEmail}">
     이메일 주소를 기록해주세요.<br>
-    당신이 그 주인공이 된다면, 저희가 이메일로 찾아갑니다.
     </p>
     <form>
         <input type="email" placeholder="example@example.com"><br>

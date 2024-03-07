@@ -175,8 +175,8 @@ export default function initSolvePage(session: QuizSession) {
                 problem.index,
                 sessionInfo.isNerdTest
                     ? {
-                          currentScore,
-                          combo: combo + 1,
+                        currentScore,
+                        combo: combo + 1,
                       }
                     : {},
             );
@@ -273,6 +273,8 @@ export default function initSolvePage(session: QuizSession) {
             ].forEach((i) => ((i as HTMLInputElement).disabled = true));
             currentScore = correct.score ?? currentScore;
             combo = correct.combo ?? combo;
+
+            window.scrollTo(0, 0);
 
             await displayCorrectnessAndComboAnimation(
                 correct.correct!,

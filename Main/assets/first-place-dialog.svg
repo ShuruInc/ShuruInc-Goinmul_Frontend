@@ -226,7 +226,6 @@
 				</linearGradient>
 				<polygon style="fill:url(#SVGID_00000140734571103294355680000004565428500121439875_);" points="277,648.7 417.8,6.9 589.3,69 
 									"/>
-				
 					<linearGradient id="SVGID_00000092422230109740642700000012714347841614013884_" gradientUnits="userSpaceOnUse" x1="347.435" y1="772.65" x2="347.435" y2="121.33" gradientTransform="matrix(1 0 0 -1 0 770)">
 					<stop  offset="0" style="stop-color:#FFF1D1;stop-opacity:0"/>
 					<stop  offset="9.000000e-02" style="stop-color:#FEEECC;stop-opacity:5.000000e-02"/>
