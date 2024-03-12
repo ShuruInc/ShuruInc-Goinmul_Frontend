@@ -13,7 +13,6 @@
 /*스마트폰*/
 @include mobile {
     nav.top-category-buttons {
-        top: 60px !important;
         --button-width: 30vw !important;
         --button-gap: 5px !important;
         & > button {
