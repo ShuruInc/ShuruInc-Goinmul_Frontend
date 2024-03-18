@@ -4,6 +4,8 @@
 
 body.result-body {
     @include cork-board-background;
+    background-repeat: repeat;
+    background-size: 1200px;
 }
 
 .main-container {

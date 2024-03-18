@@ -2,24 +2,25 @@
 
 .top-fixed-bar nav {
     @include desktop {
-        margin: 35px 0px 6px !important;
+        
+        padding: 16px 16px 16px !important;
     }
     @include tablet {
-        margin: 38px 0px 8px !important;
+        padding: 16px 16px 16px !important;
     }
     @include mobile {
-        margin: 35px 0px 6px !important;
+        padding: 16px 16px 16px !important;
     }
 }
 
 #topFixedBar, html {
     @include desktop {
         --top-fixed-bar-height: 200px;
-        --top-fixed-bar-width: 700px;
+        --top-fixed-bar-width: 648px;
     }
     @include tablet {
         --top-fixed-bar-height: 200px;
-        --top-fixed-bar-width: 550px;
+        --top-fixed-bar-width: 500px;
     }
     @include mobile {
         --top-fixed-bar-height: 160px;

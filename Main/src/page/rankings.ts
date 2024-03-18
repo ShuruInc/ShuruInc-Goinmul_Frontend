@@ -28,31 +28,37 @@ dom.i2svg({ node: document.querySelector(".paper .search-icon")! });
 
 let buttonLabels: string[] = [];
 let rankingData: RankingItem[] = [];
+let isTextExsits = false;
+
 const activateRankingButton = (selectedLabel: string) => {
     const activeLabelIndex = buttonLabels.indexOf(selectedLabel);
-    (activeLabelIndex === 0
+    (
+        activeLabelIndex === 0
         ? [activeLabelIndex, activeLabelIndex + 1, activeLabelIndex + 2]
         : activeLabelIndex === buttonLabels.length - 1
         ? [activeLabelIndex - 2, activeLabelIndex - 1, activeLabelIndex]
         : [activeLabelIndex - 1, activeLabelIndex, activeLabelIndex + 1]
     )
-        .map((i) => {
-            const active = i === activeLabelIndex;
-            while (i < 0) {
-                i += buttonLabels.length;
-            }
-            i %= buttonLabels.length;
-            return { label: buttonLabels[i], active };
-        })
-        .forEach((data, idx) => {
-            const button = document.querySelector(
-                `nav.categories button:nth-child(${idx + 1})`,
-            ) as HTMLButtonElement;
-            button.textContent = data.label;
-            button.dataset.label = data.label;
-            if (data.active) button?.classList.add("active");
-            else button?.classList.remove("active");
-        });
+    .map((i) => {
+        const active = i === activeLabelIndex;
+        while (i < 0) {
+            i += buttonLabels.length;
+        }
+        i %= buttonLabels.length;
+        return { 
+            label: buttonLabels[i], active 
+        };
+    })
+    .forEach((data, idx) => {
+        const button = document.querySelector(
+            `nav.categories button:nth-child(${idx + 1})`,
+        ) as HTMLButtonElement;
+        button.textContent = data.label;
+        button.dataset.label = data.label;
+
+        if (data.active) button?.classList.add("active");
+        else button?.classList.remove("active");
+    });
 };
 
 const displayRanking = (query?: string, allowEmpty?: boolean) => {
@@ -88,7 +94,7 @@ const displayRanking = (query?: string, allowEmpty?: boolean) => {
 PostBoardApiClient.getRankings().then((rankings) => {
     buttonLabels = Object.keys(rankings);
     [...document.querySelectorAll("nav.categories")].forEach((i) => {
-        i.addEventListener("click", (evt) => {
+        i.addEventListener("mousedown", (evt) => {
             const label = (evt.target as HTMLButtonElement).dataset.label!;
             activateRankingButton(label);
             rankingData = rankings[label];
@@ -103,4 +109,44 @@ PostBoardApiClient.getRankings().then((rankings) => {
     activateRankingButton(buttonLabels[0]);
     rankingData = rankings[buttonLabels[0]];
     displayRanking(undefined, true);
+});
+
+
+// 랭킹 검색창에 텍스트가 있는지 체크하고 기억
+document.querySelector("input")?.addEventListener('input', (event) => {
+    const text = document.querySelector("input")?.value;
+
+    if(text == null) return;
+    if (text.length > 0) {
+        isTextExsits  = true;
+    } else {
+        isTextExsits  = false;
+    }
+    
+});
+
+// 랭킹 검색창에 텍스트가 비어있으면 메달 컬럼 표시, 텍스트가 없으면 메달 컬럼 비표시
+setInterval(() => {
+    if (isTextExsits) {
+        document.querySelectorAll('.ranking').forEach(item => {
+            (item as HTMLElement).style.display = 'none';
+            
+        });
+    } else {
+        document.querySelectorAll('.ranking').forEach(item => {
+            (item as HTMLElement).style.display = '';
+        });
+    }
+}, 1); 
+
+// 랭킹 검색창이 포커스될 때 최초 한 번 텍스트를 비우기
+document.querySelector("input")?.addEventListener('focus', (event) => {
+    const input = document.querySelector("input");
+    if(input == null) 
+        return;
+    else
+    {
+        input.value = "";
+        isTextExsits = false;
+    }
 });
