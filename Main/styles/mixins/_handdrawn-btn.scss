@@ -15,15 +15,18 @@
     line-height: 16px;
     letter-spacing: 0em;
     text-align: center;
-    color: white;
+    
+    color: #fff;
 
     @if $type == "primary" {
         background-image: url(../assets/primary-submit-btn-bg.svg);
+        color: #0A4129;
+        font-size: 20px;
     } @else if $type == "white" {
         background-image: url(../assets/white-submit-btn-bg.svg);
     } @else if $type == "transparent" {
         background-image: url(../assets/transparent-secondary-submit-btn-bg.svg);
-        color: $secondary-color-01;
+        color: #0A4129;
     } @else {
         background-image: url(../assets/secondary-submit-btn-bg.svg);
     }

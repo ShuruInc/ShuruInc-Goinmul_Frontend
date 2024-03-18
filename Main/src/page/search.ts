@@ -157,6 +157,14 @@ const render = async () => {
                 },
                 resultSection,
             );
+            let h2 = resultSection.querySelector('h2');
+            if(h2!=null) {
+                h2.style.color = "white";
+                h2.style.fontSize = "18px";
+                h2.style.margin = "16px 0px";
+                h2.style.padding = "0px";
+                h2.style.fontFamily = "LeeSeoyun";
+            } 
             resultSection.classList.remove("display-none");
         } else {
             // 요청 버튼 활성화
@@ -166,6 +174,8 @@ const render = async () => {
             requestBtn.classList.remove("requested");
             requestBtn.disabled = false;
             requestBtn.textContent = "출제 요청하기";
+            requestBtn.style.cursor = "pointer";
+            requestBtn.style.zIndex = "999";
             document
                 .querySelector(".no-results")
                 ?.classList.remove("display-none");
@@ -189,6 +199,12 @@ const render = async () => {
                 },
                 similarSection,
             );
+            let h2 = similarSection.querySelector('h2');
+            if(h2!=null) {
+                h2.style.color = "white";
+                h2.style.margin = "16px 0px";
+                h2.style.padding = "0px";
+            } 
             similarSection.classList.remove("display-none");
         }
 
@@ -210,6 +226,12 @@ const render = async () => {
             },
             recommendSection,
         );
+        let h2 = recommendSection.querySelector('h2');
+            if(h2!=null) {
+                h2.style.color = "white";
+                h2.style.margin = "16px 0px";
+                h2.style.padding = "0px";
+            } 
         recommendSection.classList.remove("display-none");
     }
 };
@@ -250,7 +272,7 @@ requestBtn?.addEventListener("click", (evt) => {
     SearchApiClient.requestMakeTest(query).then(() => {
         requestBtn.disabled = true;
         requestBtn.classList.add("requested");
-        requestBtn.textContent = "요청되었습니다.";
+        requestBtn.textContent = "요청 완료";
     });
 });
 

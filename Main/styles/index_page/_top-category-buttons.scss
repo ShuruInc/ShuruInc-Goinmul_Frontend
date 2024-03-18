@@ -37,7 +37,7 @@ nav.top-category-buttons {
 
     /* 포지셔닝 */
     position: fixed;
-    top: 70px;
+    top: 72px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 99;
@@ -63,4 +63,8 @@ nav.top-category-buttons {
             color: $secondary-color-01;
         }
     }
+}
+
+.no-js {
+    visibility: hidden;
 }

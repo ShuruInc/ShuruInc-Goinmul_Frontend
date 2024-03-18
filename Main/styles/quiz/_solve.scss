@@ -255,8 +255,10 @@ article {
         button[type="submit"] {
             height: 50px;
             width: 130px;
-
+            
             @include handdrawn-btn("primary");
+            
+            color: #0A4129;
         }
 
         button.idk {

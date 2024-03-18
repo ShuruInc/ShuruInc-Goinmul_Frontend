@@ -223,4 +223,22 @@ export function InitTopBottomAnimation(topFixedBar: HTMLElement) {
     [...document.querySelectorAll(".column")].forEach(
         setupScrollEventHandlerForcolumn,
     );
+
+    
 }
+
+function showNav(){
+    document.querySelector('nav')?.classList.remove('no-js');
+}
+
+// 로딩이 완료되면 툴바를 보여라
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        showNav()
+    }, 500);
+});
+
+// 6초 뒤에는 반드시 보여라
+setTimeout(() => {
+    showNav();
+}, 6000);

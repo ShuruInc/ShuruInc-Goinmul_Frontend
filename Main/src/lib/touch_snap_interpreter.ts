@@ -156,8 +156,8 @@ export default class TouchVelocityCalculator {
         const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI) + 180;
         console.log(angle);
         return !(
-            (angle >= 240 && angle <= 300) ||
-            (angle >= 60 && angle <= 120)
+            (angle >= 225 && angle <= 315) ||
+            (angle >= 45 && angle <= 135)
         );
     }
 }

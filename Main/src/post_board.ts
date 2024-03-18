@@ -216,9 +216,15 @@ export function fillPlaceholderSectionInto(
         posts.title === null ||
         typeof posts.title === "undefined" ||
         posts.title.trim().length === 0
-    )
-        section.querySelector("h2")!.classList.add("display-none");
-    else section.querySelector("h2")!.textContent = posts.title;
+    ){
+        // 원래 Home을 제외한 탭에서는 제목란이 없었는데, 
+        // "도전! 고인물 테스트 문구"를 일괄적으로 추가함.
+        section.querySelector("h2")!.textContent = "도전! 고인물 테스트";
+        //따라서, -32px 마진을 줘야 최상단 콘텐츠의 시작선이 맞아짐.
+        section.querySelector("h2")!.style.marginTop = "-32px";
+    } else {
+        section.querySelector("h2")!.textContent = posts.title;
+    }
 
     // 가로형 이미지 설정
     if (hasLandscape) {

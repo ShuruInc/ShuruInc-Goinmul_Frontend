@@ -17,7 +17,7 @@ body {
 
 .top-fixed-bar .container {
     width: 100%;
-    padding: 5px 20px 5px 10px;
+    // padding: 5px 20px 5px 10px;
     box-sizing: border-box;
 
     nav {
@@ -76,7 +76,7 @@ body {
 
 article {
     width: 100%;
-    padding-top: 80px;
+    padding-top: 72px;
 
     * > h2 {
         font-family: LeeSeoyun;
@@ -204,12 +204,12 @@ article {
     .no-results {
         display: flex;
         flex-direction: column;
-        padding: 120px 0px;
-        gap: 30px;
+        padding: 70px 0px;
+        gap: 15px;
         align-items: center;
 
         .icon {
-            height: 72px;
+            height: 38px;
             width: auto;
             color: #B4B9B880;
         }
@@ -221,8 +221,9 @@ article {
             h2 {
                 margin: 0px;
                 padding: 0px;
-                color: #666867;
-                font-size: 16px;font-family: LeeSeoyun;
+                color: white;
+                font-size: 16px;
+                font-family: LeeSeoyun;
                 font-size: 24px;
                 font-weight: 400;
                 line-height: 24px;
@@ -244,12 +245,26 @@ article {
             }
         }
         .request {
-            @include handdrawn-btn("primary");
+            border-radius: 14px;
+            border: white solid 1px;
+            background-color: #0A4129;
+            font-family: Pretendard;
+            font-size: 16px;
+            color: white;
+            margin-top: 15px;
             height: 50px;
-            width: 120px;
+            width: 160px;
 
             &.requested {
-                @include handdrawn-btn();
+                border-radius: 14px;
+                border: none;
+                background-color: #A6A6A6;
+                font-family: Pretendard;
+                font-size: 16px;
+                color: white;
+                margin-top: 15px;
+                height: 50px;
+                width: 160px;
             }
         }
     }
