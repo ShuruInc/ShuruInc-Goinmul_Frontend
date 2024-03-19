@@ -22,7 +22,7 @@ export default function handleOutsideScroll(
             touches: [...evt.touches].map(centerTouch),
             targetTouches: [...evt.targetTouches].map(centerTouch),
         });
-        console.log(newTouchEvent);
+        // console.log(newTouchEvent);
 
         target.dispatchEvent(newTouchEvent);
     };

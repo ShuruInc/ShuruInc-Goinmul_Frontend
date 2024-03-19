@@ -81,7 +81,7 @@ export function preparePlaceholderSection(
     for (let rowInfo of rowInfos) {
         const postTable = document.createElement("div");
         postTable.className =
-            "post-table" + (rowInfo.landscape ? " landscape" : " portfrait");
+            "post-table" + (rowInfo.landscape ? " landscape" : " portrait");
         if (!rowInfo.landscape) {
             setHorizontalDragScrollOnDesktop(postTable);
         }
@@ -149,7 +149,8 @@ function getImageDataFromImageElement(url: string) {
             canvas.width = img.width;
             canvas.height = img.height;
             context.drawImage(img, 0, 0);
-            resolve(context.getImageData(0, 0, img.width, img.height));
+            try{resolve(context.getImageData(0, 0, img.width, img.height));}
+            catch(e){ console.log("from getImageData") }
         });
         img.src = url;
     });

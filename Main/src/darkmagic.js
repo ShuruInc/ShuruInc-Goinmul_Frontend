@@ -35,7 +35,8 @@ var loop = setInterval(() => {
 
     if(plaveQuizSection != null && companyQuizSection != null){
         const parent = companyQuizSection.parentNode;
-        parent.insertBefore(plaveQuizSection, companyQuizSection);
+        if(parent != null) parent.insertBefore(plaveQuizSection, companyQuizSection);
+
         insertFlag = false;
     }
 

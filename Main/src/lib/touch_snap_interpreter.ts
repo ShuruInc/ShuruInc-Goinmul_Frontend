@@ -19,7 +19,7 @@ function isIgnorable(elem: Element) {
             : elem.parentElement;
     while (now !== null) {
         if (
-            (now.classList.contains("portfrait") &&
+            (now.classList.contains("portrait") &&
                 now.classList.contains("post-table")) ||
             now.classList.contains("more")
         )
@@ -154,7 +154,6 @@ export default class TouchVelocityCalculator {
 
     private isAngleHorizontal(deltaX: number, deltaY: number) {
         const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI) + 180;
-        console.log(angle);
         return !(
             (angle >= 225 && angle <= 315) ||
             (angle >= 45 && angle <= 135)
