@@ -1,5 +1,5 @@
 import SmoothScrollbar from "smooth-scrollbar";
-// import TouchVelocityCalculator from "./touch_snap_interpreter";
+import TouchVelocityCalculator from "./touch_snap_interpreter";
 
 /**
  * HorizontalInfinityScroller 옵션
@@ -55,7 +55,7 @@ export class HorizontalInfinityScroller {
     _easingEndOffset = 0;
 
     // 가로 스크롤 해석용
-    // _horizontalScrollVelocityCalculator: TouchVelocityCalculator;
+    _horizontalScrollVelocityCalculator: TouchVelocityCalculator;
     _origianlOffsetBeforeDragging = 0; 
     _dragging = false;
     _easingByDragging = false;
@@ -78,21 +78,21 @@ export class HorizontalInfinityScroller {
             this.calculateOffsetDeltaToCenterOf.bind(this);
 
         // 모바일에서 터치 드래그로 좌우 스크롤할 수 있도록 관련 클래스 변수 초기화
-        // this._horizontalScrollVelocityCalculator = new TouchVelocityCalculator(
-        //     root,
-        // );
-        // this._horizontalScrollVelocityCalculator.addEventListner(
-        //     "dragstart",
-        //     this._onHorizontalTouchStart,
-        // );
-        // this._horizontalScrollVelocityCalculator.addEventListner(
-        //     "dragmove",
-        //     this._onHorizontalTouchMove,
-        // );
-        // this._horizontalScrollVelocityCalculator.addEventListner(
-        //     "dragend",
-        //     this._onHorizontalTouchEnd,
-        // );
+        this._horizontalScrollVelocityCalculator = new TouchVelocityCalculator(
+            root,
+        );
+        this._horizontalScrollVelocityCalculator.addEventListner(
+            "dragstart",
+            this._onHorizontalTouchStart,
+        );
+        this._horizontalScrollVelocityCalculator.addEventListner(
+            "dragmove",
+            this._onHorizontalTouchMove,
+        );
+        this._horizontalScrollVelocityCalculator.addEventListner(
+            "dragend",
+            this._onHorizontalTouchEnd,
+        );
 
         // 생성자의 매개변수로 받은 options 저장
         // 매개변수에서 지정되지 않은 경우 기본값을 저장한다.
