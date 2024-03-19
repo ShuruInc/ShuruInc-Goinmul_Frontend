@@ -1,5 +1,5 @@
 import SmoothScrollbar from "smooth-scrollbar";
-import TouchVelocityCalculator from "./touch_snap_interpreter";
+// import TouchVelocityCalculator from "./touch_snap_interpreter";
 
 /**
  * HorizontalInfinityScroller 옵션
@@ -55,21 +55,21 @@ export class HorizontalInfinityScroller {
     _easingEndOffset = 0;
 
     // 가로 스크롤 해석용
-    _horizontalScrollVelocityCalculator: TouchVelocityCalculator;
-    _origianlOffsetBeforeDragging = 0;
+    // _horizontalScrollVelocityCalculator: TouchVelocityCalculator;
+    _origianlOffsetBeforeDragging = 0; 
     _dragging = false;
     _easingByDragging = false;
 
-    constructor(
-        root: HTMLElement,
-        options: Partial<HorizontalInfinityScroller> = {},
-    ) {
+    constructor( 
+        root: HTMLElement, 
+        options: Partial<HorizontalInfinityScroller> = {}, 
+    ) { 
         // 함수 bind (setInterval이나 setTimeout으로 인한 버그 해결)
-        this.addScrollOffset = this.addScrollOffset.bind(this);
-        this._basisChild = this._basisChild.bind(this);
-        this._children = this._children.bind(this);
-        this._render = this._render.bind(this);
-        this._rootWidth = this._rootWidth.bind(this);
+        this.addScrollOffset = this.addScrollOffset.bind(this); 
+        this._basisChild = this._basisChild.bind(this);         
+        this._children = this._children.bind(this);             
+        this._render = this._render.bind(this);                 
+        this._rootWidth = this._rootWidth.bind(this);           
         this._doEasing = this._doEasing.bind(this);
         this._onHorizontalTouchEnd = this._onHorizontalTouchEnd.bind(this);
         this._onHorizontalTouchMove = this._onHorizontalTouchMove.bind(this);
@@ -78,21 +78,21 @@ export class HorizontalInfinityScroller {
             this.calculateOffsetDeltaToCenterOf.bind(this);
 
         // 모바일에서 터치 드래그로 좌우 스크롤할 수 있도록 관련 클래스 변수 초기화
-        this._horizontalScrollVelocityCalculator = new TouchVelocityCalculator(
-            root,
-        );
-        this._horizontalScrollVelocityCalculator.addEventListner(
-            "dragstart",
-            this._onHorizontalTouchStart,
-        );
-        this._horizontalScrollVelocityCalculator.addEventListner(
-            "dragmove",
-            this._onHorizontalTouchMove,
-        );
-        this._horizontalScrollVelocityCalculator.addEventListner(
-            "dragend",
-            this._onHorizontalTouchEnd,
-        );
+        // this._horizontalScrollVelocityCalculator = new TouchVelocityCalculator(
+        //     root,
+        // );
+        // this._horizontalScrollVelocityCalculator.addEventListner(
+        //     "dragstart",
+        //     this._onHorizontalTouchStart,
+        // );
+        // this._horizontalScrollVelocityCalculator.addEventListner(
+        //     "dragmove",
+        //     this._onHorizontalTouchMove,
+        // );
+        // this._horizontalScrollVelocityCalculator.addEventListner(
+        //     "dragend",
+        //     this._onHorizontalTouchEnd,
+        // );
 
         // 생성자의 매개변수로 받은 options 저장
         // 매개변수에서 지정되지 않은 경우 기본값을 저장한다.
@@ -178,11 +178,11 @@ export class HorizontalInfinityScroller {
             const targetChild = scrolledEnough
                 ? this.getCurrentlyMostVisibleChild()!
                 : this._children()[
-                      positiveModular(
-                          this._basisChildIdx - sign,
-                          this._children().length,
-                      )
-                  ];
+                    positiveModular(
+                        this._basisChildIdx - sign,
+                        this._children().length,
+                    )
+                ];
             this._easingByDragging = true;
             // 스크롤한다
             this.scrollIntoCenterView(targetChild, true, sign);

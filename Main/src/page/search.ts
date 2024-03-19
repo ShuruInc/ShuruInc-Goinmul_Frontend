@@ -255,11 +255,9 @@ const setQuery = (newQuery: string, setInputValue = false) => {
 searchInput.addEventListener("input", (evt) => {
     setQuery((evt.target as HTMLInputElement).value);
 });
-searchInput.addEventListener("click", (evt) => {
-    searchInput.value = "";
-});
 searchButton.addEventListener("click", () => {
     setQuery(searchInput.value);
+    searchInput.value = "";
 });
 
 

@@ -113,7 +113,7 @@ PostBoardApiClient.getRankings().then((rankings) => {
 
 
 // 랭킹 검색창에 텍스트가 있는지 체크하고 기억
-document.querySelector("input")?.addEventListener('input', (event) => {
+document.querySelector("input")?.addEventListener('input', () => {
     const text = document.querySelector("input")?.value;
 
     if(text == null) return;
@@ -140,7 +140,7 @@ setInterval(() => {
 }, 1); 
 
 // 랭킹 검색창이 포커스될 때 최초 한 번 텍스트를 비우기
-document.querySelector("input")?.addEventListener('focus', (event) => {
+document.querySelector("input")?.addEventListener('focus', () => {
     const input = document.querySelector("input");
     if(input == null) 
         return;
