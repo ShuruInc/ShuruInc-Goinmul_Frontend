@@ -111,8 +111,13 @@ const initByQuizId = async () => {
                 setWarningText("닉네임에 부적절한 단어가 있습니다: " + badWord);
             } else if (nickname.length > 0 && nickname.trim().length === 0) {
                 setWarningText("공백만으로 이루어진 닉네임은 불가능합니다.");
+<<<<<<< HEAD
             } else if (nickname.length > 0 && nickname.length < 2) {
                 setWarningText("닉네임은 최소 2자입니다.");
+=======
+            } else if (nickname.length > 0 && nickname.length < 3) {
+                setWarningText("닉네임은 최소 3자입니다.");
+>>>>>>> fde1c364f3acdaeaac74e60d7ca2e77a875ded8f
             } else if (nickname.length > 10) {
                 setWarningText("닉네임은 최대 10자입니다.");
             } else {

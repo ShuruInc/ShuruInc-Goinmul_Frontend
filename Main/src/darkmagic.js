@@ -19,6 +19,7 @@ var loop = setInterval(() => {
             if(changeOnepiceFlag && elem.textContent  == "원피스 모의고사"){
                 changeOnepiceFlag = false;
                 elem.textContent = "한국 애니메이션 맞히기 모의고사 "; 
+
             } else if(changeKorFlag && elem.textContent == "한국 애니메이션 맞히기 모의고사"){
                 changeKorFlag = false;
                 //맨 마지막 스페이스 문자로 중복변경 방지                                                                                                                                                                                                                                                                                                                                                   
@@ -47,8 +48,6 @@ var loop = setInterval(() => {
         clearInterval(loop);
     }
 }, 10);
-
-
 
 function replaceBackgroundImageIfTitleMatches(titleText, newBackgroundImageUrl) {
     // Find all elements with class "title"

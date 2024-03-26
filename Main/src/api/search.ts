@@ -35,6 +35,7 @@ export default class SearchApiClient {
         return randomPick(articles, count);
     }
 
+<<<<<<< HEAD
     static async recommend(title: string, size: number): Promise<Post[]> {    
         const response = await apiClient.getNextArticles({ title: title, size: size });
     
@@ -53,6 +54,8 @@ export default class SearchApiClient {
         return posts;
     }
 
+=======
+>>>>>>> fde1c364f3acdaeaac74e60d7ca2e77a875ded8f
     static async hotMakeTestRequests(count: number): Promise<string[]> {
         return (await apiClient.getPopularRequestsList()).data.result!.slice(
             0,

@@ -22,7 +22,11 @@ export default class PostBoardApiClient {
                 i.categoryNm!,
                 i.rankDtoList!.map((j) => ({
                     nickname: j.nickname!,
+<<<<<<< HEAD
                     hashtag: j.hashtag!,
+=======
+                    hashtag: "1234",
+>>>>>>> fde1c364f3acdaeaac74e60d7ca2e77a875ded8f
                     score: j.score!,
                 })),
             ]),
@@ -40,7 +44,18 @@ export default class PostBoardApiClient {
         );
 
         return {
+<<<<<<< HEAD
             popularTests: transformedArticles,
+=======
+            popularTests: await Promise.all(
+                [1, 2, 3, 4, 5, 6, 7, 8]
+                    .map(async (i) => apiClient.getArticle(i))
+                    .map(async (i) => (await i).data)
+                    .map(async (i) =>
+                        transformArticleDtoToPost((await i).result!),
+                    ),
+            ),
+>>>>>>> fde1c364f3acdaeaac74e60d7ca2e77a875ded8f
             rankings: await this.getRankings(),
         };
     }

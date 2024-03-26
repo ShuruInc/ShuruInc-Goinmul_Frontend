@@ -2,7 +2,11 @@ import styles from "../styles/first-place-dialog.module.scss";
 import effectImage from "../assets/confetti-explosion.png";
 
 export default function createFirstPlaceDialog(
+<<<<<<< HEAD
     //due: Date,
+=======
+    due: Date,
+>>>>>>> fde1c364f3acdaeaac74e60d7ca2e77a875ded8f
     onEmailInput: (email: string) => void,
 ) {
     const wrapper = document.createElement("div");
@@ -11,8 +15,19 @@ export default function createFirstPlaceDialog(
         styles.dialog
     }">
     <h1>1위 달성!</h1>
+<<<<<<< HEAD
     <p class="${styles.congratulations}" style="line-height: 19px;">
     5월 5일 23시 59분까지<br>1등을 유지하신 분께<br>\"당신의 최애 장르 공식<br>굿즈 10만 원 상당\"을<br> 이벤트 선물로 드립니다!
+=======
+    <p class="${styles.congratulations}">
+    <span class="${styles.due}">${
+        due.getMonth() + 1
+    }월 ${due.getDate()}일 ${due.getHours()}시 ${due.getMinutes()}분까지</span><br>
+    1등을 유지하시면<br>
+    당신의 최애 공식 굿즈 10만 원어치를<br>
+    이벤트 선물로 드립니다!
+    </p>
+>>>>>>> fde1c364f3acdaeaac74e60d7ca2e77a875ded8f
     <p class="${styles.gimmeEmail}">
     이메일 주소를 기록해주세요<br>
     </p>

@@ -8,8 +8,11 @@ export default function setHorizontalDragScrollOnDesktop(element: HTMLElement) {
         preventClick = false, // 의도치 않게 클릭이 되는 버그 방지용
         lastClientX: number | null = null;
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> fde1c364f3acdaeaac74e60d7ca2e77a875ded8f
     const getClientX = (evt: MouseEvent | TouchEvent) => {
         if ((evt as TouchEvent).touches) {
             return (evt as TouchEvent).touches[0].clientX;
@@ -44,6 +47,7 @@ export default function setHorizontalDragScrollOnDesktop(element: HTMLElement) {
         dragged = false;
     };
 
+<<<<<<< HEAD
     // 가로 스크롤 문제 해결
     // const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     // if (isSafari) {
@@ -61,6 +65,19 @@ export default function setHorizontalDragScrollOnDesktop(element: HTMLElement) {
     element.addEventListener('touchmove', onmove);
     element.addEventListener('touchcancel', onup);
     element.addEventListener('touchend', onup);
+=======
+    element.addEventListener('mousedown', ondown);
+    element.addEventListener('mouseup', onup);
+    element.addEventListener('mousemove', onmove);
+
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    if (isSafari) {
+        element.addEventListener('touchstart', ondown);
+        element.addEventListener('touchmove', onmove);
+        element.addEventListener('touchcancel', onup);
+        element.addEventListener('touchend', onup);
+    }
+>>>>>>> fde1c364f3acdaeaac74e60d7ca2e77a875ded8f
 
     element.addEventListener("click", (evt) => {
         if (preventClick) {
