@@ -12,9 +12,11 @@ body.result-body {
     .loading {
         display: none;
         height: calc(100vh - 150px);
-        width: 100%;
+        width: 80%;
         padding-top: 150px;
-        background: url("../assets/loading.gif");
+        max-width: 500px;
+        margin-top: 80px;
+        background: url("../assets/loading.png");
         background-position-x: 50%;
         background-size: contain;
         background-repeat: no-repeat;

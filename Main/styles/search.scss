@@ -26,6 +26,7 @@ body {
         font-size: 24px;
         @include styled-inputs;
         button.go-back {
+            overflow:hidden;
             display: flex;
             align-items: center;
             justify-content: center;

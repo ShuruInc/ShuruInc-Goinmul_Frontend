@@ -15,7 +15,7 @@ import createNoticeFloatingButton from "../notice_floating_button";
 InitTopNav(false);
 createFloatingButton();
 createNoticeFloatingButton(
-    "2024년 12월 31일 오후 11시 59분까지<br>'1등'을 유지하신 분께는 선물이 있어요!",
+    "5월 5일 23시 59분까지 1등을 유지하신 분께,  \"당신의 최애 장르 공식 굿즈 10만 원 상당\"을 이벤트 선물로 드립니다!",
 );
 addFloatingButonListener(() => (location.href = "/"));
 
@@ -69,8 +69,9 @@ const displayRanking = (query?: string, allowEmpty?: boolean) => {
     filtered
         .map((i, idx) => {
             const row = document.createElement("tr");
+            const k = idx+1;
             row.innerHTML =
-                `<td class="ranking">${(idx + 1) == 1||2||3?'':(idx + 1)}</td>` +
+                `<td class="ranking">${(k==1)||(k==2)||(k==3)?'':idx+1}</td>` +
                 `<td class="nickname">${encode(i.nickname)}#${i.hashtag}</td>` +
                 `<td class="score">${i.score}</td>`;
             return row;
@@ -142,6 +143,7 @@ setInterval(() => {
 // 랭킹 검색창이 포커스될 때 최초 한 번 텍스트를 비우기
 document.querySelector("input")?.addEventListener('focus', () => {
     const input = document.querySelector("input");
+    
     if(input == null) 
         return;
     else
@@ -150,3 +152,7 @@ document.querySelector("input")?.addEventListener('focus', () => {
         isTextExsits = false;
     }
 });
+
+document.querySelector("input")?.addEventListener('blur', () => {
+    location.href = location.href;
+})

@@ -27,12 +27,30 @@ const randomPick = <T>(arr: T[], count: number): T[] => {
 const apiClient = new Api({ baseUrl: backendUrl });
 
 export default class SearchApiClient {
-    static async recommend(count: number): Promise<Post[]> {
+    static async randomRecommend(count: number): Promise<Post[]> {
         const articles = (await apiClient.getArticles()).data
             .result!.filter((i) => i.articleType !== "NERD")
             .map(transformArticleDtoToPost);
 
         return randomPick(articles, count);
+    }
+
+    static async recommend(title: string, size: number): Promise<Post[]> {    
+        const response = await apiClient.getNextArticles({ title: title, size: size });
+    
+        const posts = response.data.result!
+            .filter((i) => i.articleType !== "NERD")
+            .map(transformArticleDtoToPost);
+
+        if(posts == null){ 
+            // 인접 아티클을 조회하지 못했으면 랜덤으로 반환
+            const articles = (await apiClient.getArticles()).data
+            .result!.filter((i) => i.articleType !== "NERD")
+            .map(transformArticleDtoToPost);
+            return randomPick(articles, size);
+        }
+
+        return posts;
     }
 
     static async hotMakeTestRequests(count: number): Promise<string[]> {

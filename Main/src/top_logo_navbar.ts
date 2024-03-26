@@ -71,8 +71,8 @@ export function InitTopNav(animated = false) {
     topFixedBar.querySelector(".go-back")?.addEventListener("click", (evt) => {
         evt.preventDefault();
         if (customGoBackHandler !== null) return customGoBackHandler();
-
-        history.back();
+        location.href = "/index.html";
+        // history.back();
     });
 
     // 클릭 이벤트 투과 (버그 수정용)

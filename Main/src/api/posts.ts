@@ -22,7 +22,7 @@ export default class PostBoardApiClient {
                 i.categoryNm!,
                 i.rankDtoList!.map((j) => ({
                     nickname: j.nickname!,
-                    hashtag: "1234",
+                    hashtag: j.hashtag!,
                     score: j.score!,
                 })),
             ]),
@@ -30,15 +30,17 @@ export default class PostBoardApiClient {
     }
 
     static async getMainBoard(): Promise<MainPostBoardData> {
+        const bestArticlesResponse = await apiClient.getBestArticles();
+        const bestArticles = bestArticlesResponse.data.result;
+        const transformedArticles = await Promise.all(
+            bestArticles!.map(async (article) => {
+                const transformedPost = await transformArticleDtoToPost(article);
+                return transformedPost;
+            })
+        );
+
         return {
-            popularTests: await Promise.all(
-                [1, 2, 3, 4, 5, 6, 7, 8]
-                    .map(async (i) => apiClient.getArticle(i))
-                    .map(async (i) => (await i).data)
-                    .map(async (i) =>
-                        transformArticleDtoToPost((await i).result!),
-                    ),
-            ),
+            popularTests: transformedArticles,
             rankings: await this.getRankings(),
         };
     }

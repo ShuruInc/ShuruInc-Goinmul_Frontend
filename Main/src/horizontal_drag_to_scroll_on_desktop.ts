@@ -8,6 +8,8 @@ export default function setHorizontalDragScrollOnDesktop(element: HTMLElement) {
         preventClick = false, // 의도치 않게 클릭이 되는 버그 방지용
         lastClientX: number | null = null;
 
+
+
     const getClientX = (evt: MouseEvent | TouchEvent) => {
         if ((evt as TouchEvent).touches) {
             return (evt as TouchEvent).touches[0].clientX;
@@ -42,17 +44,23 @@ export default function setHorizontalDragScrollOnDesktop(element: HTMLElement) {
         dragged = false;
     };
 
+    // 가로 스크롤 문제 해결
+    // const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    // if (isSafari) {
+    //     element.addEventListener('touchstart', ondown);
+    //     element.addEventListener('touchmove', onmove);
+    //     element.addEventListener('touchcancel', onup);
+    //     element.addEventListener('touchend', onup);
+    // }
+    //항상 터치인풋 받기
     element.addEventListener('mousedown', ondown);
     element.addEventListener('mouseup', onup);
     element.addEventListener('mousemove', onmove);
+    element.addEventListener('touchstart', ondown);
 
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    if (isSafari) {
-        element.addEventListener('touchstart', ondown);
-        element.addEventListener('touchmove', onmove);
-        element.addEventListener('touchcancel', onup);
-        element.addEventListener('touchend', onup);
-    }
+    element.addEventListener('touchmove', onmove);
+    element.addEventListener('touchcancel', onup);
+    element.addEventListener('touchend', onup);
 
     element.addEventListener("click", (evt) => {
         if (preventClick) {

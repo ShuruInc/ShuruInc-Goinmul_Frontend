@@ -209,7 +209,7 @@ const render = async () => {
         }
 
         // 추천 모의고사
-        const recommendedPosts = await SearchApiClient.recommend(10);
+        const recommendedPosts = await SearchApiClient.randomRecommend(10);
         const recommendSection = document.querySelector(
             ".recommended",
         )! as HTMLElement;

@@ -54,7 +54,8 @@ export default function initializeResultPage() {
     preparePlaceholderSection(document.querySelector(".post-section")!);
     createFloatingButton("home");
     addFloatingButonListener(() => (location.href = "/"));
-    SearchApiClient.recommend(8).then((posts) => {
+
+    SearchApiClient.randomRecommend(8).then((posts) => {
         fillPlaceholderSectionInto(
             {
                 title: "다른 모의고사 풀기",
@@ -63,10 +64,25 @@ export default function initializeResultPage() {
             document.querySelector(".post-section")!,
         );
     });
+
     (async () => {
+        const curTitle = (await session.sessionInfo()).title;  
+
+        SearchApiClient.recommend(curTitle, 8).then((posts) => {
+            fillPlaceholderSectionInto(
+                {
+                    title: "다른 모의고사 풀기",
+                    portraits: posts,
+                },
+                document.querySelector(".post-section")!,
+            );
+        });
+
         const result = await session.result();
         if (result === null)
             return alert("오류가 발생했습니다: 퀴즈가 아직 안 끝났습니다!");
+
+        
 
         const topCategory = await session.firstCategory();
         const nerdTest = await await PostBoardApiClient.getNerdTestOf(
@@ -188,7 +204,6 @@ export default function initializeResultPage() {
 내 성적표 등장 ‼
 내 성적표 등장 ‼
 내 성적표 등장 ‼
-내 성적표 등장 ‼
 
 ⬇ 풀어... 보시겠어요? ⬇
 🔗 ${url}
@@ -198,7 +213,7 @@ export default function initializeResultPage() {
         });
 
         if (result.ranking === 1 || alwaysDisplayEmailInputModal)
-            createFirstPlaceDialog(new Date(), (email) => {
+            createFirstPlaceDialog((email) => {
                 session.submitEmail(email);
             });
     })();

@@ -158,7 +158,7 @@ export default function initShareButton(
 
     return (newContent: ShareDatas) => {
         content = newContent;
-        if ("canShare" in navigator && navigator.canShare(content.webShare)) {
+        if ("canShare" in navigator && navigator.canShare(content.webShare) && false) {
             webShareButton?.classList.remove("display-none");
             twitterButton?.classList.add("display-none");
             kakaoButton?.classList.add("display-none");
