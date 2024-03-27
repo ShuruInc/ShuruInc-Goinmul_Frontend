@@ -36,10 +36,6 @@ export type MainPostBoardData = {
  */
 export function createRankingSection(title: string, data: RankingItem[]) {
     const section = document.createElement("section");
-<<<<<<< HEAD
-=======
-    // console.log(data);
->>>>>>> fde1c364f3acdaeaac74e60d7ca2e77a875ded8f
 
     section.className = rankingSectionStyles.rankingSection;
     section.innerHTML = `<h2></h2>

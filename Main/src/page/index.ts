@@ -9,10 +9,6 @@ import PrepareHorizontalInfiniteScrollLayout from "../prepare_horizontal_infinit
 
 createFloatingButton("home");
 
-<<<<<<< HEAD
-
-=======
->>>>>>> fde1c364f3acdaeaac74e60d7ca2e77a875ded8f
 (async () => {
     return {
         mainBoard: await PostBoardApiClient.getMainBoard(),

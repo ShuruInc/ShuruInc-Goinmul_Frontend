@@ -82,11 +82,8 @@ export default function initializeResultPage() {
         if (result === null)
             return alert("오류가 발생했습니다: 퀴즈가 아직 안 끝났습니다!");
 
-<<<<<<< HEAD
         
 
-=======
->>>>>>> fde1c364f3acdaeaac74e60d7ca2e77a875ded8f
         const topCategory = await session.firstCategory();
         const nerdTest = await await PostBoardApiClient.getNerdTestOf(
             topCategory.id,
@@ -216,11 +213,7 @@ export default function initializeResultPage() {
         });
 
         if (result.ranking === 1 || alwaysDisplayEmailInputModal)
-<<<<<<< HEAD
             createFirstPlaceDialog((email) => {
-=======
-            createFirstPlaceDialog(new Date(), (email) => {
->>>>>>> fde1c364f3acdaeaac74e60d7ca2e77a875ded8f
                 session.submitEmail(email);
             });
     })();
