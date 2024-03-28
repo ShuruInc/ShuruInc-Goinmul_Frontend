@@ -29,7 +29,7 @@ function isTouchDevice() {
     navigator.maxTouchPoints > 0 ||
     navigator.msMaxTouchPoints > 0);
     return check;
-}
+} 
 // 모바일 판정
 const isMobile = mobileCheckByRegex();
 
