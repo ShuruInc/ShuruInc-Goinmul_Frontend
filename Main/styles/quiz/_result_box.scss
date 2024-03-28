@@ -21,6 +21,7 @@
 
     .pushpin {
         position: absolute;
+        overflow: hidden;
         left: 50%;
         top: 0px;
         width: 50px;
@@ -38,6 +39,7 @@
         top: 0px;
         
         img {
+            overflow: hidden;
             width: 79px;
             height: 104px;
         }
@@ -90,6 +92,7 @@
             color: $black-color-01;
 
             .medal {
+                overflow: hidden;
                 position: absolute;
                 top: 0;
                 right: 10px;

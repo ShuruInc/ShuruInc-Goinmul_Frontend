@@ -1,6 +1,6 @@
-import goldMedal from "../assets/medal/1st.svg";
-import silverMedal from "../assets/medal/2nd.svg";
-import cooperMedal from "../assets/medal/3rd.svg";
+import goldMedal from "../assets/medal/1st.png";
+import silverMedal from "../assets/medal/2nd.png";
+import cooperMedal from "../assets/medal/3rd.png";
 import { randomMedalEnabled } from "./env";
 
 export default function getMedalData(ranking: number) {

@@ -148,11 +148,19 @@ const createAnswerElement = (question: QuizProblem) => {
         const input = rowWithInput.querySelector("input")!;
         input.addEventListener("input", (evt) => {
             validateAnswer((evt.target as HTMLInputElement).value);
-            inputWrapper?.classList.remove("animated");
-            inputWrapper?.classList.add("animated");
-            setTimeout(() => {
+            if(!isMobile){
                 inputWrapper?.classList.remove("animated");
-            }, 100);
+                inputWrapper?.classList.add("animated");
+                setTimeout(() => {
+                    inputWrapper?.classList.remove("animated");
+                }, 100);
+            } else {
+                inputWrapper?.classList.remove("mobile-animated");
+                inputWrapper?.classList.add("mobile-animated");
+                setTimeout(() => {
+                    inputWrapper?.classList.remove("mobile-animated");
+                }, 100);
+            }
         });
     } else {
         rowWithInput.classList.add("radios");

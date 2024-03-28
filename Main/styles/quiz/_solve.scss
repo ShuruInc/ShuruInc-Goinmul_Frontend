@@ -221,6 +221,10 @@ article {
                 &.animated, &.animated input {
                     transform: scaleX(105%);
                 }
+
+                &.mobile-animated, &.mobile-animated input {
+                    transform: scaleX(101.5%);
+                }
             }
 
             input[type="input"] {

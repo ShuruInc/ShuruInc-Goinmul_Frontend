@@ -1,6 +1,21 @@
 let liDone = false;
 
-setInterval(() => {
+delegate();
+hide();
+
+document.addEventListener("DOMContentLoaded", function() {
+    setInterval(() => {
+        // 해시태그(연관검색결과)가 있으면 "검색 결과가 없습니다, 출제요청" 섹션을 숨긴다.
+        hide();
+    }, 50);
+    
+    setInterval(() => {
+        //<li>태그의 클릭 이벤트를 <a>로 위임한다.
+        delegate();
+    }, 500)
+});
+
+function hide(){
     // 해시태그(연관검색결과)가 있으면 "검색 결과가 없습니다, 출제요청" 섹션을 숨긴다.
     try{
         const inputElem = document.querySelector('input.search');
@@ -16,7 +31,9 @@ setInterval(() => {
             document.querySelector('.no-results').style.display = 'flex';
         }
     } catch(e){ }
+}
 
+function delegate(){
     //<li>태그의 클릭 이벤트를 <a>로 위임한다.
     try { 
         const listItems = document.querySelectorAll('.columns .column li');
@@ -32,8 +49,6 @@ setInterval(() => {
                 anchor.click();
             });
         });
-
     } catch(e){     
     }
-}, 15);
-
+}

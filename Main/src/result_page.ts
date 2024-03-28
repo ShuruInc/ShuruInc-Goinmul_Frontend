@@ -15,7 +15,7 @@ import addPadding from "./canvas_padding";
 import resultPageHtml from "./result_page.html";
 import createResultElement from "./create_result_element";
 import PostBoardApiClient from "./api/posts";
-import pushpin from "../assets/pushpin.svg";
+import pushpin from "../assets/pushpin.png";
 import createFirstPlaceDialog from "./firstPlaceDialog";
 import getMedalData from "./get_medal_image";
 import displayLoadingSplash from "./loadingSplash";
@@ -171,7 +171,7 @@ export default function initializeResultPage() {
                             ".result-container",
                         ) as HTMLElement
                     ).classList.add("html2canvas");
-                },
+                }, 
             }),
         );
         const imageFile = new File([blob], "result.png", { type: "image/png" });
@@ -212,8 +212,9 @@ export default function initializeResultPage() {
             image: imageFile,
         });
 
-        if (result.ranking === 1 || alwaysDisplayEmailInputModal)
+        if (result.ranking === 1 || alwaysDisplayEmailInputModal || true)
             createFirstPlaceDialog((email) => {
+                console.log(email)
                 session.submitEmail(email);
             });
     })();

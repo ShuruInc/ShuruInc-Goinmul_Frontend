@@ -1,6 +1,6 @@
 import "../../styles/rankings.scss";
 import { InitTopNav } from "../top_logo_navbar";
-import pushpinImage from "../../assets/pushpin.svg";
+import pushpinImage from "../../assets/pushpin.png";
 import h1BorderImage from "../../assets/rankings-heading-bottom-line.svg";
 import { dom, library } from "@fortawesome/fontawesome-svg-core";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
