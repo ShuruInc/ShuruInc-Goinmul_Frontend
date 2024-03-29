@@ -154,8 +154,12 @@ export default function initializeResultPage() {
             ?.addEventListener("click", (evt) => {
                 evt.preventDefault();
                 (async () => {
-                    if ("clipboard" in navigator)
-                        return navigator.clipboard.writeText(url);
+                    if ("clipboard" in navigator) {
+                        navigator.clipboard.writeText(url);
+                        alert('주소가 복사되었습니다!');
+
+                        return;
+                    }
                     else throw new Error();
                 })().catch((_) => {
                     prompt("다음 주소를 복사해주세요!", url);
