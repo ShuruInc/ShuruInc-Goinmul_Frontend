@@ -220,6 +220,4 @@ export default function initializeResultPage() {
     })();
 }
 
-setInterval (() => {
-    window.scrollTo(0, window.scrollY);    
-}, 1);
+document.body.style.overflowX = "hidden";

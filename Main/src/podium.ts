@@ -40,10 +40,10 @@ export default function createPodium([first, second, third]: RankingItem[]) {
                     1
                 </div>
                 <div class="${styles.nicknameAndScore}">
-                    <div class="${styles.nickname}">${nicknameAndHashtag(
+                    <div style="font-weight: 600;" class="${styles.nickname}">${nicknameAndHashtag(
                         first,
                     )}</div>
-                    <div class="${styles.score}">${formatScore(first)}</div>
+                    <div style="font-weight: 600;" class="${styles.score}">${formatScore(first)}</div>
                 </div>
             </div>
         </div>

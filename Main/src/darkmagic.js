@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const footer = document.querySelector("footer");
             if (footer != null) {
                 const computedStyle = window.getComputedStyle(footer);
-
+                
                 const currentFontSize = parseFloat(computedStyle.fontSize);
                 const newFontSize = currentFontSize * 1.3;
                 footer.style.fontSize = newFontSize + "px";
@@ -93,11 +93,10 @@ let loop_c = setInterval(() => {
             allMiddleCategoryName.forEach((elem) => {
                 if(changeOnepiceFlag && elem.textContent  == "원피스 모의고사"){
                     changeOnepiceFlag = false;
-                    elem.textContent = "한국 애니메이션 맞히기 모의고사 "; 
-
+                    elem.textContent = "한국 애니메이션 맞히기 모의고사";
                 } else if(changeKorFlag && elem.textContent == "한국 애니메이션 맞히기 모의고사"){
                     changeKorFlag = false;
-                    //맨 마지막 스페이스 문자로 중복변경 방지                                                                                                                                                                                                                                                                                                                                                   
+                    //맨 마지막 스페이스 문자로 중복변경 방지
                     elem.textContent = "원피스 모의고사 ";
                 }
             });

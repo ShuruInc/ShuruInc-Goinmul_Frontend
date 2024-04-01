@@ -10,7 +10,7 @@
     right: 10px;
     width: 60px;
     height: 60px;
-    margin: 0px calc((100vw - var(--floating-btn-width)) / 2);
+    // margin: 0px calc((100vw - var(--floating-btn-width)) / 2);
 
     svg {
         width: 24px;
@@ -21,12 +21,12 @@
         bottom: 96px;
 
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        justify-content: center;
-        gap: 15px;
+        gap: 20px;
         
         width: inherit;
-        padding: 0px 19px;
+        padding: 0px 18px;
 
         .icon img {
             position: relative;
@@ -36,16 +36,20 @@
         }
         .content {
             display: none;
-
             font-family: 'LeeSeoyun', cursive;
             font-weight: normal;
-            font-size: 16px;
-            line-height: 22px;
+            font-size: 13px;
+            line-height: 15px;
         }
         &.active {
-            width: initial;
+            width: 94%;
+            max-width: 700px;
+            min-width: 350px;
+            overflow-y: hidden;            
             .content {
                 display: block;
+                float:left;
+                width: 85%;
             }
         }
     }

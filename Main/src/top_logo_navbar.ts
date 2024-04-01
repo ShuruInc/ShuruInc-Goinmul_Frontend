@@ -139,8 +139,8 @@ export function InitTopNav(animated = false) {
     if (animated) InitTopBottomAnimation(topFixedBar);
 
     // clip-path를 이용하여 네비게이션 배경을 투과한다.
-    if (topFixedBar.classList.contains("clip-path-bugfix"))
-        initClipPathBugfix(topFixedBar);
+    // if (topFixedBar.classList.contains("clip-path-bugfix"))
+    //     initClipPathBugfix(topFixedBar);
 }
 
 export function initClipPathBugfix(topFixedBar: HTMLElement) {
