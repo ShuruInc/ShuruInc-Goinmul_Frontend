@@ -212,7 +212,7 @@ export default function initializeResultPage() {
             image: imageFile,
         });
 
-        if (result.ranking === 1 || alwaysDisplayEmailInputModal || true)
+        if (result.ranking === 1 || alwaysDisplayEmailInputModal)
             createFirstPlaceDialog((email) => {
                 console.log(email)
                 session.submitEmail(email);
