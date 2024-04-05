@@ -31,7 +31,9 @@ export default function setHorizontalDragScrollOnDesktop(element: HTMLElement) {
         element.scrollBy({
             left: xDiff,
         });
-        lastClientX = newClientX;
+        if(dragStarted) {
+            lastClientX = newClientX;
+        }
         dragged = true;
         preventClick = true;
     };
@@ -50,15 +52,27 @@ export default function setHorizontalDragScrollOnDesktop(element: HTMLElement) {
     //     element.addEventListener('touchcancel', onup);
     //     element.addEventListener('touchend', onup);
     // }
+    
     //항상 터치인풋 받기
     element.addEventListener('mousedown', ondown);
-    element.addEventListener('mouseup', onup);
     element.addEventListener('mousemove', onmove);
+    
     element.addEventListener('touchstart', ondown);
-
     element.addEventListener('touchmove', onmove);
     element.addEventListener('touchcancel', onup);
-    element.addEventListener('touchend', onup);
+
+    document.body.addEventListener('mouseup', onup);
+    document.body.addEventListener('touchend', onup);
+
+    //브라우저 밖에서도 드래그 놓는 시뮬
+    document.addEventListener('mouseleave', function(evt) {
+        if (evt.clientY <= 0 || evt.clientX <= 0 || (evt.clientX >= window.innerWidth || evt.clientY >= window.innerHeight)) {
+            if (dragged) evt.preventDefault();
+            else preventClick = false;
+            dragStarted = false;
+            dragged = false;
+        }
+    });
 
     element.addEventListener("click", (evt) => {
         if (preventClick) {

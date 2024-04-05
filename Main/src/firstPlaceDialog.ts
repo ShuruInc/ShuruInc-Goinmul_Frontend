@@ -10,6 +10,7 @@ export default function createFirstPlaceDialog(
     wrapper.innerHTML = `<div class="${styles.background}"></div><div class="${
         styles.dialog
     }">
+
     <h1>1위 달성!</h1>
     <p class="${styles.congratulations}" style="line-height: 19px;">
     5월 5일 23시 59분까지<br>1등을 유지하신 분께<br>\"당신의 최애 장르 공식<br>굿즈 10만 원 상당\"을<br> 이벤트 선물로 드립니다! 

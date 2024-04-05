@@ -62,7 +62,7 @@ export class QuizApiClient {
                 ),
             ),
         );
-        console.log(JSON.parse(localStorage.getItem(`problems-${id}`) ?? "[]"));
+        // console.log(JSON.parse(localStorage.getItem(`problems-${id}`) ?? "[]"));
     }
 
     private static shakeProblems(id: string) {

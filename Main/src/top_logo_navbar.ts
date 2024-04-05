@@ -118,6 +118,8 @@ export function InitTopNav(animated = false) {
             topFixedBar.style.pointerEvents = "";
         }
     });
+    
+    if(topFixedBar.querySelector(".search-icon") == null) return;
 
     // 검색 아이콘 버튼 옆에 tooltip을 만든다.
     const tippyInstance = tippy(topFixedBar.querySelector(".search-icon")!, {

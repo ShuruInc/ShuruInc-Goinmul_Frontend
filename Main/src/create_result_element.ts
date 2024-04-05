@@ -105,10 +105,19 @@ export default function createResultElement(
         : [
               "과목명",
               "점수",
-              "상위",
+              "등급",
               data.lowCategory,
               data.points.toString() + "점",
-              data.percentage.toString() + "%",
+              //절대평가
+              data.points >= 100 ? 'A+' :
+              data.points >= 90 ? 'A' :
+              data.points >= 80 ? 'B+' :
+              data.points >= 70 ? 'B' :
+              data.points >= 60 ? 'C+' :
+              data.points >= 50 ? 'C' :
+              data.points >= 40 ? 'D+' :
+              data.points >= 30 ? 'D' :
+              'F'
           ];
     const tableColumnCount = tableData.length / 2;
 
@@ -133,7 +142,7 @@ export default function createResultElement(
     } else if (data.points >= 70) {
         comment.innerHTML = `굉장합니다! <a class="nerd-test-link"></a>에 도전해 보시겠어요?`;
     } else if (data.points >= 30) {
-        comment.innerHTML = `휼룡합니다!<br>더 높은 점수에 도전해 보세요.`;
+        comment.innerHTML = `아쉽습니다!<br>더 높은 점수에 도전해 보세요.`;
     } else {
         comment.innerHTML = `아쉽습니다! 다시 도전해 보시겠어요?`;
     }

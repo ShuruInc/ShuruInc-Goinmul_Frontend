@@ -82,8 +82,6 @@ export default function initializeResultPage() {
         if (result === null)
             return alert("오류가 발생했습니다: 퀴즈가 아직 안 끝났습니다!");
 
-        
-
         const topCategory = await session.firstCategory();
         const nerdTest = await await PostBoardApiClient.getNerdTestOf(
             topCategory.id,
@@ -153,9 +151,12 @@ export default function initializeResultPage() {
             .querySelector(".copy-link")
             ?.addEventListener("click", (evt) => {
                 evt.preventDefault();
+
                 (async () => {
-                    if ("clipboard" in navigator)
+                    if ("clipboard" in navigator) {
+                        alert('클립보드에 주소가 복사되었어요!');
                         return navigator.clipboard.writeText(url);
+                    }
                     else throw new Error();
                 })().catch((_) => {
                     prompt("다음 주소를 복사해주세요!", url);
@@ -214,7 +215,7 @@ export default function initializeResultPage() {
 
         if (result.ranking === 1 || alwaysDisplayEmailInputModal)
             createFirstPlaceDialog((email) => {
-                console.log(email)
+                // console.log(email)
                 session.submitEmail(email);
             });
     })();
