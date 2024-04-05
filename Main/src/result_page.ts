@@ -222,3 +222,20 @@ export default function initializeResultPage() {
 }
 
 document.body.style.overflowX = "hidden";
+
+
+// let loop_d = setInterval(() => {
+//     const h2Element = document.querySelector('h2 .subtitle');
+
+//     if (h2Element && h2Element.textContent!.trim() === "원피스 모의고사") {
+//         h2Element.textContent = "한국 애니메이션 맞히기 모의고사";
+//         clearInterval(loop_d);
+//         return;
+//     }
+
+//     if (h2Element && h2Element.textContent!.trim() === "한국 애니메이션 맞히기 모의고사") {
+//         h2Element.textContent = "원피스 모의고사";
+//         clearInterval(loop_d);
+//         return;
+//     }
+// }, 10);

@@ -96,6 +96,7 @@ let loop_c = setInterval(() => {
                     changeOnepiceFlag = false;
                     elem.textContent = "한국 애니메이션 맞히기 모의고사";
                 } else if(changeKorFlag && elem.textContent == "한국 애니메이션 맞히기 모의고사"){
+                    
                     changeKorFlag = false;
                     //맨 마지막 스페이스 문자로 중복변경 방지
                     elem.textContent = "원피스 모의고사 ";
@@ -128,8 +129,6 @@ let loop_c = setInterval(() => {
 }, 10);
 
 
-
-
 function replaceBackgroundImageIfTitleMatches(titleText, newBackgroundImageUrl) {
     const titleElements = document.querySelectorAll('.title');
 
@@ -143,6 +142,26 @@ function replaceBackgroundImageIfTitleMatches(titleText, newBackgroundImageUrl) 
         }
     });
 }
+
+
+// let loop_d = setInterval(() => {
+//     const h2Element = document.querySelector('h2.subtitle');
+    
+//     console.log(h2Element.textContent.trim() )
+
+//     // if (h2Element && h2Element.textContent.trim() === "원피스 모의고사 ") {
+//     //     h2Element.textContent = "한국 애니 맞히기 모의고사";
+//     //     clearInterval(loop_d);
+//     //     return;
+//     // } 
+
+//     // else if (h2Element && h2Element.textContent.trim() === "한국 애니메이션 맞히기 모의고사") {
+//     //     h2Element.textContent = "원피스 모의고사";
+//     //     clearInterval(loop_d);
+//     //     return;
+//     // }
+// }, 10);
+
 
 function swapElements() {
     if(isWebtoonAnimSwaped) return;
