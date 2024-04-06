@@ -52,3 +52,11 @@ function delegate(){
     } catch(e){     
     }
 }
+
+document.querySelectorAll('article .popularNow .columns .column li').forEach(item => {
+    item.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        item.querySelector('a').click();
+    });
+});
