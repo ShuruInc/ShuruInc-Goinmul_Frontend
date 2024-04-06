@@ -326,9 +326,10 @@ export default function initSolvePage(session: QuizSession) {
     if (topbar === null) return;
 
     window.addEventListener('scroll', function() {
-        const position = (25 - window.scrollY) % 75;
+        const xPosition = (document.body.clientWidth - topbar.clientWidth) / -2;
+        const yPosition = (25 - window.scrollY);
         topbar.style.background = `inherit`;
-        topbar.style.backgroundPositionX = `-55px`;
-        topbar.style.backgroundPositionY = `${position}px`;
+        topbar.style.backgroundPositionX = `${xPosition}px`;
+        topbar.style.backgroundPositionY = `${yPosition}px`;
     });
 }
