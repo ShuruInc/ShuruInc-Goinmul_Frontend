@@ -2,8 +2,13 @@ let liDone = false;
 
 delegate();
 hide();
+makeClickable();
 
 document.addEventListener("DOMContentLoaded", function() {
+    setInterval(() => {
+        makeClickable();
+    }, 50);
+
     setInterval(() => {
         // 해시태그(연관검색결과)가 있으면 "검색 결과가 없습니다, 출제요청" 섹션을 숨긴다.
         hide();
@@ -53,10 +58,12 @@ function delegate(){
     }
 }
 
-document.querySelectorAll('article .popularNow .columns .column li').forEach(item => {
-    item.addEventListener('click', (event) => {
-        event.preventDefault();
-
-        item.querySelector('a').click();
+function makeClickable() {
+    document.querySelectorAll('article .popularNow .columns .column li').forEach(item => {
+        item.addEventListener('click', (event) => {
+            event.preventDefault();
+    
+            item.querySelector('a').click();
+        });
     });
-});
+}
