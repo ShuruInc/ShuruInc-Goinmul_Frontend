@@ -75,8 +75,6 @@ export default function initShareButton(
         kakaoButton = document.querySelector(".share-kakao");
 
     webShareButton?.classList.add("display-none");
-    twitterButton?.classList.add("display-none");
-    kakaoButton?.classList.add("display-none");
 
     kakaoButton!.innerHTML = `<img src="${encode(
         kakaoTalkIcon,
@@ -158,15 +156,6 @@ export default function initShareButton(
 
     return (newContent: ShareDatas) => {
         content = newContent;
-        if ("canShare" in navigator && navigator.canShare(content.webShare) && false) {
-            webShareButton?.classList.remove("display-none");
-            twitterButton?.classList.add("display-none");
-            kakaoButton?.classList.add("display-none");
-        } else {
-            webShareButton?.classList.add("display-none");
-            twitterButton?.classList.remove("display-none");
-            kakaoButton?.classList.remove("display-none");
-        }
         twitterButton.href =
             "https://twitter.com/intent/tweet?text=" +
             encodeURIComponent(content!.twitter.text);

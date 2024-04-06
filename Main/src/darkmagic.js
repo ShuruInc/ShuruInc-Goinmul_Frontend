@@ -90,19 +90,19 @@ let loop_c = setInterval(() => {
         // 바꾸고 싶은 썸네일 div 내부의 텍스트(제목), 새로 넣을 썸네일
         replaceBackgroundImageIfTitleMatches("짱구는 못말려 극장판 퀴즈", "https://i.ibb.co/xGVm8rR/jjangu.png");
         // 원피스와 한국 애니메이션 텍스트를 찾는 구간
-        if(changeKorFlag || changeOnepiceFlag){
-            allMiddleCategoryName.forEach((elem) => {
-                if(changeOnepiceFlag && elem.textContent  == "원피스 모의고사"){
-                    changeOnepiceFlag = false;
-                    elem.textContent = "한국 애니메이션 맞히기 모의고사";
-                } else if(changeKorFlag && elem.textContent == "한국 애니메이션 맞히기 모의고사"){
+        // if(changeKorFlag || changeOnepiceFlag){
+        //     allMiddleCategoryName.forEach((elem) => {
+        //         if(changeOnepiceFlag && elem.textContent  == "원피스 모의고사"){
+        //             changeOnepiceFlag = false;
+        //             elem.textContent = "한국 애니메이션 맞히기 모의고사";
+        //         } else if(changeKorFlag && elem.textContent == "한국 애니메이션 맞히기 모의고사"){
                     
-                    changeKorFlag = false;
-                    //맨 마지막 스페이스 문자로 중복변경 방지
-                    elem.textContent = "원피스 모의고사 ";
-                }
-            });
-        }
+        //             changeKorFlag = false;
+        //             //맨 마지막 스페이스 문자로 중복변경 방지
+        //             elem.textContent = "원피스 모의고사 ";
+        //         }
+        //     });
+        // }
 
         allMiddleCategoryName.forEach((elem) => {
             if(elem.textContent == "플레이브 모의고사"){
