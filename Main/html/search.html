@@ -90,6 +90,19 @@
             </article>
         </div>
         <script src="../src/darkmagic_for_search.js"></script>
+        <script>
+            document.querySelectorAll('article .popularNow .columns .column li').forEach(item => {
+                if(item.dataset.clickable === 'true') return;
+
+                item.addEventListener('click', (event) => {
+                    event.preventDefault();
+            
+                    item.querySelector('a').click();
+
+                    item.dataset.clickable = 'true';
+                });
+            });
+        </script>
         
     </body>
 </html>
