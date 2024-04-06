@@ -327,7 +327,7 @@ export default function initSolvePage(session: QuizSession) {
 
     window.addEventListener('scroll', function() {
         const position = (25 - window.scrollY) % 75;
-        topbar.style.backgroundImage = `inherit`;
+        topbar.style.background = `inherit`;
         topbar.style.backgroundPositionX = `-55px`;
         topbar.style.backgroundPositionY = `${position}px`;
     });
