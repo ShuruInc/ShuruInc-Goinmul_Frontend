@@ -185,11 +185,3 @@ function swapElements() {
         isWebtoonAnimSwaped = true;
     }
 }
-
-document.getElementById('topFixedBar').style.background = 'inherit';
-document.getElementById('topFixedBar').style.backgroundPositionX = '-55px';
-
-window.addEventListener('scroll', function() {
-    const position = (-25 + window.scrollY) % 75;
-    document.getElementById('topFixedBar').style.backgroundPositionY = `${position}px`;
-});
