@@ -60,10 +60,14 @@ function delegate(){
 
 function makeClickable() {
     document.querySelectorAll('article .popularNow .columns .column li').forEach(item => {
+        if(item.dataset.clickable === 'true') return;
+
         item.addEventListener('click', (event) => {
             event.preventDefault();
     
             item.querySelector('a').click();
+
+            item.dataset.clickable = 'true';
         });
     });
 }
