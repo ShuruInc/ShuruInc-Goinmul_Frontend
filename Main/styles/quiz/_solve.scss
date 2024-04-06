@@ -6,6 +6,12 @@
 @import "../colors";
 @import "../includes/noto-serif";
 @import "../includes/thick-chalkboard";
+@font-face { 
+    font-family: 'Yeongdeok Blueroad';  
+    font-style: normal;
+    src:url("https://static.goinmultest.pro/yb.ttf") format('opentype');
+    unicode-range: U+D225, U+CFC8;
+}   
 
 article {
     width: 100%;
@@ -235,7 +241,7 @@ article {
 
                 box-sizing: border-box;
 
-                font-family: 'LeeSeoyun';
+                font-family: 'LeeSeoyun', 'Yeongdeok Blueroad';
                 font-size: 20px;
                 font-weight: normal;
                 color: white;

@@ -118,6 +118,8 @@ export function InitTopNav(animated = false) {
             topFixedBar.style.pointerEvents = "";
         }
     });
+    
+    if(topFixedBar.querySelector(".search-icon") == null) return;
 
     // 검색 아이콘 버튼 옆에 tooltip을 만든다.
     const tippyInstance = tippy(topFixedBar.querySelector(".search-icon")!, {
@@ -139,8 +141,8 @@ export function InitTopNav(animated = false) {
     if (animated) InitTopBottomAnimation(topFixedBar);
 
     // clip-path를 이용하여 네비게이션 배경을 투과한다.
-    if (topFixedBar.classList.contains("clip-path-bugfix"))
-        initClipPathBugfix(topFixedBar);
+    // if (topFixedBar.classList.contains("clip-path-bugfix"))
+    //     initClipPathBugfix(topFixedBar);
 }
 
 export function initClipPathBugfix(topFixedBar: HTMLElement) {

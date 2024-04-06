@@ -51,7 +51,9 @@ const activateRankingButton = (selectedLabel: string) => {
     })
     .forEach((data, idx) => {
         const button = document.querySelector(
-            `nav.categories button:nth-child(${idx + 1})`,
+            `nav.categories button:nth-child(${
+                (idx + 1)
+            })`,
         ) as HTMLButtonElement;
         button.textContent = data.label;
         button.dataset.label = data.label;
@@ -66,10 +68,19 @@ const displayRanking = (query?: string, allowEmpty?: boolean) => {
     const filtered = rankingData.filter((i) =>
         query ? `${i.nickname}#${i.hashtag}`.includes(query) : true,
     );
+
+    if(filtered.length == 0){
+        const tbody = document.querySelector('.rankings tbody');
+        while (tbody?.firstChild) {
+            tbody.removeChild(tbody.firstChild);
+        }
+    }
+
     filtered
         .map((i, idx) => {
             const row = document.createElement("tr");
-            const k = idx+1;
+            const k = idx + 1;
+
             row.innerHTML =
                 `<td class="ranking">${(k==1)||(k==2)||(k==3)?'':idx+1}</td>` +
                 `<td class="nickname">${encode(i.nickname)}#${i.hashtag}</td>` +
@@ -93,7 +104,9 @@ const displayRanking = (query?: string, allowEmpty?: boolean) => {
 };
 
 PostBoardApiClient.getRankings().then((rankings) => {
-    buttonLabels = Object.keys(rankings);
+    const keysArr = Object.keys(rankings);
+    buttonLabels = [keysArr[0], keysArr[2], keysArr[1]];
+
     [...document.querySelectorAll("nav.categories")].forEach((i) => {
         i.addEventListener("mousedown", (evt) => {
             const label = (evt.target as HTMLButtonElement).dataset.label!;
@@ -102,6 +115,7 @@ PostBoardApiClient.getRankings().then((rankings) => {
             displayRanking(undefined, true);
         });
     });
+    
     document
         .querySelector(".search input")
         ?.addEventListener("input", (evt) => {
@@ -111,6 +125,24 @@ PostBoardApiClient.getRankings().then((rankings) => {
     rankingData = rankings[buttonLabels[0]];
     displayRanking(undefined, true);
 });
+
+// 한글 자모만 입력했는지 체크
+// function hasCharactersWithinUnicodeRange(input: string): boolean {
+//     // Regular expressions for the Unicode ranges
+//     const range1Regex: RegExp = /[\u3131-\u314E]/; // Unicode hexadecimal: 12593 to 12622
+//     const range2Regex: RegExp = /[\u314F-\u3163]/; // Unicode hexadecimal: 12623 to 12643
+//     console.log(`Nothing`);
+
+//     // Check if any character in the input string falls within the specified Unicode ranges
+//     for (const char of input) {
+//         if (range1Regex.test(char) || range2Regex.test(char)) {
+//             console.log(`Character '${char}' is within Unicode ranges.`);
+//             return true; // Return true as soon as a character within the range is found
+//         }
+//     }
+
+//     return false; // Return false if no character within the range is found
+// }
 
 
 // 랭킹 검색창에 텍스트가 있는지 체크하고 기억
@@ -155,5 +187,5 @@ document.querySelector("input")?.addEventListener('focus', () => {
 });
 
 document.querySelector("input")?.addEventListener('blur', () => {
-    location.href = location.href;
+    location.href = location.href; //새로고침
 })

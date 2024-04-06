@@ -1,6 +1,8 @@
 @use "../common/styled-inputs";
 @import "../index_page/post-board";
 @import "../mixins/cork-board-background";
+@import "./result_box";
+@import "../index_page/post-board";
 
 body.result-body {
     @include cork-board-background;
@@ -38,8 +40,6 @@ article.with-result {
     align-items: center;
     gap: 10px;
 
-    @import "./result_box";
-
     .result-container {
         margin-bottom: 32px;
     }
@@ -74,5 +74,4 @@ article.with-result {
     }
 
 
-    @import "../index_page/post-board";
 }

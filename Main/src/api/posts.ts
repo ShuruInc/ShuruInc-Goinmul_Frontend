@@ -62,7 +62,7 @@ export default class PostBoardApiClient {
                             await apiClient.getSecondCategories(i.id!);
                         const secondCategories =
                             secondCategoriesResponse.data.result!;
-                        //console.log(secondCategories);
+                            //console.log(secondCategories);
                         return { firstCategory: i, secondCategories };
                     }),
                 )

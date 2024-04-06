@@ -217,3 +217,37 @@ if (sessionId !== null && QuizSession.hasSession(sessionId)) {
 } else {
     initByQuizId();
 }
+
+
+// let isInputEventListenerAdded = false;
+// let isButtonEventListenerAdded = false;
+
+// setInterval(()=>{
+//     let inputElement = document.querySelector('input[autofocus]');
+    
+//     if (inputElement && !isInputEventListenerAdded) {
+//         setTimeout(()=>{
+//             inputElement?.addEventListener('focus', () => {
+//                 console.log("Selection");
+//                 isButtonEventListenerAdded = false;
+//             });
+//             isInputEventListenerAdded = true;
+//         }, 1000);
+//     }
+
+
+//     let submitButton = document.querySelector('button.submit[type="submit"]');
+
+//     if(submitButton && !isButtonEventListenerAdded){
+//         setTimeout(()=>{
+//             submitButton?.addEventListener('click', () => {
+//                 console.log("Clicked!");
+//                 if((inputElement as HTMLInputElement)?.value.trim() !== ''){
+//                     isInputEventListenerAdded = false;    
+//                     console.log("Now Listen!");
+//                 }
+//             });
+//         }, 1000);
+//     }
+// }, 200);
+

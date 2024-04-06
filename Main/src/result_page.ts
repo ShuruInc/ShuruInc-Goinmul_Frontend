@@ -82,8 +82,6 @@ export default function initializeResultPage() {
         if (result === null)
             return alert("오류가 발생했습니다: 퀴즈가 아직 안 끝났습니다!");
 
-        
-
         const topCategory = await session.firstCategory();
         const nerdTest = await await PostBoardApiClient.getNerdTestOf(
             topCategory.id,
@@ -153,12 +151,11 @@ export default function initializeResultPage() {
             .querySelector(".copy-link")
             ?.addEventListener("click", (evt) => {
                 evt.preventDefault();
+
                 (async () => {
                     if ("clipboard" in navigator) {
-                        navigator.clipboard.writeText(url);
-                        alert('주소가 복사되었습니다!');
-
-                        return;
+                        alert('클립보드에 주소가 복사되었어요!');
+                        return navigator.clipboard.writeText(url);
                     }
                     else throw new Error();
                 })().catch((_) => {
@@ -216,14 +213,29 @@ export default function initializeResultPage() {
             image: imageFile,
         });
 
-        if (result.ranking === 1 || alwaysDisplayEmailInputModal || true)
+        if (result.ranking === 1 || alwaysDisplayEmailInputModal)
             createFirstPlaceDialog((email) => {
-                console.log(email)
+                // console.log(email)
                 session.submitEmail(email);
             });
     })();
 }
 
-setInterval (() => {
-    window.scrollTo(0, window.scrollY);    
-}, 1);
+document.body.style.overflowX = "hidden";
+
+
+// let loop_d = setInterval(() => {
+//     const h2Element = document.querySelector('h2 .subtitle');
+
+//     if (h2Element && h2Element.textContent!.trim() === "원피스 모의고사") {
+//         h2Element.textContent = "한국 애니메이션 맞히기 모의고사";
+//         clearInterval(loop_d);
+//         return;
+//     }
+
+//     if (h2Element && h2Element.textContent!.trim() === "한국 애니메이션 맞히기 모의고사") {
+//         h2Element.textContent = "원피스 모의고사";
+//         clearInterval(loop_d);
+//         return;
+//     }
+// }, 10);

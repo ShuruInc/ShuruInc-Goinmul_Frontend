@@ -5,6 +5,10 @@
 @use "media-queries/quiz";
 @import "common/styled-inputs";
 @import "mixins/chalk-background";
+@import "quiz/result";
+@import "quiz/solve";
+@import "quiz/entry";
+
 
 body {
     @include grid-chalkboard-background();
@@ -22,7 +26,3 @@ article {
 button {
     cursor: pointer;
 }
-
-@import "quiz/result";
-@import "quiz/solve";
-@import "quiz/entry";

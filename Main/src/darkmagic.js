@@ -37,6 +37,7 @@ const isMobile = mobileCheckByRegex();
 let changeOnepiceFlag = true;
 let changeKorFlag = true;
 let insertFlag = true;
+let isWebtoonAnimSwaped = false;
 // DOM 저장 변수
 let plaveQuizSection;
 let companyQuizSection;
@@ -52,12 +53,12 @@ document.addEventListener("DOMContentLoaded", function() {
         }, 300);
     } else {
         // PC만 푸터 관련 크기 증가
-        console.log("PC")
+        //console.log("PC")
         let loop_b = setInterval(() => {
             const footer = document.querySelector("footer");
             if (footer != null) {
                 const computedStyle = window.getComputedStyle(footer);
-
+                
                 const currentFontSize = parseFloat(computedStyle.fontSize);
                 const newFontSize = currentFontSize * 1.3;
                 footer.style.fontSize = newFontSize + "px";
@@ -93,11 +94,11 @@ let loop_c = setInterval(() => {
             allMiddleCategoryName.forEach((elem) => {
                 if(changeOnepiceFlag && elem.textContent  == "원피스 모의고사"){
                     changeOnepiceFlag = false;
-                    elem.textContent = "한국 애니메이션 맞히기 모의고사 "; 
-
+                    elem.textContent = "한국 애니메이션 맞히기 모의고사";
                 } else if(changeKorFlag && elem.textContent == "한국 애니메이션 맞히기 모의고사"){
+                    
                     changeKorFlag = false;
-                    //맨 마지막 스페이스 문자로 중복변경 방지                                                                                                                                                                                                                                                                                                                                                   
+                    //맨 마지막 스페이스 문자로 중복변경 방지
                     elem.textContent = "원피스 모의고사 ";
                 }
             });
@@ -118,24 +119,21 @@ let loop_c = setInterval(() => {
             insertFlag = false;
         }
 
+        swapElements();
+
         // 모든 수행이 끝나면 루프 삭제
-        if(!changeKorFlag && !changeOnepiceFlag && !insertFlag) {
+        if(!changeKorFlag && !changeOnepiceFlag && !insertFlag && isWebtoonAnimSwaped) {
             clearInterval(loop_c);
         }
     }
 }, 10);
 
-function replaceBackgroundImageIfTitleMatches(titleText, newBackgroundImageUrl) {
-    // Find all elements with class "title"
-    const titleElements = document.querySelectorAll('.title');
-    // const board = document.querySelector('.chalk-bordered');
-    // board.style.backgroundColor = "rgba(0,0,0,0)";
 
-    // Iterate through each title element
+function replaceBackgroundImageIfTitleMatches(titleText, newBackgroundImageUrl) {
+    const titleElements = document.querySelectorAll('.title');
+
     titleElements.forEach(titleElement => {
-        // Check if the text content of the title element matches the provided titleText
         if (titleElement.textContent.trim() === titleText) {
-            // Replace the parent element's background image URL with the newBackgroundImageUrl
             const parentElement = titleElement.parentElement.parentElement;
 
             if (parentElement != null) {
@@ -143,4 +141,47 @@ function replaceBackgroundImageIfTitleMatches(titleText, newBackgroundImageUrl) 
             }
         }
     });
+}
+
+
+// let loop_d = setInterval(() => {
+//     const h2Element = document.querySelector('h2.subtitle');
+    
+//     console.log(h2Element.textContent.trim() )
+
+//     // if (h2Element && h2Element.textContent.trim() === "원피스 모의고사 ") {
+//     //     h2Element.textContent = "한국 애니 맞히기 모의고사";
+//     //     clearInterval(loop_d);
+//     //     return;
+//     // } 
+
+//     // else if (h2Element && h2Element.textContent.trim() === "한국 애니메이션 맞히기 모의고사") {
+//     //     h2Element.textContent = "원피스 모의고사";
+//     //     clearInterval(loop_d);
+//     //     return;
+//     // }
+// }, 10);
+
+
+function swapElements() {
+    if(isWebtoonAnimSwaped) return;
+
+    var h2Elements = document.querySelectorAll('h2');
+    var webtoonParent = null;
+    var animationParent = null;
+
+    h2Elements.forEach(function(element) {
+        if (element.textContent.includes("웹툰")) {
+            webtoonParent = element.parentNode;
+        } else if (element.textContent.includes("애니메이션")) {
+            animationParent = element.parentNode;
+        }
+    });
+
+    if (webtoonParent && animationParent) {
+        var nextSibling = animationParent.nextSibling;
+        webtoonParent.parentNode.insertBefore(animationParent, webtoonParent.nextSibling);
+        animationParent.parentNode.insertBefore(webtoonParent, nextSibling);
+        isWebtoonAnimSwaped = true;
+    }
 }

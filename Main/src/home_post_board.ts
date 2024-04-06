@@ -5,10 +5,11 @@ import {
     fillPlaceholderSectionInto,
     preparePlaceholderSection,
 } from "./post_board";
-import SmoothScrollbar from "smooth-scrollbar";
 import "./smooth-scrollbar-scroll-lock-plugin";
 import rankingSectionHeaderImg from "../assets/rankings-heading-bottom-line.svg";
 import rankingSectionStyles from "../styles/index_page/ranking-section.module.scss";
+import SmoothScrollbar, { ScrollbarPlugin } from "smooth-scrollbar";
+// import { isMobile } from "./is_mobile";
 
 /**
  * 랭킹 아이템
@@ -42,6 +43,7 @@ export function createRankingSection(title: string, data: RankingItem[]) {
     <img src="${rankingSectionHeaderImg}" class="${rankingSectionStyles.separator}">
     <div class="podium"></div>
     `;
+    
     section.replaceChild(
         createPodium(data.slice(0, 3)),
         section.querySelector(".podium")!,
@@ -52,6 +54,28 @@ export function createRankingSection(title: string, data: RankingItem[]) {
 
     return section;
 }
+
+
+class MobilePlugin extends ScrollbarPlugin {
+    static pluginName = 'mobile';
+    static defaultOptions = {
+        speed: 0.5,
+    };
+
+    transformDelta(delta: any, fromEvent: any) {
+        if (fromEvent.type !== 'touchend') {
+            return delta;
+        }
+
+        return {
+            x: delta.x * this.options.speed,
+            y: delta.y * this.options.speed,
+        };
+    }
+}
+
+
+SmoothScrollbar.use(MobilePlugin);
 
 /**
  * 홈 post board 컨텐츠를 표시합니다.
@@ -69,7 +93,16 @@ export function displayMainPostBoard(
     // Smooth-scrollbar를 쓴다.
     const scrollbar = SmoothScrollbar.init(columnScrollbar, {
         alwaysShowTracks: false,
+        damping: 0.2,
+        plugins: {
+            mobile: { // this is optional
+                speed: 0.2,
+            },
+        },
     });
+
+
+
     scrollbar.track.yAxis.element.remove();
     const column = scrollbar.contentEl;
 

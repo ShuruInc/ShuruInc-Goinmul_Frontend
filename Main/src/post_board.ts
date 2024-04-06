@@ -1,10 +1,11 @@
-import SmoothScrollbar from "smooth-scrollbar";
+import SmoothScrollbar, { ScrollbarPlugin } from "smooth-scrollbar";
 import PostBoardApiClient from "./api/posts";
 import footer from "./footer";
 import setHorizontalDragScrollOnDesktop from "./horizontal_drag_to_scroll_on_desktop";
 import "./smooth-scrollbar-scroll-lock-plugin";
 import eyeIcon from "../assets/post-cell-popularity-icons/eye.svg";
 import heartSolidIcon from "../assets/post-cell-popularity-icons/heart-solid.svg";
+// import { isMobile } from "./is_mobile";
 // import Color from "color";
 
 type RowInfo = { landscape: boolean; count: number };
@@ -150,7 +151,7 @@ function getImageDataFromImageElement(url: string) {
             canvas.height = img.height;
             context.drawImage(img, 0, 0);
             try{resolve(context.getImageData(0, 0, img.width, img.height));}
-            catch(e){ console.log("from getImageData") }
+            catch(e){ /*console.log("from getImageData")*/ }
         });
         img.src = url;
     });
@@ -365,6 +366,26 @@ export function fillPlaceholderSectionInto(
     return;
 }
 
+class MobilePlugin extends ScrollbarPlugin {
+    static pluginName = 'mobile';
+    static defaultOptions = {
+        speed: 0.5,
+    };
+
+    transformDelta(delta: any, fromEvent: any) {
+        if (fromEvent.type !== 'touchend') {
+            return delta;
+        }
+
+        return {
+            x: delta.x * this.options.speed,
+            y: delta.y * this.options.speed,
+        };
+    }
+}
+
+SmoothScrollbar.use(MobilePlugin);
+
 // 메인 페이지에 '포스트 보드'를 생성함
 // '포스트 보드'는 다수의 포스트로 이루어짐
 
@@ -380,6 +401,13 @@ export function setupPostBoard(
     // Smooth-scrollbar를 쓴다.
     const scrollbar = SmoothScrollbar.init(columnScrollbar, {
         alwaysShowTracks: false,
+        //damping: isMobile ? 1 : 0.2
+        damping: .27,
+        plugins: {
+            mobile: { // this is optional
+                speed: 0.2,
+            },
+        },
     });
     scrollbar.track.yAxis.element.remove();
     const column = scrollbar.contentEl;

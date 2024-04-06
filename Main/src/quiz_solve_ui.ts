@@ -144,6 +144,8 @@ const createAnswerElement = (question: QuizProblem) => {
         inputWrapper?.addEventListener("click", (evt) => {
             evt.preventDefault();
             rowWithInput.querySelector("input")?.focus();
+            //소프트 키보드 펼쳐져도 최하단으로 스크롤
+            document.documentElement.scrollTop = document.documentElement.scrollHeight;
         });
         const input = rowWithInput.querySelector("input")!;
         input.addEventListener("input", (evt) => {
