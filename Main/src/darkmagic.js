@@ -104,20 +104,20 @@ let loop_c = setInterval(() => {
         //     });
         // }
 
-        allMiddleCategoryName.forEach((elem) => {
-            if(elem.textContent == "플레이브 모의고사"){
-                plaveQuizSection = elem.parentNode;
-            } else if(elem.textContent == "소속사별 모의고사") {
-                companyQuizSection = elem.parentNode;
-            }
-        });
+        // allMiddleCategoryName.forEach((elem) => {
+        //     if(elem.textContent == "플레이브 모의고사"){
+        //         plaveQuizSection = elem.parentNode;
+        //     } else if(elem.textContent == "소속사별 모의고사") {
+        //         companyQuizSection = elem.parentNode;
+        //     }
+        // });
 
-        if(plaveQuizSection != null && companyQuizSection != null){
-            const parent = companyQuizSection.parentNode;
-            if(parent != null) parent.insertBefore(plaveQuizSection, companyQuizSection);
+        // if(plaveQuizSection != null && companyQuizSection != null){
+        //     const parent = companyQuizSection.parentNode;
+        //     if(parent != null) parent.insertBefore(plaveQuizSection, companyQuizSection);
 
-            insertFlag = false;
-        }
+        //     insertFlag = false;
+        // }
 
         swapElements();
 
