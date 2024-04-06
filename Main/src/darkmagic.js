@@ -136,7 +136,7 @@ function replaceBackgroundImageIfTitleMatches(titleText, newBackgroundImageUrl) 
         if (titleElement.textContent.trim() === titleText) {
             const parentElement = titleElement.parentElement.parentElement;
 
-            if (parentElement != null) {
+            if (parentElement !== null && parentElement.classList.contains('landscape')) {
                 parentElement.style.backgroundImage = `url('${newBackgroundImageUrl}')`;
             }
         }
