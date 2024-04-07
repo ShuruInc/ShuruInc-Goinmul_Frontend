@@ -103,7 +103,7 @@ const renderKeywords = (keywords: string[]) => {
     const keywordsContainer = document.querySelector(".keywords .bubbles")!;
     keywordsContainer.innerHTML = "";
 
-    if(keywords.length < 15) {
+    if(keywords.length > 15) {
         keywords = keywords.sort(() => Math.random() - 0.5);
         keywords = keywords.slice(0, 15);
     }
