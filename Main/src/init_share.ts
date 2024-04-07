@@ -5,6 +5,7 @@ import { encode } from "html-entities";
 import { icon } from "@fortawesome/fontawesome-svg-core";
 import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import tweetDialog from "./tweet_dialog";
+import linkIcon from '../assets/link-anchor.svg';
 
 export type ShareDatas = {
     webShare: ShareData;
@@ -74,11 +75,14 @@ export default function initShareButton(
         ) as HTMLAnchorElement,
         kakaoButton = document.querySelector(".share-kakao");
 
-    webShareButton?.classList.add("display-none");
+    kakaoButton?.classList.add("display-none");
 
     kakaoButton!.innerHTML = `<img src="${encode(
         kakaoTalkIcon,
     )}"> ${kakaoButton?.innerHTML}`;
+    webShareButton!.innerHTML = `<img src="${encode(
+        linkIcon,
+    )}"> ${webShareButton?.innerHTML}`;
     twitterButton!.innerHTML = `${
         icon(faXTwitter).html[0]
     } ${twitterButton?.innerHTML}`;
