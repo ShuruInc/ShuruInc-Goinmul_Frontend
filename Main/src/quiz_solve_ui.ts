@@ -356,7 +356,7 @@ const createQuestionElement = (
                             !pv[pv.length - 1].classList.contains("normal")
                         ) {
                             pv.push(document.createElement("div"));
-                            pv[pv.length - 1].className = "normal";
+                            pv[pv.length - 1].className = cv === ' ' ? 'whitespace' : "normal";
                         }
 
                         pv[pv.length - 1].textContent += cv;
