@@ -111,6 +111,10 @@
 
             makeScrollable();
             document.addEventListener('DOMContentLoaded', makeScrollable);
+
+            if (document.readyState === 'complete') {
+                makeScrollable();
+            }
         </script>
         
     </body>
