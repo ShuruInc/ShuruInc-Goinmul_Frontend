@@ -221,6 +221,8 @@ export default function initializeResultPage() {
                 // console.log(email)
                 session.submitEmail(email);
             });
+
+        window.scrollTo(0, 0);
     })();
 }
 
