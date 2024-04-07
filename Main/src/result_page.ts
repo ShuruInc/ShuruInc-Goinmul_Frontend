@@ -2,7 +2,7 @@ import html2canvas from "html2canvas";
 import "./../styles/quiz";
 import { QuizSession } from "./api/quiz_session";
 import SearchApiClient from "./api/search";
-import createFloatingButton, {
+import {
     addFloatingButonListener,
 } from "./floating_button";
 import initShareButton from "./init_share";
@@ -20,6 +20,7 @@ import createFirstPlaceDialog from "./firstPlaceDialog";
 import getMedalData from "./get_medal_image";
 import displayLoadingSplash from "./loadingSplash";
 import { alwaysDisplayEmailInputModal } from "./env";
+import createNoticeFloatingButton from "./notice_floating_button";
 
 /**
  * 결과 페이지를 렌더링한다.
@@ -52,7 +53,9 @@ export default function initializeResultPage() {
 
     InitTopNav();
     preparePlaceholderSection(document.querySelector(".post-section")!);
-    createFloatingButton("home");
+    createNoticeFloatingButton(
+        "5월 5일 23시 59분까지 1등을 유지하신 분께,  \"당신의 최애 장르 공식 굿즈 10만 원 상당\"을 이벤트 선물로 드립니다!",
+    );
     addFloatingButonListener(() => (location.href = "/"));
 
     SearchApiClient.randomRecommend(8).then((posts) => {

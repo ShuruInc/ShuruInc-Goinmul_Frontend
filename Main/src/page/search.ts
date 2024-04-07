@@ -1,7 +1,7 @@
 import { dom, icon, library } from "@fortawesome/fontawesome-svg-core";
 import "../../styles/search.scss";
 import { faChevronLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
-import createFloatingButton, {
+import {
     addFloatingButonListener,
 } from "../floating_button";
 import SearchApiClient from "../api/search";
@@ -11,6 +11,7 @@ import {
 } from "../post_board";
 import setHorizontalDragScrollOnDesktop from "../horizontal_drag_to_scroll_on_desktop";
 import paperPlane from "../../assets/paperplane.svg";
+import createNoticeFloatingButton from "../notice_floating_button";
 
 // 아이콘 렌더링
 library.add(faSearch);
@@ -39,7 +40,9 @@ document.querySelector("button.go-back")?.addEventListener("click", (evt) => {
 });
 
 // 홈 버튼 추가
-createFloatingButton("home");
+createNoticeFloatingButton(
+    "5월 5일 23시 59분까지 1등을 유지하신 분께,  \"당신의 최애 장르 공식 굿즈 10만 원 상당\"을 이벤트 선물로 드립니다!",
+);
 addFloatingButonListener(() => (location.href = "/"));
 
 // query 매개변수 가져오기

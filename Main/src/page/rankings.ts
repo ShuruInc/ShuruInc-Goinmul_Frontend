@@ -7,13 +7,12 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import PostBoardApiClient from "../api/posts";
 import { RankingItem } from "../home_post_board";
 import { encode } from "html-entities";
-import createFloatingButton, {
+import {
     addFloatingButonListener,
 } from "../floating_button";
 import createNoticeFloatingButton from "../notice_floating_button";
 
 InitTopNav(false);
-createFloatingButton();
 createNoticeFloatingButton(
     "5월 5일 23시 59분까지 1등을 유지하신 분께,  \"당신의 최애 장르 공식 굿즈 10만 원 상당\"을 이벤트 선물로 드립니다!",
 );
