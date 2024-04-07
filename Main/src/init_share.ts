@@ -80,12 +80,12 @@ export default function initShareButton(
     kakaoButton!.innerHTML = `<img src="${encode(
         kakaoTalkIcon,
     )}"> ${kakaoButton?.innerHTML}`;
-    webShareButton!.innerHTML = `<img src="${encode(
-        linkIcon,
-    )}"> ${webShareButton?.innerHTML}`;
     twitterButton!.innerHTML = `${
         icon(faXTwitter).html[0]
     } ${twitterButton?.innerHTML}`;
+    webShareButton!.innerHTML = `<img src="${encode(
+        linkIcon,
+    )}"> ${webShareButton?.innerHTML}`;
 
     webShareButton?.addEventListener("click", () => {
         (options.beforeShare ? options.beforeShare : async () => {})()
