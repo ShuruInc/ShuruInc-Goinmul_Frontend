@@ -69,23 +69,23 @@ export default function initShareButton(
     importKakaoSdk();
 
     let content: ShareDatas | null = null;
-    let webShareButton = document.querySelector(".share-web-share"),
-        twitterButton = document.querySelector(
+    let webShareButton = document.querySelector<HTMLElement>(".share-web-share"),
+        twitterButton = document.querySelector<HTMLElement>(
             ".share-twitter",
         ) as HTMLAnchorElement,
-        kakaoButton = document.querySelector(".share-kakao");
+        kakaoButton = document.querySelector<HTMLElement>(".share-kakao");
 
     kakaoButton?.classList.add("display-none");
 
     kakaoButton!.innerHTML = `<img src="${encode(
         kakaoTalkIcon,
-    )}"> ${kakaoButton?.innerHTML}`;
+    )}"> ${kakaoButton?.innerText}`;
     twitterButton!.innerHTML = `${
         icon(faXTwitter).html[0]
-    } ${twitterButton?.innerHTML}`;
+    } ${twitterButton?.innerText}`;
     webShareButton!.innerHTML = `<img src="${encode(
         linkIcon,
-    )}"> ${webShareButton?.innerHTML}`;
+    )}"> ${webShareButton?.innerText}`;
 
     webShareButton?.addEventListener("click", () => {
         (options.beforeShare ? options.beforeShare : async () => {})()
