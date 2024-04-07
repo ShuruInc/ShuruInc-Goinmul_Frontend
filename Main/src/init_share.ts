@@ -100,7 +100,17 @@ export default function initShareButton(
                         if (options.onComplete) options.onComplete();
                     });
             })
-            .catch((err) => alert("오류가 발생했습니다: " + err));
+            .catch(() => {
+                (async () => {
+                    if ("clipboard" in navigator) {
+                        alert('클립보드에 주소가 복사되었어요!');
+                        return navigator.clipboard.writeText(content!.webShare.url!);
+                    }
+                    else throw new Error();
+                })().catch((_) => {
+                    prompt("다음 주소를 복사해주세요!", content!.webShare.url!);
+                });
+            });
     });
     twitterButton.addEventListener("click", (evt) => {
         evt.preventDefault();
