@@ -19,7 +19,12 @@
 
 .share-web-share {
     @include share-button-common();
-    border: 1px solid #DFDFDF;
+    // border: 1px solid #DFDFDF;
+    background-color: #FBE400;
+
+    img {
+        filter: invert(90%) sepia(44%) saturate(2442%) hue-rotate(343deg) brightness(92%) contrast(116%);
+    }
 }
 
 .share-kakao {
