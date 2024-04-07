@@ -97,7 +97,11 @@
                 item.addEventListener('click', (event) => {
                     event.preventDefault();
             
-                    item.querySelector('a').click();
+                    const href = item.querySelector('a').href;
+
+                    if(href) {
+                        window.location.href = href;
+                    }
 
                     item.dataset.clickable = 'true';
                 });
