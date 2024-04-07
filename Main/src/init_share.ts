@@ -109,6 +109,12 @@ export default function initShareButton(
                     else throw new Error();
                 })().catch((_) => {
                     prompt("다음 주소를 복사해주세요!", content!.webShare.url!);
+                })
+                .then(() => {
+                    if (options.onShared) options.onShared();
+                })
+                .finally(() => {
+                    if (options.onComplete) options.onComplete();
                 });
             });
     });
