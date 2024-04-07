@@ -91,21 +91,26 @@
         </div>
         <script src="../src/darkmagic_for_search.js"></script>
         <script>
-            document.querySelectorAll('article .popularNow .columns .column li').forEach(item => {
-                if(item.dataset.clickable === 'true') return;
+            function makeScrollable() {
+                document.querySelectorAll('article .popularNow .columns .column li').forEach(item => {
+                    if(item.dataset.clickable === 'true') return;
 
-                item.addEventListener('click', (event) => {
-                    event.preventDefault();
-            
-                    const href = item.querySelector('a').href;
+                    item.addEventListener('click', (event) => {
+                        event.preventDefault();
+                
+                        const href = item.querySelector('a').href;
 
-                    if(href) {
-                        window.location.href = href;
-                    }
+                        if(href) {
+                            window.location.href = href;
+                        }
 
-                    item.dataset.clickable = 'true';
+                        item.dataset.clickable = 'true';
+                    });
                 });
-            });
+            }
+
+            makeScrollable();
+            document.addEventListener('DOMContentLoaded', makeScrollable);
         </script>
         
     </body>
