@@ -104,7 +104,8 @@ const renderKeywords = (keywords: string[]) => {
     keywordsContainer.innerHTML = "";
 
     if(keywords.length < 15) {
-        keywords = keywords.sort(() => Math.random() - 0.5).slice(0, 15);
+        keywords = keywords.sort(() => Math.random() - 0.5);
+        keywords = keywords.slice(0, 15);
     }
 
     while (keywords.length > 0) {
