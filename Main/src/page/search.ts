@@ -103,6 +103,10 @@ const renderKeywords = (keywords: string[]) => {
     const keywordsContainer = document.querySelector(".keywords .bubbles")!;
     keywordsContainer.innerHTML = "";
 
+    if(keywords.length < 15) {
+        keywords = keywords.sort(() => Math.random() - 0.5).slice(0, 15);
+    }
+
     while (keywords.length > 0) {
         const keyword = keywords.pop();
         if (typeof keyword === "undefined") break;
@@ -136,7 +140,7 @@ const render = async () => {
                 ? i.classList.remove("display-none")
                 : i.classList.add("display-none"),
         );
-        renderKeywords(await SearchApiClient.recommendKeyword(15));
+        renderKeywords(await SearchApiClient.recommendKeyword(150));
         renderPopularQueries(await SearchApiClient.hotMakeTestRequests(10));
     } else {
         // 검색
