@@ -18,14 +18,14 @@
     }
 
     &.notice {
-        bottom: 96px;
+        // bottom: 96px;
 
         display: flex;
         justify-content: space-between;
         align-items: center;
         gap: 20px;
         
-        width: inherit;
+        width: 60px;
         padding: 0px 18px;
 
         .icon img {

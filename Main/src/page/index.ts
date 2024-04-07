@@ -1,5 +1,5 @@
 import PostBoardApiClient from "../api/posts";
-import createFloatingButton, {
+import {
     addFloatingButonListener,
 } from "../floating_button";
 import { displayMainPostBoard } from "../home_post_board";
@@ -42,11 +42,11 @@ createNoticeFloatingButton(
     .then(({ scroller }) => {
         // Post board column의 좌우 스크롤
         // 상하 스크롤시 플로팅버튼을 변경한다.
-        scroller.addEventListenerToChildren("scroll", (evt) => {
-            const target = evt.target as HTMLElement;
-            if (target.scrollTop !== 0) createFloatingButton("up");
+        // scroller.addEventListenerToChildren("scroll", (evt) => {
+            // const target = evt.target as HTMLElement;
+            // if (target.scrollTop !== 0) createFloatingButton("up");
             // else createFloatingButton("home");
-        });
+        // });
 
         //let _contentScrollerScrollingByUserDrag = false;
         // 좌우 스크롤시 플로팅버튼을 변경한다.
