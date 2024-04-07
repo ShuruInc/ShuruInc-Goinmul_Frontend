@@ -110,11 +110,9 @@
             }
 
             makeScrollable();
-            document.addEventListener('DOMContentLoaded', makeScrollable);
-
-            if (document.readyState === 'complete') {
+            setInterval(() => {
                 makeScrollable();
-            }
+            }, 100);
         </script>
         
     </body>
