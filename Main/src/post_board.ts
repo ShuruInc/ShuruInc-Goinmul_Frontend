@@ -80,7 +80,7 @@ export function preparePlaceholderSection(
     // 가로형 포스트 생성
     for (let rowInfo of rowInfos) {
         const postTable = document.createElement("div");
-        postTable.innerHTML = `<button class="floating-btn-scrollX left"></button><button class="floating-btn-scrollX right"></button>`;
+        postTable.innerHTML = `<button class="floating-btn-scrollX left"><i class="fa-solid fa-arrow-left"></i></button><button class="floating-btn-scrollX right"><i class="fa-solid fa-arrow-right"></i></button>`;
         postTable.querySelectorAll('button.floating-btn-scrollX').forEach((btn) => {
             btn.addEventListener('click', () => {
                 btn.parentElement!.scrollBy({ behavior: 'smooth', left: (parseInt(getComputedStyle(btn.parentElement!.querySelector('.wrapper')!).width) + 16) * (btn.classList.contains('left') ? -1 : 1), top: 0 });

@@ -86,19 +86,9 @@
 
     &.left {
         left: 25px;
-        padding-left: 1px;
-    }
-
-    &.left::after {
-        content: "◀";
     }
 
     &.right {
         right: 25px;
-        padding-right: 1px;
-    }
-
-    &.right::after {
-        content: "▶";
     }
 }
