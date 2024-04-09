@@ -230,6 +230,8 @@ export default function initializeResultPage() {
 
 document.body.style.overflowX = "hidden";
 
+(window as any).createFirstPlaceDialog = createFirstPlaceDialog;
+
 
 // let loop_d = setInterval(() => {
 //     const h2Element = document.querySelector('h2 .subtitle');
