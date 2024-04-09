@@ -148,7 +148,7 @@ body {
                     font-size: 14px;
                     color: $black-color-02;
 
-                    &:nth-child(1) {
+                    &.first {
                         font-size: 14px;
                         font-weight: 600;
                         color: $black-color-01;
@@ -160,7 +160,7 @@ body {
                         }
                     }
 
-                    &:nth-child(3), &:nth-child(5) {
+                    &.second, &.third {
                         font-weight: 600;
 
                         td.ranking {
@@ -168,14 +168,14 @@ body {
                             background-position: left 53% top 0%;
                         }
 
-                        &:nth-child(3) {   
+                        &.second {   
                             color: $black-color-01;
                             td.ranking {
                                 background-image: url(../assets/ranking-medal-icon/silver.png);
                             }
                         }
 
-                        &:nth-child(5) {
+                        &.third {
                             color: $black-color-02;
                             td.ranking {
                                 background-image: url(../assets/ranking-medal-icon/cooper.png);

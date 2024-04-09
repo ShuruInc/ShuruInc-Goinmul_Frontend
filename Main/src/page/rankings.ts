@@ -27,7 +27,9 @@ dom.i2svg({ node: document.querySelector(".paper .search-icon")! });
 
 let buttonLabels: string[] = [];
 let rankingData: RankingItem[] = [];
-let isTextExsits = false;
+// let isTextExsits = false;
+
+const rankingClass = [ 'first', 'second', 'third' ];
 
 const activateRankingButton = (selectedLabel: string) => {
     const activeLabelIndex = buttonLabels.indexOf(selectedLabel);
@@ -81,7 +83,7 @@ const displayRanking = (query?: string, allowEmpty?: boolean) => {
             const k = idx + 1;
 
             row.innerHTML =
-                `<td class="ranking">${(k==1)||(k==2)||(k==3)?'':idx+1}</td>` +
+                `<td class="ranking ${rankingClass[k] ?? ''}">${(k==1)||(k==2)||(k==3)?'':idx+1}</td>` +
                 `<td class="nickname">${encode(i.nickname)}#${i.hashtag}</td>` +
                 `<td class="score">${i.score}</td>`;
             return row;
@@ -118,12 +120,33 @@ PostBoardApiClient.getRankings().then((rankings) => {
     document
         .querySelector(".search input")
         ?.addEventListener("input", (evt) => {
-            displayRanking((evt.target as HTMLInputElement).value);
+            searchRanking((evt.target as HTMLInputElement).value);
         });
     activateRankingButton(buttonLabels[0]);
     rankingData = rankings[buttonLabels[0]];
     displayRanking(undefined, true);
 });
+
+function searchRanking(value: string) {
+    const tbody = document.querySelector<HTMLElement>('.rankings tbody');
+    const rows = tbody?.querySelectorAll('tr');
+
+    if(tbody !== null && rows !== null && rows !== undefined) {
+        tbody.style.display = 'display-none';
+    
+        rows.forEach(row => {
+            const nickname = row.querySelector('.nickname')?.textContent;
+            if(nickname == null) return;
+            if(nickname.includes(value)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        tbody.style.display = '';
+    }
+}
 
 // 한글 자모만 입력했는지 체크
 // function hasCharactersWithinUnicodeRange(input: string): boolean {
@@ -145,45 +168,45 @@ PostBoardApiClient.getRankings().then((rankings) => {
 
 
 // 랭킹 검색창에 텍스트가 있는지 체크하고 기억
-document.querySelector("input")?.addEventListener('input', () => {
-    const text = document.querySelector("input")?.value;
+// document.querySelector("input")?.addEventListener('input', () => {
+//     const text = document.querySelector("input")?.value;
 
-    if(text == null) return;
-    if (text.length > 0) {
-        isTextExsits  = true;
-    } else {
-        isTextExsits  = false;
-    }
+//     if(text == null) return;
+//     if (text.length > 0) {
+//         isTextExsits  = true;
+//     } else {
+//         isTextExsits  = false;
+//     }
     
-});
+// });
 
 // 랭킹 검색창에 텍스트가 비어있으면 메달 컬럼 표시, 텍스트가 없으면 메달 컬럼 비표시
-setInterval(() => {
-    if (isTextExsits) {
-        document.querySelectorAll('.ranking').forEach(item => {
-            (item as HTMLElement).style.display = 'none';
+// setInterval(() => {
+//     if (isTextExsits) {
+//         document.querySelectorAll('.ranking').forEach(item => {
+//             (item as HTMLElement).style.display = 'none';
             
-        });
-    } else {
-        document.querySelectorAll('.ranking').forEach(item => {
-            (item as HTMLElement).style.display = '';
-        });
-    }
-}, 1); 
+//         });
+//     } else {
+//         document.querySelectorAll('.ranking').forEach(item => {
+//             (item as HTMLElement).style.display = '';
+//         });
+//     }
+// }, 1); 
 
 // 랭킹 검색창이 포커스될 때 최초 한 번 텍스트를 비우기
-document.querySelector("input")?.addEventListener('focus', () => {
-    const input = document.querySelector("input");
+// document.querySelector("input")?.addEventListener('focus', () => {
+//     const input = document.querySelector("input");
     
-    if(input == null) 
-        return;
-    else
-    {
-        input.value = "";
-        isTextExsits = false;
-    }
+//     if(input == null) 
+//         return;
+//     else
+//     {
+//         input.value = "";
+//         isTextExsits = false;
+//     }
 
-});
+// });
 
 // document.querySelector("input")?.addEventListener('blur', () => {
 //     location.href = location.href; //새로고침
