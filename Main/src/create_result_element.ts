@@ -1,5 +1,6 @@
 import { encode } from "html-entities";
 import paperCorner from "../assets/paper-corner.svg";
+import rankingIcon from "../assets/ranking-icon.svg";
 
 /**
  * 고인물테스트 성적결과표 데이터
@@ -134,7 +135,8 @@ export default function createResultElement(
     // 문구설정
     const comment = element.querySelector(".comment")!;
     if (data.nerd) {
-        comment.innerHTML = `홈에서 실시간 랭킹을 확인할 수 있습니다.`;
+        const iconHtml = `<img src="${rankingIcon}" class="ranking-icon"></img>`;
+        comment.innerHTML = `홈에서 ${iconHtml} 아이콘을 누르면 실시간 랭킹을 확인하실 수 있습니다.`;
     } else if (data.points === 100) {
         comment.innerHTML = `완벽합니다! <a class="nerd-test-link"></a>에 도전해 보시겠어요?`;
     } else if (data.points >= 70) {
