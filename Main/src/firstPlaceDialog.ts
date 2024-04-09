@@ -18,7 +18,7 @@ export default function createFirstPlaceDialog(
         "당신의 최애 공식 굿즈 10만 원 상당"을<br>
         이벤트 선물로 드립니다!
     </p>
-    <form>
+    <form id="emailForm">
         <input type="email" placeholder="example@example.com"><br>
         <button type="submit">전송</button>
     </form>
@@ -91,6 +91,7 @@ export default function createFirstPlaceDialog(
         dialog.style.top = `${Math.round(dialogXy[1])}px`;
         dialog.style.width = `${Math.round(dialogSize[0])}px`;
         dialog.style.height = `${Math.round(dialogSize[1])}px`;
+        document.getElementById('emailForm')!.style.marginTop = `${Math.round(Math.round(dialogSize[1]) / 5)}px`;
         if (!removed) window.requestAnimationFrame(changeDialogSize);
     };
 
