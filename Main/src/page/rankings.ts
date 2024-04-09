@@ -139,8 +139,14 @@ function searchRanking(value: string) {
             if(nickname == null) return;
             if(nickname.includes(value)) {
                 row.style.display = '';
+                if(row.nextElementSibling) {
+                    (row.nextElementSibling as HTMLElement).style.display = '';
+                }
             } else {
                 row.style.display = 'none';
+                if(row.nextElementSibling) {
+                    (row.nextElementSibling as HTMLElement).style.display = 'none';
+                }
             }
         });
 
