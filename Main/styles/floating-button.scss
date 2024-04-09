@@ -75,7 +75,7 @@
     bottom: calc(calc(calc(var(--portrait-table-cell-width) / 464) * 714) / 2);
     box-shadow: 1px 4px 6px 0px rgba(0,0,0,.15);
     color: #0a4129;
-    font-size: 20px;
+    font-size: 24px;
     cursor: pointer;
     height: 50px;
     position: absolute;
@@ -86,7 +86,7 @@
 
     &.left {
         left: 25px;
-        padding-left: 2px;
+        padding-left: 1px;
     }
 
     &.left::after {
@@ -95,7 +95,7 @@
 
     &.right {
         right: 25px;
-        padding-right: 2px;
+        padding-right: 1px;
     }
 
     &.right::after {
