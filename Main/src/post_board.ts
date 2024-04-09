@@ -74,12 +74,6 @@ export function preparePlaceholderSection(
 ) {
     placeholderSection.innerHTML = `<button class="floating-btn-scrollX left"></button><button class="floating-btn-scrollX right"></button>`;
     placeholderSection.classList.add("post-section");
-    placeholderSection.querySelectorAll('button.floating-btn-scrollX').forEach((btn) => {
-        btn.addEventListener('click', () => {
-            const target = btn.classList.contains('left') ? 'start' : 'end';
-            placeholderSection.scrollIntoView({ behavior: 'smooth', block: 'center', inline: target });
-        });
-    });
 
     // 제목 생성
     placeholderSection.appendChild(document.createElement("h2"));
@@ -87,6 +81,13 @@ export function preparePlaceholderSection(
     // 가로형 포스트 생성
     for (let rowInfo of rowInfos) {
         const postTable = document.createElement("div");
+        postTable.innerHTML = `<button class="floating-btn-scrollX left"></button><button class="floating-btn-scrollX right"></button>`;
+        postTable.querySelectorAll('button.floating-btn-scrollX').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                const target = btn.classList.contains('left') ? 'start' : 'end';
+                postTable.scrollIntoView({ behavior: 'smooth', block: 'center', inline: target });
+            });
+        });
         postTable.className =
             "post-table" + (rowInfo.landscape ? " landscape" : " portrait");
         if (!rowInfo.landscape) {
