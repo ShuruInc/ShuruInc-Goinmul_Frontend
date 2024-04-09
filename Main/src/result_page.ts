@@ -152,18 +152,20 @@ export default function initializeResultPage() {
 
         document
             .querySelector(".copy-link")
-            ?.addEventListener("click", (evt) => {
+            ?.addEventListener("click", async (evt) => {
                 evt.preventDefault();
 
-                (async () => {
-                    if ("clipboard" in navigator) {
+                try {
+                    if(navigator.clipboard) {
+                        await navigator.clipboard.writeText(url);
+                        
                         alert('클립보드에 주소가 복사되었어요!');
-                        return navigator.clipboard.writeText(url);
-                    }
-                    else throw new Error();
-                })().catch((_) => {
+
+                        return;
+                    } else throw new Error();
+                } catch {
                     prompt("다음 주소를 복사해주세요!", url);
-                });
+                }
             });
         await removeLoadingAfter(Math.max(1, 1000 - (Date.now() - loadTime)));
         const blob = await addPadding(
