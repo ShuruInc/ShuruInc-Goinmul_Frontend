@@ -20,7 +20,7 @@ export default function createFirstPlaceDialog(
     </p>
     <form id="emailForm">
         <p class="${styles.gimmeEmail}">
-            이메일 주소를 기록해주세요<br>
+            이메일 주소를 기록해주세요.<br>
         </p>
         <input type="email" placeholder="example@example.com"><br>
         <button type="submit">전송</button>
