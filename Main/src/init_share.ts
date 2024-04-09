@@ -44,9 +44,9 @@ export default function initShareButton(
     webShareButton?.addEventListener("click", async () => {
         await options.beforeShare?.();
         if (content === null) return;
-        try {
+        if (navigator.share) {
             await navigator.share(content.webShare);
-        } catch {
+        } else {
             try {
                 if(navigator.clipboard) {
                     await navigator.clipboard.writeText(content!.webShare.url!);
@@ -54,9 +54,11 @@ export default function initShareButton(
                     alert('클립보드에 주소가 복사되었어요!');
 
                     return;
-                } else throw new Error();
+                } else {
+                    throw new Error();
+                }
             } catch {
-                prompt("다음 주소를 복사해주세요!", content!.webShare.url!);
+                prompt('다음 주소를 복사해주세요!', content!.webShare.url!);
             }
         }
         options.onShared?.();
