@@ -86,6 +86,7 @@
 
     &.left {
         left: 25px;
+        padding-left: 2px;
     }
 
     &.left::after {
@@ -94,6 +95,7 @@
 
     &.right {
         right: 25px;
+        padding-right: 2px;
     }
 
     &.right::after {
