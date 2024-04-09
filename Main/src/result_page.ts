@@ -189,7 +189,7 @@ export default function initializeResultPage() {
                 title: `[${result.category}] ${
                     isNerdTest ? "고인물 테스트" : "모의고사"
                 }`,
-                text: `내 성적표 등장 ‼\n${url}`,
+                text: `내 성적표 등장 ‼\n\n${url}`,
                 files: [imageFile],
             },
             kakao: {

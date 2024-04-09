@@ -251,7 +251,7 @@ export default function initSolvePage(session: QuizSession) {
                     title: `[${sessionInfo.category}] ${
                         sessionInfo.isNerdTest ? "고인물 테스트" : "모의고사"
                     }`,
-                    text: `모르겠어요... 도와주세요 🚨\n${quizUrl}`,
+                    text: `모르겠어요... 도와주세요 🚨\n\n${quizUrl}`,
                 },
             };
             setShareData({
