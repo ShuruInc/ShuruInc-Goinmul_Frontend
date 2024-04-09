@@ -61,7 +61,7 @@ const millify = (number: number): string => {
 };
 
 /** placeholderSection 요소를 빈 섹션으로 바꾼다. */
-export async function preparePlaceholderSection(
+export function preparePlaceholderSection(
     placeholderSection: HTMLElement,
     rowInfos: RowInfo[] = [
         {
@@ -84,8 +84,9 @@ export async function preparePlaceholderSection(
     // 가로형 포스트 생성
     for (let rowInfo of rowInfos) {
         const postTable = document.createElement("div");
+        dom.i2svg();
         postTable.innerHTML = `<button class="floating-btn-scrollX left"><i class="fa-solid fa-arrow-left"></i></button><button class="floating-btn-scrollX right"><i class="fa-solid fa-arrow-right"></i></button>`;
-        await dom.i2svg();
+        dom.i2svg();
         postTable.querySelectorAll('button.floating-btn-scrollX').forEach((btn) => {
             btn.addEventListener('click', () => {
                 btn.parentElement!.scrollBy({ behavior: 'smooth', left: (parseInt(getComputedStyle(btn.parentElement!.querySelector('.wrapper')!).width) + 16) * (btn.classList.contains('left') ? -1 : 1), top: 0 });
@@ -187,7 +188,7 @@ function manipulateRepresentingColor([r, g, b]: number[]) {
 */
 
 // section을 posts로 채운다.
-export async function fillPlaceholderSectionInto(
+export function fillPlaceholderSectionInto(
     posts: Partial<PostBoardSectionData>,
     section: HTMLElement,
     noCellInfo = false,
@@ -210,7 +211,7 @@ export async function fillPlaceholderSectionInto(
             landscape: false,
             count: posts.portraits!.length,
         });
-    await preparePlaceholderSection(section, rowInfos, false);
+    preparePlaceholderSection(section, rowInfos, false);
 
     // 애니메이션 효과
     const animateHeart = (element: HTMLElement) => {
@@ -419,7 +420,7 @@ export function setupPostBoard(
     scrollbar.track.yAxis.element.remove();
     const column = scrollbar.contentEl;
 
-    async function fillPlaceholderSection(posts: PostBoardSectionData | null) {
+    function fillPlaceholderSection(posts: PostBoardSectionData | null) {
         if (posts === null || completed) {
             completed = true;
             [...column.querySelectorAll("section.placeholder")].forEach(
@@ -432,13 +433,13 @@ export function setupPostBoard(
         }
 
         // 포스트를 담을 테이블 생성
-        const section = await getPlaceholderSection();
+        const section = getPlaceholderSection();
 
         fillPlaceholderSectionInto(posts, section);
     }
 
     // 빈 섹션이 2개 미만으로 있을 시 빈 섹션을 새로 생성한다.
-    async function createPlaceholderSectionsIfNeeded() {
+    function createPlaceholderSectionsIfNeeded() {
         let placeholderCount = [
             ...column.querySelectorAll("section.placeholder"),
         ].length;
@@ -448,7 +449,7 @@ export function setupPostBoard(
         for (let i = 0; i < placeholderCountToCreate; i++) {
             // 포스트를 담을 테이블 생성
             var flexTable = document.createElement("section");
-            await preparePlaceholderSection(flexTable);
+            preparePlaceholderSection(flexTable);
 
             column.appendChild(flexTable);
             return;
@@ -456,9 +457,9 @@ export function setupPostBoard(
     }
 
     // 빈 섹션을 반환한다. 없으면 만든다.
-    async function getPlaceholderSection(markUsed = true) {
+    function getPlaceholderSection(markUsed = true) {
         // 빈 섹션이 없을 시 만든다.
-        await createPlaceholderSectionsIfNeeded();
+        createPlaceholderSectionsIfNeeded();
 
         // 쓰이지 않은 빈 섹션을 가져오고 placeholder 클래스를 제거한다. (중복 반환 방지!)
         const placeholder = column.querySelector("section.placeholder")!;
@@ -467,7 +468,7 @@ export function setupPostBoard(
             placeholder.classList.remove("placeholder");
 
         // 항상 빈 섹션이 하단에 있도록 다시 호출한다.
-        await createPlaceholderSectionsIfNeeded();
+        createPlaceholderSectionsIfNeeded();
         return placeholder as HTMLElement;
     }
 
