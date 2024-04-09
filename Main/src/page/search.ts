@@ -50,7 +50,7 @@ const params = new URLSearchParams(
 );
 let query = params.get("query") ?? "";
 const searchInput = document.querySelector("input.search") as HTMLInputElement;
-const searchButton = document.querySelector("div.invisible-search-button") as HTMLInputElement; 
+// const searchButton = document.querySelector("div.invisible-search-button") as HTMLInputElement; 
 searchInput.value = query;
 
 /**
@@ -262,10 +262,10 @@ const setQuery = (newQuery: string, setInputValue = false) => {
 searchInput.addEventListener("input", (evt) => {
     setQuery((evt.target as HTMLInputElement).value);
 });
-searchButton.addEventListener("click", () => {
-    setQuery(searchInput.value);
-    searchInput.value = "";
-});
+// searchButton.addEventListener("click", () => {
+//     setQuery(searchInput.value);
+//     searchInput.value = "";
+// });
 
 
 // 출제 요청 버튼
