@@ -185,6 +185,6 @@ document.querySelector("input")?.addEventListener('focus', () => {
 
 });
 
-document.querySelector("input")?.addEventListener('blur', () => {
-    location.href = location.href; //새로고침
-})
+// document.querySelector("input")?.addEventListener('blur', () => {
+//     location.href = location.href; //새로고침
+// })

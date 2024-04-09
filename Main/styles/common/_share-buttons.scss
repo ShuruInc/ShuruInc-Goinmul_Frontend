@@ -20,7 +20,7 @@
 .share-web-share {
     @include share-button-common();
     // border: 1px solid #DFDFDF;
-    background-color: #FBE400;
+    background-color: #FFFFFF;
 
     img {
         filter: invert(90%) sepia(44%) saturate(2442%) hue-rotate(343deg) brightness(92%) contrast(116%);
