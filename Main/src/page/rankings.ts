@@ -81,9 +81,12 @@ const displayRanking = (query?: string, allowEmpty?: boolean) => {
         .map((i, idx) => {
             const row = document.createElement("tr");
             const k = idx + 1;
+            const rankingClassString = rankingClass[idx];
+
+            if (rankingClassString) row.classList.add(rankingClassString);
 
             row.innerHTML =
-                `<td class="ranking ${rankingClass[k] ?? ''}">${(k==1)||(k==2)||(k==3)?'':idx+1}</td>` +
+                `<td class="ranking">${(k==1)||(k==2)||(k==3)?'':idx+1}</td>` +
                 `<td class="nickname">${encode(i.nickname)}#${i.hashtag}</td>` +
                 `<td class="score">${i.score}</td>`;
             return row;
