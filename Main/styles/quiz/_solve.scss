@@ -22,6 +22,8 @@ article {
 }
 
 html, body {
+    overscroll-behavior: none;
+
     @include chalkboard-background;
 }
 
