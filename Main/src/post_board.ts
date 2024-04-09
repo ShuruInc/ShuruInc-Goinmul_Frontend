@@ -4,8 +4,12 @@ import footer from "./footer";
 import "./smooth-scrollbar-scroll-lock-plugin";
 import eyeIcon from "../assets/post-cell-popularity-icons/eye.svg";
 import heartSolidIcon from "../assets/post-cell-popularity-icons/heart-solid.svg";
+import { dom, library } from "@fortawesome/fontawesome-svg-core";
+import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 // import { isMobile } from "./is_mobile";
 // import Color from "color";
+
+library.add(faArrowLeft, faArrowRight);
 
 type RowInfo = { landscape: boolean; count: number };
 export type Post = {
@@ -81,6 +85,8 @@ export function preparePlaceholderSection(
     for (let rowInfo of rowInfos) {
         const postTable = document.createElement("div");
         postTable.innerHTML = `<button class="floating-btn-scrollX left"><i class="fa-solid fa-arrow-left"></i></button><button class="floating-btn-scrollX right"><i class="fa-solid fa-arrow-right"></i></button>`;
+        dom.i2svg({ node: postTable.querySelector('i.fa-arrow-left')! });
+        dom.i2svg({ node: postTable.querySelector('i.fa-arrow-right')! });
         postTable.querySelectorAll('button.floating-btn-scrollX').forEach((btn) => {
             btn.addEventListener('click', () => {
                 btn.parentElement!.scrollBy({ behavior: 'smooth', left: (parseInt(getComputedStyle(btn.parentElement!.querySelector('.wrapper')!).width) + 16) * (btn.classList.contains('left') ? -1 : 1), top: 0 });
