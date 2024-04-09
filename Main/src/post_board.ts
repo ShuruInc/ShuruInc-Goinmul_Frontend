@@ -84,9 +84,7 @@ export function preparePlaceholderSection(
     // 가로형 포스트 생성
     for (let rowInfo of rowInfos) {
         const postTable = document.createElement("div");
-        dom.i2svg();
         postTable.innerHTML = `<button class="floating-btn-scrollX left"><i class="fa-solid fa-arrow-left"></i></button><button class="floating-btn-scrollX right"><i class="fa-solid fa-arrow-right"></i></button>`;
-        dom.i2svg();
         postTable.querySelectorAll('button.floating-btn-scrollX').forEach((btn) => {
             btn.addEventListener('click', () => {
                 btn.parentElement!.scrollBy({ behavior: 'smooth', left: (parseInt(getComputedStyle(btn.parentElement!.querySelector('.wrapper')!).width) + 16) * (btn.classList.contains('left') ? -1 : 1), top: 0 });
@@ -146,6 +144,10 @@ export function preparePlaceholderSection(
 
     if (placeholder) placeholderSection.classList.add("placeholder");
     placeholderSection.dataset.rowInfos = JSON.stringify(rowInfos);
+
+    setTimeout(() => {
+        dom.i2svg();
+    }, 500);
 }
 
 function getImageDataFromImageElement(url: string) {
