@@ -85,7 +85,8 @@ export function preparePlaceholderSection(
         postTable.querySelectorAll('button.floating-btn-scrollX').forEach((btn) => {
             btn.addEventListener('click', () => {
                 const target = btn.classList.contains('left') ? 'start' : 'end';
-                postTable.scrollIntoView({ behavior: 'smooth', block: 'center', inline: target });
+                const element = btn.parentElement?.querySelector(`.wrapper:${target === 'start' ? 'first' : 'last'}-of-type`);
+                element?.scrollIntoView({ behavior: 'smooth', block: target, inline: target });
             });
         });
         postTable.className =
