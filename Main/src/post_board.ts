@@ -85,8 +85,7 @@ export function preparePlaceholderSection(
     for (let rowInfo of rowInfos) {
         const postTable = document.createElement("div");
         postTable.innerHTML = `<button class="floating-btn-scrollX left"><i class="fa-solid fa-arrow-left"></i></button><button class="floating-btn-scrollX right"><i class="fa-solid fa-arrow-right"></i></button>`;
-        dom.i2svg({ node: postTable.querySelector('i.fa-arrow-left')! });
-        dom.i2svg({ node: postTable.querySelector('i.fa-arrow-right')! });
+        dom.i2svg();
         postTable.querySelectorAll('button.floating-btn-scrollX').forEach((btn) => {
             btn.addEventListener('click', () => {
                 btn.parentElement!.scrollBy({ behavior: 'smooth', left: (parseInt(getComputedStyle(btn.parentElement!.querySelector('.wrapper')!).width) + 16) * (btn.classList.contains('left') ? -1 : 1), top: 0 });
