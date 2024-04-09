@@ -72,7 +72,7 @@
     background-color: #fff;
     border-radius: 40px;
     border: 0px;
-    bottom: 160px;
+    bottom: calc(calc(calc(var(--portrait-table-cell-width) / 464) * 714) / 2);
     box-shadow: 1px 4px 6px 0px rgba(0,0,0,.15);
     color: #0a4129;
     cursor: pointer;
