@@ -44,25 +44,29 @@ export default function initShareButton(
     webShareButton?.addEventListener("click", async () => {
         await options.beforeShare?.();
         if (content === null) return;
-        if (navigator.share) {
-            await navigator.share(content.webShare);
-        } else {
-            try {
-                if(navigator.clipboard) {
-                    await navigator.clipboard.writeText(content!.webShare.url!);
-                    
-                    alert('클립보드에 주소가 복사되었어요!');
-
-                    return;
-                } else {
-                    throw new Error();
+        try {
+            if (navigator.share) {
+                await navigator.share(content.webShare);
+            } else {
+                try {
+                    if(navigator.clipboard) {
+                        await navigator.clipboard.writeText(content!.webShare.url!);
+                        
+                        alert('클립보드에 주소가 복사되었어요!');
+    
+                        return;
+                    } else {
+                        throw new Error();
+                    }
+                } catch {
+                    prompt('다음 주소를 복사해주세요!', content!.webShare.url!);
                 }
-            } catch {
-                prompt('다음 주소를 복사해주세요!', content!.webShare.url!);
             }
+
+            options.onShared?.();
+        } catch {} finally {
+            options.onComplete?.();
         }
-        options.onShared?.();
-        options.onComplete?.();
     });
 
     return (newContent: ShareDatas) => {
