@@ -30,6 +30,7 @@ let rankingData: RankingItem[] = [];
 // let isTextExsits = false;
 
 const rankingClass = [ 'first', 'second', 'third' ];
+let currentSearchValue = '';
 
 const activateRankingButton = (selectedLabel: string) => {
     const activeLabelIndex = buttonLabels.indexOf(selectedLabel);
@@ -117,13 +118,16 @@ PostBoardApiClient.getRankings().then((rankings) => {
             activateRankingButton(label);
             rankingData = rankings[label];
             displayRanking(undefined, true);
+            searchRanking(currentSearchValue);
         });
     });
     
     document
         .querySelector(".search input")
         ?.addEventListener("input", (evt) => {
-            searchRanking((evt.target as HTMLInputElement).value);
+            currentSearchValue = (evt.target as HTMLInputElement).value;
+
+            searchRanking(currentSearchValue);
         });
     activateRankingButton(buttonLabels[0]);
     rankingData = rankings[buttonLabels[0]];
