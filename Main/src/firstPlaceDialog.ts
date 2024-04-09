@@ -94,7 +94,11 @@ export default function createFirstPlaceDialog(
         dialog.style.top = `${Math.round(dialogXy[1])}px`;
         dialog.style.width = `${Math.round(dialogSize[0])}px`;
         dialog.style.height = `${Math.round(dialogSize[1])}px`;
-        document.getElementById('emailForm')!.style.marginTop = `${Math.round(Math.round(dialogSize[1]) / 5)}px`;
+
+        const height = Math.round(dialogSize[1]);
+        const contentHeight = 248;
+        const margin = height - contentHeight - 20;
+        document.getElementById('emailForm')!.style.marginTop = `${margin}px`;
         if (!removed) window.requestAnimationFrame(changeDialogSize);
     };
 
