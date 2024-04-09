@@ -10,7 +10,7 @@
 @import "quiz/entry";
 
 
-body {
+html, body {
     @include grid-chalkboard-background();
 }
 

@@ -11,7 +11,7 @@
 @import "./colors";
 @import "./mixins/handdrawn-btn";
 
-body {
+html, body {
     @include chalkboard-background;
 }
 

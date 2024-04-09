@@ -7,7 +7,7 @@
 @use "index_page/post-board";
 @import "./mixins/chalk-background";
 
-body {
+html, body {
     font-size: 16px;
     overscroll-behavior: none;
 

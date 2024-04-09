@@ -8,7 +8,7 @@
 @import "./mixins/handdrawn-btn";
 @import "./includes/pretendard";
 
-body {
+html, body {
     @include grid-chalkboard-background;
 
     margin-top: 50px;
