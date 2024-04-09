@@ -72,7 +72,6 @@ export function preparePlaceholderSection(
     ],
     placeholder = true,
 ) {
-    placeholderSection.innerHTML = `<button class="floating-btn-scrollX left"></button><button class="floating-btn-scrollX right"></button>`;
     placeholderSection.classList.add("post-section");
 
     // 제목 생성
