@@ -83,7 +83,7 @@ export function preparePlaceholderSection(
         postTable.innerHTML = `<button class="floating-btn-scrollX left"></button><button class="floating-btn-scrollX right"></button>`;
         postTable.querySelectorAll('button.floating-btn-scrollX').forEach((btn) => {
             btn.addEventListener('click', () => {
-                btn.parentElement?.scrollBy({ behavior: 'smooth', left: 340 * (btn.classList.contains('left') ? -1 : 1), top: 0 });
+                btn.parentElement!.scrollBy({ behavior: 'smooth', left: parseInt(getComputedStyle(btn.parentElement!.querySelector('.table-cell')!).width) + 10 * (btn.classList.contains('left') ? -1 : 1), top: 0 });
             });
         });
         postTable.className =
