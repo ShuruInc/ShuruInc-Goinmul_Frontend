@@ -72,6 +72,7 @@ export function preparePlaceholderSection(
     ],
     placeholder = true,
 ) {
+    placeholderSection.innerHTML = ``;
     placeholderSection.classList.add("post-section");
 
     // 제목 생성
