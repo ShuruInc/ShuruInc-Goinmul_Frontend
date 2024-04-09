@@ -320,23 +320,4 @@ export default function initSolvePage(session: QuizSession) {
         }
         renewProblem();
     })();
-
-    window.addEventListener('scroll', topbarBackground);
-    window.addEventListener('load', topbarBackground);
-    window.addEventListener('DOMContentLoaded', topbarBackground);
-    window.addEventListener('resize', topbarBackground);
-    window.addEventListener('orientationchange', topbarBackground);
-    setInterval(topbarBackground, 100);
-}
-
-function topbarBackground() {
-    const topbar = document.getElementById('topFixedBar');
-    
-    if (topbar === null) return;
-
-    const xPosition = (document.body.clientWidth - topbar.clientWidth) / -2;
-    const yPosition = (25 - window.scrollY);
-    topbar.style.background = `inherit`;
-    topbar.style.backgroundPositionX = `${xPosition}px`;
-    topbar.style.backgroundPositionY = `${yPosition}px`;
 }
