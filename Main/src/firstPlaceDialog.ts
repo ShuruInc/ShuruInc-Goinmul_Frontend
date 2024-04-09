@@ -97,7 +97,7 @@ export default function createFirstPlaceDialog(
 
         const height = Math.round(dialogSize[1]);
         const contentHeight = 248;
-        const margin = height - contentHeight - 20;
+        const margin = height - contentHeight - 80;
         document.getElementById('emailForm')!.style.marginTop = `${margin}px`;
         if (!removed) window.requestAnimationFrame(changeDialogSize);
     };
