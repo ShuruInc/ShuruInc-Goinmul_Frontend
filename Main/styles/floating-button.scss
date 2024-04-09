@@ -83,6 +83,9 @@
     z-index: 99;
     opacity: 0.8;
     line-height: 1.5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     &.left {
         left: 25px;
