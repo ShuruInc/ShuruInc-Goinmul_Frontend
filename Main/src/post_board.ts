@@ -72,8 +72,14 @@ export function preparePlaceholderSection(
     ],
     placeholder = true,
 ) {
-    placeholderSection.innerHTML = "";
+    placeholderSection.innerHTML = `<button class="floating-btn-scrollX left"></button><button class="floating-btn-scrollX right"></button>`;
     placeholderSection.classList.add("post-section");
+    placeholderSection.querySelectorAll('button.floating-btn-scrollX').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const target = btn.classList.contains('left') ? 'start' : 'end';
+            placeholderSection.scrollIntoView({ behavior: 'smooth', block: 'center', inline: target });
+        });
+    });
 
     // 제목 생성
     placeholderSection.appendChild(document.createElement("h2"));

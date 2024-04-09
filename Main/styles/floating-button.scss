@@ -61,3 +61,33 @@
 
     box-shadow: 1px 4px 6px 0px #00000026;
 }
+
+.floating-btn-scrollX {
+    background-color: #fff;
+    border-radius: 40px;
+    border: 0px;
+    bottom: calc(50% - 50px);
+    box-shadow: 1px 4px 6px 0px rgba(0,0,0,.15);
+    color: #0a4129;
+    cursor: pointer;
+    height: 50px;
+    position: absolute;
+    width: 50px;
+    z-index: 99;
+
+    &.left {
+        left: 25px;
+    }
+
+    &.left::after {
+        content: "◀";
+    }
+
+    &.right {
+        right: 25px;
+    }
+
+    &.right::after {
+        content: "▶";
+    }
+}

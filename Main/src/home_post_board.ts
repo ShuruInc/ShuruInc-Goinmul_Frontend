@@ -106,7 +106,17 @@ export function displayMainPostBoard(
     scrollbar.track.yAxis.element.remove();
     const column = scrollbar.contentEl;
 
-    column.innerHTML = `<section class="post-section"></section>`;
+    column.innerHTML = `<section class="post-section"><button class="floating-btn-scrollX left"></button><button class="floating-btn-scrollX right"></button></section>`;
+    column.querySelectorAll('button.floating-btn-scrollX').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const scrollX = scrollbar.offset.x;
+            const width = scrollbar.getSize().container.width;
+            const scrollXMax = scrollbar.limit.x;
+            const scrollXNew = scrollX + (btn.classList.contains('left') ? -width : width);
+            const scrollXClamped = Math.min(scrollXMax, Math.max(0, scrollXNew));
+            scrollbar.scrollTo(scrollXClamped, 0, 500);
+        });
+    });
     preparePlaceholderSection(column.querySelector(".post-section")!, [
         { landscape: true, count: 1 },
         { landscape: false, count: data.popularTests.length - 1 },
