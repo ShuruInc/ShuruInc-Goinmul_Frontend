@@ -9,7 +9,6 @@ import {
     fillPlaceholderSectionInto,
     preparePlaceholderSection,
 } from "../post_board";
-import setHorizontalDragScrollOnDesktop from "../horizontal_drag_to_scroll_on_desktop";
 import paperPlane from "../../assets/paperplane.svg";
 import createNoticeFloatingButton from "../notice_floating_button";
 
@@ -63,7 +62,7 @@ const renderPopularQueries = (queries: string[]) => {
         ".popularNow .columns",
     ) as HTMLElement;
     columns.innerHTML = "";
-    setHorizontalDragScrollOnDesktop(columns);
+    // setHorizontalDragScrollOnDesktop(columns);
 
     let start = 1;
     while (queries.length > 0) {

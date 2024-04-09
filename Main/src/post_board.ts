@@ -1,7 +1,6 @@
 import SmoothScrollbar, { ScrollbarPlugin } from "smooth-scrollbar";
 import PostBoardApiClient from "./api/posts";
 import footer from "./footer";
-import setHorizontalDragScrollOnDesktop from "./horizontal_drag_to_scroll_on_desktop";
 import "./smooth-scrollbar-scroll-lock-plugin";
 import eyeIcon from "../assets/post-cell-popularity-icons/eye.svg";
 import heartSolidIcon from "../assets/post-cell-popularity-icons/heart-solid.svg";
@@ -89,9 +88,6 @@ export function preparePlaceholderSection(
         });
         postTable.className =
             "post-table" + (rowInfo.landscape ? " landscape" : " portrait");
-        if (!rowInfo.landscape) {
-            setHorizontalDragScrollOnDesktop(postTable);
-        }
 
         for (let i = 0; i < rowInfo.count; i++) {
             // 분필 border 생성
