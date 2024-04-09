@@ -45,7 +45,7 @@
             gap: 16px;
             margin-bottom: 16px;
 
-            overflow-x: hidden;
+            overflow-x: scroll;
             @include hide-scrollbar;
 
             .table-cell .cell-info {
