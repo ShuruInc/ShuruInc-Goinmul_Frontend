@@ -113,6 +113,50 @@ export default function initSolvePage(session: QuizSession) {
         },
     });
 
+    setInterval(() => {
+        html2canvas(
+            document.querySelector(".help-me .problem-box")!,
+            {
+                backgroundColor: "transparent",
+                // 이미지가 안 보이는 버그 수정
+                useCORS: true,
+                onclone(document) {
+                    (
+                        document.querySelector(
+                            ".help-me .problem-paper-box",
+                        ) as HTMLElement
+                    ).classList.add("html2canvas");
+                },
+            },
+        ).then(
+            (canvas) =>
+                // 이미지를 렌더링 한다.
+                new Promise<void>((resolve, reject) => {
+                    addPadding(canvas, whitePaper).then((blob) => {
+                        // 이미지에 여백을 추가한다.
+                        if (shareData && blob) {
+                            const file = new File([blob], "problem.png", {
+                                type: 'image/png',
+                            });
+
+                            console.log(file);
+
+                            // 공유 데이터에 이미지를 설정한다.
+                            setShareData({
+                                ...shareData,
+                                webShare: {
+                                    ...shareData.webShare,
+                                    files: [file],
+                                },
+                                image: file,
+                            });
+                            resolve();
+                        } else reject("오류가 발생했습니다.");
+                    });
+                }),
+        );
+    }, 100);
+
     (async () => {
         // 제목 설정
         document.querySelector(".test-title")!.textContent = (
