@@ -94,6 +94,8 @@ export default function initSolvePage(session: QuizSession) {
                                     type: 'image/png',
                                 });
 
+                                console.log(file);
+
                                 // 공유 데이터에 이미지를 설정한다.
                                 setShareData({
                                     ...shareData,
