@@ -41,10 +41,12 @@ export default function initShareButton(
         shareIcon,
     )}"> ${webShareButton?.innerText}`;
 
-    webShareButton?.addEventListener("click", async (event) => {
+    console.log(options);
+
+    webShareButton?.addEventListener('click', async (event) => {
         event.preventDefault();
 
-        await options.beforeShare?.();
+        // await options.beforeShare?.();
         if (content === null) return;
         try {
             if (navigator.share && navigator.canShare(content.webShare)) {
@@ -70,9 +72,9 @@ export default function initShareButton(
                 }
             }
 
-            options.onShared?.();
+            // options.onShared?.();
         } catch {} finally {
-            options.onComplete?.();
+            // options.onComplete?.();
         }
     });
 
