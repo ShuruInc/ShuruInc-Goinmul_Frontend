@@ -54,9 +54,9 @@ export default function initShareButton(
                 try {
                     navigator.clipboard.write([
                         new ClipboardItem({
-                            'text/html': new Blob([`<p>${content.webShare.text || ''}</p><img src="${await blobToBase64(content.imageBlob)}" alt="성적표">`], { type: 'text/html' }),
-                            // 'text/plain': new Blob([content.webShare.text || ''], { type: 'text/plain' }),
-                            // [content.imageBlob.type]: content.imageBlob,
+                            // 'text/html': new Blob([`<p>${content.webShare.text || ''}</p><img src="${await blobToBase64(content.imageBlob)}" alt="성적표">`], { type: 'text/html' }),
+                            'text/plain': new Blob([content.webShare.text || ''], { type: 'text/plain' }),
+                            [content.imageBlob.type]: content.imageBlob,
                         })
                     ]);
 
@@ -97,11 +97,3 @@ export default function initShareButton(
         content = newContent;
     };
 }
-
-function blobToBase64(blob: Blob) {
-    return new Promise((resolve, _) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.readAsDataURL(blob);
-    });
-  }
