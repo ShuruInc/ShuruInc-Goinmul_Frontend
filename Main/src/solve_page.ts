@@ -91,7 +91,7 @@ export default function initSolvePage(session: QuizSession) {
                             // 이미지에 여백을 추가한다.
                             if (shareData && blob) {
                                 const file = new File([blob], "problem.png", {
-                                    type: blob.type,
+                                    type: 'image/png',
                                 });
 
                                 // 공유 데이터에 이미지를 설정한다.
