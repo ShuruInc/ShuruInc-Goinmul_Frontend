@@ -206,7 +206,7 @@ export default function initSolvePage(session: QuizSession) {
                     url: quizUrl,
                 },
                 webShare: {
-                    // url: quizUrl,
+                    url: quizUrl,
                     // title: `[${sessionInfo.category}] ${
                     //     sessionInfo.isNerdTest ? "고인물 테스트" : "모의고사"
                     // }`,

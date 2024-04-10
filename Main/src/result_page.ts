@@ -185,7 +185,7 @@ export default function initializeResultPage() {
         // 모의고사
         changeShareData({
             webShare: {
-                // url,
+                url,
                 // title: `[${result.category}] ${
                 //     isNerdTest ? "고인물 테스트" : "모의고사"
                 // }`,

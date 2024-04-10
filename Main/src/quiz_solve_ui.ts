@@ -204,6 +204,7 @@ const createAnswerElement = (question: QuizProblem) => {
         });
         (window as any).setShareData({
             webShare: {
+                url: `https://goinmultest.pro/quiz/solve.html?id=${new URLSearchParams(window.location.search).get('id')}`,
                 text: `모르겠어요... 도와주세요 🚨\n\nhttps://goinmultest.pro/quiz/solve.html?id=${new URLSearchParams(window.location.search).get('id')}`,
                 files: [file],
             },
