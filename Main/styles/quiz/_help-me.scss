@@ -3,6 +3,8 @@
 .help-me {
     font-family: Pretendard;
     display: none;
+    margin-top: 20px;
+
     &.active {
         display: flex;
         flex-direction: column;
