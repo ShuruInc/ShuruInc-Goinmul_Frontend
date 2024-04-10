@@ -229,6 +229,10 @@ html, body {
                 cursor: text;
             }
 
+            &::before {
+                background-position-y: 48px;
+            }
+
             *.with-animation, *.with-animation input {
                 transition: transform 50ms ease-out;
                 &.animated, &.animated input {
