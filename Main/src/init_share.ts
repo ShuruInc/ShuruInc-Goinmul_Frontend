@@ -46,6 +46,7 @@ export default function initShareButton(
         if (content === null) return;
         try {
             if (navigator.share) {
+                content.webShare.title = content.webShare.title || content.webShare.text;
                 await navigator.share(content.webShare);
             } else {
                 try {
