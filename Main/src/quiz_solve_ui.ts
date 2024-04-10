@@ -191,6 +191,7 @@ const createAnswerElement = (question: QuizProblem) => {
         const canvas = await html2canvas(
             document.querySelector(".help-me .problem-box")!,
             {
+                scale: 2,
                 backgroundColor: "transparent",
                 useCORS: true,
                 onclone(document) {

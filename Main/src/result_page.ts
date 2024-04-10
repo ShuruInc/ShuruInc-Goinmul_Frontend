@@ -170,6 +170,7 @@ export default function initializeResultPage() {
         await removeLoadingAfter(Math.max(1, 1000 - (Date.now() - loadTime)));
         const blob = await addPadding(
             await html2canvas(document.querySelector(".result-container")!, {
+                scale: 2,
                 backgroundColor: "transparent",
                 onclone(document) {
                     (
