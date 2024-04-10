@@ -49,6 +49,8 @@ export default function initSolvePage(session: QuizSession) {
     library.add(faXmark);
     dom.i2svg({ node: document.querySelector(".correctness-effect")! });
 
+    (window as any).h2c = html2canvas;
+
     let shared = false;
     const sessionId = session.getSessionId();
     let shareData: Omit<ShareDatas, "image"> | null = null;
