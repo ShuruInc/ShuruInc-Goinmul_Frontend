@@ -21,6 +21,7 @@ import getMedalData from "./get_medal_image";
 // import displayLoadingSplash from "./loadingSplash";
 import { alwaysDisplayEmailInputModal } from "./env";
 import createNoticeFloatingButton from "./notice_floating_button";
+import corkBoard from "../assets/cork-board.png";
 
 /**
  * 결과 페이지를 렌더링한다.
@@ -180,6 +181,7 @@ export default function initializeResultPage() {
                     ).classList.add("html2canvas");
                 }, 
             }),
+            corkBoard,
         );
         const imageFile = new File([blob], "result.png", { type: 'image/png' });
 
