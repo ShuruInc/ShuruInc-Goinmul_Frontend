@@ -18,7 +18,7 @@ import PostBoardApiClient from "./api/posts";
 import pushpin from "../assets/pushpin.png";
 import createFirstPlaceDialog from "./firstPlaceDialog";
 import getMedalData from "./get_medal_image";
-import displayLoadingSplash from "./loadingSplash";
+// import displayLoadingSplash from "./loadingSplash";
 import { alwaysDisplayEmailInputModal } from "./env";
 import createNoticeFloatingButton from "./notice_floating_button";
 
@@ -136,13 +136,13 @@ export default function initializeResultPage() {
                 encodeURIComponent(result.quizId);
         });
 
-        let removeLoadingSplash: (() => void) | null = null;
+        // let removeLoadingSplash: (() => void) | null = null;
         const changeShareData = initShareButton({
             beforeShare: async () => {
-                removeLoadingSplash = displayLoadingSplash();
+                // removeLoadingSplash = displayLoadingSplash();
             },
             onComplete: () => {
-                if (removeLoadingSplash) removeLoadingSplash();
+                // if (removeLoadingSplash) removeLoadingSplash();
             },
         });
 

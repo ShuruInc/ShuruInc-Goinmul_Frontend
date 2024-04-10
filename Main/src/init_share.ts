@@ -46,7 +46,7 @@ export default function initShareButton(
     webShareButton?.addEventListener('click', async (event) => {
         event.preventDefault();
 
-        // await options.beforeShare?.();
+        await options.beforeShare?.();
         if (content === null) return;
         try {
             if (navigator.share && navigator.canShare(content.webShare)) {
