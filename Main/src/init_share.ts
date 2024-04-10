@@ -54,7 +54,7 @@ export default function initShareButton(
                 try {
                     navigator.clipboard.write([
                         new ClipboardItem({
-                            'text/plain': content.webShare.text || '',
+                            'text/plain': new Blob([content.webShare.text || ''], { type: 'text/plain' }),
                             [content.imageBlob.type]: content.imageBlob,
                         })
                     ]);
