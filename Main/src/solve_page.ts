@@ -69,6 +69,25 @@ export default function initSolvePage(session: QuizSession) {
 
         const sessionInfo = await session.sessionInfo();
 
+        const quizUrl = `https://goinmultest.pro/quiz/solve.html?id=${sessionInfo.quizId}`;
+        document
+        .querySelector(".copy-link")
+        ?.addEventListener("click", async (evt) => {
+            evt.preventDefault();
+
+            try {
+                if(navigator.clipboard) {
+                    await navigator.clipboard.writeText(quizUrl);
+                    
+                    alert('클립보드에 주소가 복사되었어요!');
+
+                    return;
+                } else throw new Error();
+            } catch {
+                prompt("다음 주소를 복사해주세요!", quizUrl);
+            }
+        });
+
         updateProgress(0);
         const goResult = () => {
             // 타이머 표시를 중단한다.
@@ -175,23 +194,6 @@ export default function initSolvePage(session: QuizSession) {
             }
 
             const quizUrl = `https://goinmultest.pro/quiz/solve.html?id=${sessionInfo.quizId}`;
-            document
-            .querySelector(".copy-link")
-            ?.addEventListener("click", async (evt) => {
-                evt.preventDefault();
-
-                try {
-                    if(navigator.clipboard) {
-                        await navigator.clipboard.writeText(quizUrl);
-                        
-                        alert('클립보드에 주소가 복사되었어요!');
-
-                        return;
-                    } else throw new Error();
-                } catch {
-                    prompt("다음 주소를 복사해주세요!", quizUrl);
-                }
-            });
             const file = new File(
                 [new Blob([""], { type: "image/png" })],
                 "problem.png",
