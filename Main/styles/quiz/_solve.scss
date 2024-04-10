@@ -229,7 +229,7 @@ html, body {
                 cursor: text;
             }
 
-            &::before {
+            .input-wrapper::before {
                 background-position-y: 48px;
             }
 
