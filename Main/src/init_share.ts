@@ -54,8 +54,9 @@ export default function initShareButton(
                 try {
                     navigator.clipboard.write([
                         new ClipboardItem({
-                            'text/plain': new Blob([content.webShare.text || ''], { type: 'text/plain' }),
-                            [content.imageBlob.type]: content.imageBlob,
+                            'text/html': new Blob([`<p>${content.webShare.text || ''}</p><img src="${content.imageBlob}" alt="성적표">`], { type: 'text/html' }),
+                            // 'text/plain': new Blob([content.webShare.text || ''], { type: 'text/plain' }),
+                            // [content.imageBlob.type]: content.imageBlob,
                         })
                     ]);
 
