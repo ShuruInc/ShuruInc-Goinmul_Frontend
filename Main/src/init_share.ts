@@ -49,7 +49,18 @@ export default function initShareButton(
         // await options.beforeShare?.();
         if (content === null) return;
         try {
-            if (navigator.share && navigator.canShare(content.webShare)) {
+            if (navigator.clipboard) {
+                try {
+                    navigator.clipboard.write([
+                        new ClipboardItem({
+                            'text/plain': content.webShare.text || '',
+                            'image/png': content.image,
+                        })
+                    ]);
+                } catch {
+                    prompt('다음 주소를 복사해주세요!', content!.webShare.url!);
+                }
+            } else if (navigator.share && navigator.canShare(content.webShare)) {
                 try {
                     content.webShare.title = content.webShare.title || content.webShare.text;
                     await navigator.share(content.webShare);
@@ -57,19 +68,19 @@ export default function initShareButton(
                     // alert(e);
                 }
             } else {
-                try {
-                    if(navigator.clipboard) {
-                        await navigator.clipboard.writeText(content!.webShare.url!);
+                // try {
+                //     if(navigator.clipboard) {
+                //         await navigator.clipboard.writeText(content!.webShare.url!);
                         
-                        alert('클립보드에 주소가 복사되었어요!');
+                //         alert('클립보드에 주소가 복사되었어요!');
     
-                        return;
-                    } else {
-                        throw new Error();
-                    }
-                } catch {
-                    prompt('다음 주소를 복사해주세요!', content!.webShare.url!);
-                }
+                //         return;
+                //     } else {
+                //         throw new Error();
+                //     }
+                // } catch {
+                //     prompt('다음 주소를 복사해주세요!', content!.webShare.url!);
+                // }
             }
 
             // options.onShared?.();
