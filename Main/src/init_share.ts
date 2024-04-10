@@ -54,7 +54,7 @@ export default function initShareButton(
                     content.webShare.title = content.webShare.title || content.webShare.text;
                     await navigator.share(content.webShare);
                 } catch(e) {
-                    alert(e);
+                    // alert(e);
                 }
             } else {
                 try {
