@@ -85,12 +85,16 @@ export default function initSolvePage(session: QuizSession) {
                 (canvas) =>
                     // 이미지를 렌더링 한다.
                     new Promise<void>((resolve, reject) => {
-                        addPadding(canvas, whitePaper).then((blob) => {
+                        addPadding(canvas, whitePaper).then(async (blob) => {
                             // 이미지에 여백을 추가한다.
                             if (shareData && blob) {
                                 const file = new File([blob], "problem.png", {
                                     type: "image/png",
                                 });
+
+                                const sessionInfo = await session.sessionInfo();
+
+                                const quizUrl = `https://goinmultest.pro/quiz/solve.html?id=${sessionInfo.quizId}`;
 
                                 // 공유 데이터에 이미지를 설정한다.
                                 setShareData({
@@ -98,6 +102,7 @@ export default function initSolvePage(session: QuizSession) {
                                     webShare: {
                                         ...shareData.webShare,
                                         files: [file],
+                                        text: `모르겠어요... 도와주세요 🚨\n\n${quizUrl}`.trim(),
                                     },
                                     image: file,
                                 });
