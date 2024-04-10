@@ -182,6 +182,12 @@ const createAnswerElement = (question: QuizProblem) => {
     answerEl.querySelector("button.idk")!.addEventListener("click", async (evt) => {
         evt.preventDefault();
 
+        toggleHelpMe(true);
+
+        const webShareButton = document.querySelector('button.share-web-share') as HTMLButtonElement;
+
+        webShareButton.disabled = true;
+
         const canvas = await html2canvas(
             document.querySelector(".help-me .problem-box")!,
             {
@@ -203,7 +209,7 @@ const createAnswerElement = (question: QuizProblem) => {
             },
         });
 
-        toggleHelpMe(true);
+        webShareButton.disabled = false;
     });
 
     answerEl.addEventListener("submit", (evt) => {
