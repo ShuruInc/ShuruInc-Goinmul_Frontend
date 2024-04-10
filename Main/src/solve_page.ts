@@ -225,6 +225,13 @@ export default function initSolvePage(session: QuizSession) {
             }
 
             const quizUrl = `https://goinmultest.pro/quiz/solve.html?id=${sessionInfo.quizId}`;
+            const file = new File(
+                [new Blob([""], { type: "iamge/png" })],
+                "problem.png",
+                {
+                    type: "image/png",
+                },
+            );
             shareData = {
                 twitter: {
                     text: `[${sessionInfo.category}] ${
@@ -254,17 +261,12 @@ export default function initSolvePage(session: QuizSession) {
                     //     sessionInfo.isNerdTest ? "고인물 테스트" : "모의고사"
                     // }`,
                     // text: `모르겠어요... 도와주세요 🚨\n\n${quizUrl}`.trim(),
+                    files: [file],
                 },
             };
             setShareData({
                 ...shareData,
-                image: new File(
-                    [new Blob([""], { type: "iamge/png" })],
-                    "problem.png",
-                    {
-                        type: "image/png",
-                    },
-                ),
+                image: file,
             });
         };
 
