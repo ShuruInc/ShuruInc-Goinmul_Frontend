@@ -180,7 +180,7 @@ export default function initializeResultPage() {
                 }, 
             }),
         );
-        const imageFile = new File([blob], "result.png", { type: "image/png" });
+        const imageFile = new File([blob], "result.png", { type: blob.type });
 
         // 모의고사
         changeShareData({
