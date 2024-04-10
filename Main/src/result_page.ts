@@ -216,6 +216,7 @@ export default function initializeResultPage() {
 #고인물테스트 #슈르네`,
             },
             image: imageFile,
+            imageBlob: blob,
         });
 
         if (result.ranking === 1 || alwaysDisplayEmailInputModal)

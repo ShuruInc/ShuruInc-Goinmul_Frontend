@@ -14,6 +14,7 @@ export type ShareDatas = {
         text: string;
     };
     image: File;
+    imageBlob: Blob;
 };
 
 type InitShareButtonOptions = Partial<{

@@ -51,7 +51,7 @@ export default function initSolvePage(session: QuizSession) {
 
     let shared = false;
     const sessionId = session.getSessionId();
-    let shareData: Omit<ShareDatas, "image"> | null = null;
+    let shareData: Omit<Omit<ShareDatas, "image">, 'imageBlob'> | null = null;
     const setShareData = initShareButton({
         onComplete: () => {
         },
@@ -176,7 +176,7 @@ export default function initSolvePage(session: QuizSession) {
 
             const quizUrl = `https://goinmultest.pro/quiz/solve.html?id=${sessionInfo.quizId}`;
             const file = new File(
-                [new Blob([""], { type: "iamge/png" })],
+                [new Blob([""], { type: "image/png" })],
                 "problem.png",
                 {
                     type: "image/png",
@@ -217,6 +217,7 @@ export default function initSolvePage(session: QuizSession) {
             setShareData({
                 ...shareData,
                 image: file,
+                imageBlob: new Blob([""], { type: "image/png" }),
             });
         };
 

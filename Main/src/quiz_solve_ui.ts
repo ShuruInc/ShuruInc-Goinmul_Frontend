@@ -207,6 +207,7 @@ const createAnswerElement = (question: QuizProblem) => {
                 url: `https://goinmultest.pro/quiz/solve.html?id=${new URLSearchParams(window.location.search).get('id')}`,
                 files: [file],
             },
+            imageBlob: blob,
         });
 
         webShareButton.disabled = false;
