@@ -9,6 +9,9 @@ import correctMark from "../assets/correct_or_wrong/correct.svg";
 import wrongMark from "../assets/correct_or_wrong/wrong.svg";
 import { SetCustomGoBackHandler } from "./top_logo_navbar";
 import comboStyles from "../styles/quiz/combo-svg.module.scss";
+import addPadding from "./canvas_padding";
+import html2canvas from "html2canvas";
+import whitePaper from "../assets/paper.png";
 
 // FontAwesome 렌더링
 library.add(faXmark);
@@ -176,8 +179,30 @@ const createAnswerElement = (question: QuizProblem) => {
         }
     }
 
-    answerEl.querySelector("button.idk")!.addEventListener("click", (evt) => {
+    answerEl.querySelector("button.idk")!.addEventListener("click", async (evt) => {
         evt.preventDefault();
+
+        const canvas = await html2canvas(
+            document.querySelector(".help-me .problem-box")!,
+            {
+                backgroundColor: "transparent",
+                useCORS: true,
+                onclone(document) {
+                    document.querySelector<HTMLElement>(".help-me .problem-paper-box")?.classList.add("html2canvas");
+                },
+            },
+        );
+        const blob = await addPadding(canvas, whitePaper);
+        const file = new File([blob], "problem.png", {
+            type: 'image/png',
+        });
+        (window as any).setShareData({
+            webShare: {
+                url: `https://goinmultest.pro/quiz/solve.html?id=${new URLSearchParams(window.location.search).get('id')}`,
+                files: [file],
+            },
+        });
+
         toggleHelpMe(true);
     });
 
