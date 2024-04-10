@@ -58,6 +58,8 @@ export default function initShareButton(
                             [content.imageBlob.type]: content.imageBlob,
                         })
                     ]);
+
+                    alert('클립보드에 복사되었습니다!');
                 } catch {
                     prompt('다음 주소를 복사해주세요!', content!.webShare.url!);
                 }
