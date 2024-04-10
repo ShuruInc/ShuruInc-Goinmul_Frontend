@@ -46,8 +46,12 @@ export default function initShareButton(
         if (content === null) return;
         try {
             if (navigator.share) {
-                content.webShare.title = content.webShare.title || content.webShare.text;
-                await navigator.share(content.webShare);
+                try {
+                    content.webShare.title = content.webShare.title || content.webShare.text;
+                    await navigator.share(content.webShare);
+                } catch(e) {
+                    alert(e);
+                }
             } else {
                 try {
                     if(navigator.clipboard) {
