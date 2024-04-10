@@ -60,7 +60,7 @@ export default function initShareButton(
                         })
                     ]);
 
-                    alert('클립보드에 복사되었습니다!');
+                    alert('클립보드에 이미지가 복사되었어요!');
                 } catch {
                     prompt('다음 주소를 복사해주세요!', content!.webShare.url!);
                 }

@@ -76,8 +76,24 @@
 
         width: 100%;
 
-        .continue {
-            background-color: #AB7100;
+        .continue-button-row {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            
+            .share-continue.continue {
+                background-color: #AB7100;
+            }
+    
+            .copy-link {
+                background-image: url(../assets/link-anchor.svg);
+                background-position: 50% 50%;
+                background-repeat: no-repeat;
+    
+                background-color: transparent;
+                border: 2px white solid;
+                width: 50px;
+            }
         }
     }
 }
