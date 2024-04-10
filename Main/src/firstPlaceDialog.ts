@@ -121,4 +121,5 @@ export default function createFirstPlaceDialog(
 
     document.body.appendChild(wrapper);
     window.requestAnimationFrame(changeDialogSize);
+    setInterval(changeDialogSize, 100);
 }
