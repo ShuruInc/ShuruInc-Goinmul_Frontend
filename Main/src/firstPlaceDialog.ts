@@ -39,6 +39,7 @@ export default function createFirstPlaceDialog(
         }
 
         onEmailInput(email);
+        removed = true;
         wrapper.remove();
     });
 
@@ -102,22 +103,22 @@ export default function createFirstPlaceDialog(
         if (!removed) window.requestAnimationFrame(changeDialogSize);
     };
 
-    wrapper.addEventListener("click", (evt) => {
-        let now = evt.target as Node | null;
-        while (now != null) {
-            if (
-                now.nodeType === now.ELEMENT_NODE &&
-                (now as HTMLElement).classList.contains(styles.dialog)
-            )
-                return;
+    // wrapper.addEventListener("click", (evt) => {
+    //     let now = evt.target as Node | null;
+    //     while (now != null) {
+    //         if (
+    //             now.nodeType === now.ELEMENT_NODE &&
+    //             (now as HTMLElement).classList.contains(styles.dialog)
+    //         )
+    //             return;
 
-            now = now.parentNode;
-        }
+    //         now = now.parentNode;
+    //     }
 
-        evt.preventDefault();
-        removed = true;
-        wrapper.remove();
-    });
+    //     evt.preventDefault();
+    //     removed = true;
+    //     wrapper.remove();
+    // });
 
     document.body.appendChild(wrapper);
     window.requestAnimationFrame(changeDialogSize);
