@@ -185,11 +185,11 @@ export default function initializeResultPage() {
         // 모의고사
         changeShareData({
             webShare: {
-                // url,
+                url,
                 // title: `[${result.category}] ${
                 //     isNerdTest ? "고인물 테스트" : "모의고사"
                 // }`,
-                text: `내 성적표 등장 ‼\n\n${url}`.trim(),
+                // text: `내 성적표 등장 ‼\n\n${url}`.trim(),
                 files: [imageFile],
             },
             kakao: {
