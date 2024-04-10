@@ -41,11 +41,13 @@ export default function initShareButton(
         shareIcon,
     )}"> ${webShareButton?.innerText}`;
 
-    webShareButton?.addEventListener("click", async () => {
+    webShareButton?.addEventListener("click", async (event) => {
+        event.preventDefault();
+
         await options.beforeShare?.();
         if (content === null) return;
         try {
-            if (navigator.share) {
+            if (navigator.share && navigator.canShare(content.webShare)) {
                 try {
                     content.webShare.title = content.webShare.title || content.webShare.text;
                     await navigator.share(content.webShare);
