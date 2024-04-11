@@ -37,6 +37,7 @@ export default function initShareButton(
 ): (content: ShareDatas) => void {
     let content: ShareDatas | null = null;
     let webShareButton = document.querySelector<HTMLElement>(".share-web-share");
+    let twitterShareButton = document.querySelector<HTMLElement>(".share-twitter");
 
     webShareButton!.innerHTML = `<img src="${encode(
         shareIcon,
@@ -86,6 +87,25 @@ export default function initShareButton(
                 //     prompt('다음 주소를 복사해주세요!', content!.webShare.url!);
                 // }
             }
+
+            // options.onShared?.();
+        } catch {} finally {
+            // options.onComplete?.();
+        }
+    });
+
+    twitterShareButton?.addEventListener('click', async (event) => {
+        event.preventDefault();
+
+        // await options.beforeShare?.();
+        if (content === null) return;
+        try {
+            window.open(
+                `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                    content.twitter.text,
+                )}`,
+                "_blank",
+            );
 
             // options.onShared?.();
         } catch {} finally {
