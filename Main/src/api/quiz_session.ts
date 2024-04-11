@@ -60,11 +60,13 @@ export class QuizSession {
     private sessionId: string = "";
     private stopwatch: StopWatch;
     private posted: boolean;
+    private sentEmail: boolean;
     constructor(sessionId: QuizSessionId) {
         this.sessionId = sessionId;
         this.stopwatch = new StopWatch(sessionId);
         this.stopwatch.start();
         this.posted = false;
+        this.sentEmail = false;
     }
     getStopWatch() {
         return this.stopwatch;
@@ -162,6 +164,8 @@ export class QuizSession {
     }
     async submitEmail(email: string) {
         await apiClient.saveTempEmail({ email });
+
+        this.sentEmail = true;
     }
     async postRank(): Promise<void> {
         const localSession = this.getLocalSession();
@@ -224,5 +228,8 @@ export class QuizSession {
     }
     getSessionId(): string {
         return this.sessionId;
+    }
+    getSentEmail(): boolean {
+        return this.sentEmail;
     }
 }

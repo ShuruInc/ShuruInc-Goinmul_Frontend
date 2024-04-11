@@ -222,11 +222,16 @@ export default function initializeResultPage() {
             imageBlob: blob,
         });
 
-        if (result.ranking === 1 || alwaysDisplayEmailInputModal)
+        if (result.ranking === 1 || alwaysDisplayEmailInputModal) {
+            if (session.getSentEmail()) return;
+
             createFirstPlaceDialog((email) => {
                 // console.log(email)
                 session.submitEmail(email);
+
+                alert('이메일이 전송되었습니다!');
             });
+        }
 
         window.scrollTo(0, 0);
     })();
