@@ -100,7 +100,10 @@
     </div>
     <script src="../../src/darkmagic.js"></script>
     <script>
-        localStorage.setItem('idkRemains', '3');
+        const sessionId = new URLSearchParams(window.location.search).get('session');
+        if(sessionId !== null && localStorage.getItem(`${sessionId}-idkRemains`) === null) {
+            localStorage.setItem(`${sessionId}-idkRemains`, '3');
+        }
     </script>
 </body>
 </html>

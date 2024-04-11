@@ -229,7 +229,7 @@ export default function initializeResultPage() {
                 // console.log(email)
                 session.submitEmail(email);
 
-                alert('이메일이 전송되었습니다!');
+                alert('이메일이 기록되었습니다!');
             });
         }
 
