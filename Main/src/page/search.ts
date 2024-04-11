@@ -173,19 +173,6 @@ const render = async () => {
                 h2.style.fontFamily = "LeeSeoyun";
             } 
             resultSection.classList.remove("display-none");
-        } else {
-            // 요청 버튼 활성화
-            const requestBtn = document.querySelector(
-                "button.request",
-            ) as HTMLButtonElement;
-            requestBtn.classList.remove("requested");
-            requestBtn.disabled = false;
-            requestBtn.textContent = "출제 요청하기";
-            requestBtn.style.cursor = "pointer";
-            requestBtn.style.zIndex = "999";
-            document
-                .querySelector(".no-results")
-                ?.classList.remove("display-none");
         }
 
         // 연관 모의고사
@@ -213,6 +200,21 @@ const render = async () => {
                 h2.style.padding = "0px";
             } 
             similarSection.classList.remove("display-none");
+        }
+
+        if (!hasResults && result.similar.length === 0) {
+            // 요청 버튼 활성화
+            const requestBtn = document.querySelector(
+                "button.request",
+            ) as HTMLButtonElement;
+            requestBtn.classList.remove("requested");
+            requestBtn.disabled = false;
+            requestBtn.textContent = "출제 요청하기";
+            requestBtn.style.cursor = "pointer";
+            requestBtn.style.zIndex = "999";
+            document
+                .querySelector(".no-results")
+                ?.classList.remove("display-none");
         }
 
         // 추천 모의고사
