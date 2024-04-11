@@ -102,7 +102,7 @@ export default function initShareButton(
         try {
             window.open(
                 `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                    content.webShare.url ?? '',
+                    `\n\n🔗 ${content.webShare.url ?? ''}\n#고인물테스트 #슈르네`,
                 )}`,
                 "_blank",
             );
