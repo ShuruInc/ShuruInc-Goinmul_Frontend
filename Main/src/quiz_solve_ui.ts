@@ -139,8 +139,11 @@ const createAnswerElement = (question: QuizProblem) => {
         warningEl,
         question.choices === null,
     );
-    const idkRemains = parseInt(localStorage.getItem('idkRemains')!);
-    document.getElementById('idkCount')!.innerText = `도와줘 기회 ${idkRemains}번 남았습니다.`;
+
+    answerEl.addEventListener('load', () => {
+        const idkRemains = parseInt(localStorage.getItem('idkRemains')!);
+        document.getElementById('idkCount')!.innerText = `도와줘 기회 ${idkRemains}번 남았습니다.`;
+    });
 
     const rowWithInput = answerEl.querySelector(".row.with-input")!;
     if (question.choices === null) {
