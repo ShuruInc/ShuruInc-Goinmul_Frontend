@@ -47,7 +47,7 @@ export default function initShareButton(
 
     twitterShareButton!.innerHTML = `<img src="${encode(
         twitterIcon,
-    )}" style="margin-right: 6px; vertical-align: middle;"><span style="vertical-align: middle;">${twitterShareButton?.innerText}</span>`;
+    )}" style="margin-right: 6px; vertical-align: middle; height: 20px;"><span style="vertical-align: middle;">${twitterShareButton?.innerText}</span>`;
 
     console.log(options);
 
