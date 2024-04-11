@@ -59,10 +59,12 @@ const apiClient = new Api({ baseUrl: backendUrl });
 export class QuizSession {
     private sessionId: string = "";
     private stopwatch: StopWatch;
+    private posted: boolean;
     constructor(sessionId: QuizSessionId) {
         this.sessionId = sessionId;
         this.stopwatch = new StopWatch(sessionId);
         this.stopwatch.start();
+        this.posted = false;
     }
     getStopWatch() {
         return this.stopwatch;
@@ -195,7 +197,10 @@ export class QuizSession {
     async result(): Promise<QuizResult | null> {
         const ended = this.ended();
         if (ended) {
-            await this.postRank();
+            if (!this.posted) {
+                await this.postRank();
+                this.posted = true;
+            }
             return {
                 points: this.getLocalSession().points,
                 title: this.getLocalSession().title,
