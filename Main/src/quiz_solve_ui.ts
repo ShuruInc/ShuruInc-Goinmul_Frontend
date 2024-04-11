@@ -9,6 +9,9 @@ import correctMark from "../assets/correct_or_wrong/correct.svg";
 import wrongMark from "../assets/correct_or_wrong/wrong.svg";
 import { SetCustomGoBackHandler } from "./top_logo_navbar";
 import comboStyles from "../styles/quiz/combo-svg.module.scss";
+import addPadding from "./canvas_padding";
+import html2canvas from "html2canvas";
+import whitePaper from "../assets/paper.png";
 
 // FontAwesome 렌더링
 library.add(faXmark);
@@ -176,9 +179,40 @@ const createAnswerElement = (question: QuizProblem) => {
         }
     }
 
-    answerEl.querySelector("button.idk")!.addEventListener("click", (evt) => {
+    answerEl.querySelector("button.idk")!.addEventListener("click", async (evt) => {
         evt.preventDefault();
+
         toggleHelpMe(true);
+
+        const webShareButton = document.querySelector('button.share-web-share') as HTMLButtonElement;
+
+        webShareButton.disabled = true;
+
+        const canvas = await html2canvas(
+            document.querySelector(".help-me .problem-box")!,
+            {
+                scale: 2,
+                backgroundColor: "transparent",
+                useCORS: true,
+                onclone(document) {
+                    document.querySelector<HTMLElement>(".help-me .problem-paper-box")?.classList.add("html2canvas");
+                },
+            },
+        );
+        const blob = await addPadding(canvas, whitePaper);
+        const file = new File([blob], "problem.png", {
+            type: 'image/png',
+        });
+        (window as any).setShareData({
+            webShare: {
+                url: `https://goinmultest.pro/quiz/solve.html?id=${new URLSearchParams(window.location.search).get('id')}`,
+                text: `모르겠어요... 도와주세요 🚨\n\nhttps://goinmultest.pro/quiz/solve.html?id=${new URLSearchParams(window.location.search).get('id')}`,
+                files: [file],
+            },
+            imageBlob: blob,
+        });
+
+        webShareButton.disabled = false;
     });
 
     answerEl.addEventListener("submit", (evt) => {
@@ -356,7 +390,7 @@ const createQuestionElement = (
                             !pv[pv.length - 1].classList.contains("normal")
                         ) {
                             pv.push(document.createElement("div"));
-                            pv[pv.length - 1].className = "normal";
+                            pv[pv.length - 1].className = cv === ' ' ? 'whitespace' : "normal";
                         }
 
                         pv[pv.length - 1].textContent += cv;
@@ -423,6 +457,11 @@ export function updateShareProblem(
     questionEl
         ?.querySelector(".problem-paper-box")
         ?.appendChild(createAnswerElementForShare(question));
+    const paperBox = questionEl?.querySelector(".problem-paper-box");
+    const h1 = document.createElement("h1");
+    h1.textContent = "친구들아, 도와줘!";
+    h1.style.color = '#14171a';
+    paperBox?.insertBefore(h1, paperBox.firstChild);
     root.appendChild(questionEl);
 }
 

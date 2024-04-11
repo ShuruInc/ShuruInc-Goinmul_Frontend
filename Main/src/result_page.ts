@@ -2,7 +2,7 @@ import html2canvas from "html2canvas";
 import "./../styles/quiz";
 import { QuizSession } from "./api/quiz_session";
 import SearchApiClient from "./api/search";
-import createFloatingButton, {
+import {
     addFloatingButonListener,
 } from "./floating_button";
 import initShareButton from "./init_share";
@@ -18,8 +18,10 @@ import PostBoardApiClient from "./api/posts";
 import pushpin from "../assets/pushpin.png";
 import createFirstPlaceDialog from "./firstPlaceDialog";
 import getMedalData from "./get_medal_image";
-import displayLoadingSplash from "./loadingSplash";
+// import displayLoadingSplash from "./loadingSplash";
 import { alwaysDisplayEmailInputModal } from "./env";
+import createNoticeFloatingButton from "./notice_floating_button";
+import corkBoard from "../assets/cork-board.png";
 
 /**
  * 결과 페이지를 렌더링한다.
@@ -52,7 +54,9 @@ export default function initializeResultPage() {
 
     InitTopNav();
     preparePlaceholderSection(document.querySelector(".post-section")!);
-    createFloatingButton("home");
+    createNoticeFloatingButton(
+        "5월 5일 23시 59분까지 1등을 유지하신 분께,  \"당신의 최애 장르 공식 굿즈 10만 원 상당\"을 이벤트 선물로 드립니다!",
+    );
     addFloatingButonListener(() => (location.href = "/"));
 
     SearchApiClient.randomRecommend(8).then((posts) => {
@@ -133,13 +137,13 @@ export default function initializeResultPage() {
                 encodeURIComponent(result.quizId);
         });
 
-        let removeLoadingSplash: (() => void) | null = null;
+        // let removeLoadingSplash: (() => void) | null = null;
         const changeShareData = initShareButton({
             beforeShare: async () => {
-                removeLoadingSplash = displayLoadingSplash();
+                // removeLoadingSplash = displayLoadingSplash();
             },
             onComplete: () => {
-                if (removeLoadingSplash) removeLoadingSplash();
+                // if (removeLoadingSplash) removeLoadingSplash();
             },
         });
 
@@ -149,22 +153,25 @@ export default function initializeResultPage() {
 
         document
             .querySelector(".copy-link")
-            ?.addEventListener("click", (evt) => {
+            ?.addEventListener("click", async (evt) => {
                 evt.preventDefault();
 
-                (async () => {
-                    if ("clipboard" in navigator) {
+                try {
+                    if(navigator.clipboard) {
+                        await navigator.clipboard.writeText(url);
+                        
                         alert('클립보드에 주소가 복사되었어요!');
-                        return navigator.clipboard.writeText(url);
-                    }
-                    else throw new Error();
-                })().catch((_) => {
+
+                        return;
+                    } else throw new Error();
+                } catch {
                     prompt("다음 주소를 복사해주세요!", url);
-                });
+                }
             });
         await removeLoadingAfter(Math.max(1, 1000 - (Date.now() - loadTime)));
         const blob = await addPadding(
             await html2canvas(document.querySelector(".result-container")!, {
+                scale: 2,
                 backgroundColor: "transparent",
                 onclone(document) {
                     (
@@ -174,17 +181,18 @@ export default function initializeResultPage() {
                     ).classList.add("html2canvas");
                 }, 
             }),
+            corkBoard,
         );
-        const imageFile = new File([blob], "result.png", { type: "image/png" });
+        const imageFile = new File([blob], "result.png", { type: 'image/png' });
 
         // 모의고사
         changeShareData({
             webShare: {
                 url,
-                title: `[${result.category}] ${
-                    isNerdTest ? "고인물 테스트" : "모의고사"
-                }`,
-                text: `내 성적표 등장 ‼\n⬇ 풀어... 보시겠어요? ⬇`,
+                // title: `[${result.category}] ${
+                //     isNerdTest ? "고인물 테스트" : "모의고사"
+                // }`,
+                text: `내 성적표 등장 ‼\n\n${url}`.trim(),
                 files: [imageFile],
             },
             kakao: {
@@ -211,6 +219,7 @@ export default function initializeResultPage() {
 #고인물테스트 #슈르네`,
             },
             image: imageFile,
+            imageBlob: blob,
         });
 
         if (result.ranking === 1 || alwaysDisplayEmailInputModal)
@@ -218,10 +227,14 @@ export default function initializeResultPage() {
                 // console.log(email)
                 session.submitEmail(email);
             });
+
+        window.scrollTo(0, 0);
     })();
 }
 
 document.body.style.overflowX = "hidden";
+
+(window as any).createFirstPlaceDialog = createFirstPlaceDialog;
 
 
 // let loop_d = setInterval(() => {

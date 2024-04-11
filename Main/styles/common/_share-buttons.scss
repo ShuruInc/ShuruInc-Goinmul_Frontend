@@ -19,7 +19,13 @@
 
 .share-web-share {
     @include share-button-common();
-    border: 1px solid #DFDFDF;
+    // border: 1px solid #DFDFDF;
+    background-color: #FFFFFF;
+
+    img {
+        bottom: -2px;
+        position: relative;
+    }
 }
 
 .share-kakao {

@@ -1,12 +1,15 @@
 import SmoothScrollbar, { ScrollbarPlugin } from "smooth-scrollbar";
 import PostBoardApiClient from "./api/posts";
 import footer from "./footer";
-import setHorizontalDragScrollOnDesktop from "./horizontal_drag_to_scroll_on_desktop";
 import "./smooth-scrollbar-scroll-lock-plugin";
 import eyeIcon from "../assets/post-cell-popularity-icons/eye.svg";
 import heartSolidIcon from "../assets/post-cell-popularity-icons/heart-solid.svg";
+import { dom, library } from "@fortawesome/fontawesome-svg-core";
+import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 // import { isMobile } from "./is_mobile";
 // import Color from "color";
+
+library.add(faArrowLeft, faArrowRight);
 
 type RowInfo = { landscape: boolean; count: number };
 export type Post = {
@@ -72,7 +75,7 @@ export function preparePlaceholderSection(
     ],
     placeholder = true,
 ) {
-    placeholderSection.innerHTML = "";
+    placeholderSection.innerHTML = ``;
     placeholderSection.classList.add("post-section");
 
     // 제목 생성
@@ -81,11 +84,14 @@ export function preparePlaceholderSection(
     // 가로형 포스트 생성
     for (let rowInfo of rowInfos) {
         const postTable = document.createElement("div");
+        postTable.innerHTML = `<button class="floating-btn-scrollX left"><i class="fa-solid fa-arrow-left"></i></button><button class="floating-btn-scrollX right"><i class="fa-solid fa-arrow-right"></i></button>`;
+        postTable.querySelectorAll('button.floating-btn-scrollX').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                btn.parentElement!.scrollBy({ behavior: 'smooth', left: (parseInt(getComputedStyle(btn.parentElement!.querySelector('.wrapper')!).width) + 16) * (btn.classList.contains('left') ? -1 : 1), top: 0 });
+            });
+        });
         postTable.className =
             "post-table" + (rowInfo.landscape ? " landscape" : " portrait");
-        if (!rowInfo.landscape) {
-            setHorizontalDragScrollOnDesktop(postTable);
-        }
 
         for (let i = 0; i < rowInfo.count; i++) {
             // 분필 border 생성
@@ -138,6 +144,10 @@ export function preparePlaceholderSection(
 
     if (placeholder) placeholderSection.classList.add("placeholder");
     placeholderSection.dataset.rowInfos = JSON.stringify(rowInfos);
+
+    setTimeout(() => {
+        dom.i2svg();
+    }, 500);
 }
 
 function getImageDataFromImageElement(url: string) {

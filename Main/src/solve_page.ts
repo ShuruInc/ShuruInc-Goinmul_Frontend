@@ -14,12 +14,10 @@ import solveBody from "./solve_page.html";
 import { InitTopNav } from "./top_logo_navbar";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import html2canvas from "html2canvas";
-import addPadding from "./canvas_padding";
 import ImageCache from "./image_cache";
 import initializeResultPage from "./result_page";
 import { alwaysDisplaycombo, nerdTestExitFeatureEnabled } from "./env";
-import whitePaper from "../assets/paper.png";
-import displayLoadingSplash from "./loadingSplash";
+// import displayLoadingSplash from "./loadingSplash";
 
 function confirmUnload(evt: Event) {
     evt.preventDefault();
@@ -49,65 +47,19 @@ export default function initSolvePage(session: QuizSession) {
     library.add(faXmark);
     dom.i2svg({ node: document.querySelector(".correctness-effect")! });
 
+    (window as any).h2c = html2canvas;
+
     let shared = false;
     const sessionId = session.getSessionId();
-    let shareData: Omit<ShareDatas, "image"> | null = null;
-    let removeLoadingSplash: (() => void) | null = null;
+    let shareData: Omit<Omit<ShareDatas, "image">, 'imageBlob'> | null = null;
     const setShareData = initShareButton({
         onComplete: () => {
-            shared = true;
-            if (removeLoadingSplash) removeLoadingSplash();
         },
         beforeShare: () => {
-            removeLoadingSplash = displayLoadingSplash();
-
-            // 공유 버튼을 눌렀을 때 공유 직전에 이미지를 설정한다.
-
-            /**
-             * .problem-box가 보이지 않으면 svg 렌더링이 되지 않으므로
-             * .problem-box가 보일 때 svg 렌더링을 한다.
-             */
-            return html2canvas(
-                document.querySelector(".help-me .problem-box")!,
-                {
-                    backgroundColor: "transparent",
-                    // 이미지가 안 보이는 버그 수정
-                    useCORS: true,
-                    onclone(document) {
-                        (
-                            document.querySelector(
-                                ".help-me .problem-paper-box",
-                            ) as HTMLElement
-                        ).classList.add("html2canvas");
-                    },
-                },
-            ).then(
-                (canvas) =>
-                    // 이미지를 렌더링 한다.
-                    new Promise<void>((resolve, reject) => {
-                        addPadding(canvas, whitePaper).then((blob) => {
-                            // 이미지에 여백을 추가한다.
-                            if (shareData && blob) {
-                                const file = new File([blob], "problem.png", {
-                                    type: "image/png",
-                                });
-
-                                // 공유 데이터에 이미지를 설정한다.
-                                setShareData({
-                                    ...shareData,
-                                    webShare: {
-                                        ...shareData.webShare,
-                                        files: [file],
-                                    },
-                                    image: file,
-                                });
-                                resolve();
-                            } else reject("오류가 발생했습니다.");
-                        });
-                    }),
-            );
+            return Promise.resolve();
         },
     });
+    (window as any).setShareData = setShareData;
 
     (async () => {
         // 제목 설정
@@ -116,6 +68,25 @@ export default function initSolvePage(session: QuizSession) {
         ).title;
 
         const sessionInfo = await session.sessionInfo();
+
+        const quizUrl = `https://goinmultest.pro/quiz/solve.html?id=${sessionInfo.quizId}`;
+        document
+        .querySelector(".copy-link")
+        ?.addEventListener("click", async (evt) => {
+            evt.preventDefault();
+
+            try {
+                if(navigator.clipboard) {
+                    await navigator.clipboard.writeText(quizUrl);
+                    
+                    alert('클립보드에 주소가 복사되었어요!');
+
+                    return;
+                } else throw new Error();
+            } catch {
+                prompt("다음 주소를 복사해주세요!", quizUrl);
+            }
+        });
 
         updateProgress(0);
         const goResult = () => {
@@ -223,6 +194,13 @@ export default function initSolvePage(session: QuizSession) {
             }
 
             const quizUrl = `https://goinmultest.pro/quiz/solve.html?id=${sessionInfo.quizId}`;
+            const file = new File(
+                [new Blob([""], { type: "image/png" })],
+                "problem.png",
+                {
+                    type: "image/png",
+                },
+            );
             shareData = {
                 twitter: {
                     text: `[${sessionInfo.category}] ${
@@ -248,21 +226,17 @@ export default function initSolvePage(session: QuizSession) {
                 },
                 webShare: {
                     url: quizUrl,
-                    title: `[${sessionInfo.category}] ${
-                        sessionInfo.isNerdTest ? "고인물 테스트" : "모의고사"
-                    }`,
-                    text: "모르겠어요... 도와주세요 🚨",
+                    // title: `[${sessionInfo.category}] ${
+                    //     sessionInfo.isNerdTest ? "고인물 테스트" : "모의고사"
+                    // }`,
+                    text: `모르겠어요... 도와주세요 🚨\n\n${quizUrl}`.trim(),
+                    files: [file],
                 },
             };
             setShareData({
                 ...shareData,
-                image: new File(
-                    [new Blob([""], { type: "iamge/png" })],
-                    "problem.png",
-                    {
-                        type: "image/png",
-                    },
-                ),
+                image: file,
+                imageBlob: new Blob([""], { type: "image/png" }),
             });
         };
 

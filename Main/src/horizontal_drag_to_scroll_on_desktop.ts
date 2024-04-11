@@ -57,9 +57,9 @@ export default function setHorizontalDragScrollOnDesktop(element: HTMLElement) {
     element.addEventListener('mousedown', ondown);
     element.addEventListener('mousemove', onmove);
     
-    element.addEventListener('touchstart', ondown);
-    element.addEventListener('touchmove', onmove);
-    element.addEventListener('touchcancel', onup);
+    // element.addEventListener('touchstart', ondown);
+    // element.addEventListener('touchmove', onmove);
+    // element.addEventListener('touchcancel', onup);
 
     document.body.addEventListener('mouseup', onup);
     document.body.addEventListener('touchend', onup);

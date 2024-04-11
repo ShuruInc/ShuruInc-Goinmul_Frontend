@@ -1,13 +1,16 @@
 import PostBoardApiClient from "../api/posts";
-import createFloatingButton, {
+import {
     addFloatingButonListener,
 } from "../floating_button";
 import { displayMainPostBoard } from "../home_post_board";
 import { setupPostBoard } from "../post_board";
 import { InitTopNav } from "../top_logo_navbar";
 import PrepareHorizontalInfiniteScrollLayout from "../prepare_horizontal_infinite_scroll_layout";
+import createNoticeFloatingButton from "../notice_floating_button";
 
-createFloatingButton("home");
+createNoticeFloatingButton(
+    "5월 5일 23시 59분까지 1등을 유지하신 분께,  \"당신의 최애 장르 공식 굿즈 10만 원 상당\"을 이벤트 선물로 드립니다!",
+);
 
 (async () => {
     return {
@@ -39,28 +42,28 @@ createFloatingButton("home");
     .then(({ scroller }) => {
         // Post board column의 좌우 스크롤
         // 상하 스크롤시 플로팅버튼을 변경한다.
-        scroller.addEventListenerToChildren("scroll", (evt) => {
-            const target = evt.target as HTMLElement;
-            if (target.scrollTop !== 0) createFloatingButton("up");
-            else createFloatingButton("home");
-        });
+        // scroller.addEventListenerToChildren("scroll", (evt) => {
+            // const target = evt.target as HTMLElement;
+            // if (target.scrollTop !== 0) createFloatingButton("up");
+            // else createFloatingButton("home");
+        // });
 
         //let _contentScrollerScrollingByUserDrag = false;
         // 좌우 스크롤시 플로팅버튼을 변경한다.
-        scroller.addScrollEventListener(() => {
-            if (
-                scroller.getCurrentlyMostVisibleChild(false)?.dataset?.key !==
-                "home"
-            ) {
-                createFloatingButton("home");
-            } else {
-                createFloatingButton(
-                    document.querySelector(".column.main")?.scrollTop === 0
-                        ? "home"
-                        : "up",
-                );
-            }
-        });
+        // scroller.addScrollEventListener(() => {
+        //     if (
+        //         scroller.getCurrentlyMostVisibleChild(false)?.dataset?.key !==
+        //         "home"
+        //     ) {
+        //         createFloatingButton("home");
+        //     } else {
+        //         createFloatingButton(
+        //             document.querySelector(".column.main")?.scrollTop === 0
+        //                 ? "home"
+        //                 : "up",
+        //         );
+        //     }
+        // });
 
         // 플로팅 버튼 동작 설정
         addFloatingButonListener(() => {

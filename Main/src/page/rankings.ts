@@ -7,13 +7,12 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import PostBoardApiClient from "../api/posts";
 import { RankingItem } from "../home_post_board";
 import { encode } from "html-entities";
-import createFloatingButton, {
+import {
     addFloatingButonListener,
 } from "../floating_button";
 import createNoticeFloatingButton from "../notice_floating_button";
 
 InitTopNav(false);
-createFloatingButton();
 createNoticeFloatingButton(
     "5월 5일 23시 59분까지 1등을 유지하신 분께,  \"당신의 최애 장르 공식 굿즈 10만 원 상당\"을 이벤트 선물로 드립니다!",
 );
@@ -28,7 +27,10 @@ dom.i2svg({ node: document.querySelector(".paper .search-icon")! });
 
 let buttonLabels: string[] = [];
 let rankingData: RankingItem[] = [];
-let isTextExsits = false;
+// let isTextExsits = false;
+
+const rankingClass = [ 'first', 'second', 'third' ];
+let currentSearchValue = '';
 
 const activateRankingButton = (selectedLabel: string) => {
     const activeLabelIndex = buttonLabels.indexOf(selectedLabel);
@@ -80,6 +82,9 @@ const displayRanking = (query?: string, allowEmpty?: boolean) => {
         .map((i, idx) => {
             const row = document.createElement("tr");
             const k = idx + 1;
+            const rankingClassString = rankingClass[idx];
+
+            if (rankingClassString) row.classList.add(rankingClassString);
 
             row.innerHTML =
                 `<td class="ranking">${(k==1)||(k==2)||(k==3)?'':idx+1}</td>` +
@@ -113,18 +118,48 @@ PostBoardApiClient.getRankings().then((rankings) => {
             activateRankingButton(label);
             rankingData = rankings[label];
             displayRanking(undefined, true);
+            searchRanking(currentSearchValue);
         });
     });
     
     document
         .querySelector(".search input")
         ?.addEventListener("input", (evt) => {
-            displayRanking((evt.target as HTMLInputElement).value);
+            currentSearchValue = (evt.target as HTMLInputElement).value;
+
+            searchRanking(currentSearchValue);
         });
     activateRankingButton(buttonLabels[0]);
     rankingData = rankings[buttonLabels[0]];
     displayRanking(undefined, true);
 });
+
+function searchRanking(value: string) {
+    const tbody = document.querySelector<HTMLElement>('.rankings tbody');
+    const rows = tbody?.querySelectorAll('tr');
+
+    if(tbody !== null && rows !== null && rows !== undefined) {
+        tbody.style.display = 'display-none';
+    
+        rows.forEach(row => {
+            const nickname = row.querySelector('.nickname')?.textContent;
+            if(nickname == null) return;
+            if(nickname.includes(value)) {
+                row.style.display = '';
+                if(row.nextElementSibling) {
+                    (row.nextElementSibling as HTMLElement).style.display = '';
+                }
+            } else {
+                row.style.display = 'none';
+                if(row.nextElementSibling) {
+                    (row.nextElementSibling as HTMLElement).style.display = 'none';
+                }
+            }
+        });
+
+        tbody.style.display = '';
+    }
+}
 
 // 한글 자모만 입력했는지 체크
 // function hasCharactersWithinUnicodeRange(input: string): boolean {
@@ -146,46 +181,46 @@ PostBoardApiClient.getRankings().then((rankings) => {
 
 
 // 랭킹 검색창에 텍스트가 있는지 체크하고 기억
-document.querySelector("input")?.addEventListener('input', () => {
-    const text = document.querySelector("input")?.value;
+// document.querySelector("input")?.addEventListener('input', () => {
+//     const text = document.querySelector("input")?.value;
 
-    if(text == null) return;
-    if (text.length > 0) {
-        isTextExsits  = true;
-    } else {
-        isTextExsits  = false;
-    }
+//     if(text == null) return;
+//     if (text.length > 0) {
+//         isTextExsits  = true;
+//     } else {
+//         isTextExsits  = false;
+//     }
     
-});
+// });
 
 // 랭킹 검색창에 텍스트가 비어있으면 메달 컬럼 표시, 텍스트가 없으면 메달 컬럼 비표시
-setInterval(() => {
-    if (isTextExsits) {
-        document.querySelectorAll('.ranking').forEach(item => {
-            (item as HTMLElement).style.display = 'none';
+// setInterval(() => {
+//     if (isTextExsits) {
+//         document.querySelectorAll('.ranking').forEach(item => {
+//             (item as HTMLElement).style.display = 'none';
             
-        });
-    } else {
-        document.querySelectorAll('.ranking').forEach(item => {
-            (item as HTMLElement).style.display = '';
-        });
-    }
-}, 1); 
+//         });
+//     } else {
+//         document.querySelectorAll('.ranking').forEach(item => {
+//             (item as HTMLElement).style.display = '';
+//         });
+//     }
+// }, 1); 
 
 // 랭킹 검색창이 포커스될 때 최초 한 번 텍스트를 비우기
-document.querySelector("input")?.addEventListener('focus', () => {
-    const input = document.querySelector("input");
+// document.querySelector("input")?.addEventListener('focus', () => {
+//     const input = document.querySelector("input");
     
-    if(input == null) 
-        return;
-    else
-    {
-        input.value = "";
-        isTextExsits = false;
-    }
+//     if(input == null) 
+//         return;
+//     else
+//     {
+//         input.value = "";
+//         isTextExsits = false;
+//     }
 
-});
+// });
 
-document.querySelector("input")?.addEventListener('blur', () => {
-    location.href = location.href; //새로고침
-})
+// document.querySelector("input")?.addEventListener('blur', () => {
+//     location.href = location.href; //새로고침
+// })

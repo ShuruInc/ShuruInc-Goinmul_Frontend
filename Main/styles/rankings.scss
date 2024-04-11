@@ -8,7 +8,7 @@
 @import "./mixins/handdrawn-btn";
 @import "./includes/pretendard";
 
-body {
+html, body {
     @include grid-chalkboard-background;
 
     margin-top: 50px;
@@ -72,8 +72,8 @@ body {
                     background: transparent;
                 }
                 input {
-                    border-right-width: 0px;
-                    border-radius: 14px 0px 0px 14px;
+                    border-left-width: 0px;
+                    border-radius: 0px 14px 14px 0px;
                     width: 100%;
                     color: #50504F;
 
@@ -91,8 +91,8 @@ body {
                     }
                 }
                 .search-icon {
-                    border-left-width: 0px;
-                    border-radius: 0px 14px 14px 0px;
+                    border-right-width: 0px;
+                    border-radius: 14px 0px 0px 14px;
                     display: flex;
                     flex-direction: row;
                     align-items: center;
@@ -148,7 +148,7 @@ body {
                     font-size: 14px;
                     color: $black-color-02;
 
-                    &:nth-child(1) {
+                    &.first {
                         font-size: 14px;
                         font-weight: 600;
                         color: $black-color-01;
@@ -160,7 +160,7 @@ body {
                         }
                     }
 
-                    &:nth-child(3), &:nth-child(5) {
+                    &.second, &.third {
                         font-weight: 600;
 
                         td.ranking {
@@ -168,14 +168,14 @@ body {
                             background-position: left 53% top 0%;
                         }
 
-                        &:nth-child(3) {   
+                        &.second {   
                             color: $black-color-01;
                             td.ranking {
                                 background-image: url(../assets/ranking-medal-icon/silver.png);
                             }
                         }
 
-                        &:nth-child(5) {
+                        &.third {
                             color: $black-color-02;
                             td.ranking {
                                 background-image: url(../assets/ranking-medal-icon/cooper.png);

@@ -12,13 +12,16 @@ export default function createFirstPlaceDialog(
     }">
 
     <h1>1위 달성!</h1>
-    <p class="${styles.congratulations}" style="line-height: 19px;">
-    5월 5일 23시 59분까지<br>1등을 유지하신 분께<br>\"당신의 최애 장르 공식<br>굿즈 10만 원 상당\"을<br> 이벤트 선물로 드립니다! 
+    <p class="${styles.congratulations}">
+        <span class="${styles.due}">5월 5일 23시 59분까지</span><br>
+        1등을 유지하시면<br>
+        "당신의 최애 공식 굿즈 10만 원 상당"을<br>
+        이벤트 선물로 드립니다!
     </p>
-    <p class="${styles.gimmeEmail}">
-    이메일 주소를 기록해주세요<br>
-    </p>
-    <form>
+    <form id="emailForm">
+        <p class="${styles.gimmeEmail}">
+            이메일 주소를 기록해주세요.<br>
+        </p>
         <input type="email" placeholder="example@example.com"><br>
         <button type="submit">전송</button>
     </form>
@@ -36,6 +39,7 @@ export default function createFirstPlaceDialog(
         }
 
         onEmailInput(email);
+        removed = true;
         wrapper.remove();
     });
 
@@ -91,26 +95,32 @@ export default function createFirstPlaceDialog(
         dialog.style.top = `${Math.round(dialogXy[1])}px`;
         dialog.style.width = `${Math.round(dialogSize[0])}px`;
         dialog.style.height = `${Math.round(dialogSize[1])}px`;
+
+        const height = Math.round(dialogSize[1]);
+        const contentHeight = 248;
+        const margin = height - contentHeight - 80;
+        document.getElementById('emailForm')!.style.marginTop = `${margin}px`;
         if (!removed) window.requestAnimationFrame(changeDialogSize);
     };
 
-    wrapper.addEventListener("click", (evt) => {
-        let now = evt.target as Node | null;
-        while (now != null) {
-            if (
-                now.nodeType === now.ELEMENT_NODE &&
-                (now as HTMLElement).classList.contains(styles.dialog)
-            )
-                return;
+    // wrapper.addEventListener("click", (evt) => {
+    //     let now = evt.target as Node | null;
+    //     while (now != null) {
+    //         if (
+    //             now.nodeType === now.ELEMENT_NODE &&
+    //             (now as HTMLElement).classList.contains(styles.dialog)
+    //         )
+    //             return;
 
-            now = now.parentNode;
-        }
+    //         now = now.parentNode;
+    //     }
 
-        evt.preventDefault();
-        removed = true;
-        wrapper.remove();
-    });
+    //     evt.preventDefault();
+    //     removed = true;
+    //     wrapper.remove();
+    // });
 
     document.body.appendChild(wrapper);
     window.requestAnimationFrame(changeDialogSize);
+    setInterval(changeDialogSize, 100);
 }

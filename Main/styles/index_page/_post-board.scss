@@ -13,6 +13,7 @@
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
+    position: relative;
 
     --representing-color: 60, 60, 60;
 
@@ -44,7 +45,7 @@
             gap: 16px;
             margin-bottom: 16px;
 
-            overflow-x: scroll;
+            overflow-x: hidden;
             @include hide-scrollbar;
 
             .table-cell .cell-info {
