@@ -130,6 +130,9 @@ const createAnswerElement = (question: QuizProblem) => {
         <div class="row">
             <button class="idk" type="button">도와줘!</button>
             <button class="submit" type="submit">제출</button>
+        </div>
+        <div id="idkCount" class="row">
+            도와줘 기회 3번 남았습니다.
         </div>`;
     const warningEl = answerEl.querySelector(".row.warning") as HTMLElement;
     const validateAnswer = createAnswerValidator(
@@ -181,6 +184,18 @@ const createAnswerElement = (question: QuizProblem) => {
 
     answerEl.querySelector("button.idk")!.addEventListener("click", async (evt) => {
         evt.preventDefault();
+
+        if (parseInt(localStorage.getItem('idkRemains')!) <= 0) {
+            alert('도와줘 기회가 더 이상 남아있지 않습니다.');
+
+            return;
+        }
+
+        const idkRemains = parseInt(localStorage.getItem('idkRemains')!);
+
+        localStorage.setItem('idkRemains', (idkRemains - 1).toString());
+
+        document.getElementById('idkCount')!.innerText = `도와줘 기회 ${idkRemains - 1}번 남았습니다.`;
 
         toggleHelpMe(true);
 
