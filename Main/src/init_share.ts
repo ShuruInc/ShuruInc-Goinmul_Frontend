@@ -102,7 +102,7 @@ export default function initShareButton(
         try {
             window.open(
                 `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                    content.twitter.text,
+                    content.webShare.url ?? '',
                 )}`,
                 "_blank",
             );
