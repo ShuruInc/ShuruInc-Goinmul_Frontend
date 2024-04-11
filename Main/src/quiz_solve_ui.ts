@@ -185,17 +185,15 @@ const createAnswerElement = (question: QuizProblem) => {
     answerEl.querySelector("button.idk")!.addEventListener("click", async (evt) => {
         evt.preventDefault();
 
-        const sessionId = new URLSearchParams(window.location.search).get('session');
+        const idkRemains = getIdkRemainsCount();
 
-        if (parseInt(localStorage.getItem(`${sessionId}-idkRemains`)!) <= 0) {
+        if (idkRemains <= 0) {
             alert('도와줘 기회가 더 이상 남아있지 않습니다.');
 
             return;
         }
 
-        const idkRemains = parseInt(localStorage.getItem(`${sessionId}-idkRemains`)!);
-
-        localStorage.setItem(`${sessionId}-idkRemains`, (idkRemains - 1).toString());
+        setIdkRemainsCount(idkRemains - 1);
 
         document.getElementById('idkCount')!.innerText = `도와줘 기회 ${idkRemains - 1}번 남았습니다.`;
 
@@ -261,6 +259,27 @@ const createAnswerElement = (question: QuizProblem) => {
 
     return answerEl;
 };
+
+function getIdkRemainsCount() {
+    const sessionId = new URLSearchParams(window.location.search).get('session');
+    if(sessionId !== null && localStorage.getItem(`${sessionId}-idkRemains`) === null) {
+        localStorage.setItem(`${sessionId}-idkRemains`, '3');
+
+        return 3;
+    } else {
+        if (sessionId === null) {
+            return 3;
+        }
+        return parseInt(localStorage.getItem(`${sessionId}-idkRemains`)!);
+    }
+}
+
+function setIdkRemainsCount(count: number) {
+    const sessionId = new URLSearchParams(window.location.search).get('session');
+    if(sessionId !== null) {
+        localStorage.setItem(`${sessionId}-idkRemains`, count.toString());
+    }
+}
 
 function getBBoxOf(svg: SVGSVGElement) {
     document.body.appendChild(svg);
@@ -457,8 +476,7 @@ export function displayProblem(
         behavior: "instant",
     });
 
-    const sessionId = new URLSearchParams(window.location.search).get('session');
-    const idkRemains = parseInt(localStorage.getItem(`${sessionId}-idkRemains`)!);
+    const idkRemains = getIdkRemainsCount();
     document.getElementById('idkCount')!.innerText = `도와줘 기회 ${idkRemains}번 남았습니다.`;
 }
 

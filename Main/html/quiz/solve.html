@@ -99,11 +99,5 @@
         </article>
     </div>
     <script src="../../src/darkmagic.js"></script>
-    <script>
-        const sessionId = new URLSearchParams(window.location.search).get('session');
-        if(sessionId !== null && localStorage.getItem(`${sessionId}-idkRemains`) === null) {
-            localStorage.setItem(`${sessionId}-idkRemains`, '3');
-        }
-    </script>
 </body>
 </html>
