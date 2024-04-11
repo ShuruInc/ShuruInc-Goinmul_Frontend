@@ -140,11 +140,6 @@ const createAnswerElement = (question: QuizProblem) => {
         question.choices === null,
     );
 
-    answerEl.addEventListener('load', () => {
-        const idkRemains = parseInt(localStorage.getItem('idkRemains')!);
-        document.getElementById('idkCount')!.innerText = `도와줘 기회 ${idkRemains}번 남았습니다.`;
-    });
-
     const rowWithInput = answerEl.querySelector(".row.with-input")!;
     if (question.choices === null) {
         rowWithInput.innerHTML = `
@@ -459,6 +454,9 @@ export function displayProblem(
         top: 0,
         behavior: "instant",
     });
+
+    const idkRemains = parseInt(localStorage.getItem('idkRemains')!);
+    document.getElementById('idkCount')!.innerText = `도와줘 기회 ${idkRemains}번 남았습니다.`;
 }
 
 /**
