@@ -457,7 +457,8 @@ export function displayProblem(
         behavior: "instant",
     });
 
-    const idkRemains = parseInt(localStorage.getItem('idkRemains')!);
+    const sessionId = new URLSearchParams(window.location.search).get('session');
+    const idkRemains = parseInt(localStorage.getItem(`${sessionId}-idkRemains`)!);
     document.getElementById('idkCount')!.innerText = `도와줘 기회 ${idkRemains}번 남았습니다.`;
 }
 
