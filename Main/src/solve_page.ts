@@ -281,17 +281,17 @@ export default function initSolvePage(session: QuizSession) {
                         : undefined,
                 );
             }, 500);
-        } else {
-            // 모의고사는 새로고침이 되도 계속 풀 수 있게 주소에 세션 id를 넣는다.
-            const quizId = new URLSearchParams(
-                location.search.substring(1),
-            ).get("id");
-            history.replaceState(
-                null,
-                "",
-                `/quiz/solve.html?session=${sessionId}&id=${quizId}`,
-            );
         }
+
+        const quizId = new URLSearchParams(
+            location.search.substring(1),
+        ).get("id");
+        history.replaceState(
+            null,
+            "",
+            `/quiz/solve.html?session=${sessionId}&id=${quizId}`,
+        );
+
         renewProblem();
     })();
 }
