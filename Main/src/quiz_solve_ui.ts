@@ -131,7 +131,7 @@ const createAnswerElement = (question: QuizProblem) => {
             <button class="idk" type="button">도와줘!</button>
             <button class="submit" type="submit">제출</button>
         </div>
-        <div id="idkCount" class="row">
+        <div id="idkCount" class="row" style="font-family: LeeSeoyun;">
             도와줘 기회 3번 남았습니다.
         </div>`;
     const warningEl = answerEl.querySelector(".row.warning") as HTMLElement;
@@ -139,6 +139,8 @@ const createAnswerElement = (question: QuizProblem) => {
         warningEl,
         question.choices === null,
     );
+    const idkRemains = parseInt(localStorage.getItem('idkRemains')!);
+    document.getElementById('idkCount')!.innerText = `도와줘 기회 ${idkRemains}번 남았습니다.`;
 
     const rowWithInput = answerEl.querySelector(".row.with-input")!;
     if (question.choices === null) {
