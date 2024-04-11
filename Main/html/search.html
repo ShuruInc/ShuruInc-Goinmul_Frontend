@@ -109,9 +109,32 @@
                 });
             }
 
+            function hide(){
+                // 해시태그(연관검색결과)가 있으면 "검색 결과가 없습니다, 출제요청" 섹션을 숨긴다.
+                try{
+                    const inputElem = document.querySelector('input.search');
+                    const relatedTestElem = document.querySelector('section.similar');
+                    const isTextExist = (inputElem != null) && inputElem.value.trim() !== '';
+                    const isRelatedTestExist = !(relatedTestElem.classList.contains("display-none"));
+
+                    //검색창에 텍스트가 있고 && "연관된 모의고사" 섹션이 display 되어있으면
+                    if(isTextExist && isRelatedTestExist) {
+                        // "검색 결과가 없습니다, 출제요청" 섹션을 가림
+                        document.querySelector('.no-results').style.display = 'none';
+                    } else if (isTextExist) {
+                        document.querySelector('.no-results').style.display = 'flex';
+                    }
+                } catch(e){ }
+            }
+
             makeScrollable();
             setInterval(() => {
                 makeScrollable();
+            }, 100);
+
+            hide();
+            setInterval(() => {
+                hide();
             }, 100);
         </script>
         
