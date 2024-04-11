@@ -1,7 +1,7 @@
 import "../styles/common/_share-buttons.scss";
 import { encode } from "html-entities";
 import shareIcon from '../assets/share.svg';
-import twitterIcon from '../assets/X.svg';
+import twitterIcon from '../assets/X.png';
 
 export type ShareDatas = {
     webShare: ShareData;
@@ -43,11 +43,11 @@ export default function initShareButton(
 
     webShareButton!.innerHTML = `<img src="${encode(
         shareIcon,
-    )}" style="margin-right: 6px;"> ${webShareButton?.innerText}`;
+    )}" style="margin-right: 6px; vertical-align: middle;"><span style="vertical-align: middle;">${webShareButton?.innerText}</span>`;
 
     twitterShareButton!.innerHTML = `<img src="${encode(
         twitterIcon,
-    )}" style="margin-right: 6px;"> ${twitterShareButton?.innerText}`;
+    )}" style="margin-right: 6px; vertical-align: middle;"><span style="vertical-align: middle;">${twitterShareButton?.innerText}</span>`;
 
     console.log(options);
 
