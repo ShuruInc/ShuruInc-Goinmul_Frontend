@@ -1,18 +1,15 @@
 import "../../../styles/quiz";
 import { QuizApiClient } from "../../api/quiz";
-import { InitTopNav } from "../../top_logo_navbar";
 import initSolvePage from "../../solve_page";
 import solveBody from "../../solve_page.html";
 import PostBoardApiClient from "../../api/posts";
 import { displayProblem } from "../../quiz_solve_ui";
 
-InitTopNav();
-
 const params = new URLSearchParams(location.search.substring(1));
 const quizId = params.get("id");
 const problemId = params.get("problem");
 
-const initByQuizId = async () => {
+const init = async () => {
     if (quizId !== null) {
         await PostBoardApiClient.hit(quizId);
         // const isNerdTest = await QuizApiClient.isNerdTest(quizId);
@@ -42,7 +39,7 @@ const initByQuizId = async () => {
     }
 };
 
-initByQuizId();
+init();
 
 window.addEventListener('scroll', topbarBackground);
 window.addEventListener('load', topbarBackground);
