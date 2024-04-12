@@ -27,7 +27,7 @@ const init = async () => {
             return;
         }
 
-        await QuizApiClient.startQuiz(quizId).then(initSolvePage);
+        initSolvePage(session, true);
 
         displayProblem(
             document.querySelector("article")!,
