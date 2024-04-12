@@ -23,10 +23,17 @@
     <meta name="msapplication-TileImage" content="../../assets/logo/ms-icon-144x144.png">
     <meta name="theme-color" content="#0A4129">
     <style>
-        .answer, .progress-container, .progress-text {
-            display: none;
+        .answer, .progress-container {
+            display: none!important;
         }
     </style>
+    <script>
+        setInterval(() => {
+            document.querySelectorAll('.progress-text').forEach((element) => {
+                element.innerHTML = '';
+            });
+        }, 100);
+    </script>
 </head>
 <body>
 </body>
