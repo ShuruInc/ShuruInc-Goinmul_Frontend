@@ -28,7 +28,7 @@ function confirmUnload(evt: Event) {
  * 문제 풀이 페이지를 렌더링한다.
  * @param session 퀴즈 세션
  */
-export default function initSolvePage(session: QuizSession) {
+export default function initSolvePage(session: QuizSession, isViewPage = false) {
     // 페이지 나갈시 확인 대화상자 표시
     let timerInterval: NodeJS.Timeout | null = null;
     session.sessionInfo().then((info) => {
@@ -239,6 +239,12 @@ export default function initSolvePage(session: QuizSession) {
                 imageBlob: new Blob([""], { type: "image/png" }),
             });
         };
+
+        if(isViewPage) {
+            renewProblem();
+
+            return;
+        }
 
         addAnswerSubmitListener(async (answer, subjective) => {
             const correct = await session.submit(answer, subjective);

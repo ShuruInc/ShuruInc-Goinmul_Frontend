@@ -27,13 +27,13 @@ const init = async () => {
             return;
         }
 
+        await QuizApiClient.startQuiz(quizId).then(initSolvePage);
+
         displayProblem(
             document.querySelector("article")!,
             problem,
             1,
         );
-
-        QuizApiClient.startQuiz(quizId).then(initSolvePage);
     } else {
         alert("오류가 발생했습니다.");
     }
