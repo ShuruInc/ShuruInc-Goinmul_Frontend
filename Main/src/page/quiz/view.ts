@@ -13,8 +13,8 @@ const init = async () => {
     if (quizId !== null) {
         await PostBoardApiClient.hit(quizId);
         // const isNerdTest = await QuizApiClient.isNerdTest(quizId);
-        const title = await QuizApiClient.getQuizTitle(quizId);
-        document.querySelector(".test-title")!.textContent = title;
+        // const title = await QuizApiClient.getQuizTitle(quizId);
+        // document.querySelector(".test-title")!.textContent = title;
         
         document.body.innerHTML = solveBody;
 
