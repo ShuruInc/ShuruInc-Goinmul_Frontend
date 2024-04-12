@@ -91,6 +91,9 @@ export class QuizSession {
                 "[]",
         ) as QuizProblem[];
     }
+    getProblems() {
+        return this.problems();
+    }
     private ended() {
         return (
             this.getLocalSession().problemIndex >= this.problems().length ||
