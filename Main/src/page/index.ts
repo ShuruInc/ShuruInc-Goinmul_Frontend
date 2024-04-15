@@ -90,7 +90,7 @@ createNoticeFloatingButton(
         p.style.fontSize = '20px';
         p.style.marginTop = '16px';
         p.style.fontFamily = 'LeeSeoyun';
-        p.innerHTML = `이게 뭔데 X덕아...?<br><a href="https://youtu.be/6WZ5jjVXeF0?utm_source=goinmultestpro" style="color: white">▶ 사이트 소개 영상 바로가기 ◀</a>`
+        p.innerHTML = `이게 뭔데 X덕아...?<br><a href="https://youtu.be/6WZ5jjVXeF0?utm_source=goinmultestpro" style="color: white" target="_blank">▶ 사이트 소개 영상 바로가기 ◀</a>`
 
         section?.insertBefore(p, section.firstChild);
     });
