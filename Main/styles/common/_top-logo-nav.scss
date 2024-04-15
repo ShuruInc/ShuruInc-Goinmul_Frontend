@@ -126,7 +126,7 @@
     &.gradient {
         /*투명해지기 전 컬러*/
         color: rgba(255, 255, 255, 1);
-        height: var(--top-fixed-bar-height);
+        // height: var(--top-fixed-bar-height);
 
         transition:
             transform 0.3s ease,
