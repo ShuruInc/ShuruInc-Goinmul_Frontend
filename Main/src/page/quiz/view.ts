@@ -1,9 +1,9 @@
 import "../../../styles/quiz";
 import { QuizApiClient } from "../../api/quiz";
-import initSolvePage from "../../solve_page";
 import solveBody from "../../solve_page.html";
 import PostBoardApiClient from "../../api/posts";
-import { displayProblem } from "../../quiz_solve_ui";
+import { displayProblem, initQuizSolveUI } from "../../quiz_solve_ui";
+import { InitTopNav } from "../../top_logo_navbar";
 
 const params = new URLSearchParams(location.search.substring(1));
 const quizId = params.get("id");
@@ -12,30 +12,38 @@ const problemId = params.get("problem");
 const init = async () => {
     if (quizId !== null) {
         await PostBoardApiClient.hit(quizId);
-        // const isNerdTest = await QuizApiClient.isNerdTest(quizId);
-        // const title = await QuizApiClient.getQuizTitle(quizId);
-        // document.querySelector(".test-title")!.textContent = title;
         
         document.body.innerHTML = solveBody;
 
         const session = await QuizApiClient.startQuiz(quizId);
+        const sessionInfo = await session.sessionInfo();
         const problems = session.getProblems();
         const problem = problems.find((p) => p.id.toString() === problemId);
 
         if (problem === undefined) {
-            alert("문제를 찾을 수 없습니다.");
+            alert('문제를 찾을 수 없습니다.');
+            
+            window.location.href = '/';
+
             return;
         }
 
-        initSolvePage(session, true);
+        InitTopNav();
+        initQuizSolveUI();
+
+        document.querySelector('.test-title')!.textContent = sessionInfo.title;
 
         displayProblem(
-            document.querySelector("article")!,
+            document.querySelector('article')!,
             problem,
             1,
         );
     } else {
-        alert("오류가 발생했습니다.");
+        alert('오류가 발생했습니다.');
+            
+        window.location.href = '/';
+
+        return;
     }
 };
 
