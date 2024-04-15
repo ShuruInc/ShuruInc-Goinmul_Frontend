@@ -2,7 +2,7 @@ import "../../../styles/quiz";
 import { QuizApiClient } from "../../api/quiz";
 import viewBody from "../../view_page.html";
 import PostBoardApiClient from "../../api/posts";
-import { createAnswerElement, createQuestionElement } from "../../quiz_solve_ui";
+import { createAnswerElement, createAnswerElementForShare, createQuestionElement } from "../../quiz_solve_ui";
 
 const params = new URLSearchParams(location.search.substring(1));
 const quizId = params.get("id");
@@ -38,7 +38,8 @@ const init = async () => {
         const container = document.querySelector('article')!;
 
         container.appendChild(createQuestionElement(problem, 1));
-        container.appendChild(createAnswerElement(problem));
+        // container.appendChild(createAnswerElement(problem));
+        container?.querySelector('.problem-paper-box')?.appendChild(createAnswerElementForShare(problem));
 
         document.getElementById('idkCount')?.remove();
         

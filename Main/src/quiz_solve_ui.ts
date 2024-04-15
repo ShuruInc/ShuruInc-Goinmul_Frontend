@@ -51,7 +51,7 @@ export function addAnswerSubmitListener(
  * 선택지를 표시하는 HTML 요소를 만듭니다.
  * @param question 퀴즈 문제 데이터
  */
-const createAnswerElementForShare = (question: QuizProblem) => {
+export function createAnswerElementForShare(question: QuizProblem) {
     let answer: HTMLElement;
     if (question.choices === null) {
         answer = document.createElement("div");
