@@ -119,7 +119,7 @@ const createAnswerValidator = (
  * 정답을 입력하거나 선택하는 HTML 요소를 만듭니다.
  * @param question 퀴즈 문제 데이터
  */
-const createAnswerElement = (question: QuizProblem) => {
+export function createAnswerElement(question: QuizProblem) {
     const answerEl = document.createElement("form");
     answerEl.className = "answer";
     answerEl.innerHTML = `
@@ -127,7 +127,7 @@ const createAnswerElement = (question: QuizProblem) => {
         </div>
         <div class="row warning">
         </div>
-        <div class="row">
+        <div id="answerButtons" class="row">
             <button class="idk" type="button">도와줘!</button>
             <button class="submit" type="submit">제출</button>
         </div>
@@ -294,11 +294,11 @@ function getBBoxOf(svg: SVGSVGElement) {
  * @param question 퀴즈 문제 데이터
  * @param index 문제 번호
  */
-const createQuestionElement = (
+export function createQuestionElement(
     question: QuizProblem,
     index: number,
     options: Partial<{ currentScore: number; combo: number }> = {},
-) => {
+) {
     const comboColorClass =
         (options.combo ?? 0) < 20
             ? comboStyles.to19

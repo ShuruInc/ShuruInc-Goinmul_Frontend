@@ -1,9 +1,8 @@
 import "../../../styles/quiz";
 import { QuizApiClient } from "../../api/quiz";
-import solveBody from "../../solve_page.html";
+import viewBody from "../../view_page.html";
 import PostBoardApiClient from "../../api/posts";
-import { displayProblem, initQuizSolveUI } from "../../quiz_solve_ui";
-import { InitTopNav } from "../../top_logo_navbar";
+import { createAnswerElement, createQuestionElement } from "../../quiz_solve_ui";
 
 const params = new URLSearchParams(location.search.substring(1));
 const quizId = params.get("id");
@@ -13,7 +12,7 @@ const init = async () => {
     if (quizId !== null) {
         await PostBoardApiClient.hit(quizId);
         
-        document.body.innerHTML = solveBody;
+        document.body.innerHTML = viewBody;
 
         const session = await QuizApiClient.startQuiz(quizId);
         const sessionInfo = await session.sessionInfo();
@@ -28,16 +27,28 @@ const init = async () => {
             return;
         }
 
-        InitTopNav();
-        initQuizSolveUI();
+        document.querySelector('.go-back')?.addEventListener('click', (evt) => {
+            evt.preventDefault();
+
+            location.href = '/';
+        });
 
         document.querySelector('.test-title')!.textContent = sessionInfo.title;
 
-        displayProblem(
-            document.querySelector('article')!,
-            problem,
-            1,
-        );
+        createQuestionElement(problem, 1);
+        createAnswerElement(problem);
+
+        document.getElementById('idkCount')?.remove();
+        
+        const answerButtons = document.getElementById('answerButtons')!;
+        answerButtons.innerHTML = '';
+
+        const startButton = document.createElement('button');
+        startButton.classList.add('submit');
+        startButton.textContent = '나도 풀어보기';
+        startButton.addEventListener('click', () => {
+            window.location.href = `/quiz/solve.html?id=${quizId}`;
+        });
     } else {
         alert('오류가 발생했습니다.');
             
