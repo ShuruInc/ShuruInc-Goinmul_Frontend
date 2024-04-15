@@ -68,8 +68,9 @@ export default function initSolvePage(session: QuizSession) {
         ).title;
 
         const sessionInfo = await session.sessionInfo();
+        const currentProblem = await session.currentProblem();
 
-        const quizUrl = `https://goinmultest.pro/quiz/solve.html?id=${sessionInfo.quizId}`;
+        const quizUrl = `https://goinmultest.pro/quiz/view.html?id=${sessionInfo.quizId}&problem=${currentProblem?.id}`;
         document
         .querySelector(".copy-link")
         ?.addEventListener("click", async (evt) => {
