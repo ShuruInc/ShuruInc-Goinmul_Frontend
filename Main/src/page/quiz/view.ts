@@ -58,10 +58,11 @@ const init = async () => {
         });
 
         answerButtonContainerElement.appendChild(startButtonElement);
+        answerContainerElement.appendChild(answerButtonContainerElement);
 
         container.appendChild(questionElement);
         questionElement.querySelector('.problem-paper-box')?.appendChild(answerElement);
-        container.appendChild(answerButtonContainerElement);
+        container.appendChild(answerContainerElement);
 
         document.getElementById('idkCount')?.remove();
     } else {
