@@ -2,7 +2,7 @@ import "../../../styles/quiz";
 import { QuizApiClient } from "../../api/quiz";
 import viewBody from "../../view_page.html";
 import PostBoardApiClient from "../../api/posts";
-import { createAnswerElement, createAnswerElementForShare, createQuestionElement } from "../../quiz_solve_ui";
+import { createAnswerElementForShare, createQuestionElement } from "../../quiz_solve_ui";
 
 const params = new URLSearchParams(location.search.substring(1));
 const quizId = params.get("id");
@@ -37,24 +37,33 @@ const init = async () => {
 
         const container = document.querySelector('article')!;
 
-        container.appendChild(createQuestionElement(problem, 1));
-        // container.appendChild(createAnswerElement(problem));
-        container?.querySelector('.problem-paper-box')?.appendChild(createAnswerElementForShare(problem));
+        const questionElement = createQuestionElement(problem, 1);
+        questionElement.classList.add('help-me');
 
-        document.getElementById('idkCount')?.remove();
-        
-        const answerButtons = document.getElementById('answerButtons')!;
-        answerButtons.innerHTML = '';
+        const answerElement = createAnswerElementForShare(problem);
 
-        const startButton = document.createElement('button');
-        startButton.classList.add('submit');
-        startButton.type = 'submit';
-        startButton.textContent = '나도 풀어보기';
-        startButton.addEventListener('click', () => {
+        const answerContainerElement = document.createElement('div');
+        answerContainerElement.classList.add('answer');
+
+        const answerButtonContainerElement = document.createElement('div');
+        answerButtonContainerElement.id = 'answerButtons';
+        answerButtonContainerElement.classList.add('row');
+
+        const startButtonElement = document.createElement('button');
+        startButtonElement.classList.add('submit');
+        startButtonElement.type = 'submit';
+        startButtonElement.textContent = '나도 풀어보기';
+        startButtonElement.addEventListener('click', () => {
             window.location.href = `/quiz/solve.html?id=${quizId}`;
         });
 
-        answerButtons.appendChild(startButton);
+        answerButtonContainerElement.appendChild(startButtonElement);
+
+        container.appendChild(questionElement);
+        questionElement.querySelector('.problem-paper-box')?.appendChild(answerElement);
+        container.appendChild(answerButtonContainerElement);
+
+        document.getElementById('idkCount')?.remove();
     } else {
         alert('오류가 발생했습니다.');
             
