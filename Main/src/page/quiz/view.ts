@@ -47,6 +47,7 @@ const init = async () => {
 
         const startButton = document.createElement('button');
         startButton.classList.add('submit');
+        startButton.type = 'submit';
         startButton.textContent = '나도 풀어보기';
         startButton.addEventListener('click', () => {
             window.location.href = `/quiz/solve.html?id=${quizId}`;
