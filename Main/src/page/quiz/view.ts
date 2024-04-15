@@ -35,8 +35,10 @@ const init = async () => {
 
         document.querySelector('.test-title')!.textContent = sessionInfo.title;
 
-        createQuestionElement(problem, 1);
-        createAnswerElement(problem);
+        const container = document.querySelector('article')!;
+
+        container.appendChild(createQuestionElement(problem, 1));
+        container.appendChild(createAnswerElement(problem));
 
         document.getElementById('idkCount')?.remove();
         
