@@ -51,6 +51,8 @@ const init = async () => {
         startButton.addEventListener('click', () => {
             window.location.href = `/quiz/solve.html?id=${quizId}`;
         });
+
+        answerButtons.appendChild(startButton);
     } else {
         alert('오류가 발생했습니다.');
             
