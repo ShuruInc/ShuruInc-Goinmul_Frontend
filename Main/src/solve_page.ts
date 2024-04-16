@@ -68,8 +68,9 @@ export default function initSolvePage(session: QuizSession) {
         ).title;
 
         const sessionInfo = await session.sessionInfo();
+        const currentProblem = await session.currentProblem();
 
-        const quizUrl = `https://goinmultest.pro/quiz/solve.html?id=${sessionInfo.quizId}`;
+        const quizUrl = `https://goinmultest.pro/quiz/view.html?id=${sessionInfo.quizId}&problem=${currentProblem?.id}`;
         document
         .querySelector(".copy-link")
         ?.addEventListener("click", async (evt) => {
@@ -193,7 +194,7 @@ export default function initSolvePage(session: QuizSession) {
                     ?.classList.remove("display-none");
             }
 
-            const quizUrl = `https://goinmultest.pro/quiz/solve.html?id=${sessionInfo.quizId}`;
+            const quizUrl = `https://goinmultest.pro/quiz/view.html?id=${sessionInfo.quizId}&problem=${problem.id}`;
             const file = new File(
                 [new Blob([""], { type: "image/png" })],
                 "problem.png",
