@@ -187,7 +187,9 @@ const initByQuizId = async () => {
                     }
 
                     // 통계를 보내고 퀴즈를 시작한다.
-                    await QuizApiClient.sendSurvey(gender as 'M' | 'F' | 'E', age ?? undefined);
+                    const genderCode: 'M' | 'F' | 'E' = gender === 'male' ? 'M' : gender === 'female' ? 'F' : 'E';
+
+                    await QuizApiClient.sendSurvey(genderCode, age ?? undefined);
                     QuizApiClient.startNerdQuiz(quizId, {
                         nickname,
                         email: "example@example.com",
