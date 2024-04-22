@@ -135,4 +135,10 @@ export class QuizApiClient {
     static async sendStatistics(gender: string | null, age: string | null) {
         console.log(`received statistics: gender=${gender}, age=${age}`);
     }
+    static async sendSurvey(genderCode: 'M' | 'F' | 'E', ageRange?: string) {
+        await apiClient.postSurvey({
+            genderCode,
+            ageRange,
+        });
+    }
 }
