@@ -151,12 +151,12 @@ const initByQuizId = async () => {
                 gender = (
                     document.querySelector("select.gender") as HTMLInputElement
                 ).value;
-                if (gender === "other")
-                    gender = (
-                        document.querySelector(
-                            "input.specified-gender",
-                        ) as HTMLInputElement
-                    ).value;
+                // if (gender === "other")
+                //     gender = (
+                //         document.querySelector(
+                //             "input.specified-gender",
+                //         ) as HTMLInputElement
+                //     ).value;
 
                 if (isNerdTest) {
                     // 닉네임의 유효성을 검증한다.
